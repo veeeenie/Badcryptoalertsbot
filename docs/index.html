@@ -60,6 +60,7 @@ h2{font:600 18px/1.2 var(--font-display);letter-spacing:.02em;margin:0;text-tran
 .pill.long{background:var(--long-bg);color:var(--long)} .pill.short{background:var(--short-bg);color:var(--short)}
 .pill.at{background:var(--warn-bg);color:var(--warn)} .pill.news{background:var(--chip);color:var(--accent)}
 .pill.unlock{background:var(--warn-bg);color:var(--warn)}
+.pill.conf{background:var(--long);color:var(--panel)}
 .pill.hot{background:var(--short-bg);color:var(--short)}
 .riskbox{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
 .riskbox input{width:72px;font:500 13px var(--font-mono);padding:4px 6px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink)}
@@ -114,8 +115,8 @@ tr:last-child td{border-bottom:0}
       <div class="filters" id="filters" role="group" aria-label="Filter setups">
         <button type="button" data-f="all" aria-pressed="true">All</button>
         <button type="button" data-f="top" aria-pressed="false">Rated A/B</button>
-        <button type="button" data-f="at" aria-pressed="false">At entry</button>
-        <button type="button" data-f="pullback_long" aria-pressed="false">Pullback long</button>
+        <button type="button" data-f="at" aria-pressed="false">At entry or confirmed</button>
+        <button type="button" data-f="support_long" aria-pressed="false">Support long</button>
         <button type="button" data-f="rejection_short" aria-pressed="false">Rejection short</button>
         <button type="button" data-f="reclaim_long" aria-pressed="false">Reclaim long</button>
       </div>
@@ -128,11 +129,11 @@ tr:last-child td{border-bottom:0}
     <div class="tablebox"><table id="coins"><thead></thead><tbody></tbody></table></div>
   </section>
 
-  <p class="foot">Scans the top 100 Hyperliquid perps by 24h volume every hour using daily candles; weekly candles start Monday 00:00 UTC. Setups only show when the weekly chart agrees with the trade and reward-to-risk is at least 2.5 for longs and 2 for shorts. Rating A means two or more other levels sit within one daily ATR of the entry, B means one, C means none; Telegram alerts only A and B setups when price reaches the entry. Setups with a stop more than 15% from entry are skipped. Trending means the coin is among CoinGecko's most-searched coins right now. EMAs use Hyperliquid prices, so they can differ slightly from a Binance chart. News and unlocks are refreshed once a day. These are filters for charts worth checking, not trade instructions.</p>
+  <p class="foot">Scans the top 100 Hyperliquid perps by 24h volume every hour using daily candles; weekly candles start Monday 00:00 UTC. Every setup is built on a weekly level (the weekly 25/50/100 EMAs or a weekly swing high or low) and only in the direction the weekly trend allows; the entry must be within 10% of price, with reward-to-risk of at least 2.5 for longs and 2 for shorts. The daily chart times the entry: Confirmed means price tested the weekly level in the last three days and closed back on the right side; a daily close well through the level removes the setup. Rating A means another weekly level plus one more level sit within one daily ATR of the entry, B means one other level, C means none. Telegram alerts A and B setups when price reaches the entry and again when the retest is confirmed. Setups with a stop more than 15% from entry are skipped. Trending means the coin is among CoinGecko's most-searched coins right now. EMAs use Hyperliquid prices, so they can differ slightly from a Binance chart. News and unlocks are refreshed once a day. These are filters for charts worth checking, not trade instructions.</p>
 </div>
 
 <script>
-const LABEL={pullback_long:"Pullback long",rejection_short:"Rejection short",reclaim_long:"Reclaim long"};
+const LABEL={support_long:"Weekly support long",rejection_short:"Weekly rejection short",reclaim_long:"Weekly reclaim long"};
 let DATA=null, INTEL={coins:{}}, FILTER="all", SORT={key:"vol24h",dir:-1}, RISK=2;
 try{const r=parseFloat(localStorage.getItem("sd-risk")); if(r>0) RISK=r;}catch(e){}
 try{const f=localStorage.getItem("sd-filter"); if(f) FILTER=f;}catch(e){}
@@ -175,14 +176,15 @@ function render(){
   const cnt=t=>S.filter(s=>s.type===t).length;
   document.getElementById("strip").innerHTML=[
     ["Rated A/B",S.filter(s=>s.rating==="A"||s.rating==="B").length,`of ${S.length} setups`],
+    ["Confirmed retest",S.filter(s=>s.status==="confirmed").length,""],
     ["At entry now",S.filter(s=>s.status==="at level").length,""],
-    ["Pullback long",cnt("pullback_long"),""],
+    ["Support long",cnt("support_long"),""],
     ["Rejection short",cnt("rejection_short"),""],
     ["Reclaim long",cnt("reclaim_long"),""],
   ].map(([k,v,sub])=>`<div class="stat"><div class="k">${k}</div><div class="v">${v} <small>${sub}</small></div></div>`).join("");
 
   document.querySelectorAll("#filters button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===FILTER));
-  const shown=S.filter(s=>FILTER==="all"||(FILTER==="at"?s.status==="at level":FILTER==="top"?(s.rating==="A"||s.rating==="B"):s.type===FILTER));
+  const shown=S.filter(s=>FILTER==="all"||(FILTER==="at"?(s.status==="at level"||s.status==="confirmed"):FILTER==="top"?(s.rating==="A"||s.rating==="B"):s.type===FILTER));
   const price={}; (DATA.coins||[]).forEach(c=>price[c.coin]=c.price);
   const list=document.getElementById("list");
   list.innerHTML=shown.length? shown.map(s=>rowHTML(s,price[s.coin])).join("")
@@ -216,7 +218,7 @@ function rowHTML(s,p){
     <div class="coin"><b>${esc(s.coin)}</b><span class="meta">${fmt(p)}</span></div>
     <div class="ladder">${ladder(s,p)}</div>
     <div style="display:grid;gap:6px;justify-items:end">
-      <div class="pills"><span class="pill rating r${s.rating||"C"}" title="Confluence rating">${s.rating||"C"}</span><span class="pill ${side}">${LABEL[s.type]}</span>${s.status==="at level"?'<span class="pill at">At entry</span>':""}${news.length?`<span class="pill news">${news.length} news</span>`:""}${(un||s.unlock)?'<span class="pill unlock">Unlock</span>':""}${s.trending?'<span class="pill hot">Trending</span>':""}</div>
+      <div class="pills"><span class="pill rating r${s.rating||"C"}" title="Confluence rating">${s.rating||"C"}</span><span class="pill ${side}">${LABEL[s.type]}</span>${s.status==="at level"?'<span class="pill at">At entry</span>':s.status==="confirmed"?'<span class="pill conf">Confirmed</span>':""}${news.length?`<span class="pill news">${news.length} news</span>`:""}${(un||s.unlock)?'<span class="pill unlock">Unlock</span>':""}${s.trending?'<span class="pill hot">Trending</span>':""}</div>
       <dl class="nums"><dt>R:R T1</dt><dd class="rr">${s.rr.toFixed(1)}R</dd><dt>Stop</dt><dd>${s.risk_pct!=null?s.risk_pct.toFixed(1)+"%":"–"}</dd><dt>Size</dt><dd>${s.risk_pct?"$"+(RISK/(s.risk_pct/100)).toFixed(0):"–"}</dd>${s.rr2?`<dt>T2</dt><dd>${s.rr2.toFixed(1)}R</dd>`:""}<dt>Level</dt><dd>${esc(s.level)}</dd></dl>
     </div>
   </summary>

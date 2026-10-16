@@ -5,7 +5,7 @@ Every run:
   1. Takes the top N Hyperliquid perps by 24h volume.
   2. Pulls ~2.5 years of daily candles per coin, builds weekly candles (Mon 00:00 UTC, like Binance/TradingView).
   3. Computes 25/50/100 EMAs on daily and weekly closes.
-  4. Flags three setups: pullback long, rejection short, reclaim/breakout long.
+  4. Flags three setups on weekly levels (support long, rejection short, reclaim long), timed with the daily chart.
   5. Writes docs/data/setups.json for the dashboard and sends Telegram alerts for new or triggered setups.
 
 No API keys needed for market data. Telegram is optional (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID).
@@ -28,7 +28,7 @@ STATE_PATH = os.path.join(DATA_DIR, "state.json")
 EMA_LENGTHS = (25, 50, 100)
 MIN_RR = 2.5          # minimum reward:risk to target 1 for longs
 MIN_RR_SHORT = 2.0    # shorts target a nearer level, slightly lower bar
-MAX_DIST = 0.18       # ignore setups whose entry is more than 18% from price
+MAX_DIST = 0.10       # ignore setups whose entry is more than 10% from price
 AT_LEVEL = 0.02       # within 2% of entry counts as "at level"
 MAX_STOP_PCT = 15.0   # skip setups whose stop is more than 15% from entry (too volatile to size sensibly)
 RISK_USD = float(os.getenv("RISK_USD", "2"))  # dollar risk per trade used for the position-size hint
@@ -253,116 +253,116 @@ def analyse(coin_row, daily):
         "w_trend": trend_label(wE),
     }
 
-    setups = []
+    # ---- weekly levels: the 25/50/100 EMAs plus weekly swing highs and lows (last 2 years)
+    closed_w = weekly[:-1]
+    levels = [(wE[n], f"weekly {n} EMA") for n in EMA_LENGTHS if wE[n]]
+    for v, kind in swing_levels(closed_w[-104:], k=2):
+        levels.append((v, f"weekly swing {kind} {fmt(v)}"))
+    supports = sorted([l for l in levels if l[0] < price * (1 + AT_LEVEL)], key=lambda l: -l[0])
+    resists = sorted([l for l in levels if l[0] > price * (1 - AT_LEVEL)], key=lambda l: l[0])
+    hi26 = max(x["h"] for x in weekly[-26:])
+    lo26 = min(x["l"] for x in weekly[-26:])
 
-    # ---- A) pullback long: daily uptrend, entry at the nearest rising EMA below price
-    up = all(dE[n] for n in EMA_LENGTHS) and dE[25] > dE[50] > dE[100]
-    rising = (slope(d[50], 5) or 0) > 0 and (slope(d[100], 5) or 0) > 0
-    if up and rising and price > dE[100]:
-        supports = sorted(
-            [(dE[25], "daily 25 EMA"), (dE[50], "daily 50 EMA"), (dE[100], "daily 100 EMA")] +
-            [(wE[n], f"weekly {n} EMA") for n in EMA_LENGTHS if wE[n] and wE[n] < price],
-            key=lambda x: -x[0])
-        for lvl, name in supports:
-            if lvl >= price * (1 + AT_LEVEL):
-                continue
-            entry = lvl
-            stop = entry - 1.5 * a
-            t1 = hi60 if hi60 > entry * 1.02 else hi120
-            overhead = [wE[n] for n in EMA_LENGTHS if wE[n] and wE[n] > t1 * 1.02]
-            t2 = min(overhead) if overhead else (hi120 if hi120 > t1 * 1.02 else None)
-            s = make_setup("long", coin, price, entry, stop, t1, t2,
-                           {"type": "pullback_long",
-                            "why": f"Daily uptrend (25 > 50 > 100 EMA, 50 and 100 rising). Buy a pullback into the {name}."},
-                           name)
-            if s and s["rr"] >= MIN_RR:
-                setups.append(s)
-                break
-
-    # ---- B) rejection short: price rallying into a flat/falling higher-timeframe EMA overhead
-    rallied = price > close_10_ago * 1.10 or (info["stretch_d25"] or 0) > 15
-    for n in (50, 100):
-        L = wE[n]
-        if not L or L <= price * (1 - MAX_DIST):
-            continue
-        sl4 = slope(w[n], 4)
-        if sl4 is None or sl4 > 0.01:      # skip if the weekly EMA is clearly rising
-            continue
-        if price > L * 1.04:                # already well above it: not a rejection setup
-            continue
-        if not rallied:
-            continue
-        entry = max(L, price) if price > L else L
-        stop = entry + 1.5 * a
-        t1 = dE[25] if dE[25] and dE[25] < entry * 0.97 else lo60
-        t2 = dE[50] if dE[50] and dE[50] < t1 * 0.98 else None
-        s = make_setup("short", coin, price, entry, stop, t1, t2,
-                       {"type": "rejection_short",
-                        "why": f"Rally into a {'falling' if sl4 < -0.003 else 'flat'} weekly {n} EMA. "
-                               f"Fade the first test; wrong on a weekly close above it."},
-                       f"weekly {n} EMA")
-        if s and s["rr"] >= MIN_RR_SHORT:
-            setups.append(s)
-            break
-
-    # ---- C) reclaim / breakout: a daily close crossed above a key EMA in the last 5 days
-    levels = [(d[100], f"daily 100 EMA", True)] + [(w[n], f"weekly {n} EMA", False) for n in (50, 100)]
-    for series, name, is_daily in levels:
-        lvl_now = last(series)
-        if not lvl_now:
-            continue
-        crossed = False
-        for back in range(0, 5):
-            i = len(dc) - 1 - back
-            if i < 1:
-                break
-            if is_daily:
-                cur_l, prev_l = series[i], series[i - 1]
-            else:
-                cur_l = prev_l = lvl_now  # weekly EMA moves slowly; compare daily closes to today's value
-            if cur_l is None or prev_l is None:
-                continue
-            if dc[i] > cur_l and dc[i - 1] <= prev_l:
-                crossed = True
-                break
-        if not crossed or price < lvl_now:
-            continue
-        entry = lvl_now
-        stop = entry - 1.2 * a
-        hi90 = max(x["h"] for x in daily[-90:])
-        overhead = sorted([v for v in [wE[25], wE[50], wE[100], hi90] if v and v > entry * 1.03])
-        if not overhead:
-            continue
-        t1 = overhead[0]
-        t2 = overhead[1] if len(overhead) > 1 else None
-        s = make_setup("long", coin, price, entry, stop, t1, t2,
-                       {"type": "reclaim_long",
-                        "why": f"Daily close back above the {name}. Buy the retest; wrong on a close back below."},
-                       name)
-        if s and s["rr"] >= MIN_RR:
-            setups.append(s)
-            break
-
-    # ---- weekly agreement: only trade in the direction the weekly chart allows
+    # weekly trend: which direction the weekly chart allows
     w25_slope = slope(w[25], 4) or 0
     long_ok = bool(wE[50]) and price > wE[50] and w25_slope >= -0.01
-    short_ok = bool(wE[100]) and price < wE[100] and bool(wE[25] and wE[50]) and wE[25] < wE[50]
-    setups = [x for x in setups if (long_ok if x["side"] == "long" else short_ok)]
+    short_ok = bool(wE[100] and wE[25] and wE[50]) and price < wE[100] and wE[25] < wE[50]
 
-    # ---- confluence: other levels within 1 ATR of the entry
-    pivots = swing_levels(daily[-365:])
+    def targets_above(entry):
+        ups = sorted({round_level(v): v for v, _ in levels if v > entry * 1.03}.values())
+        if hi26 > entry * 1.03 and all(abs(hi26 - u) > a for u in ups):
+            ups = sorted(ups + [hi26])
+        return (ups[0] if ups else None), (ups[1] if len(ups) > 1 else None)
+
+    def targets_below(entry):
+        downs = sorted({round_level(v): v for v, _ in levels if v < entry * 0.97}.values(), reverse=True)
+        if lo26 < entry * 0.97 and all(abs(lo26 - u) > a for u in downs):
+            downs = sorted(downs + [lo26], reverse=True)
+        return (downs[0] if downs else None), (downs[1] if len(downs) > 1 else None)
+
+    candidates = []
+
+    # ---- A) weekly reclaim long: last completed week closed back above the weekly 50 or 100 EMA
+    if long_ok and len(closed_w) >= 2:
+        for n in (100, 50):
+            cur, prev = w[n][len(closed_w) - 1], w[n][len(closed_w) - 2]
+            if cur and prev and closed_w[-1]["c"] > cur and closed_w[-2]["c"] <= prev and price > wE[n] * (1 - AT_LEVEL):
+                entry = wE[n]
+                t1, t2 = targets_above(entry)
+                if t1:
+                    candidates.append(make_setup("long", coin, price, entry, entry - 1.5 * a, t1, t2,
+                        {"type": "reclaim_long",
+                         "why": f"Last week closed back above the weekly {n} EMA. Buy the retest; "
+                                f"wrong on a weekly close back below it."}, f"weekly {n} EMA"))
+                break
+
+    # ---- B) weekly support long: weekly uptrend, buy a pullback into the nearest weekly level below
+    if long_ok:
+        for v, name in supports:
+            t1, t2 = targets_above(v)
+            if not t1:
+                continue
+            s_ = make_setup("long", coin, price, v, v - 1.5 * a, t1, t2,
+                {"type": "support_long",
+                 "why": f"Weekly uptrend (price above the weekly 50 EMA). Buy a pullback into the {name}; "
+                        f"wrong on a weekly close below it."}, name)
+            if s_:
+                candidates.append(s_)
+                break
+
+    # ---- C) weekly rejection short: weekly downtrend, short a rally into the nearest weekly level above
+    if short_ok:
+        for v, name in resists:
+            if "EMA" in name:
+                n = int(name.split()[1])
+                if (slope(w[n], 4) or 0) > 0.01:   # don't fade a rising weekly EMA
+                    continue
+            t1, t2 = targets_below(v)
+            if not t1:
+                continue
+            s_ = make_setup("short", coin, price, v, v + 1.5 * a, t1, t2,
+                {"type": "rejection_short",
+                 "why": f"Weekly downtrend (below the weekly 100 EMA, 25 under 50). Short a rally into the {name}; "
+                        f"wrong on a weekly close above it."}, name)
+            if s_:
+                candidates.append(s_)
+                break
+
+    setups = [x for x in candidates if x and x["rr"] >= (MIN_RR_SHORT if x["side"] == "short" else MIN_RR)]
+
+    # ---- daily timing: did price already test the level and hold (confirmed) or break it (failed)?
+    kept = []
+    for x in setups:
+        L, last3, close = x["entry"], daily[-3:], daily[-1]["c"]
+        if x["side"] == "long":
+            touched = any(b["l"] <= L * 1.01 for b in last3)
+            if close < L - 0.5 * a:
+                continue                      # daily close well below the weekly level: retest failed
+            if touched and close > L:
+                x["status"] = "confirmed"
+                x["why"] += " Daily chart: tested the level and closed back above it."
+        else:
+            touched = any(b["h"] >= L * 0.99 for b in last3)
+            if close > L + 0.5 * a:
+                continue                      # daily close well above: breakout, not a rejection
+            if touched and close < L:
+                x["status"] = "confirmed"
+                x["why"] += " Daily chart: tagged the level and closed back below it."
+        kept.append(x)
+    setups = kept
+
+    # ---- confluence: other weekly levels and daily EMAs within 1 daily ATR of the entry
     for x in setups:
         near = []
+        for v, name in levels:
+            if name != x["level"] and abs(v - x["entry"]) <= a and name not in near:
+                near.append(name)
         for n in EMA_LENGTHS:
-            for v, name in ((dE[n], f"daily {n} EMA"), (wE[n], f"weekly {n} EMA")):
-                if v and name != x["level"] and abs(v - x["entry"]) <= a:
-                    near.append(name)
-        for v, kind in pivots:
-            if abs(v - x["entry"]) <= a:
-                near.append(f"swing {kind} {fmt(v)}")
-                break
+            if dE[n] and abs(dE[n] - x["entry"]) <= a:
+                near.append(f"daily {n} EMA")
         x["confluence"] = near
-        x["rating"] = "A" if len(near) >= 2 else ("B" if near else "C")
+        weekly_hits = sum(1 for nm in near if nm.startswith("weekly"))
+        x["rating"] = "A" if weekly_hits >= 1 and len(near) >= 2 else ("B" if near else "C")
 
     return info, setups
 
@@ -405,7 +405,8 @@ def fmt(x):
     return f"{x:.6f}"
 
 
-LABEL = {"pullback_long": "Pullback LONG", "rejection_short": "Rejection SHORT", "reclaim_long": "Reclaim LONG"}
+LABEL = {"support_long": "Weekly support LONG", "rejection_short": "Weekly rejection SHORT",
+         "reclaim_long": "Weekly reclaim LONG"}
 
 
 def telegram(text):
@@ -503,7 +504,7 @@ def main():
             errors.append(f"{row['coin']}: {e}")
         time.sleep(0.35)  # stay well inside Hyperliquid's rate limit
 
-    order = {"at level": 0, "approaching": 1}
+    order = {"confirmed": 0, "at level": 1, "approaching": 2}
     all_setups.sort(key=lambda s: (s.get("rating", "C"), order.get(s["status"], 2), -s["rr"]))
     # one setup per coin: keep the best (at level first, then highest R)
     best = {}
@@ -550,13 +551,17 @@ def main():
     legacy = bool(state) and "alerted" not in state  # older state file: mark current setups as already sent
     for s in all_setups:
         new_seen[s["id"]] = s["status"]
-        if legacy and s["status"] == "at level":
-            alerted[s["id"]] = now_ts
+        if legacy and s["status"] != "approaching":
+            alerted[s["id"] + ":" + s["status"]] = now_ts
             continue
-        if first_run or s["status"] != "at level" or s["id"] in alerted or s.get("rating") == "C":
+        if first_run or s["status"] == "approaching" or s.get("rating") == "C":
             continue
-        msgs.append(alert_text(s, price_of[s["coin"]], "price at entry"))
-        alerted[s["id"]] = now_ts
+        key = s["id"] + ":" + s["status"]
+        if key in alerted:
+            continue
+        head = "retest confirmed on the daily" if s["status"] == "confirmed" else "price at entry"
+        msgs.append(alert_text(s, price_of[s["coin"]], head))
+        alerted[key] = now_ts
     if first_run and all_setups:
         top = all_setups[:10]
         msgs.append("<b>Setup scanner is live.</b> Current setups:\n\n" +
