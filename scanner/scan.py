@@ -26,8 +26,8 @@ SETUPS_PATH = os.path.join(DATA_DIR, "setups.json")
 STATE_PATH = os.path.join(DATA_DIR, "state.json")
 
 EMA_LENGTHS = (25, 50, 100)
-MIN_RR = 2.0          # minimum reward:risk to target 1 for longs
-MIN_RR_SHORT = 1.8    # shorts target a nearer level, slightly lower bar
+MIN_RR = 2.5          # minimum reward:risk to target 1 for longs
+MIN_RR_SHORT = 2.0    # shorts target a nearer level, slightly lower bar
 MAX_DIST = 0.18       # ignore setups whose entry is more than 18% from price
 AT_LEVEL = 0.02       # within 2% of entry counts as "at level"
 SKIP = {"PURR"}       # spot-like / illiquid names to ignore
@@ -336,7 +336,41 @@ def analyse(coin_row, daily):
             setups.append(s)
             break
 
+    # ---- weekly agreement: only trade in the direction the weekly chart allows
+    w25_slope = slope(w[25], 4) or 0
+    long_ok = bool(wE[50]) and price > wE[50] and w25_slope >= -0.01
+    short_ok = bool(wE[100]) and price < wE[100] and bool(wE[25] and wE[50]) and wE[25] < wE[50]
+    setups = [x for x in setups if (long_ok if x["side"] == "long" else short_ok)]
+
+    # ---- confluence: other levels within 1 ATR of the entry
+    pivots = swing_levels(daily[-365:])
+    for x in setups:
+        near = []
+        for n in EMA_LENGTHS:
+            for v, name in ((dE[n], f"daily {n} EMA"), (wE[n], f"weekly {n} EMA")):
+                if v and name != x["level"] and abs(v - x["entry"]) <= a:
+                    near.append(name)
+        for v, kind in pivots:
+            if abs(v - x["entry"]) <= a:
+                near.append(f"swing {kind} {fmt(v)}")
+                break
+        x["confluence"] = near
+        x["rating"] = "A" if len(near) >= 2 else ("B" if near else "C")
+
     return info, setups
+
+
+def swing_levels(candles, k=5):
+    """Daily swing highs/lows (a bar higher/lower than the k bars either side), newest first."""
+    out = []
+    for i in range(len(candles) - k - 1, k - 1, -1):
+        h = candles[i]["h"]; l = candles[i]["l"]
+        win = candles[i - k:i + k + 1]
+        if h == max(c["h"] for c in win):
+            out.append((h, "high"))
+        if l == min(c["l"] for c in win):
+            out.append((l, "low"))
+    return out
 
 
 def trend_label(E):
@@ -392,7 +426,39 @@ def alert_text(s, price, reason_head):
         (f" · T2 {fmt(s['t2'])} ({s['rr2']}R)" if s.get("t2") else ""),
         s["why"],
     ]
+    if s.get("confluence"):
+        lines.append(f"Rating {s['rating']}: lines up with " + ", ".join(s["confluence"]))
+    if s.get("unlock"):
+        u = s["unlock"]
+        lines.append(f"⚠️ Unlock {u['date']}: {u.get('pct', '?')}% of supply "
+                     f"({'risk for this long' if s['side'] == 'long' else 'supports the short'})")
     return "\n".join(lines)
+
+
+# ---------------------------------------------------------------- unlocks
+
+INTEL_PATH = os.path.join(DATA_DIR, "intel.json")
+UNLOCK_DAYS = 14
+UNLOCK_MIN_PCT = 1.0
+
+
+def annotate_unlocks(setups):
+    """Mark setups with a large unlock (>= 1% of supply) in the next 14 days, from the daily intel file."""
+    try:
+        with open(INTEL_PATH) as f:
+            intel = json.load(f).get("coins", {})
+    except (OSError, ValueError):
+        return
+    today = datetime.now(timezone.utc).date()
+    for s in setups:
+        u = (intel.get(s["coin"]) or {}).get("unlock") or {}
+        try:
+            when = datetime.strptime(str(u.get("date_iso") or u.get("date", ""))[:10], "%Y-%m-%d").date()
+            pct = float(str(u.get("pct_supply", "")).rstrip("%").strip())
+        except ValueError:
+            continue
+        if 0 <= (when - today).days <= UNLOCK_DAYS and pct >= UNLOCK_MIN_PCT:
+            s["unlock"] = {"date": when.isoformat(), "pct": pct}
 
 
 # ---------------------------------------------------------------- main
@@ -414,12 +480,13 @@ def main():
         time.sleep(0.35)  # stay well inside Hyperliquid's rate limit
 
     order = {"at level": 0, "approaching": 1}
-    all_setups.sort(key=lambda s: (order.get(s["status"], 2), -s["rr"]))
+    all_setups.sort(key=lambda s: (s.get("rating", "C"), order.get(s["status"], 2), -s["rr"]))
     # one setup per coin: keep the best (at level first, then highest R)
     best = {}
     for s in all_setups:
         best.setdefault(s["coin"], s)
     all_setups = [s for s in all_setups if best[s["coin"]] is s]
+    annotate_unlocks(all_setups)
 
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     out = {
@@ -455,7 +522,7 @@ def main():
         if legacy and s["status"] == "at level":
             alerted[s["id"]] = now_ts
             continue
-        if first_run or s["status"] != "at level" or s["id"] in alerted:
+        if first_run or s["status"] != "at level" or s["id"] in alerted or s.get("rating") == "C":
             continue
         msgs.append(alert_text(s, price_of[s["coin"]], "price at entry"))
         alerted[s["id"]] = now_ts

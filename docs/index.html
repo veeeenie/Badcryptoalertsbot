@@ -60,6 +60,8 @@ h2{font:600 18px/1.2 var(--font-display);letter-spacing:.02em;margin:0;text-tran
 .pill.long{background:var(--long-bg);color:var(--long)} .pill.short{background:var(--short-bg);color:var(--short)}
 .pill.at{background:var(--warn-bg);color:var(--warn)} .pill.news{background:var(--chip);color:var(--accent)}
 .pill.unlock{background:var(--warn-bg);color:var(--warn)}
+.pill.rating{font-family:var(--font-mono);letter-spacing:0}
+.pill.rA{background:var(--ink);color:var(--bg)} .pill.rB{background:var(--chip);color:var(--ink)}
 .ladder{min-width:0}
 .bar{position:relative;height:28px;margin:4px 0 2px}
 .bar .track{position:absolute;left:0;right:0;top:13px;height:2px;background:var(--line)}
@@ -107,6 +109,7 @@ tr:last-child td{border-bottom:0}
       <h2>Setups</h2>
       <div class="filters" id="filters" role="group" aria-label="Filter setups">
         <button type="button" data-f="all" aria-pressed="true">All</button>
+        <button type="button" data-f="top" aria-pressed="false">Rated A/B</button>
         <button type="button" data-f="at" aria-pressed="false">At entry</button>
         <button type="button" data-f="pullback_long" aria-pressed="false">Pullback long</button>
         <button type="button" data-f="rejection_short" aria-pressed="false">Rejection short</button>
@@ -121,7 +124,7 @@ tr:last-child td{border-bottom:0}
     <div class="tablebox"><table id="coins"><thead></thead><tbody></tbody></table></div>
   </section>
 
-  <p class="foot">Scans the top 100 Hyperliquid perps by 24h volume every hour using daily candles; weekly candles start Monday 00:00 UTC. EMAs use Hyperliquid prices, so they can differ slightly from a Binance chart. News and unlocks are refreshed once a day. These are filters for charts worth checking, not trade instructions.</p>
+  <p class="foot">Scans the top 100 Hyperliquid perps by 24h volume every hour using daily candles; weekly candles start Monday 00:00 UTC. Setups only show when the weekly chart agrees with the trade and reward-to-risk is at least 2.5 for longs and 2 for shorts. Rating A means two or more other levels sit within one daily ATR of the entry, B means one, C means none; Telegram alerts only A and B setups when price reaches the entry. EMAs use Hyperliquid prices, so they can differ slightly from a Binance chart. News and unlocks are refreshed once a day. These are filters for charts worth checking, not trade instructions.</p>
 </div>
 
 <script>
@@ -166,14 +169,15 @@ function render(){
   const S=DATA.setups||[];
   const cnt=t=>S.filter(s=>s.type===t).length;
   document.getElementById("strip").innerHTML=[
-    ["At entry now",S.filter(s=>s.status==="at level").length,`of ${S.length} setups`],
+    ["Rated A/B",S.filter(s=>s.rating==="A"||s.rating==="B").length,`of ${S.length} setups`],
+    ["At entry now",S.filter(s=>s.status==="at level").length,""],
     ["Pullback long",cnt("pullback_long"),""],
     ["Rejection short",cnt("rejection_short"),""],
     ["Reclaim long",cnt("reclaim_long"),""],
   ].map(([k,v,sub])=>`<div class="stat"><div class="k">${k}</div><div class="v">${v} <small>${sub}</small></div></div>`).join("");
 
   document.querySelectorAll("#filters button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===FILTER));
-  const shown=S.filter(s=>FILTER==="all"||(FILTER==="at"?s.status==="at level":s.type===FILTER));
+  const shown=S.filter(s=>FILTER==="all"||(FILTER==="at"?s.status==="at level":FILTER==="top"?(s.rating==="A"||s.rating==="B"):s.type===FILTER));
   const price={}; (DATA.coins||[]).forEach(c=>price[c.coin]=c.price);
   const list=document.getElementById("list");
   list.innerHTML=shown.length? shown.map(s=>rowHTML(s,price[s.coin])).join("")
@@ -207,12 +211,14 @@ function rowHTML(s,p){
     <div class="coin"><b>${esc(s.coin)}</b><span class="meta">${fmt(p)}</span></div>
     <div class="ladder">${ladder(s,p)}</div>
     <div style="display:grid;gap:6px;justify-items:end">
-      <div class="pills"><span class="pill ${side}">${LABEL[s.type]}</span>${s.status==="at level"?'<span class="pill at">At entry</span>':""}${news.length?`<span class="pill news">${news.length} news</span>`:""}${un?'<span class="pill unlock">Unlock</span>':""}</div>
+      <div class="pills"><span class="pill rating r${s.rating||"C"}" title="Confluence rating">${s.rating||"C"}</span><span class="pill ${side}">${LABEL[s.type]}</span>${s.status==="at level"?'<span class="pill at">At entry</span>':""}${news.length?`<span class="pill news">${news.length} news</span>`:""}${(un||s.unlock)?'<span class="pill unlock">Unlock</span>':""}</div>
       <dl class="nums"><dt>R:R T1</dt><dd class="rr">${s.rr.toFixed(1)}R</dd>${s.rr2?`<dt>T2</dt><dd>${s.rr2.toFixed(1)}R</dd>`:""}<dt>Level</dt><dd>${esc(s.level)}</dd></dl>
     </div>
   </summary>
   <div class="detail">
     <p>${esc(s.why)}</p>
+    <p>${s.confluence&&s.confluence.length?`<b>Rating ${esc(s.rating)}:</b> entry lines up with ${s.confluence.map(esc).join(", ")}.`:`<b>Rating C:</b> no other level near the entry.`}</p>
+    ${s.unlock?`<p><b>Unlock in the next 14 days:</b> ${esc(s.unlock.date)}, ${esc(s.unlock.pct)}% of supply. ${s.side==="long"?"Supply hitting the market works against this long.":"Extra supply supports this short."}</p>`:""}
     ${intel.summary?`<p>${esc(intel.summary)}</p>`:""}
     ${un?`<p><b>Unlock:</b> ${esc(un.date||"")} ${un.amount?"· "+esc(un.amount):""} ${un.pct_supply?"("+esc(un.pct_supply)+" of supply)":""} ${un.note?"· "+esc(un.note):""} ${un.source?`<a href="${esc(un.source)}" target="_blank" rel="noopener">source</a>`:""}</p>`:""}
     ${news.length?`<ul>${news.slice(0,5).map(n=>`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a> <span class="muted">${esc(n.date||"")}</span></li>`).join("")}</ul>`:'<p class="muted">No news pulled for this coin yet.</p>'}
