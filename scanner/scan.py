@@ -473,6 +473,28 @@ def analyse(coin_row, daily):
         kept.append(x)
     setups = kept
 
+    # ---- stale confirmation: the rejection already ran to T1 (or price has left the zone by more than
+    #      one daily ATR). The resting limits are still the plan, but it now needs a fresh retest, so it is
+    #      shown as approaching rather than confirmed (no change to the rules, only the label and ranking).
+    for x in setups:
+        if x["status"] != "confirmed":
+            continue
+        lo, hi = x["zone"]
+        recent = daily[-6:]
+        if x["side"] == "short":
+            ran = min(b["l"] for b in recent) <= x["t1"]
+            away = price < lo - a
+        else:
+            ran = max(b["h"] for b in recent) >= x["t1"]
+            away = price > hi + a
+        if ran or away:
+            x["status"] = "approaching"
+            x["stale"] = True
+            x["why"] = x["why"].replace(" Daily chart: traded into the zone and the last daily candle closed red, back below it.", "") \
+                               .replace(" Daily chart: traded into the zone and the last daily candle closed green, back above it.", "")
+            x["why"] += (" The last rejection already ran to T1" if ran else " Price has already moved away from the zone") + \
+                        ": don't chase it; the resting limits only fill on a fresh retest of the zone."
+
     # ---- entry rule: price already in the zone -> enter only after a confirmed daily rejection
     for x in setups:
         if x["status"] == "at level":
