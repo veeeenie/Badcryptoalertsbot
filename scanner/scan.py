@@ -247,8 +247,10 @@ def analyse(coin_row, daily):
 
     dc = [d["c"] for d in daily]
     wc = [w["c"] for w in weekly]
-    d = {n: ema(dc, n) for n in EMA_LENGTHS}
-    w = {n: ema(wc, n) for n in EMA_LENGTHS}
+    # an EMA is only used once there is at least as much history as its length;
+    # a 100-week EMA on 40 weeks of data is meaningless
+    d = {n: ema(dc, n) if len(dc) >= n else [None] * len(dc) for n in EMA_LENGTHS}
+    w = {n: ema(wc, n) if len(wc) >= n else [None] * len(wc) for n in EMA_LENGTHS}
     a = atr(daily) or price * 0.05
 
     dE = {n: last(d[n]) for n in EMA_LENGTHS}
@@ -273,6 +275,10 @@ def analyse(coin_row, daily):
     }
 
     notes = []
+    missing = [n for n in EMA_LENGTHS if len(wc) < n]
+    if missing:
+        notes.append(f"Only {len(wc)} weeks of history: no weekly {'/'.join(map(str, missing))} EMA yet" +
+                     (" so no setups" if 50 in missing else " so no shorts (they need the weekly 100 EMA)"))
 
     # ---- weekly levels: the 25/50/100 EMAs plus weekly swing highs and lows (last 2 years),
     #      grouped into zones when they sit within one daily ATR of each other
@@ -281,8 +287,9 @@ def analyse(coin_row, daily):
     for v, kind in swing_levels(closed_w[-104:], k=2):
         raw.append((v, f"weekly swing {kind} {fmt(v)}"))
     zones = cluster_levels(raw, a)   # dicts: mid, lo, hi, label, names
-    ath = max(x["h"] for x in weekly)
-    atl = min(x["l"] for x in weekly)
+    # extremes use weekly closes, not wicks: a one-off wick high is not a realistic target
+    ath = max(x["c"] for x in weekly)
+    atl = min(x["c"] for x in weekly)
 
     # weekly trend: which direction the weekly chart allows
     w25_slope = slope(w[25], 4) or 0
@@ -292,6 +299,11 @@ def analyse(coin_row, daily):
         notes.append("No longs: price is below the weekly 50 EMA or the weekly 25 EMA is falling")
     if not short_ok:
         notes.append("No shorts: weekly trend is not down (needs price below the weekly 100 EMA and 25 under 50)")
+
+    # obstacles price must get through before a target: every weekly zone, the daily 25/50/100 EMAs
+    # and daily swing highs/lows of the last 6 months. Target 1 is the first one in the way.
+    obstacles = [o["mid"] for o in zones] + [v for v in dE.values() if v] + \
+                [v for v, _ in swing_levels(daily[-181:-1], k=5)]
 
     def build(kind, z, typ, why):
         """Plan a tranche trade at weekly zone z. Stop sits beyond the zone and beyond any weekly
@@ -305,9 +317,11 @@ def analyse(coin_row, daily):
                     stop = o["lo"] - 0.5 * a
                 else:
                     break
-            tgts = [o["mid"] for o in sorted(zones, key=lambda o: o["mid"]) if o["lo"] > hi + a]
-            if not tgts or tgts[-1] < ath * 0.98:
-                tgts.append(ath)
+            obst = sorted([v for v in obstacles if v > hi + 0.5 * a])
+            wk = sorted([o["mid"] for o in zones if o["lo"] > hi + 0.5 * a] + ([ath] if ath > hi + a else []))
+            t1 = obst[0] if obst else (wk[0] if wk else None)
+            t2 = next((v for v in wk if t1 is not None and v > t1 + a), None)
+            tgts = [v for v in (t1, t2) if v is not None]
         else:
             entries = [lo, z["mid"], hi]                      # scale in from the bottom of the zone up
             stop = hi + 0.5 * a
@@ -316,9 +330,12 @@ def analyse(coin_row, daily):
                     stop = o["hi"] + 0.5 * a
                 else:
                     break
-            tgts = [o["mid"] for o in sorted(zones, key=lambda o: -o["mid"]) if o["hi"] < lo - a]
-            if not tgts:
-                tgts.append(atl)
+            obst = sorted([v for v in obstacles if v < lo - 0.5 * a], reverse=True)
+            wk = sorted([o["mid"] for o in zones if o["hi"] < lo - 0.5 * a] + ([atl] if atl < lo - a else []),
+                        reverse=True)
+            t1 = obst[0] if obst else (wk[0] if wk else None)
+            t2 = next((v for v in wk if t1 is not None and v < t1 - a), None)
+            tgts = [v for v in (t1, t2) if v is not None]
         t1 = tgts[0] if tgts else None
         t2 = tgts[1] if len(tgts) > 1 else None
         s_ = make_setup(kind, coin, price, entries, stop, t1, t2, {"type": typ, "why": why}, z["label"], notes)
@@ -378,25 +395,28 @@ def analyse(coin_row, daily):
 
     setups = [x for x in candidates if x]
 
-    # ---- daily timing: did price trade into the zone and hold (confirmed) or break through it (failed)?
+    # ---- daily timing, judged on closed daily candles (today's candle is still forming):
+    #      confirmed = the zone was traded into in the last 3 closed days AND the last closed day
+    #      closed back out of the zone in the trade's direction, as a candle in that direction
     kept = []
+    closed_d = daily[-4:-1]
+    last_d = daily[-2]
     for x in setups:
         lo, hi = x["zone"]
-        last3, close = daily[-3:], daily[-1]["c"]
         if x["side"] == "long":
-            if close < lo - 0.5 * a:
-                notes.append(f"Long at {x['level']}: daily close broke below the zone, retest failed")
+            if last_d["c"] < lo - 0.5 * a or price < lo - 0.5 * a:
+                notes.append(f"Long at {x['level']}: price broke below the zone, retest failed")
                 continue
-            if any(b["l"] <= hi for b in last3) and close > hi:
+            if any(b["l"] <= hi for b in closed_d) and last_d["c"] > hi and last_d["c"] > last_d["o"] and price > hi:
                 x["status"] = "confirmed"
-                x["why"] += " Daily chart: traded into the zone and closed back above it."
+                x["why"] += " Daily chart: traded into the zone and the last daily candle closed green, back above it."
         else:
-            if close > hi + 0.5 * a:
-                notes.append(f"Short at {x['level']}: daily close broke above the zone, no rejection")
+            if last_d["c"] > hi + 0.5 * a or price > hi + 0.5 * a:
+                notes.append(f"Short at {x['level']}: price broke above the zone, no rejection")
                 continue
-            if any(b["h"] >= lo for b in last3) and close < lo:
+            if any(b["h"] >= lo for b in closed_d) and last_d["c"] < lo and last_d["c"] < last_d["o"] and price < lo:
                 x["status"] = "confirmed"
-                x["why"] += " Daily chart: traded into the zone and closed back below it."
+                x["why"] += " Daily chart: traded into the zone and the last daily candle closed red, back below it."
         kept.append(x)
     setups = kept
 
@@ -409,8 +429,9 @@ def analyse(coin_row, daily):
         strong_down = chg14 <= -STRONG_MOVE_PCT or stretch <= -STRONG_STRETCH_PCT
         if (x["side"] == "short" and strong_up) or (x["side"] == "long" and strong_down):
             x["needs_confirmation"] = True
-            x["why"] += (f" Strong move ({chg14:+.0f}% in 14 days, {stretch:+.0f}% from the daily 25 EMA): "
-                         f"wait for a confirmed daily rejection before entering.")
+            x["why"] += (f" Strong move ({chg14:+.0f}% in 14 days, {stretch:+.0f}% from the daily 25 EMA)" +
+                         (": the confirmation above is what rule 5 requires." if x["status"] == "confirmed"
+                          else ": wait for a confirmed daily rejection before entering."))
 
     # ---- confluence: other weekly levels in the same zone, plus daily EMAs within the zone (+/- 1 ATR)
     by_label = {z["label"]: z for z in zones}
