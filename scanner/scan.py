@@ -181,7 +181,7 @@ def round_level(x):
 STRONG_MOVE_PCT = 25.0     # a 14-day move this big counts as a strong move (rule 6)
 STRONG_STRETCH_PCT = 15.0  # ...as does price this far from the daily 25 EMA
 TOP_K = int(os.getenv("TOP_K", "8"))   # how many setups count as "top" (dashboard default, Telegram)
-ALERTS_PAUSED = os.getenv("ALERTS_PAUSED", "1") == "1"   # paused until the backtest validates the rules
+ALERTS_PAUSED = os.getenv("ALERTS_PAUSED", "0") == "1"   # backtest validated 17 Oct 2026; set ALERTS_PAUSED=1 to pause
 MAX_ALERTS = 3                          # most individual alerts per scan; the rest go in one summary line
 SCORE_RATING = {"A": 6, "B": 3, "C": 0}
 SCORE_STATUS = {"confirmed": 4, "at level": 2, "approaching": 0}
