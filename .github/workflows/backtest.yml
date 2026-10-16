@@ -1,0 +1,40 @@
+name: Backtest
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "17 3 * * 0"   # Sundays 03:17 UTC
+
+permissions:
+  contents: write
+
+concurrency:
+  group: setup-scan
+  cancel-in-progress: false
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: pip install -r scanner/requirements.txt
+
+      - name: Backtest
+        run: python scanner/backtest.py
+
+      - name: Save results
+        run: |
+          git config user.name "setup-scanner"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/data/backtest.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Backtest $(date -u +'%Y-%m-%d %H:%M') UTC"
+          git pull --rebase --autostash
+          git push

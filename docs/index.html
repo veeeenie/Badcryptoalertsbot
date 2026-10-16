@@ -134,6 +134,12 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
     <div class="list" id="list"><div class="empty">Waiting for the first scan. Setups appear here once the hourly scanner has run.</div></div>
   </section>
 
+  <section style="display:grid;gap:10px" id="btsec" hidden>
+    <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>Backtest</h2><span class="muted" style="font-size:13px" id="btmeta"></span></div>
+    <div class="tablebox"><table id="bt"><thead><tr><th scope="col">Group</th><th scope="col">Trades</th><th scope="col">Win %</th><th scope="col">Avg R</th><th scope="col">Total R</th><th scope="col">Avg win</th><th scope="col">Avg loss</th><th scope="col">Max DD (R)</th><th scope="col">Stopped before T1</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot" id="btcave"></p>
+  </section>
+
   <section style="display:grid;gap:10px">
     <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>All coins</h2><span class="muted" style="font-size:13px">Tap a coin to see why it does or doesn't have a setup.</span></div>
     <div class="tablebox"><table id="coins"><thead></thead><tbody></tbody></table></div>
@@ -299,7 +305,21 @@ document.getElementById("coins").addEventListener("click",e=>{
 });
 const riskEl=document.getElementById("risk"); riskEl.value=RISK;
 riskEl.addEventListener("input",()=>{const v=parseFloat(riskEl.value); if(v>0){RISK=v; try{localStorage.setItem("sd-risk",v);}catch(e){} render();}});
-load(); setInterval(load,10*60*1000);
+async function loadBT(){
+  try{
+    const b=await fetch("data/backtest.json?t="+Date.now()).then(r=>r.ok?r.json():null);
+    if(!b||!b.summary) return;
+    const order=["all","rated A/B","side:long","side:short","type:support_long","type:reclaim_long","type:rejection_short","rating:A","rating:B","rating:C","status:confirmed","status:at level","status:approaching"];
+    const name={"all":"All trades","rated A/B":"Rated A/B","side:long":"Longs","side:short":"Shorts","type:support_long":"Weekly support long","type:reclaim_long":"Weekly reclaim long","type:rejection_short":"Weekly rejection short","rating:A":"Rating A","rating:B":"Rating B","rating:C":"Rating C","status:confirmed":"Confirmed at signal","status:at level":"At entry at signal","status:approaching":"Approaching at signal"};
+    const rows=order.filter(k=>b.summary[k]).map(k=>{const v=b.summary[k];const cls=v.avg_r>0?"up":"down";
+      return `<tr><td>${name[k]}</td><td>${v.trades}</td><td>${v.win_rate}%</td><td class="${cls}">${v.avg_r>0?"+":""}${v.avg_r.toFixed(2)}</td><td class="${cls}">${v.total_r}</td><td>${v.avg_win_r}</td><td>${v.avg_loss_r}</td><td>${v.max_drawdown_r}</td><td>${v.stopped_before_t1_pct}%</td></tr>`;}).join("");
+    document.querySelector("#bt tbody").innerHTML=rows;
+    document.getElementById("btmeta").textContent=`Run ${ago(b.generated_at)} · same rules as the live scanner, played forward on Hyperliquid daily history`;
+    document.getElementById("btcave").textContent="Caveats: "+(b.caveats||[]).join(" ");
+    document.getElementById("btsec").hidden=false;
+  }catch(e){}
+}
+load(); loadBT(); setInterval(load,10*60*1000);
 </script>
 </body>
 </html>
