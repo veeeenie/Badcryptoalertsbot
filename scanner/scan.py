@@ -81,7 +81,7 @@ def universe():
     return rows[:TOP_N]
 
 
-def daily_candles(coin, days=900):
+def daily_candles(coin, days=2500):
     end = int(time.time() * 1000)
     start = end - days * 86_400_000
     raw = hl({"type": "candleSnapshot",
@@ -118,15 +118,15 @@ def weekly_from_daily(daily):
 # ---------------------------------------------------------------- indicators
 
 def ema(values, n):
-    """EMA seeded with the SMA of the first n values (matches TradingView closely on long history).
-    Returns a list aligned with values; None until enough data."""
+    """TradingView-style EMA (ta.ema): seeded with the first close, so it has a value from the
+    first bar, like the chart. Returns a list aligned with values."""
     out = [None] * len(values)
-    if len(values) < n:
+    if not values:
         return out
     k = 2 / (n + 1)
-    e = sum(values[:n]) / n
-    out[n - 1] = e
-    for i in range(n, len(values)):
+    e = values[0]
+    out[0] = e
+    for i in range(1, len(values)):
         e = values[i] * k + e * (1 - k)
         out[i] = e
     return out
@@ -193,7 +193,7 @@ def make_setup(kind, coin, price, entry, stop, t1, t2, reason, level_name):
     if t2 is not None:
         rr2 = ((entry - t2) if kind == "short" else (t2 - entry)) / risk
     return {
-        "id": f"{coin}:{reason['type']}:{round_level(entry)}",
+        "id": f"{coin}:{reason['type']}:{level_name}",
         "coin": coin,
         "type": reason["type"],
         "side": kind,
@@ -415,6 +415,11 @@ def main():
 
     order = {"at level": 0, "approaching": 1}
     all_setups.sort(key=lambda s: (order.get(s["status"], 2), -s["rr"]))
+    # one setup per coin: keep the best (at level first, then highest R)
+    best = {}
+    for s in all_setups:
+        best.setdefault(s["coin"], s)
+    all_setups = [s for s in all_setups if best[s["coin"]] is s]
 
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     out = {
@@ -430,26 +435,30 @@ def main():
     with open(SETUPS_PATH, "w") as f:
         json.dump(out, f, separators=(",", ":"))
 
-    # ---- alerts: new setups, and setups that just moved to "at level"
+    # ---- alerts: only when a setup reaches its entry, at most once a day per setup
     try:
         with open(STATE_PATH) as f:
             state = json.load(f)
     except (OSError, ValueError):
         state = {}
     seen = state.get("seen", {})
-    first_run = not seen
+    alerted = state.get("alerted", {})
+    first_run = not seen and not alerted
     price_of = {c["coin"]: c["price"] for c in all_info}
     msgs = []
     new_seen = {}
+    now_ts = time.time()
+    alerted = {k: v for k, v in alerted.items() if now_ts - v < 86400}
+    legacy = bool(state) and "alerted" not in state  # older state file: mark current setups as already sent
     for s in all_setups:
-        prev = seen.get(s["id"])
         new_seen[s["id"]] = s["status"]
-        if first_run:
+        if legacy and s["status"] == "at level":
+            alerted[s["id"]] = now_ts
             continue
-        if prev is None:
-            msgs.append(alert_text(s, price_of[s["coin"]], "new setup"))
-        elif prev != "at level" and s["status"] == "at level":
-            msgs.append(alert_text(s, price_of[s["coin"]], "price at entry"))
+        if first_run or s["status"] != "at level" or s["id"] in alerted:
+            continue
+        msgs.append(alert_text(s, price_of[s["coin"]], "price at entry"))
+        alerted[s["id"]] = now_ts
     if first_run and all_setups:
         top = all_setups[:10]
         msgs.append("<b>Setup scanner is live.</b> Current setups:\n\n" +
@@ -459,7 +468,7 @@ def main():
         telegram(m)
         time.sleep(1)
     with open(STATE_PATH, "w") as f:
-        json.dump({"seen": new_seen, "updated": now}, f)
+        json.dump({"seen": new_seen, "alerted": alerted, "updated": now}, f)
 
     print(f"setups: {len(all_setups)}, alerts: {len(msgs)}, errors: {len(errors)}, "
           f"time: {out['runtime_s']}s")
