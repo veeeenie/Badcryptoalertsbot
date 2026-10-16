@@ -3,7 +3,7 @@ name: Setup scan
 on:
   push:
     branches: [main]
-    paths: ["scanner/journal.py"]
+    paths: ["scanner/journal.py", "scanner/scan.py"]
   schedule:
     - cron: "7 * * * *"   # every hour at :07 UTC
   workflow_dispatch: {}    # "Run workflow" button for a manual scan
