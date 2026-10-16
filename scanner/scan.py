@@ -30,6 +30,8 @@ MIN_RR = 2.5          # minimum reward:risk to target 1 for longs
 MIN_RR_SHORT = 2.0    # shorts target a nearer level, slightly lower bar
 MAX_DIST = 0.18       # ignore setups whose entry is more than 18% from price
 AT_LEVEL = 0.02       # within 2% of entry counts as "at level"
+MAX_STOP_PCT = 15.0   # skip setups whose stop is more than 15% from entry (too volatile to size sensibly)
+RISK_USD = float(os.getenv("RISK_USD", "2"))  # dollar risk per trade used for the position-size hint
 SKIP = {"PURR"}       # spot-like / illiquid names to ignore
 
 session = requests.Session()
@@ -189,6 +191,9 @@ def make_setup(kind, coin, price, entry, stop, t1, t2, reason, level_name):
         status = "at level" if price <= entry * (1 + AT_LEVEL) and price > stop else "approaching"
         if price <= stop:
             return None
+    risk_pct = risk / entry * 100
+    if risk_pct > MAX_STOP_PCT:
+        return None
     rr2 = None
     if t2 is not None:
         rr2 = ((entry - t2) if kind == "short" else (t2 - entry)) / risk
@@ -206,6 +211,8 @@ def make_setup(kind, coin, price, entry, stop, t1, t2, reason, level_name):
         "rr": round(rr, 2),
         "rr2": round(rr2, 2) if rr2 is not None else None,
         "dist_pct": round(dist * 100, 2),
+        "risk_pct": round(risk_pct, 2),
+        "size_usd": round(RISK_USD / (risk_pct / 100), 2),
         "why": reason["why"],
     }
 
@@ -426,6 +433,10 @@ def alert_text(s, price, reason_head):
         (f" · T2 {fmt(s['t2'])} ({s['rr2']}R)" if s.get("t2") else ""),
         s["why"],
     ]
+    lines.append(f"Stop is {s['risk_pct']:.1f}% away. Size for ${RISK_USD:g} risk: ${s['size_usd']:,.0f} position "
+                 f"(any leverage; leverage only changes the margin you put up)")
+    if s.get("trending"):
+        lines.append("🔥 Trending on CoinGecko searches right now")
     if s.get("confluence"):
         lines.append(f"Rating {s['rating']}: lines up with " + ", ".join(s["confluence"]))
     if s.get("unlock"):
@@ -461,6 +472,19 @@ def annotate_unlocks(setups):
             s["unlock"] = {"date": when.isoformat(), "pct": pct}
 
 
+# ---------------------------------------------------------------- attention
+
+def coingecko_trending():
+    """Symbols of the coins most searched on CoinGecko in the last 24h (free, no key)."""
+    try:
+        r = requests.get("https://api.coingecko.com/api/v3/search/trending", timeout=20)
+        r.raise_for_status()
+        return {c["item"]["symbol"].upper() for c in r.json().get("coins", [])}
+    except Exception as e:
+        print("trending error", e, file=sys.stderr)
+        return set()
+
+
 # ---------------------------------------------------------------- main
 
 def main():
@@ -487,11 +511,18 @@ def main():
         best.setdefault(s["coin"], s)
     all_setups = [s for s in all_setups if best[s["coin"]] is s]
     annotate_unlocks(all_setups)
+    trending = coingecko_trending()
+    for s in all_setups:
+        if s["coin"].lstrip("k").upper() in trending:
+            s["trending"] = True
+    for c in all_info:
+        c["trending"] = c["coin"].lstrip("k").upper() in trending
 
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     out = {
         "generated_at": now,
         "source": "Hyperliquid perps, daily candles; weekly built Mon 00:00 UTC",
+        "risk_usd": RISK_USD,
         "universe_size": len(all_info),
         "setups": all_setups,
         "coins": sorted(all_info, key=lambda r: -r["vol24h"]),

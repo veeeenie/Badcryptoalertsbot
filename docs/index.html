@@ -60,6 +60,9 @@ h2{font:600 18px/1.2 var(--font-display);letter-spacing:.02em;margin:0;text-tran
 .pill.long{background:var(--long-bg);color:var(--long)} .pill.short{background:var(--short-bg);color:var(--short)}
 .pill.at{background:var(--warn-bg);color:var(--warn)} .pill.news{background:var(--chip);color:var(--accent)}
 .pill.unlock{background:var(--warn-bg);color:var(--warn)}
+.pill.hot{background:var(--short-bg);color:var(--short)}
+.riskbox{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.riskbox input{width:72px;font:500 13px var(--font-mono);padding:4px 6px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink)}
 .pill.rating{font-family:var(--font-mono);letter-spacing:0}
 .pill.rA{background:var(--ink);color:var(--bg)} .pill.rB{background:var(--chip);color:var(--ink)}
 .ladder{min-width:0}
@@ -106,7 +109,8 @@ tr:last-child td{border-bottom:0}
 
   <section style="display:grid;gap:10px">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center">
-      <h2>Setups</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center"><h2>Setups</h2>
+      <label class="riskbox" for="risk">Risk per trade $<input id="risk" type="number" min="0.5" step="0.5" inputmode="decimal"></label></div>
       <div class="filters" id="filters" role="group" aria-label="Filter setups">
         <button type="button" data-f="all" aria-pressed="true">All</button>
         <button type="button" data-f="top" aria-pressed="false">Rated A/B</button>
@@ -124,12 +128,13 @@ tr:last-child td{border-bottom:0}
     <div class="tablebox"><table id="coins"><thead></thead><tbody></tbody></table></div>
   </section>
 
-  <p class="foot">Scans the top 100 Hyperliquid perps by 24h volume every hour using daily candles; weekly candles start Monday 00:00 UTC. Setups only show when the weekly chart agrees with the trade and reward-to-risk is at least 2.5 for longs and 2 for shorts. Rating A means two or more other levels sit within one daily ATR of the entry, B means one, C means none; Telegram alerts only A and B setups when price reaches the entry. EMAs use Hyperliquid prices, so they can differ slightly from a Binance chart. News and unlocks are refreshed once a day. These are filters for charts worth checking, not trade instructions.</p>
+  <p class="foot">Scans the top 100 Hyperliquid perps by 24h volume every hour using daily candles; weekly candles start Monday 00:00 UTC. Setups only show when the weekly chart agrees with the trade and reward-to-risk is at least 2.5 for longs and 2 for shorts. Rating A means two or more other levels sit within one daily ATR of the entry, B means one, C means none; Telegram alerts only A and B setups when price reaches the entry. Setups with a stop more than 15% from entry are skipped. Trending means the coin is among CoinGecko's most-searched coins right now. EMAs use Hyperliquid prices, so they can differ slightly from a Binance chart. News and unlocks are refreshed once a day. These are filters for charts worth checking, not trade instructions.</p>
 </div>
 
 <script>
 const LABEL={pullback_long:"Pullback long",rejection_short:"Rejection short",reclaim_long:"Reclaim long"};
-let DATA=null, INTEL={coins:{}}, FILTER="all", SORT={key:"vol24h",dir:-1};
+let DATA=null, INTEL={coins:{}}, FILTER="all", SORT={key:"vol24h",dir:-1}, RISK=2;
+try{const r=parseFloat(localStorage.getItem("sd-risk")); if(r>0) RISK=r;}catch(e){}
 try{const f=localStorage.getItem("sd-filter"); if(f) FILTER=f;}catch(e){}
 
 function fmt(x){
@@ -211,12 +216,13 @@ function rowHTML(s,p){
     <div class="coin"><b>${esc(s.coin)}</b><span class="meta">${fmt(p)}</span></div>
     <div class="ladder">${ladder(s,p)}</div>
     <div style="display:grid;gap:6px;justify-items:end">
-      <div class="pills"><span class="pill rating r${s.rating||"C"}" title="Confluence rating">${s.rating||"C"}</span><span class="pill ${side}">${LABEL[s.type]}</span>${s.status==="at level"?'<span class="pill at">At entry</span>':""}${news.length?`<span class="pill news">${news.length} news</span>`:""}${(un||s.unlock)?'<span class="pill unlock">Unlock</span>':""}</div>
-      <dl class="nums"><dt>R:R T1</dt><dd class="rr">${s.rr.toFixed(1)}R</dd>${s.rr2?`<dt>T2</dt><dd>${s.rr2.toFixed(1)}R</dd>`:""}<dt>Level</dt><dd>${esc(s.level)}</dd></dl>
+      <div class="pills"><span class="pill rating r${s.rating||"C"}" title="Confluence rating">${s.rating||"C"}</span><span class="pill ${side}">${LABEL[s.type]}</span>${s.status==="at level"?'<span class="pill at">At entry</span>':""}${news.length?`<span class="pill news">${news.length} news</span>`:""}${(un||s.unlock)?'<span class="pill unlock">Unlock</span>':""}${s.trending?'<span class="pill hot">Trending</span>':""}</div>
+      <dl class="nums"><dt>R:R T1</dt><dd class="rr">${s.rr.toFixed(1)}R</dd><dt>Stop</dt><dd>${s.risk_pct!=null?s.risk_pct.toFixed(1)+"%":"–"}</dd><dt>Size</dt><dd>${s.risk_pct?"$"+(RISK/(s.risk_pct/100)).toFixed(0):"–"}</dd>${s.rr2?`<dt>T2</dt><dd>${s.rr2.toFixed(1)}R</dd>`:""}<dt>Level</dt><dd>${esc(s.level)}</dd></dl>
     </div>
   </summary>
   <div class="detail">
     <p>${esc(s.why)}</p>
+    ${s.risk_pct?`<p><b>Position size:</b> risking $${RISK} with a stop ${s.risk_pct.toFixed(1)}% away means a $${(RISK/(s.risk_pct/100)).toFixed(0)} position. Leverage only changes how much margin you put up, not what you lose at the stop.</p>`:""}
     <p>${s.confluence&&s.confluence.length?`<b>Rating ${esc(s.rating)}:</b> entry lines up with ${s.confluence.map(esc).join(", ")}.`:`<b>Rating C:</b> no other level near the entry.`}</p>
     ${s.unlock?`<p><b>Unlock in the next 14 days:</b> ${esc(s.unlock.date)}, ${esc(s.unlock.pct)}% of supply. ${s.side==="long"?"Supply hitting the market works against this long.":"Extra supply supports this short."}</p>`:""}
     ${intel.summary?`<p>${esc(intel.summary)}</p>`:""}
@@ -263,6 +269,8 @@ document.getElementById("coins").addEventListener("click",e=>{
   const k=b.dataset.k; SORT= SORT.key===k? {key:k,dir:-SORT.dir} : {key:k,dir:-1};
   renderCoins();
 });
+const riskEl=document.getElementById("risk"); riskEl.value=RISK;
+riskEl.addEventListener("input",()=>{const v=parseFloat(riskEl.value); if(v>0){RISK=v; try{localStorage.setItem("sd-risk",v);}catch(e){} render();}});
 load(); setInterval(load,10*60*1000);
 </script>
 </body>
