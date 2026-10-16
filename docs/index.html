@@ -111,7 +111,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 <div class="wrap">
   <header>
     <h1>Setup Desk</h1>
-    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline"><a class="rulelink" href="#backtest">Backtest</a><a class="rulelink" href="rules.html">Rule book</a><div class="meta" id="meta">Loading scan…</div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline"><a class="rulelink" href="#journal">Journal</a><a class="rulelink" href="#backtest">Backtest</a><a class="rulelink" href="rules.html">Rule book</a><div class="meta" id="meta">Loading scan…</div></div>
   </header>
 
   <div class="banner" id="banner" hidden>Testing mode: the rules are being checked against two years of history. Telegram alerts are paused and these setups are not yet validated.</div>
@@ -132,6 +132,14 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
       </div>
     </div>
     <div class="list" id="list"><div class="empty">Waiting for the first scan. Setups appear here once the hourly scanner has run.</div></div>
+  </section>
+
+  <section style="display:grid;gap:10px" id="jsec" hidden>
+    <a id="journal"></a>
+    <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>Journal</h2><span class="muted" style="font-size:13px" id="jmeta"></span></div>
+    <div class="strip" id="jstrip"></div>
+    <div class="tablebox"><table id="jt"><thead><tr><th scope="col">Trade</th><th scope="col">Opened</th><th scope="col">Entries</th><th scope="col">Avg entry</th><th scope="col">Stop</th><th scope="col">Planned risk</th><th scope="col">Avg exit</th><th scope="col">Net $</th><th scope="col">R</th><th scope="col">Rules</th></tr></thead><tbody></tbody></table></div>
+    <p class="foot">From your trade.xyz wallet's public fills and orders, refreshed hourly. Planned stop = the stop attached to your entry orders. R = net P&amp;L after fees ÷ planned risk. Rule checks: stop and TP placed with the entry, at most 3 entries of at least $10, planned reward above 1.5R, stop never widened, risk within your $2 plan.</p>
   </section>
 
   <section style="display:grid;gap:10px" id="btsec" hidden>
@@ -328,7 +336,33 @@ async function loadBT(){
     document.getElementById("btsec").hidden=false;
   }catch(e){}
 }
-load(); loadBT(); setInterval(load,10*60*1000);
+const CHECK_NAMES={stop:"stop set",stop_at_entry:"stop with entry",tp_at_entry:"TP with entry",max_3_entries:"≤3 entries",min_10_usd:"orders ≥ $10",rr_1_5:"planned > 1.5R",stop_not_widened:"stop not widened",risk_within_plan:"risk ≤ plan"};
+async function loadJournal(){
+  try{
+    const j=await fetch("data/journal.json?t="+Date.now()).then(r=>r.ok?r.json():null);
+    if(!j||!j.trades) return;
+    const s=j.summary;
+    document.getElementById("jmeta").textContent=`Since ${j.since} · updated ${ago(j.generated_at)}`;
+    document.getElementById("jstrip").innerHTML=[
+      ["Closed trades",s.trades,s.open?`+ ${s.open} open`:""],
+      ["Win rate",s.trades?Math.round(100*s.wins/s.trades)+"%":"–",`${s.wins} of ${s.trades}`],
+      ["Net P&L",(s.net_usd>=0?"+$":"−$")+Math.abs(s.net_usd).toFixed(2),`fees $${s.fees_usd}`],
+      ["Total R",s.total_r==null?"–":(s.total_r>0?"+":"")+s.total_r+"R",s.avg_r==null?"":`avg ${s.avg_r}R`],
+      ["Followed every rule",s.rules_ok_pct==null?"–":s.rules_ok_pct+"%","of closed trades"],
+    ].map(([k,v,sub])=>`<div class="stat"><div class="k">${k}</div><div class="v">${v} <small>${sub}</small></div></div>`).join("");
+    const rows=[...j.trades].reverse().map(t=>{
+      const fails=Object.entries(t.checks).filter(([,ok])=>!ok).map(([k])=>CHECK_NAMES[k]||k);
+      const cls=t.net>0?"up":t.net<0?"down":"";
+      return `<tr><td><b>${esc(t.coin)}</b> <span class="pill ${t.side}">${t.side}</span>${t.closed?"":' <span class="pill at">open</span>'}</td>
+        <td>${t.opened.slice(5,10)}</td><td>${t.entries}</td><td>${fmt(t.avg_entry)}</td><td>${t.stop?fmt(t.stop):"–"}</td>
+        <td>${t.risk_usd!=null?"$"+t.risk_usd.toFixed(2):"–"}</td><td>${t.avg_exit?fmt(t.avg_exit):"–"}</td>
+        <td class="${cls}">${t.closed?(t.net>=0?"+":"")+t.net.toFixed(2):"–"}</td><td class="${cls}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td>
+        <td style="white-space:normal;text-align:left;min-width:180px">${fails.length?`<span class="down">${fails.map(esc).join(", ")}</span>`:'<span class="up">all followed</span>'}</td></tr>`;}).join("");
+    document.querySelector("#jt tbody").innerHTML=rows;
+    document.getElementById("jsec").hidden=false;
+  }catch(e){}
+}
+load(); loadBT(); loadJournal(); setInterval(()=>{load();loadJournal();},10*60*1000);
 </script>
 </body>
 </html>
