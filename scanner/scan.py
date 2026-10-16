@@ -170,30 +170,35 @@ def round_level(x):
     return round(x, digits)
 
 
-def make_setup(kind, coin, price, entry, stop, t1, t2, reason, level_name):
-    if kind == "short":
-        risk = stop - entry
-        reward = entry - t1
-    else:
-        risk = entry - stop
-        reward = t1 - entry
-    if risk <= 0 or reward <= 0:
+def make_setup(kind, coin, price, entry, stop, t1, t2, reason, level_name, notes=None):
+    """Build a setup dict, or return None and append the reason to notes."""
+    tag = "Short" if kind == "short" else "Long"
+    def no(msg):
+        if notes is not None:
+            notes.append(f"{tag} at {level_name} ({fmt(entry)}): {msg}")
         return None
+    if t1 is None:
+        return no("no weekly target zone beyond the entry")
+    risk = (stop - entry) if kind == "short" else (entry - stop)
+    reward = (entry - t1) if kind == "short" else (t1 - entry)
+    if risk <= 0 or reward <= 0:
+        return no("no room to a target")
     rr = reward / risk
     dist = (entry - price) / price  # + means entry is above price
     if abs(dist) > MAX_DIST:
-        return None
+        return no(f"entry {abs(dist) * 100:.0f}% from price (limit {MAX_DIST * 100:.0f}%)")
+    if (kind == "short" and price >= stop) or (kind == "long" and price <= stop):
+        return no("price is already past the stop")
     if kind == "short":
-        status = "at level" if price >= entry * (1 - AT_LEVEL) and price < stop else "approaching"
-        if price >= stop:
-            return None
+        status = "at level" if price >= entry * (1 - AT_LEVEL) else "approaching"
     else:
-        status = "at level" if price <= entry * (1 + AT_LEVEL) and price > stop else "approaching"
-        if price <= stop:
-            return None
+        status = "at level" if price <= entry * (1 + AT_LEVEL) else "approaching"
     risk_pct = risk / entry * 100
     if risk_pct > MAX_STOP_PCT:
-        return None
+        return no(f"stop {risk_pct:.0f}% away is too wide (limit {MAX_STOP_PCT:.0f}%)")
+    need = MIN_RR_SHORT if kind == "short" else MIN_RR
+    if rr < need:
+        return no(f"first target {fmt(t1)} gives only {rr:.1f}R (need {need:g}R)")
     rr2 = None
     if t2 is not None:
         rr2 = ((entry - t2) if kind == "short" else (t2 - entry)) / risk
@@ -253,13 +258,17 @@ def analyse(coin_row, daily):
         "w_trend": trend_label(wE),
     }
 
-    # ---- weekly levels: the 25/50/100 EMAs plus weekly swing highs and lows (last 2 years)
+    notes = []
+
+    # ---- weekly levels: the 25/50/100 EMAs plus weekly swing highs and lows (last 2 years),
+    #      grouped into zones when they sit within one daily ATR of each other
     closed_w = weekly[:-1]
-    levels = [(wE[n], f"weekly {n} EMA") for n in EMA_LENGTHS if wE[n]]
+    raw = [(wE[n], f"weekly {n} EMA") for n in EMA_LENGTHS if wE[n]]
     for v, kind in swing_levels(closed_w[-104:], k=2):
-        levels.append((v, f"weekly swing {kind} {fmt(v)}"))
-    supports = sorted([l for l in levels if l[0] < price * (1 + AT_LEVEL)], key=lambda l: -l[0])
-    resists = sorted([l for l in levels if l[0] > price * (1 - AT_LEVEL)], key=lambda l: l[0])
+        raw.append((v, f"weekly swing {kind} {fmt(v)}"))
+    zones = cluster_levels(raw, a)   # [(value, label, [member names])]
+    supports = sorted([z for z in zones if z[0] < price * (1 + AT_LEVEL)], key=lambda z: -z[0])
+    resists = sorted([z for z in zones if z[0] > price * (1 - AT_LEVEL)], key=lambda z: z[0])
     hi26 = max(x["h"] for x in weekly[-26:])
     lo26 = min(x["l"] for x in weekly[-26:])
 
@@ -267,17 +276,23 @@ def analyse(coin_row, daily):
     w25_slope = slope(w[25], 4) or 0
     long_ok = bool(wE[50]) and price > wE[50] and w25_slope >= -0.01
     short_ok = bool(wE[100] and wE[25] and wE[50]) and price < wE[100] and wE[25] < wE[50]
+    if not long_ok:
+        notes.append("No longs: price is below the weekly 50 EMA or the weekly 25 EMA is falling")
+    if not short_ok:
+        notes.append("No shorts: weekly trend is not down (needs price below the weekly 100 EMA and 25 under 50)")
 
     def targets_above(entry):
-        ups = sorted({round_level(v): v for v, _ in levels if v > entry * 1.03}.values())
-        if hi26 > entry * 1.03 and all(abs(hi26 - u) > a for u in ups):
-            ups = sorted(ups + [hi26])
+        ups = [z[0] for z in zones if z[0] > entry + a]
+        if hi26 > entry + a and all(abs(hi26 - u) > a for u in ups):
+            ups.append(hi26)
+        ups.sort()
         return (ups[0] if ups else None), (ups[1] if len(ups) > 1 else None)
 
     def targets_below(entry):
-        downs = sorted({round_level(v): v for v, _ in levels if v < entry * 0.97}.values(), reverse=True)
-        if lo26 < entry * 0.97 and all(abs(lo26 - u) > a for u in downs):
-            downs = sorted(downs + [lo26], reverse=True)
+        downs = [z[0] for z in zones if z[0] < entry - a]
+        if lo26 < entry - a and all(abs(lo26 - u) > a for u in downs):
+            downs.append(lo26)
+        downs.sort(reverse=True)
         return (downs[0] if downs else None), (downs[1] if len(downs) > 1 else None)
 
     candidates = []
@@ -289,46 +304,44 @@ def analyse(coin_row, daily):
             if cur and prev and closed_w[-1]["c"] > cur and closed_w[-2]["c"] <= prev and price > wE[n] * (1 - AT_LEVEL):
                 entry = wE[n]
                 t1, t2 = targets_above(entry)
-                if t1:
-                    candidates.append(make_setup("long", coin, price, entry, entry - 1.5 * a, t1, t2,
-                        {"type": "reclaim_long",
-                         "why": f"Last week closed back above the weekly {n} EMA. Buy the retest; "
-                                f"wrong on a weekly close back below it."}, f"weekly {n} EMA"))
+                candidates.append(make_setup("long", coin, price, entry, entry - 1.5 * a, t1, t2,
+                    {"type": "reclaim_long",
+                     "why": f"Last week closed back above the weekly {n} EMA. Buy the retest; "
+                            f"wrong on a weekly close back below it."}, f"weekly {n} EMA", notes))
                 break
 
-    # ---- B) weekly support long: weekly uptrend, buy a pullback into the nearest weekly level below
+    # ---- B) weekly support long: weekly uptrend, buy a pullback into the nearest weekly zone below
     if long_ok:
-        for v, name in supports:
+        if not supports:
+            notes.append("Long: no weekly level below price")
+        for v, label, _ in supports[:1]:
             t1, t2 = targets_above(v)
-            if not t1:
-                continue
-            s_ = make_setup("long", coin, price, v, v - 1.5 * a, t1, t2,
+            candidates.append(make_setup("long", coin, price, v, v - 1.5 * a, t1, t2,
                 {"type": "support_long",
-                 "why": f"Weekly uptrend (price above the weekly 50 EMA). Buy a pullback into the {name}; "
-                        f"wrong on a weekly close below it."}, name)
-            if s_:
-                candidates.append(s_)
-                break
+                 "why": f"Weekly uptrend (price above the weekly 50 EMA). Buy a pullback into the {label}; "
+                        f"wrong on a weekly close below it."}, label, notes))
 
-    # ---- C) weekly rejection short: weekly downtrend, short a rally into the nearest weekly level above
+    # ---- C) weekly rejection short: weekly downtrend, short a rally into the nearest weekly zone above
     if short_ok:
-        for v, name in resists:
-            if "EMA" in name:
-                n = int(name.split()[1])
-                if (slope(w[n], 4) or 0) > 0.01:   # don't fade a rising weekly EMA
-                    continue
-            t1, t2 = targets_below(v)
-            if not t1:
+        picked = None
+        for z in resists:
+            rising = [m for m in z[2] if "EMA" in m and (slope(w[int(m.split()[1])], 4) or 0) > 0.01]
+            if rising and len(rising) == len(z[2]):
+                notes.append(f"Short at {z[1]}: the weekly EMA there is rising, not fading it")
                 continue
-            s_ = make_setup("short", coin, price, v, v + 1.5 * a, t1, t2,
+            picked = z
+            break
+        if picked is None and not resists:
+            notes.append("Short: no weekly level above price")
+        if picked:
+            v, label, _ = picked
+            t1, t2 = targets_below(v)
+            candidates.append(make_setup("short", coin, price, v, v + 1.5 * a, t1, t2,
                 {"type": "rejection_short",
-                 "why": f"Weekly downtrend (below the weekly 100 EMA, 25 under 50). Short a rally into the {name}; "
-                        f"wrong on a weekly close above it."}, name)
-            if s_:
-                candidates.append(s_)
-                break
+                 "why": f"Weekly downtrend (below the weekly 100 EMA, 25 under 50). Short a rally into the {label}; "
+                        f"wrong on a weekly close above it."}, label, notes))
 
-    setups = [x for x in candidates if x and x["rr"] >= (MIN_RR_SHORT if x["side"] == "short" else MIN_RR)]
+    setups = [x for x in candidates if x]
 
     # ---- daily timing: did price already test the level and hold (confirmed) or break it (failed)?
     kept = []
@@ -337,26 +350,27 @@ def analyse(coin_row, daily):
         if x["side"] == "long":
             touched = any(b["l"] <= L * 1.01 for b in last3)
             if close < L - 0.5 * a:
-                continue                      # daily close well below the weekly level: retest failed
+                notes.append(f"Long at {x['level']}: daily close broke below the level, retest failed")
+                continue
             if touched and close > L:
                 x["status"] = "confirmed"
                 x["why"] += " Daily chart: tested the level and closed back above it."
         else:
             touched = any(b["h"] >= L * 0.99 for b in last3)
             if close > L + 0.5 * a:
-                continue                      # daily close well above: breakout, not a rejection
+                notes.append(f"Short at {x['level']}: daily close broke above the level, no rejection")
+                continue
             if touched and close < L:
                 x["status"] = "confirmed"
                 x["why"] += " Daily chart: tagged the level and closed back below it."
         kept.append(x)
     setups = kept
 
-    # ---- confluence: other weekly levels and daily EMAs within 1 daily ATR of the entry
+    # ---- confluence: other weekly levels in the same zone, plus daily EMAs within 1 daily ATR
+    zone_members = {z[1]: z[2] for z in zones}
     for x in setups:
-        near = []
-        for v, name in levels:
-            if name != x["level"] and abs(v - x["entry"]) <= a and name not in near:
-                near.append(name)
+        members = zone_members.get(x["level"], [x["level"]])
+        near = [m for m in members[1:]] if len(members) > 1 else []
         for n in EMA_LENGTHS:
             if dE[n] and abs(dE[n] - x["entry"]) <= a:
                 near.append(f"daily {n} EMA")
@@ -364,7 +378,29 @@ def analyse(coin_row, daily):
         weekly_hits = sum(1 for nm in near if nm.startswith("weekly"))
         x["rating"] = "A" if weekly_hits >= 1 and len(near) >= 2 else ("B" if near else "C")
 
+    info["notes"] = notes[:6]
     return info, setups
+
+
+def cluster_levels(raw, width):
+    """Group levels closer than `width` into zones. Returns [(zone value, label, member names)].
+    The zone value is the mean of its members; the label leads with the strongest member (an EMA if any)."""
+    raw = sorted([r for r in raw if r[0]], key=lambda r: r[0])
+    zones, cur = [], []
+    for v, name in raw:
+        if cur and v - cur[-1][0] > width:
+            zones.append(cur); cur = []
+        cur.append((v, name))
+    if cur:
+        zones.append(cur)
+    out = []
+    for z in zones:
+        z.sort(key=lambda m: (0 if "EMA" in m[1] else 1, -int(m[1].split()[1]) if "EMA" in m[1] else 0))
+        val = sum(m[0] for m in z) / len(z)
+        names = [m[1] for m in z]
+        label = names[0] if len(names) == 1 else f"{names[0]} zone ({len(names)} levels)"
+        out.append((val, label, names))
+    return out
 
 
 def swing_levels(candles, k=5):

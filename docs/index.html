@@ -91,6 +91,11 @@ th{font:600 12px var(--font-body);color:var(--muted);text-transform:uppercase;le
 th button{all:unset;cursor:pointer}
 tr:last-child td{border-bottom:0}
 .up{color:var(--long)} .down{color:var(--short)} .mixed{color:var(--muted)}
+tr.coinrow{cursor:pointer}
+tr.coinrow:hover td{background:var(--chip)}
+.why-btn{font:500 11px var(--font-body);color:var(--accent);text-decoration:underline;margin-left:4px}
+tr.notes td{white-space:normal;text-align:left;background:var(--bg);font:13px/1.5 var(--font-body);color:var(--muted);position:static}
+tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 .foot{color:var(--muted);font-size:12px;max-width:78ch}
 @media (max-width:720px){
   .row summary{grid-template-columns:1fr auto}
@@ -125,7 +130,7 @@ tr:last-child td{border-bottom:0}
   </section>
 
   <section style="display:grid;gap:10px">
-    <h2>All coins</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>All coins</h2><span class="muted" style="font-size:13px">Tap a coin to see why it does or doesn't have a setup.</span></div>
     <div class="tablebox"><table id="coins"><thead></thead><tbody></tbody></table></div>
   </section>
 
@@ -134,6 +139,7 @@ tr:last-child td{border-bottom:0}
 
 <script>
 const LABEL={support_long:"Weekly support long",rejection_short:"Weekly rejection short",reclaim_long:"Weekly reclaim long"};
+const OPEN=new Set();
 let DATA=null, INTEL={coins:{}}, FILTER="all", SORT={key:"vol24h",dir:-1}, RISK=2;
 try{const r=parseFloat(localStorage.getItem("sd-risk")); if(r>0) RISK=r;}catch(e){}
 try{const f=localStorage.getItem("sd-filter"); if(f) FILTER=f;}catch(e){}
@@ -258,7 +264,14 @@ function renderCoins(){
     if(x==null) return 1; if(y==null) return -1;
     return (x>y?1:x<y?-1:0)*SORT.dir;
   });
-  t.tBodies[0].innerHTML=rows.map(c=>"<tr>"+COLS.map(([,,f])=>`<td>${f(c)}</td>`).join("")+"</tr>").join("");
+  const hasSetup=new Set((DATA.setups||[]).map(s=>s.coin));
+  t.tBodies[0].innerHTML=rows.map(c=>{
+    const open=OPEN.has(c.coin);
+    const notes=(c.notes||[]);
+    const tag=hasSetup.has(c.coin)?'<span class="pill long">setup</span>':(notes.length?'<span class="why-btn">why none</span>':"");
+    return `<tr class="coinrow" data-coin="${esc(c.coin)}" aria-expanded="${open}">`+COLS.map(([k,,f],i)=>`<td>${f(c)}${i===0?" "+tag:""}</td>`).join("")+"</tr>"+
+      (open?`<tr class="notes"><td colspan="${COLS.length}"><ul>${notes.length?notes.map(n=>`<li>${esc(n)}</li>`).join(""):"<li>No notes for this coin.</li>"}</ul></td></tr>`:"");
+  }).join("");
 }
 
 document.getElementById("filters").addEventListener("click",e=>{
@@ -267,6 +280,8 @@ document.getElementById("filters").addEventListener("click",e=>{
   render();
 });
 document.getElementById("coins").addEventListener("click",e=>{
+  const row=e.target.closest("tr.coinrow");
+  if(row){const k=row.dataset.coin; OPEN.has(k)?OPEN.delete(k):OPEN.add(k); renderCoins(); return;}
   const b=e.target.closest("th button"); if(!b) return;
   const k=b.dataset.k; SORT= SORT.key===k? {key:k,dir:-SORT.dir} : {key:k,dir:-1};
   renderCoins();
