@@ -41,7 +41,7 @@ FEE_IN, FEE_OUT = 0.00015, 0.00045
 OUT_PATH = os.path.join(scan.DATA_DIR, "backtest.json")
 
 
-def play(setup, future):
+def play(setup, future, be_after_t1=False):
     """Simulate one setup on the candles after it was created. Returns a result dict or None."""
     side = 1 if setup["side"] == "long" else -1
     entries = [(e["px"], e["pct"] / 100) for e in setup["entries"]]
@@ -73,7 +73,8 @@ def play(setup, future):
         if open_qty > 0 and ((side == 1 and c["l"] <= stop) or (side == -1 and c["h"] >= stop)):
             pnl += side * (stop - avg) * open_qty
             fees += stop * open_qty * FEE_OUT
-            return result(setup, pnl, fees, risk_unit, filled, "stop" if not t1_done else "stop after T1", i)
+            how = "stop" if not t1_done else ("breakeven after T1" if be_after_t1 else "stop after T1")
+            return result(setup, pnl, fees, risk_unit, filled, how, i)
         # 3) targets
         if not t1_done and ((side == 1 and c["h"] >= t1) or (side == -1 and c["l"] <= t1)):
             t1_done = True
@@ -84,6 +85,8 @@ def play(setup, future):
             open_qty -= q
             if open_qty <= 1e-12:
                 return result(setup, pnl, fees, risk_unit, filled, "T1", i)
+            if be_after_t1:
+                stop = avg                              # rest of the trade can't lose
         if t1_done and t2 is not None and ((side == 1 and c["h"] >= t2) or (side == -1 and c["l"] <= t2)):
             pnl += side * (t2 - avg) * open_qty
             fees += t2 * open_qty * FEE_OUT
@@ -110,10 +113,22 @@ def result(setup, pnl, fees, risk_unit, filled, how, days):
     }
 
 
-def run():
+VARIANTS = {
+    "Current rules":                    dict(pick=lambda s: True, be=False),
+    "Breakeven stop after T1":          dict(pick=lambda s: True, be=True),
+    "Confirmed only":                   dict(pick=lambda s: s["status"] == "confirmed", be=False),
+    "Confirmed only + breakeven":       dict(pick=lambda s: s["status"] == "confirmed", be=True),
+    "Skip 'at level' + breakeven":      dict(pick=lambda s: s["status"] != "at level", be=True),
+    "Rating A + breakeven":             dict(pick=lambda s: s.get("rating") == "A", be=True),
+    "Confirmed + rating A + breakeven": dict(pick=lambda s: s["status"] == "confirmed" and s.get("rating") == "A", be=True),
+}
+
+
+def collect():
+    """Run the scanner over history once; return {coin: (daily, [(t, setups)])}."""
     started = time.time()
     coins = scan.universe()
-    trades = []
+    out = {}
     for row in coins:
         coin = row["coin"]
         try:
@@ -124,36 +139,46 @@ def run():
         time.sleep(0.35)
         if len(daily) < WARMUP_DAYS + 30:
             continue
-        busy_until = -1
+        sig = []
         for t in range(WARMUP_DAYS, len(daily) - 1, STEP):
-            if t <= busy_until:
-                continue
             hist = daily[:t + 1]
-            px = hist[-1]["c"]
-            r = dict(row, price=px, chg24h=0, vol24h=0, funding_8h=0)
+            r = dict(row, price=hist[-1]["c"], chg24h=0, vol24h=0, funding_8h=0)
             try:
                 _, setups = scan.analyse(r, hist)
             except Exception as e:
                 print("analyse error", coin, e, file=sys.stderr)
                 continue
-            if not setups:
+            if setups:
+                sig.append((t, setups))
+        out[coin] = (daily, sig)
+    return out, round(time.time() - started)
+
+
+def simulate(signals, pick, be):
+    trades = []
+    for coin, (daily, sig) in signals.items():
+        busy_until = -1
+        for t, setups in sig:
+            if t <= busy_until:
                 continue
-            # same choice the live scanner makes: best setup per coin
-            setups.sort(key=lambda s: (s.get("rating", "C"), -s["rr"]))
-            s = setups[0]
-            res = play(s, daily[t + 1:])
+            cands = [s for s in setups if pick(s)]
+            if not cands:
+                continue
+            cands.sort(key=lambda s: (s.get("rating", "C"), -s["rr"]))
+            s = cands[0]
+            res = play(s, daily[t + 1:], be_after_t1=be)
             if res is None:
                 busy_until = t + ENTRY_DAYS
                 continue
             res.update({
-                "coin": coin, "date": datetime.fromtimestamp(hist[-1]["t"] / 1000, tz=timezone.utc).date().isoformat(),
+                "coin": coin, "date": datetime.fromtimestamp(daily[t]["t"] / 1000, tz=timezone.utc).date().isoformat(),
                 "type": s["type"], "side": s["side"], "rating": s.get("rating"), "status": s["status"],
                 "planned_rr": s["rr"], "risk_pct": s["risk_pct"],
                 "needs_confirmation": bool(s.get("needs_confirmation")),
             })
             trades.append(res)
             busy_until = t + 1 + res["days"]
-    return trades, round(time.time() - started)
+    return trades
 
 
 def summarise(trades):
@@ -201,10 +226,18 @@ def summarise(trades):
 
 
 def main():
-    trades, secs = run()
+    signals, secs = collect()
+    variants = {}
+    for name, v in VARIANTS.items():
+        tr = simulate(signals, v["pick"], v["be"])
+        sm = summarise(tr)
+        variants[name] = {"all": sm["summary"].get("all"), "by_year": sm["by_year"],
+                          "long": sm["summary"].get("side:long"), "short": sm["summary"].get("side:short")}
+    base = simulate(signals, VARIANTS["Current rules"]["pick"], False)
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "runtime_s": secs,
+        "coins": len(signals),
         "settings": {"step_days": STEP, "entry_days": ENTRY_DAYS, "hold_days": HOLD_DAYS,
                      "min_rr_long": scan.MIN_RR, "min_rr_short": scan.MIN_RR_SHORT,
                      "max_dist": scan.MAX_DIST, "max_stop_pct": scan.MAX_STOP_PCT},
@@ -214,15 +247,16 @@ def main():
             "No slippage on stops; fees at base maker/taker rates.",
             "Hyperliquid history starts when each coin was listed there, so early years have fewer coins.",
         ],
-        **summarise(trades),
-        "trades": trades[-400:],
+        "variants": variants,
+        **summarise(base),
+        "trades": sorted(base, key=lambda t: t["date"])[-400:],
     }
     os.makedirs(scan.DATA_DIR, exist_ok=True)
     with open(OUT_PATH, "w") as f:
         json.dump(out, f, separators=(",", ":"))
-    s = out["summary"].get("all") or {}
-    print(f"backtest: {s.get('trades', 0)} trades, win {s.get('win_rate')}%, avg {s.get('avg_r')}R, "
-          f"total {s.get('total_r')}R, {secs}s")
+    for name, v in variants.items():
+        a = v["all"] or {}
+        print(f"{name:34} {a.get('trades', 0):5} trades  win {a.get('win_rate')}%  avg {a.get('avg_r')}R  total {a.get('total_r')}R")
 
 
 if __name__ == "__main__":
