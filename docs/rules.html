@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rule Book · Setup Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<style>
+:root{
+  --bg:#f3f5f7; --panel:#ffffff; --ink:#16212b; --muted:#5d6b78; --line:#dde3e9; --accent:#1d5f86; --warn:#a36a00;
+  --font-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f161d; --panel:#16202a; --ink:#e4eaf0; --muted:#93a2b0; --line:#26323e; --accent:#6fb3dc; --warn:#e2b04d; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f161d; --panel:#16202a; --ink:#e4eaf0; --muted:#93a2b0; --line:#26323e; --accent:#6fb3dc; --warn:#e2b04d; color-scheme:dark}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--font-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:760px;margin:0 auto;padding-block:20px 56px;display:grid;gap:22px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
+h1{font:700 28px/1.1 var(--font-display);margin:0}
+h2{font:600 16px/1.2 var(--font-display);letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px;color:var(--muted)}
+a{color:var(--accent)}
+.lead{margin:0;color:var(--muted);max-width:65ch}
+ol{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:r}
+li{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px 12px 52px;position:relative;counter-increment:r}
+li::before{content:counter(r);position:absolute;left:14px;top:11px;font:600 18px var(--font-mono);color:var(--accent)}
+li b{display:block;font-weight:600}
+li p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.how{font:12px var(--font-mono);color:var(--muted);margin-top:6px}
+.how::before{content:"Scanner: "}
+.foot{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Rule Book</h1>
+    <a href="./">Back to Setup Desk</a>
+  </header>
+  <p class="lead">Trading is a business here, not a guess. Every trade passes all of these or it doesn't get placed. Adopted October 2026; changed only by deliberate decision, never mid-trade.</p>
+
+  <section>
+    <h2>Structure</h2>
+    <ol>
+      <li><b>Higher timeframes come first.</b><p>Every trade is anchored to the weekly and daily structure. Lower timeframes only help with timing, never with the decision.</p><div class="how">setups are built only on weekly levels; the daily chart times the entry</div></li>
+      <li><b>Trade with the weekly trend.</b><p>Longs only when price is above the weekly 50 EMA and the weekly 25 EMA isn't falling. Shorts only when price is below the weekly 100 EMA and the weekly 25 is under the 50.</p><div class="how">setups against the weekly trend are not shown</div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Entries</h2>
+    <ol style="counter-reset:r 2">
+      <li><b>Enter only at the planned zone, with resting limits. Never chase.</b><p>No buying above the zone on a long, no selling below it on a short. If price leaves without filling, the trade is missed, not chased.</p><div class="how">entry prices are the zone itself; alerts repeat the rule</div></li>
+      <li><b>Scale in and out in tranches.</b><p>In: 30% at the near edge of the zone, 30% at the middle, 40% at the far edge. Out: half at target 1, half at target 2.</p><div class="how">every setup lists its tranche prices and dollar sizes</div></li>
+      <li><b>Against a strong move, wait for a confirmed rejection.</b><p>If the coin moved 25% or more in 14 days, or sits 15% or more from its daily 25 EMA, the first touch is not an entry. Enter only after a daily close confirms the rejection.</p><div class="how">marked "Wait for rejection"; no Telegram alert until confirmed</div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Risk</h2>
+    <ol style="counter-reset:r 5">
+      <li><b>Nothing gets in without a stop and take-profits.</b><p>The stop and both take-profit orders are placed together with the entry. No exceptions.</p></li>
+      <li><b>The stop is backed by structure and never moved to fit.</b><p>It sits beyond the zone and beyond any weekly level just past it, where trapped supply or demand actually is. It is never widened, tightened or reverse-engineered to make an entry fit. If the trade doesn't work with the real stop, there is no trade.</p><div class="how">stops are placed beyond the zone and the next weekly level; setups that fail with that stop are dropped</div></li>
+      <li><b>Only asymmetric trades.</b><p>Blended reward-to-risk of at least 2.5 for longs and 2 for shorts, measured from the average entry. Stop no more than 15% from the average entry.</p></li>
+      <li><b>Size by dollar risk, not leverage.</b><p>Decide the dollar loss at the stop first (default $2), then the position size. Leverage only changes margin, not the loss.</p><div class="how">position size shown for your risk amount</div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Discipline</h2>
+    <ol style="counter-reset:r 9">
+      <li><b>Don't force the trade.</b><p>If a coin is mid-range or the setup lacks higher-timeframe structure and asymmetric reward, pass. Sitting in cash is a position.</p><div class="how">only qualifying setups appear; "why none" explains the rest</div></li>
+      <li><b>Respect supply events.</b><p>A token unlock of 1% of supply or more within 14 days counts against a long.</p><div class="how">unlocks flagged on setups from the daily news scan</div></li>
+    </ol>
+  </section>
+
+  <p class="foot">Rules 1, 6, 7 and 10 are in your own words; rules 3 and 5 came from reviewing your trades of Oct 9–15; the rest we agreed while building the scanner. To change a rule, decide it outside a live trade and update this page.</p>
+</div>
+</body>
+</html>

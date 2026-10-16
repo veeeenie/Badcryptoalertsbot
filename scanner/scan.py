@@ -170,6 +170,8 @@ def round_level(x):
     return round(x, digits)
 
 
+STRONG_MOVE_PCT = 25.0     # a 14-day move this big counts as a strong move (rule 6)
+STRONG_STRETCH_PCT = 15.0  # ...as does price this far from the daily 25 EMA
 TRANCHE_IN = (0.3, 0.3, 0.4)   # share of the position at each entry, nearest price first
 TRANCHE_OUT = (0.5, 0.5)       # share closed at target 1 and target 2
 
@@ -394,6 +396,18 @@ def analyse(coin_row, daily):
         kept.append(x)
     setups = kept
 
+    # ---- rule 6: against a strong move, only take the trade after a confirmed daily rejection
+    chg14 = (price / dc[-15] - 1) * 100 if len(dc) > 15 else 0
+    stretch = info["stretch_d25"] or 0
+    info["chg14"] = round(chg14, 1)
+    for x in setups:
+        strong_up = chg14 >= STRONG_MOVE_PCT or stretch >= STRONG_STRETCH_PCT
+        strong_down = chg14 <= -STRONG_MOVE_PCT or stretch <= -STRONG_STRETCH_PCT
+        if (x["side"] == "short" and strong_up) or (x["side"] == "long" and strong_down):
+            x["needs_confirmation"] = True
+            x["why"] += (f" Strong move ({chg14:+.0f}% in 14 days, {stretch:+.0f}% from the daily 25 EMA): "
+                         f"wait for a confirmed daily rejection before entering.")
+
     # ---- confluence: other weekly levels in the same zone, plus daily EMAs within the zone (+/- 1 ATR)
     by_label = {z["label"]: z for z in zones}
     for x in setups:
@@ -502,6 +516,7 @@ def alert_text(s, price, reason_head):
         f"Exits: {outs} · blended {s['rr']}R",
         f"Size for ${RISK_USD:g} risk: ${s['size_usd']:,.0f} total position",
         s["why"],
+        "Rules: resting limits at the zone only, never chase. Place the stop and both take-profits with the entry.",
     ]
     if s.get("trending"):
         lines.append("🔥 Trending on CoinGecko searches right now")
@@ -623,6 +638,8 @@ def main():
             continue
         if first_run or s["status"] == "approaching" or s.get("rating") == "C":
             continue
+        if s.get("needs_confirmation") and s["status"] != "confirmed":
+            continue                          # rule 6: no alert until the rejection is confirmed
         key = s["id"] + ":" + s["status"]
         if key in alerted:
             continue

@@ -61,6 +61,8 @@ h2{font:600 18px/1.2 var(--font-display);letter-spacing:.02em;margin:0;text-tran
 .pill.at{background:var(--warn-bg);color:var(--warn)} .pill.news{background:var(--chip);color:var(--accent)}
 .pill.unlock{background:var(--warn-bg);color:var(--warn)}
 .pill.conf{background:var(--long);color:var(--panel)}
+.pill.wait{background:var(--warn-bg);color:var(--warn);border:1px dashed var(--warn)}
+.rulelink{font:500 13px var(--font-body);color:var(--accent)}
 .pill.hot{background:var(--short-bg);color:var(--short)}
 .riskbox{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
 .riskbox input{width:72px;font:500 13px var(--font-mono);padding:4px 6px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink)}
@@ -108,7 +110,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 <div class="wrap">
   <header>
     <h1>Setup Desk</h1>
-    <div class="meta" id="meta">Loading scan…</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline"><a class="rulelink" href="rules.html">Rule book</a><div class="meta" id="meta">Loading scan…</div></div>
   </header>
 
   <section class="strip" id="strip" aria-label="Summary"></section>
@@ -224,7 +226,7 @@ function rowHTML(s,p){
     <div class="coin"><b>${esc(s.coin)}</b><span class="meta">${fmt(p)}</span></div>
     <div class="ladder">${ladder(s,p)}</div>
     <div style="display:grid;gap:6px;justify-items:end">
-      <div class="pills"><span class="pill rating r${s.rating||"C"}" title="Confluence rating">${s.rating||"C"}</span><span class="pill ${side}">${LABEL[s.type]}</span>${s.status==="at level"?'<span class="pill at">At entry</span>':s.status==="confirmed"?'<span class="pill conf">Confirmed</span>':""}${news.length?`<span class="pill news">${news.length} news</span>`:""}${(un||s.unlock)?'<span class="pill unlock">Unlock</span>':""}${s.trending?'<span class="pill hot">Trending</span>':""}</div>
+      <div class="pills"><span class="pill rating r${s.rating||"C"}" title="Confluence rating">${s.rating||"C"}</span><span class="pill ${side}">${LABEL[s.type]}</span>${s.status==="confirmed"?'<span class="pill conf">Confirmed</span>':s.needs_confirmation?'<span class="pill wait">Wait for rejection</span>':s.status==="at level"?'<span class="pill at">At entry</span>':""}${news.length?`<span class="pill news">${news.length} news</span>`:""}${(un||s.unlock)?'<span class="pill unlock">Unlock</span>':""}${s.trending?'<span class="pill hot">Trending</span>':""}</div>
       <dl class="nums"><dt>Blended</dt><dd class="rr">${s.rr.toFixed(1)}R</dd><dt>Stop</dt><dd>${s.risk_pct!=null?s.risk_pct.toFixed(1)+"%":"–"}</dd><dt>Size</dt><dd>${s.risk_pct?"$"+(RISK/(s.risk_pct/100)).toFixed(0):"–"}</dd>${s.rr2?`<dt>T2</dt><dd>${s.rr2.toFixed(1)}R</dd>`:""}<dt>Level</dt><dd>${esc(s.level)}</dd></dl>
     </div>
   </summary>
@@ -239,6 +241,7 @@ function rowHTML(s,p){
     ${intel.summary?`<p>${esc(intel.summary)}</p>`:""}
     ${un?`<p><b>Unlock:</b> ${esc(un.date||"")} ${un.amount?"· "+esc(un.amount):""} ${un.pct_supply?"("+esc(un.pct_supply)+" of supply)":""} ${un.note?"· "+esc(un.note):""} ${un.source?`<a href="${esc(un.source)}" target="_blank" rel="noopener">source</a>`:""}</p>`:""}
     ${news.length?`<ul>${news.slice(0,5).map(n=>`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a> <span class="muted">${esc(n.date||"")}</span></li>`).join("")}</ul>`:'<p class="muted">No news pulled for this coin yet.</p>'}
+    <p class="muted">Rule book: resting limits at the zone only, never chase. Stop and both take-profits go in with the entry.${s.needs_confirmation&&s.status!=="confirmed"?" Strong move: no entry until a daily close confirms the rejection.":""}</p>
     <p><a href="${trade}" target="_blank" rel="noopener">Open ${esc(s.coin)} on trade.xyz</a></p>
   </div></details>`;
 }
