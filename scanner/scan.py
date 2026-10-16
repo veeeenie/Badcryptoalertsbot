@@ -172,6 +172,10 @@ def round_level(x):
 
 STRONG_MOVE_PCT = 25.0     # a 14-day move this big counts as a strong move (rule 6)
 STRONG_STRETCH_PCT = 15.0  # ...as does price this far from the daily 25 EMA
+TOP_K = int(os.getenv("TOP_K", "8"))   # how many setups count as "top" (dashboard default, Telegram)
+MAX_ALERTS = 3                          # most individual alerts per scan; the rest go in one summary line
+SCORE_RATING = {"A": 6, "B": 3, "C": 0}
+SCORE_STATUS = {"confirmed": 4, "at level": 2, "approaching": 0}
 TRANCHE_IN = (0.3, 0.3, 0.4)   # share of the position at each entry, nearest price first
 TRANCHE_OUT = (0.5, 0.5)       # share closed at target 1 and target 2
 
@@ -210,7 +214,7 @@ def make_setup(kind, coin, price, entries, stop, t1, t2, reason, level_name, not
         return no(f"targets {fmt(t1)}" + (f" / {fmt(t2)}" if t2 else "") + f" give {rr:.1f}R blended (need {need:g}R)")
     size = RISK_USD / (risk_pct / 100)
     return {
-        "id": f"{coin}:{reason['type']}:{level_name}",
+        "id": f"{coin}:{reason['type']}",
         "coin": coin,
         "type": reason["type"],
         "side": kind,
@@ -601,6 +605,16 @@ def main():
     for c in all_info:
         c["trending"] = c["coin"].lstrip("k").upper() in trending
 
+    # ---- rank: only the best TOP_K setups are "top" (shown first, and the only ones that alert)
+    for s in all_setups:
+        s["score"] = round(SCORE_RATING.get(s.get("rating"), 0) + SCORE_STATUS.get(s["status"], 0)
+                           + min(s["rr"], 6) * 0.5 - abs(s["dist_pct"]) * 0.1
+                           - (2 if s.get("needs_confirmation") and s["status"] != "confirmed" else 0)
+                           - (2 if s.get("unlock") and s["side"] == "long" else 0), 2)
+    all_setups.sort(key=lambda s: -s["score"])
+    for i, s in enumerate(all_setups):
+        s["top"] = i < TOP_K and s.get("rating") in ("A", "B")
+
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     out = {
         "generated_at": now,
@@ -629,33 +643,40 @@ def main():
     msgs = []
     new_seen = {}
     now_ts = time.time()
-    alerted = {k: v for k, v in alerted.items() if now_ts - v < 86400}
-    legacy = bool(state) and "alerted" not in state  # older state file: mark current setups as already sent
+    live_ids = {x["id"] for x in all_setups}
+    # forget alerts only once a setup has left the scan, so each setup alerts at most once per stage
+    alerted = {k: v for k, v in alerted.items() if k.rsplit(":", 1)[0] in live_ids or now_ts - v < 86400}
+    v2 = state.get("version") == 2
+    due = []
     for s in all_setups:
         new_seen[s["id"]] = s["status"]
-        if legacy and s["status"] != "approaching":
-            alerted[s["id"] + ":" + s["status"]] = now_ts
-            continue
-        if first_run or s["status"] == "approaching" or s.get("rating") == "C":
+        if s["status"] == "approaching" or not s.get("top"):
             continue
         if s.get("needs_confirmation") and s["status"] != "confirmed":
-            continue                          # rule 6: no alert until the rejection is confirmed
+            continue                          # rule 5: no alert until the rejection is confirmed
         key = s["id"] + ":" + s["status"]
         if key in alerted:
             continue
+        alerted[key] = now_ts
+        if first_run or not v2:
+            continue                          # first run of this version: mark as sent, stay quiet
+        due.append(s)
+    for s in due[:MAX_ALERTS]:
         head = "retest confirmed on the daily" if s["status"] == "confirmed" else "price at entry"
         msgs.append(alert_text(s, price_of[s["coin"]], head))
-        alerted[key] = now_ts
+    if len(due) > MAX_ALERTS:
+        msgs.append(f"+{len(due) - MAX_ALERTS} more top setups reached entry: " +
+                    ", ".join(x["coin"] for x in due[MAX_ALERTS:]) + ". Details on the dashboard.")
     if first_run and all_setups:
-        top = all_setups[:10]
-        msgs.append("<b>Setup scanner is live.</b> Current setups:\n\n" +
-                    "\n".join(f"• {s['coin']} {LABEL[s['type']]} entry {fmt(s['entry'])} "
-                              f"({s['dist_pct']:+.1f}%), {s['rr']}R, {s['status']}" for s in top))
-    for m in msgs[:15]:
+        top = [x for x in all_setups if x.get("top")]
+        msgs.append("<b>Setup scanner is live.</b> Top setups:\n\n" +
+                    "\n".join(f"• {x['coin']} {LABEL[x['type']]} entry {fmt(x['entry'])} "
+                               f"({x['dist_pct']:+.1f}%), {x['rr']}R, {x['status']}" for x in top))
+    for m in msgs:
         telegram(m)
         time.sleep(1)
     with open(STATE_PATH, "w") as f:
-        json.dump({"seen": new_seen, "alerted": alerted, "updated": now}, f)
+        json.dump({"version": 2, "seen": new_seen, "alerted": alerted, "updated": now}, f)
 
     print(f"setups: {len(all_setups)}, alerts: {len(msgs)}, errors: {len(errors)}, "
           f"time: {out['runtime_s']}s")

@@ -12,7 +12,7 @@ Hourly EMA setup scanner for the top 100 Hyperliquid perps (the coins you trade 
   - **Stops sit at structure:** beyond the zone, and beyond any weekly level sitting just past it, so the stop is never parked in front of the next support or supply shelf. Skipped if more than 15% from the average entry.
   - Targets are the next weekly zones (or the all-time high/low). The first entry must be within 10% of price.
   - **Rating:** A = another weekly level plus one more level near the entry, B = one other level, C = none.
-- **Telegram:** A and B setups alert when price reaches the entry and again when the retest is confirmed. Each alert includes the position size for your dollar risk (RISK_USD, default $2).
+- **Telegram:** only the top 8 setups (ranked by rating, confirmation, R and distance) alert, once when price reaches the entry and once when the retest is confirmed, at most 3 alerts per scan. Each alert includes the position size for your dollar risk (RISK_USD, default $2).
 - **Dashboard:** `docs/index.html`, served by GitHub Pages and refreshed every hour.
 - **News and unlocks:** a daily Claude scheduled task writes `docs/data/intel.json`.
 
