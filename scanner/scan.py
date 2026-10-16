@@ -173,6 +173,7 @@ def round_level(x):
 STRONG_MOVE_PCT = 25.0     # a 14-day move this big counts as a strong move (rule 6)
 STRONG_STRETCH_PCT = 15.0  # ...as does price this far from the daily 25 EMA
 TOP_K = int(os.getenv("TOP_K", "8"))   # how many setups count as "top" (dashboard default, Telegram)
+ALERTS_PAUSED = os.getenv("ALERTS_PAUSED", "1") == "1"   # paused until the backtest validates the rules
 MAX_ALERTS = 3                          # most individual alerts per scan; the rest go in one summary line
 SCORE_RATING = {"A": 6, "B": 3, "C": 0}
 SCORE_STATUS = {"confirmed": 4, "at level": 2, "approaching": 0}
@@ -641,6 +642,7 @@ def main():
         "generated_at": now,
         "source": "Hyperliquid perps, daily candles; weekly built Mon 00:00 UTC",
         "risk_usd": RISK_USD,
+        "alerts_paused": ALERTS_PAUSED,
         "universe_size": len(all_info),
         "setups": all_setups,
         "coins": sorted(all_info, key=lambda r: -r["vol24h"]),
@@ -693,9 +695,12 @@ def main():
         msgs.append("<b>Setup scanner is live.</b> Top setups:\n\n" +
                     "\n".join(f"• {x['coin']} {LABEL[x['type']]} entry {fmt(x['entry'])} "
                                f"({x['dist_pct']:+.1f}%), {x['rr']}R, {x['status']}" for x in top))
-    for m in msgs:
-        telegram(m)
-        time.sleep(1)
+    if ALERTS_PAUSED:
+        print(f"alerts paused: {len(msgs)} message(s) not sent")
+    else:
+        for m in msgs:
+            telegram(m)
+            time.sleep(1)
     with open(STATE_PATH, "w") as f:
         json.dump({"version": 2, "seen": new_seen, "alerted": alerted, "updated": now}, f)
 

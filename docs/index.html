@@ -63,6 +63,7 @@ h2{font:600 18px/1.2 var(--font-display);letter-spacing:.02em;margin:0;text-tran
 .pill.conf{background:var(--long);color:var(--panel)}
 .pill.wait{background:var(--warn-bg);color:var(--warn);border:1px dashed var(--warn)}
 .rulelink{font:500 13px var(--font-body);color:var(--accent)}
+.banner{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn);border-radius:6px;padding:10px 12px;font-weight:500}
 .pill.hot{background:var(--short-bg);color:var(--short)}
 .riskbox{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
 .riskbox input{width:72px;font:500 13px var(--font-mono);padding:4px 6px;border:1px solid var(--line);border-radius:4px;background:var(--panel);color:var(--ink)}
@@ -113,6 +114,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
     <div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline"><a class="rulelink" href="rules.html">Rule book</a><div class="meta" id="meta">Loading scan…</div></div>
   </header>
 
+  <div class="banner" id="banner" hidden>Testing mode: the rules are being checked against two years of history. Telegram alerts are paused and these setups are not yet validated.</div>
   <section class="strip" id="strip" aria-label="Summary"></section>
 
   <section style="display:grid;gap:10px">
@@ -179,6 +181,7 @@ async function load(){
 function render(){
   const meta=document.getElementById("meta");
   if(!DATA){meta.textContent="No scan yet";return;}
+  document.getElementById("banner").hidden=!DATA.alerts_paused;
   const stale=(Date.now()-new Date(DATA.generated_at))>3*3600e3;
   meta.innerHTML=`Scan <b class="${stale?"stale":""}">${ago(DATA.generated_at)}</b> · ${DATA.universe_size} coins · news ${ago(INTEL.generated_at)}`;
   const S=DATA.setups||[];
