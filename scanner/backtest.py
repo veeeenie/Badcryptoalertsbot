@@ -226,13 +226,21 @@ def summarise(trades):
 
 
 def main():
+    scan.REQUIRE_HISTORY = True
     signals, secs = collect()
+    scan.REQUIRE_HISTORY = False
+    signals_young, secs2 = collect()
+    secs += secs2
     variants = {}
-    for name, v in VARIANTS.items():
-        tr = simulate(signals, v["pick"], v["be"])
-        sm = summarise(tr)
-        variants[name] = {"all": sm["summary"].get("all"), "by_year": sm["by_year"],
-                          "long": sm["summary"].get("side:long"), "short": sm["summary"].get("side:short")}
+    for label, sig in (("", signals), (" · young-coin EMAs on", signals_young)):
+        for name, v in VARIANTS.items():
+            if label and name not in ("Current rules", "Confirmed only + breakeven", "Skip 'at level' + breakeven",
+                                      "Confirmed + rating A + breakeven"):
+                continue
+            tr = simulate(sig, v["pick"], v["be"])
+            sm = summarise(tr)
+            variants[name + label] = {"all": sm["summary"].get("all"), "by_year": sm["by_year"],
+                                      "long": sm["summary"].get("side:long"), "short": sm["summary"].get("side:short")}
     base = simulate(signals, VARIANTS["Current rules"]["pick"], False)
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

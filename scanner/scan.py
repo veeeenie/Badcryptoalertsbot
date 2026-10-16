@@ -26,6 +26,8 @@ SETUPS_PATH = os.path.join(DATA_DIR, "setups.json")
 STATE_PATH = os.path.join(DATA_DIR, "state.json")
 
 EMA_LENGTHS = (25, 50, 100)
+# only use a weekly/daily EMA once there are at least that many candles (False = draw it anyway, like the chart)
+REQUIRE_HISTORY = os.getenv("REQUIRE_HISTORY", "1") == "1"
 MIN_RR = 2.5          # minimum reward:risk to target 1 for longs
 MIN_RR_SHORT = 2.0    # shorts target a nearer level, slightly lower bar
 MAX_DIST = 0.10       # ignore setups whose entry is more than 10% from price
@@ -119,16 +121,20 @@ def weekly_from_daily(daily):
 
 # ---------------------------------------------------------------- indicators
 
-def ema(values, n):
-    """TradingView-style EMA (ta.ema): seeded with the first close, so it has a value from the
-    first bar, like the chart. Returns a list aligned with values."""
+EMA_DROP = 1   # the Krypt 3-EMA indicator drops the first candle ("Drop first N candles" = 1)
+
+
+def ema(values, n, drop=EMA_DROP):
+    """Exactly the TradingView "3-EMA [Krypt]" calculation the trader uses:
+    skip the first `drop` candles, start the EMA at the next close, then
+    e = k * close + (1 - k) * e with k = 2 / (n + 1). Returns a list aligned with values."""
     out = [None] * len(values)
-    if not values:
+    if len(values) <= drop:
         return out
     k = 2 / (n + 1)
-    e = values[0]
-    out[0] = e
-    for i in range(1, len(values)):
+    e = values[drop]
+    out[drop] = e
+    for i in range(drop + 1, len(values)):
         e = values[i] * k + e * (1 - k)
         out[i] = e
     return out
@@ -250,8 +256,9 @@ def analyse(coin_row, daily):
     wc = [w["c"] for w in weekly]
     # an EMA is only used once there is at least as much history as its length;
     # a 100-week EMA on 40 weeks of data is meaningless
-    d = {n: ema(dc, n) if len(dc) >= n else [None] * len(dc) for n in EMA_LENGTHS}
-    w = {n: ema(wc, n) if len(wc) >= n else [None] * len(wc) for n in EMA_LENGTHS}
+    hist_ok = lambda vals, n: len(vals) >= n or not REQUIRE_HISTORY
+    d = {n: ema(dc, n) if hist_ok(dc, n) else [None] * len(dc) for n in EMA_LENGTHS}
+    w = {n: ema(wc, n) if hist_ok(wc, n) else [None] * len(wc) for n in EMA_LENGTHS}
     a = atr(daily) or price * 0.05
 
     dE = {n: last(d[n]) for n in EMA_LENGTHS}
@@ -276,7 +283,7 @@ def analyse(coin_row, daily):
     }
 
     notes = []
-    missing = [n for n in EMA_LENGTHS if len(wc) < n]
+    missing = [n for n in EMA_LENGTHS if len(wc) < n] if REQUIRE_HISTORY else []
     if missing:
         notes.append(f"Only {len(wc)} weeks of history: no weekly {'/'.join(map(str, missing))} EMA yet" +
                      (" so no setups" if 50 in missing else " so no shorts (they need the weekly 100 EMA)"))
