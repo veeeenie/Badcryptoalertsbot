@@ -8,7 +8,7 @@ Every run:
   4. Flags three setups on weekly levels (support long, rejection short, reclaim long), timed with the daily chart.
   5. Writes docs/data/setups.json for the dashboard and sends Telegram alerts for new or triggered setups.
 
-No API keys needed for market data. Telegram is optional (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID).
+No API keys needed for market data (Hyperliquid public API). Telegram is optional (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID).
 """
 import json
 import os
