@@ -2,6 +2,9 @@ name: Backtest
 
 on:
   workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["scanner/backtest.py", "scanner/scan.py"]
   schedule:
     - cron: "17 3 * * 0"   # Sundays 03:17 UTC
 

@@ -129,12 +129,12 @@ def tradeable(s):
 
 
 VARIANTS = {
-    "Your rules · fixed T2":                  dict(pick=tradeable, be=True, runner=False),
-    "Your rules · runner exits on weekly":    dict(pick=tradeable, be=True, runner=True),
-    "Weekly-trend trades only · runner":      dict(pick=lambda s: tradeable(s) and s.get("trend") == "weekly", be=True, runner=True),
-    "Daily-flip trades only · runner":        dict(pick=lambda s: tradeable(s) and s.get("trend") == "daily flip", be=True, runner=True),
-    "Your rules · runner · only 2R+ setups":  dict(pick=lambda s: tradeable(s) and s["rr"] >= 2, be=True, runner=True),
-    "Your rules · runner · confirmed only":   dict(pick=lambda s: s["status"] == "confirmed", be=True, runner=True),
+    "Your rules · fixed T2":                      dict(pick=tradeable, be=True, runner=False),
+    "Your rules · runner exits on weekly":        dict(pick=tradeable, be=True, runner=True),
+    "Fixed T2 · weekly-trend trades only":        dict(pick=lambda s: tradeable(s) and s.get("trend") == "weekly", be=True, runner=False),
+    "Fixed T2 · daily-flip trades only":          dict(pick=lambda s: tradeable(s) and s.get("trend") == "daily flip", be=True, runner=False),
+    "Fixed T2 · no daily-flip shorts":            dict(pick=lambda s: tradeable(s) and not (s.get("trend") == "daily flip" and s["side"] == "short"), be=True, runner=False),
+    "Fixed T2 · no breakeven (rest rides to T2/stop)": dict(pick=tradeable, be=False, runner=False),
 }
 
 
