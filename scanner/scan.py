@@ -28,8 +28,10 @@ STATE_PATH = os.path.join(DATA_DIR, "state.json")
 EMA_LENGTHS = (25, 50, 100)
 # only use a weekly/daily EMA once there are at least that many candles (False = draw it anyway, like the chart)
 REQUIRE_HISTORY = os.getenv("REQUIRE_HISTORY", "1") == "1"
-MIN_RR = 2.5          # minimum reward:risk to target 1 for longs
-MIN_RR_SHORT = 2.0    # shorts target a nearer level, slightly lower bar
+ALLOW_DAILY_FLIP = True   # trades against the weekly trend when the daily is fully stacked the other way
+MIN_RR = 1.5          # rule 8: more than 1:1.5 (blended, from the average entry)
+MIN_RR_SHORT = 1.5
+MIN_ORDER_USD = 10.0  # rule 4: every tranche order must be at least $10
 MAX_DIST = 0.10       # ignore setups whose entry is more than 10% from price
 AT_LEVEL = 0.02       # within 2% of entry counts as "at level"
 MAX_STOP_PCT = 15.0   # skip setups whose stop is more than 15% from entry (too volatile to size sensibly)
@@ -187,31 +189,61 @@ TRANCHE_IN = (0.3, 0.3, 0.4)   # share of the position at each entry, nearest pr
 TRANCHE_OUT = (0.5, 0.5)       # share closed at target 1 and target 2
 
 
-def make_setup(kind, coin, price, entries, stop, t1, t2, reason, level_name, notes=None):
+TRANCHE_LAYOUTS = {3: (0.3, 0.3, 0.4), 2: (0.5, 0.5), 1: (1.0,)}
+
+
+def tranche_prices(zone_prices, n):
+    """zone_prices = (near edge, middle, far edge). 3 tranches use all three, 2 use the edges,
+    1 uses the middle."""
+    near, mid, far = zone_prices
+    return {3: [near, mid, far], 2: [near, far], 1: [mid]}[n]
+
+
+def make_setup(kind, coin, price, zone_prices, stop, t1, t2, reason, level_name, notes=None):
     """Build a tranche setup dict, or return None and append the reason to notes.
-    entries: three prices, nearest to current price first. R is measured from the average entry
-    and blends the two targets (half off at each)."""
+    Rule 4: up to 3 tranches, each at least MIN_ORDER_USD; the dollar risk decides how many fit.
+    R is measured from the average entry and blends half at T1 and half at T2."""
     tag = "Short" if kind == "short" else "Long"
-    entry = sum(p * w for p, w in zip(entries, TRANCHE_IN))
+    sign = -1 if kind == "short" else 1
+
+    def plan(n):
+        px = tranche_prices(zone_prices, n)
+        w = TRANCHE_LAYOUTS[n]
+        e = sum(p * q for p, q in zip(px, w))
+        r = sign * (e - stop)
+        return px, w, e, r
+
+    px, wts, entry, risk = plan(3)
+
     def no(msg):
         if notes is not None:
             notes.append(f"{tag} at {level_name} ({fmt(entry)}): {msg}")
         return None
     if t1 is None:
         return no("no weekly target zone beyond the entry")
-    sign = -1 if kind == "short" else 1
-    risk = sign * (entry - stop)
     if risk <= 0 or sign * (t1 - entry) <= 0:
         return no("no room to a target")
+    # how many $10+ tranches fit at this dollar risk
+    for n in (3, 2, 1):
+        px, wts, entry, risk = plan(n)
+        if risk <= 0:
+            continue
+        size = RISK_USD / (risk / entry)
+        if size * min(wts) >= MIN_ORDER_USD:
+            break
+    else:
+        return no(f"at ${RISK_USD:g} risk the position is under the ${MIN_ORDER_USD:g} minimum order")
+    if size * min(wts) < MIN_ORDER_USD:
+        return no(f"at ${RISK_USD:g} risk the position (${size:.0f}) is under the ${MIN_ORDER_USD:g} minimum order")
     r1 = sign * (t1 - entry) / risk
     r2 = sign * (t2 - entry) / risk if t2 is not None else None
     rr = r1 * TRANCHE_OUT[0] + (r2 if r2 is not None else r1) * TRANCHE_OUT[1]
-    dist = (entries[0] - price) / price  # first tranche vs price; + means above price
+    dist = (px[0] - price) / price  # first tranche vs price; + means above price
     if abs(dist) > MAX_DIST:
         return no(f"first entry {abs(dist) * 100:.0f}% from price (limit {MAX_DIST * 100:.0f}%)")
     if sign * (price - stop) <= 0:
         return no("price is already past the stop")
-    near_edge = entries[0]
+    near_edge = zone_prices[0]
     status = "at level" if (price <= near_edge * (1 + AT_LEVEL) if kind == "long" else price >= near_edge * (1 - AT_LEVEL)) else "approaching"
     risk_pct = risk / entry * 100
     if risk_pct > MAX_STOP_PCT:
@@ -219,7 +251,6 @@ def make_setup(kind, coin, price, entries, stop, t1, t2, reason, level_name, not
     need = MIN_RR_SHORT if kind == "short" else MIN_RR
     if rr < need:
         return no(f"targets {fmt(t1)}" + (f" / {fmt(t2)}" if t2 else "") + f" give {rr:.1f}R blended (need {need:g}R)")
-    size = RISK_USD / (risk_pct / 100)
     return {
         "id": f"{coin}:{reason['type']}",
         "coin": coin,
@@ -228,7 +259,7 @@ def make_setup(kind, coin, price, entries, stop, t1, t2, reason, level_name, not
         "status": status,
         "level": level_name,
         "entry": entry,
-        "entries": [{"px": p, "pct": int(w * 100), "usd": round(size * w, 2)} for p, w in zip(entries, TRANCHE_IN)],
+        "entries": [{"px": p, "pct": int(round(q * 100)), "usd": round(size * q, 2)} for p, q in zip(px, wts)],
         "stop": stop,
         "t1": t1,
         "t2": t2,
@@ -301,12 +332,19 @@ def analyse(coin_row, daily):
 
     # weekly trend: which direction the weekly chart allows
     w25_slope = slope(w[25], 4) or 0
-    long_ok = bool(wE[50]) and price > wE[50] and w25_slope >= -0.01
-    short_ok = bool(wE[100] and wE[25] and wE[50]) and price < wE[100] and wE[25] < wE[50]
+    w_long = bool(wE[50]) and price > wE[50] and w25_slope >= -0.01
+    w_short = bool(wE[100] and wE[25] and wE[50]) and price < wE[100] and wE[25] < wE[50]
+    # rule 1 (as updated): weekly trend first, but a daily that has completely flipped
+    # (25/50/100 EMAs fully stacked the other way) also allows trades in the daily's direction
+    d_bull = all(dE[n] for n in EMA_LENGTHS) and dE[25] > dE[50] > dE[100]
+    d_bear = all(dE[n] for n in EMA_LENGTHS) and dE[25] < dE[50] < dE[100]
+    long_ok = w_long or (d_bull and ALLOW_DAILY_FLIP)
+    short_ok = w_short or (d_bear and ALLOW_DAILY_FLIP)
+    trend_of = {"long": "weekly" if w_long else "daily flip", "short": "weekly" if w_short else "daily flip"}
     if not long_ok:
-        notes.append("No longs: price is below the weekly 50 EMA or the weekly 25 EMA is falling")
+        notes.append("No longs: weekly trend isn't up and the daily EMAs aren't fully stacked bullish")
     if not short_ok:
-        notes.append("No shorts: weekly trend is not down (needs price below the weekly 100 EMA and 25 under 50)")
+        notes.append("No shorts: weekly trend isn't down and the daily EMAs aren't fully stacked bearish")
 
     # obstacles price must get through before a target: every weekly zone, the daily 25/50/100 EMAs
     # and daily swing highs/lows of the last 6 months. Target 1 is the first one in the way.
@@ -318,7 +356,7 @@ def analyse(coin_row, daily):
         level just past it (supply/demand that would otherwise sit right behind the stop)."""
         lo, hi = min(z["lo"], z["mid"] - 0.25 * a), max(z["hi"], z["mid"] + 0.25 * a)
         if kind == "long":
-            entries = [hi, z["mid"], lo]                      # scale in from the top of the zone down
+            entries = (hi, z["mid"], lo)                      # scale in from the top of the zone down
             stop = lo - 0.5 * a
             for o in sorted([o for o in zones if o["hi"] < lo], key=lambda o: -o["hi"]):
                 if o["hi"] >= stop - a:                       # another level right under the stop: go below it
@@ -331,7 +369,7 @@ def analyse(coin_row, daily):
             t2 = next((v for v in wk if t1 is not None and v > t1 + a), None)
             tgts = [v for v in (t1, t2) if v is not None]
         else:
-            entries = [lo, z["mid"], hi]                      # scale in from the bottom of the zone up
+            entries = (lo, z["mid"], hi)                      # scale in from the bottom of the zone up
             stop = hi + 0.5 * a
             for o in sorted([o for o in zones if o["lo"] > hi], key=lambda o: o["lo"]):
                 if o["lo"] <= stop + a:
@@ -402,6 +440,13 @@ def analyse(coin_row, daily):
                 break
 
     setups = [x for x in candidates if x]
+    for x in setups:
+        x["trend"] = trend_of[x["side"]]
+        if x["trend"] == "daily flip":
+            x["why"] = (f"Against the weekly trend: the daily 25/50/100 EMAs are fully stacked "
+                        f"{'bullish' if x['side'] == 'long' else 'bearish'}. " + x["why"].split(". ", 1)[-1])
+        # rule 2 (as updated): exit the runner on the weekly
+        x["runner"] = {"ema": "weekly 25 EMA", "value": wE[25]}
 
     # ---- daily timing, judged on closed daily candles (today's candle is still forming):
     #      confirmed = the zone was traded into in the last 3 closed days AND the last closed day
@@ -428,7 +473,13 @@ def analyse(coin_row, daily):
         kept.append(x)
     setups = kept
 
-    # ---- rule 6: against a strong move, only take the trade after a confirmed daily rejection
+    # ---- entry rule: price already in the zone -> enter only after a confirmed daily rejection
+    for x in setups:
+        if x["status"] == "at level":
+            x["needs_confirmation"] = True
+            x["why"] += " Price is already in the zone: enter only after a confirmed daily rejection."
+
+    # ---- rule 5: against a strong move, only take the trade after a confirmed daily rejection
     chg14 = (price / dc[-15] - 1) * 100 if len(dc) > 15 else 0
     stretch = info["stretch_d25"] or 0
     info["chg14"] = round(chg14, 1)
@@ -637,6 +688,7 @@ def main():
     # ---- rank: only the best TOP_K setups are "top" (shown first, and the only ones that alert)
     for s in all_setups:
         s["score"] = round(SCORE_RATING.get(s.get("rating"), 0) + SCORE_STATUS.get(s["status"], 0)
+                           + (2 if s.get("trend") == "weekly" else 0)
                            + min(s["rr"], 6) * 0.5 - abs(s["dist_pct"]) * 0.1
                            - (2 if s.get("needs_confirmation") and s["status"] != "confirmed" else 0)
                            - (2 if s.get("unlock") and s["side"] == "long" else 0), 2)

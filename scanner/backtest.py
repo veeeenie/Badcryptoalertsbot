@@ -36,12 +36,16 @@ import scan  # noqa: E402
 STEP = int(os.getenv("BT_STEP", "2"))          # evaluate every N days
 ENTRY_DAYS = 10                                 # limits live this long
 HOLD_DAYS = 60                                  # max holding period after first fill
+RUNNER_MAX_DAYS = 365                           # a weekly-exit runner can ride up to a year
 WARMUP_DAYS = 400                               # history needed before the first step
 FEE_IN, FEE_OUT = 0.00015, 0.00045
 OUT_PATH = os.path.join(scan.DATA_DIR, "backtest.json")
 
 
-def play(setup, future, be_after_t1=False):
+def play(setup, future, be_after_t1=False, runner=False, week_end=None, start=0):
+    """runner=True: after T1 the rest is not closed at T2; it is closed at the close of the first
+    week that closes beyond the weekly 25 EMA against the trade (week_end maps a daily index to
+    (weekly close, weekly 25 EMA) on the last day of each week)."""
     """Simulate one setup on the candles after it was created. Returns a result dict or None."""
     side = 1 if setup["side"] == "long" else -1
     entries = [(e["px"], e["pct"] / 100) for e in setup["entries"]]
@@ -79,7 +83,7 @@ def play(setup, future, be_after_t1=False):
         if not t1_done and ((side == 1 and c["h"] >= t1) or (side == -1 and c["l"] <= t1)):
             t1_done = True
             entries = [(p, 0) for p, _ in entries]  # cancel unfilled tranches
-            q = open_qty if t2 is None else open_qty * scan.TRANCHE_OUT[0]
+            q = open_qty if (t2 is None and not runner) else open_qty * scan.TRANCHE_OUT[0]
             pnl += side * (t1 - avg) * q
             fees += t1 * q * FEE_OUT
             open_qty -= q
@@ -87,12 +91,18 @@ def play(setup, future, be_after_t1=False):
                 return result(setup, pnl, fees, risk_unit, filled, "T1", i)
             if be_after_t1:
                 stop = avg                              # rest of the trade can't lose
-        if t1_done and t2 is not None and ((side == 1 and c["h"] >= t2) or (side == -1 and c["l"] <= t2)):
+        if runner and t1_done and week_end is not None and (start + i) in week_end:
+            wclose, w25 = week_end[start + i]
+            if w25 is not None and ((side == 1 and wclose < w25) or (side == -1 and wclose > w25)):
+                pnl += side * (wclose - avg) * open_qty
+                fees += wclose * open_qty * FEE_OUT
+                return result(setup, pnl, fees, risk_unit, filled, "runner: weekly close", i)
+        if not runner and t1_done and t2 is not None and ((side == 1 and c["h"] >= t2) or (side == -1 and c["l"] <= t2)):
             pnl += side * (t2 - avg) * open_qty
             fees += t2 * open_qty * FEE_OUT
             return result(setup, pnl, fees, risk_unit, filled, "T2", i)
         # 4) time stop
-        if first_fill_day is not None and i - first_fill_day >= HOLD_DAYS:
+        if first_fill_day is not None and i - first_fill_day >= (HOLD_DAYS if not runner else RUNNER_MAX_DAYS):
             pnl += side * (c["c"] - avg) * open_qty
             fees += c["c"] * open_qty * FEE_OUT
             return result(setup, pnl, fees, risk_unit, filled, "time", i)
@@ -113,14 +123,18 @@ def result(setup, pnl, fees, risk_unit, filled, how, days):
     }
 
 
+def tradeable(s):
+    """The rule book's entry rules: no entry that still needs a confirmed rejection."""
+    return not (s.get("needs_confirmation") and s["status"] != "confirmed")
+
+
 VARIANTS = {
-    "Current rules":                    dict(pick=lambda s: True, be=False),
-    "Breakeven stop after T1":          dict(pick=lambda s: True, be=True),
-    "Confirmed only":                   dict(pick=lambda s: s["status"] == "confirmed", be=False),
-    "Confirmed only + breakeven":       dict(pick=lambda s: s["status"] == "confirmed", be=True),
-    "Skip 'at level' + breakeven":      dict(pick=lambda s: s["status"] != "at level", be=True),
-    "Rating A + breakeven":             dict(pick=lambda s: s.get("rating") == "A", be=True),
-    "Confirmed + rating A + breakeven": dict(pick=lambda s: s["status"] == "confirmed" and s.get("rating") == "A", be=True),
+    "Your rules · fixed T2":                  dict(pick=tradeable, be=True, runner=False),
+    "Your rules · runner exits on weekly":    dict(pick=tradeable, be=True, runner=True),
+    "Weekly-trend trades only · runner":      dict(pick=lambda s: tradeable(s) and s.get("trend") == "weekly", be=True, runner=True),
+    "Daily-flip trades only · runner":        dict(pick=lambda s: tradeable(s) and s.get("trend") == "daily flip", be=True, runner=True),
+    "Your rules · runner · only 2R+ setups":  dict(pick=lambda s: tradeable(s) and s["rr"] >= 2, be=True, runner=True),
+    "Your rules · runner · confirmed only":   dict(pick=lambda s: s["status"] == "confirmed", be=True, runner=True),
 }
 
 
@@ -140,6 +154,19 @@ def collect():
         if len(daily) < WARMUP_DAYS + 30:
             continue
         sig = []
+        weekly = scan.weekly_from_daily(daily)
+        w25 = scan.ema([w["c"] for w in weekly], 25)
+        wk_index = {w["t"]: i for i, w in enumerate(weekly)}
+        week_end = {}
+        for j, dd in enumerate(daily):
+            nxt = daily[j + 1] if j + 1 < len(daily) else None
+            dt = datetime.fromtimestamp(dd["t"] / 1000, tz=timezone.utc)
+            if nxt is None or datetime.fromtimestamp(nxt["t"] / 1000, tz=timezone.utc).weekday() == 0:
+                key = int((dt - __import__("datetime").timedelta(days=dt.weekday())).replace(
+                    hour=0, minute=0, second=0, microsecond=0).timestamp() * 1000)
+                wi = wk_index.get(key)
+                if wi is not None:
+                    week_end[j] = (weekly[wi]["c"], w25[wi])
         for t in range(WARMUP_DAYS, len(daily) - 1, STEP):
             hist = daily[:t + 1]
             r = dict(row, price=hist[-1]["c"], chg24h=0, vol24h=0, funding_8h=0)
@@ -150,13 +177,13 @@ def collect():
                 continue
             if setups:
                 sig.append((t, setups))
-        out[coin] = (daily, sig)
+        out[coin] = (daily, sig, week_end)
     return out, round(time.time() - started)
 
 
-def simulate(signals, pick, be):
+def simulate(signals, pick, be, runner=False):
     trades = []
-    for coin, (daily, sig) in signals.items():
+    for coin, (daily, sig, week_end) in signals.items():
         busy_until = -1
         for t, setups in sig:
             if t <= busy_until:
@@ -166,7 +193,7 @@ def simulate(signals, pick, be):
                 continue
             cands.sort(key=lambda s: (s.get("rating", "C"), -s["rr"]))
             s = cands[0]
-            res = play(s, daily[t + 1:], be_after_t1=be)
+            res = play(s, daily[t + 1:], be_after_t1=be, runner=runner, week_end=week_end, start=t + 1)
             if res is None:
                 busy_until = t + ENTRY_DAYS
                 continue
@@ -174,7 +201,7 @@ def simulate(signals, pick, be):
                 "coin": coin, "date": datetime.fromtimestamp(daily[t]["t"] / 1000, tz=timezone.utc).date().isoformat(),
                 "type": s["type"], "side": s["side"], "rating": s.get("rating"), "status": s["status"],
                 "planned_rr": s["rr"], "risk_pct": s["risk_pct"],
-                "needs_confirmation": bool(s.get("needs_confirmation")),
+                "needs_confirmation": bool(s.get("needs_confirmation")), "trend": s.get("trend"),
             })
             trades.append(res)
             busy_until = t + 1 + res["days"]
@@ -228,20 +255,15 @@ def summarise(trades):
 def main():
     scan.REQUIRE_HISTORY = True
     signals, secs = collect()
-    scan.REQUIRE_HISTORY = False
-    signals_young, secs2 = collect()
-    secs += secs2
     variants = {}
-    for label, sig in (("", signals), (" · young-coin EMAs on", signals_young)):
-        for name, v in VARIANTS.items():
-            if label and name not in ("Current rules", "Confirmed only + breakeven", "Skip 'at level' + breakeven",
-                                      "Confirmed + rating A + breakeven"):
-                continue
-            tr = simulate(sig, v["pick"], v["be"])
-            sm = summarise(tr)
-            variants[name + label] = {"all": sm["summary"].get("all"), "by_year": sm["by_year"],
-                                      "long": sm["summary"].get("side:long"), "short": sm["summary"].get("side:short")}
-    base = simulate(signals, VARIANTS["Current rules"]["pick"], False)
+    for name, v in VARIANTS.items():
+        tr = simulate(signals, v["pick"], v["be"], v["runner"])
+        sm = summarise(tr)
+        variants[name] = {"all": sm["summary"].get("all"), "by_year": sm["by_year"],
+                          "long": sm["summary"].get("side:long"), "short": sm["summary"].get("side:short"),
+                          "exits": sm["exits"]}
+    main_v = VARIANTS["Your rules · runner exits on weekly"]
+    base = simulate(signals, main_v["pick"], main_v["be"], main_v["runner"])
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "runtime_s": secs,
