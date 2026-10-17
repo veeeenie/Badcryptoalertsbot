@@ -100,6 +100,17 @@ tr.coinrow:hover td{background:var(--chip)}
 tr.notes td{white-space:normal;text-align:left;background:var(--bg);font:13px/1.5 var(--font-body);color:var(--muted);position:static}
 tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 .foot{color:var(--muted);font-size:12px;max-width:78ch}
+.newsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px}
+.ncard{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:grid;gap:6px;align-content:start;min-width:0}
+.ncard.long{border-left:4px solid var(--long)} .ncard.short{border-left:4px solid var(--short)}
+.ncard .hd{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ncard .hd b{font:700 17px var(--font-display);letter-spacing:.02em;margin-right:4px}
+.ncard p{margin:0}
+.ncard ul{margin:0;padding-left:18px}
+.ncard a{color:var(--accent)}
+.ncard .un{background:var(--warn-bg);color:var(--warn);border-radius:4px;padding:4px 8px;font-size:13px}
+@media (max-width:400px){.newsgrid{grid-template-columns:1fr}}
+
 @media (max-width:720px){
   .row summary{grid-template-columns:1fr auto}
   .ladder{grid-column:1/-1;order:3}
@@ -111,7 +122,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 <div class="wrap">
   <header>
     <h1>Setup Desk</h1>
-    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline"><a class="rulelink" href="#journal">Journal</a><a class="rulelink" href="#backtest">Backtest</a><a class="rulelink" href="rules.html">Rule book</a><div class="meta" id="meta">Loading scan…</div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline"><a class="rulelink" href="#news">News</a><a class="rulelink" href="#journal">Journal</a><a class="rulelink" href="#backtest">Backtest</a><a class="rulelink" href="rules.html">Rule book</a><div class="meta" id="meta">Loading scan…</div></div>
   </header>
 
   <div class="banner" id="banner" hidden>Testing mode: the rules are being checked against two years of history. Telegram alerts are paused and these setups are not yet validated.</div>
@@ -132,6 +143,12 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
       </div>
     </div>
     <div class="list" id="list"><div class="empty">Waiting for the first scan. Setups appear here once the hourly scanner has run.</div></div>
+  </section>
+
+  <section style="display:grid;gap:10px" id="nsec">
+    <a id="news"></a>
+    <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>News &amp; unlocks</h2><span class="muted" style="font-size:13px" id="nmeta"></span></div>
+    <div class="newsgrid" id="nlist"><div class="empty">No news yet. The news and unlock scan runs every morning at 7:47 IST.</div></div>
   </section>
 
   <section style="display:grid;gap:10px" id="jsec" hidden>
@@ -221,6 +238,7 @@ function render(){
   list.innerHTML=shown.length? shown.map(s=>rowHTML(s,price[s.coin])).join("")
     : `<div class="empty">No ${FILTER==="all"?"":"matching "}setups right now. The scanner checks again every hour.</div>`;
   renderCoins();
+  renderNews();
 }
 
 function ladder(s,p){
@@ -262,7 +280,7 @@ function rowHTML(s,p){
     <p>${s.confluence&&s.confluence.length?`<b>Rating ${esc(s.rating)}:</b> entry lines up with ${s.confluence.map(esc).join(", ")}.`:`<b>Rating C:</b> no other level near the entry.`}</p>
     ${s.unlock?`<p><b>Unlock in the next 14 days:</b> ${esc(s.unlock.date)}, ${esc(s.unlock.pct)}% of supply. ${s.side==="long"?"Supply hitting the market works against this long.":"Extra supply supports this short."}</p>`:""}
     ${intel.summary?`<p>${esc(intel.summary)}</p>`:""}
-    ${un?`<p><b>Unlock:</b> ${esc(un.date||"")} ${un.amount?"· "+esc(un.amount):""} ${un.pct_supply?"("+esc(un.pct_supply)+" of supply)":""} ${un.note?"· "+esc(un.note):""} ${un.source?`<a href="${esc(un.source)}" target="_blank" rel="noopener">source</a>`:""}</p>`:""}
+    ${un?`<p><b>Unlock:</b> ${esc(un.date||"")} ${un.amount?"· "+esc(un.amount):""} ${un.pct_supply?"("+esc(un.pct_supply)+"% of supply)":""} ${un.note?"· "+esc(un.note):""} ${un.source?`<a href="${esc(un.source)}" target="_blank" rel="noopener">source</a>`:""}</p>`:""}
     ${news.length?`<ul>${news.slice(0,5).map(n=>`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a> <span class="muted">${esc(n.date||"")}</span></li>`).join("")}</ul>`:'<p class="muted">No news pulled for this coin yet.</p>'}
     <p class="muted">Rule book: resting limits at the zone only, never chase; each order at least $10. Stop and take-profit go in with the entry.${s.needs_confirmation&&s.status!=="confirmed"?" No entry until a daily close confirms the rejection.":""}</p>
     <p><a href="${trade}" target="_blank" rel="noopener">Open ${esc(s.coin)} on trade.xyz</a></p>
@@ -285,6 +303,25 @@ function sortVal(c,k){
   if(/^[dw]\d+$/.test(k)) return (k[0]==="d"?c.d_ema:c.w_ema)[k.slice(1)];
   return c[k];
 }
+function renderNews(){
+  const C=INTEL.coins||{}, keys=Object.keys(C);
+  const nm=document.getElementById("nmeta"), nl=document.getElementById("nlist");
+  if(!keys.length){return;}
+  nm.textContent=`Updated ${ago(INTEL.generated_at)} · researched for the coins with setups · refreshed daily at 7:47 IST`;
+  const set={}; (DATA?.setups||[]).forEach(s=>{ if(!set[s.coin]||s.top) set[s.coin]=s; });
+  const rank=k=>{const s=set[k]; return s?(s.top?0:1):2;};
+  keys.sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));
+  nl.innerHTML=keys.map(k=>{
+    const c=C[k], s=set[k], un=c.unlock, news=c.news||[];
+    const side=s?s.side:"";
+    return `<article class="ncard ${side}">
+      <div class="hd"><b>${esc(k)}</b>${s?`<span class="pill ${side}">${LABEL[s.type]||esc(s.type)}</span>${s.top?'<span class="pill">Top setup</span>':""}`:'<span class="pill">No setup now</span>'}</div>
+      ${c.summary?`<p>${esc(c.summary)}</p>`:""}
+      ${un?`<div class="un"><b>Unlock ${esc(un.date||"")}</b>${un.amount?" · "+esc(un.amount):""}${un.pct_supply?" · "+esc(un.pct_supply)+"% of supply":""}${un.note?" · "+esc(un.note):""}${un.source?` · <a href="${esc(un.source)}" target="_blank" rel="noopener">source</a>`:""}</div>`:""}
+      ${news.length?`<ul>${news.map(n=>`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a> <span class="muted">${esc(n.date||"")}</span></li>`).join("")}</ul>`:'<p class="muted">No material news in the last 7 days.</p>'}
+    </article>`;}).join("");
+}
+
 function renderCoins(){
   const t=document.getElementById("coins");
   t.tHead.innerHTML="<tr>"+COLS.map(([k,l])=>`<th scope="col"><button type="button" data-k="${k}">${l}${SORT.key===k?(SORT.dir>0?" ▲":" ▼"):""}</button></th>`).join("")+"</tr>";

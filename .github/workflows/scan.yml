@@ -1,24 +1,28 @@
 name: Setup scan
 
+# GitHub's scheduler often delays or drops cron runs, so a scheduled run doesn't scan once and stop:
+# it scans every hour at :07 UTC for about 5.5 hours. Scheduled triggers that land meanwhile wait
+# in the queue and take over when it ends, so one landed trigger every few hours keeps scans hourly.
+# Pushes to the scanner code and the manual "Run workflow" button do a single scan straight away.
 on:
   push:
     branches: [main]
-    paths: ["scanner/journal.py", "scanner/scan.py"]
+    paths: ["scanner/journal.py", "scanner/scan.py", ".github/workflows/scan.yml"]
   schedule:
-    - cron: "7 * * * *"   # every hour at :07 UTC
-  workflow_dispatch: {}    # "Run workflow" button for a manual scan
+    - cron: "7,37 * * * *"   # two chances an hour for GitHub to start the loop
+  workflow_dispatch: {}      # "Run workflow" button for a manual scan
 
 permissions:
   contents: write
 
 concurrency:
-  group: setup-scan
+  group: setup-scan-${{ github.event_name == 'schedule' && 'loop' || 'once' }}
   cancel-in-progress: false
 
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v5
 
@@ -29,24 +33,32 @@ jobs:
       - name: Install
         run: pip install -r scanner/requirements.txt
 
-      - name: Scan
+      - name: Scan (hourly loop on schedule, once otherwise)
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python scanner/scan.py
-
-      - name: Journal
-        env:
           JOURNAL_WALLET: "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
-        run: python scanner/journal.py
-
-      - name: Save results
+          LOOP_MINUTES: ${{ github.event_name == 'schedule' && '330' || '0' }}
         run: |
           git config user.name "setup-scanner"
           git config user.email "actions@users.noreply.github.com"
-          git add docs/data/setups.json docs/data/state.json
-          [ -f docs/data/journal.json ] && git add docs/data/journal.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Scan $(date -u +'%Y-%m-%d %H:%M') UTC"
-          git pull --rebase --autostash
-          git push
+          end=$(( $(date +%s) + LOOP_MINUTES * 60 ))
+          while :; do
+            # pick up the latest code and alert state before every scan
+            git pull -q --rebase --autostash origin main || git rebase --abort 2>/dev/null || true
+            python scanner/scan.py || echo "::warning::scan failed"
+            python scanner/journal.py
+            git add docs/data/setups.json docs/data/state.json
+            [ -f docs/data/journal.json ] && git add docs/data/journal.json
+            if ! git diff --cached --quiet; then
+              git commit -q -m "Scan $(date -u +'%Y-%m-%d %H:%M') UTC"
+              for i in 1 2 3; do
+                git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main && break
+                sleep 5
+              done
+            fi
+            next=$(( ( $(date +%s) / 3600 + 1 ) * 3600 + 420 ))   # next hour at :07 UTC
+            [ "$next" -gt "$end" ] && break
+            echo "next scan at $(date -u -d @$next +%H:%M) UTC"
+            sleep $(( next - $(date +%s) ))
+          done
