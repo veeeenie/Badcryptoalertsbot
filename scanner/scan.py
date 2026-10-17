@@ -35,6 +35,10 @@ MIN_ORDER_USD = 10.0  # rule 4: every tranche order must be at least $10
 MAX_DIST = 0.10       # ignore setups whose entry is more than 10% from price
 AT_LEVEL = 0.02       # within 2% of entry counts as "at level"
 MAX_STOP_PCT = 15.0   # skip setups whose stop is more than 15% from entry (too volatile to size sensibly)
+# Under test (17 Oct 2026, backtest variant only; live = 0): also put the stop beyond the high/low of the
+# last N weekly candles (current week included) when price has traded through the zone, so the stop
+# never sits inside this week's or last week's wick.
+RECENT_WEEKS_STOP = int(os.getenv("RECENT_WEEKS_STOP", "0"))
 RISK_USD = float(os.getenv("RISK_USD", "2"))  # dollar risk per trade used for the position-size hint
 SKIP = {"PURR"}       # spot-like / illiquid names to ignore
 
@@ -363,6 +367,10 @@ def analyse(coin_row, daily):
                     stop = o["lo"] - 0.5 * a
                 else:
                     break
+            if RECENT_WEEKS_STOP:
+                rl = min(x["l"] for x in weekly[-RECENT_WEEKS_STOP:])
+                if rl < lo:
+                    stop = min(stop, rl - 0.5 * a)
             obst = sorted([v for v in obstacles if v > hi + 0.5 * a])
             wk = sorted([o["mid"] for o in zones if o["lo"] > hi + 0.5 * a] + ([ath] if ath > hi + a else []))
             t1 = obst[0] if obst else (wk[0] if wk else None)
@@ -376,6 +384,10 @@ def analyse(coin_row, daily):
                     stop = o["hi"] + 0.5 * a
                 else:
                     break
+            if RECENT_WEEKS_STOP:
+                rh = max(x["h"] for x in weekly[-RECENT_WEEKS_STOP:])
+                if rh > hi:
+                    stop = max(stop, rh + 0.5 * a)
             obst = sorted([v for v in obstacles if v < lo - 0.5 * a], reverse=True)
             wk = sorted([o["mid"] for o in zones if o["hi"] < lo - 0.5 * a] + ([atl] if atl < lo - a else []),
                         reverse=True)

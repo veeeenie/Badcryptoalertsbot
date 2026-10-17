@@ -135,6 +135,7 @@ VARIANTS = {
     "Fixed T2 · daily-flip trades only":          dict(pick=lambda s: tradeable(s) and s.get("trend") == "daily flip", be=True, runner=False),
     "Fixed T2 · no daily-flip shorts":            dict(pick=lambda s: tradeable(s) and not (s.get("trend") == "daily flip" and s["side"] == "short"), be=True, runner=False),
     "Fixed T2 · no breakeven (rest rides to T2/stop)": dict(pick=tradeable, be=False, runner=False),
+    "Fixed T2 · stop beyond last 2 weeks' wick":  dict(pick=tradeable, be=True, runner=False, alt=True),
 }
 
 
@@ -171,21 +172,27 @@ def collect():
             hist = daily[:t + 1]
             r = dict(row, price=hist[-1]["c"], chg24h=0, vol24h=0, funding_8h=0)
             try:
+                scan.RECENT_WEEKS_STOP = 0
                 _, setups = scan.analyse(r, hist)
+                scan.RECENT_WEEKS_STOP = 2                  # variant: stop beyond the last 2 weeks' wick
+                _, alt = scan.analyse(r, hist)
             except Exception as e:
                 print("analyse error", coin, e, file=sys.stderr)
                 continue
-            if setups:
-                sig.append((t, setups))
+            finally:
+                scan.RECENT_WEEKS_STOP = 0
+            if setups or alt:
+                sig.append((t, setups, alt))
         out[coin] = (daily, sig, week_end)
     return out, round(time.time() - started)
 
 
-def simulate(signals, pick, be, runner=False):
+def simulate(signals, pick, be, runner=False, alt=False):
     trades = []
     for coin, (daily, sig, week_end) in signals.items():
         busy_until = -1
-        for t, setups in sig:
+        for t, setups0, setups1 in sig:
+            setups = setups1 if alt else setups0
             if t <= busy_until:
                 continue
             cands = [s for s in setups if pick(s)]
@@ -257,12 +264,12 @@ def main():
     signals, secs = collect()
     variants = {}
     for name, v in VARIANTS.items():
-        tr = simulate(signals, v["pick"], v["be"], v["runner"])
+        tr = simulate(signals, v["pick"], v["be"], v["runner"], v.get("alt", False))
         sm = summarise(tr)
         variants[name] = {"all": sm["summary"].get("all"), "by_year": sm["by_year"],
                           "long": sm["summary"].get("side:long"), "short": sm["summary"].get("side:short"),
                           "exits": sm["exits"]}
-    main_v = VARIANTS["Your rules · runner exits on weekly"]
+    main_v = VARIANTS["Your rules · fixed T2"]          # the live rules (rule 10: fixed weekly T2)
     base = simulate(signals, main_v["pick"], main_v["be"], main_v["runner"])
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
