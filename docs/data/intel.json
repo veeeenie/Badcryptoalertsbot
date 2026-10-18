@@ -1,148 +1,114 @@
 {
- "generated_at": "2026-10-17T02:24:46Z",
+ "generated_at": "2026-10-18T02:28:28Z",
  "coins": {
-  "DOGE": {
-   "summary": "Bitwise's DOGE ETF (BWOW) was delisted and is paying out cash around Oct 22, and a whale sent 300M DOGE to Binance. Both add sell pressure against the long.",
-   "news": [
-    {
-     "title": "SEC Form 25 delists Bitwise's DOGE ETF (BWOW); last trading day Oct 14, cash payout around Oct 22",
-     "url": "https://cryptobriefing.com/sec-form-25-bitwise-dogecoin-etf/",
-     "date": "Oct 13"
-    },
-    {
-     "title": "DOGE drops about 4% on the BWOW liquidation, whale selling and broad risk-off",
-     "url": "https://coinmarketcap.com/top-stories/6acd760c6b26253364675c96/",
-     "date": "Oct 13"
-    },
-    {
-     "title": "Whale sends 300M DOGE (about $24M) to Binance",
-     "url": "https://coinmarketcap.com/community/articles/6ad21ea55983ca64022aa893",
-     "date": "Oct 16"
-    },
-    {
-     "title": "DOGE has the second-largest 24h net outflow among tracked assets (about $29.7M)",
-     "url": "https://tokenpost.com/news/investing/33220",
-     "date": "Oct 16"
-    }
-   ]
-  },
-  "KAS": {
-   "summary": "Nothing material. The KCC-20 token standard is in final review. KAS is mined, so it has no unlocks.",
-   "news": [
-    {
-     "title": "Kaspa's KCC-20 token standard enters last call before it is finalized",
-     "url": "https://www.kucoin.com/news/insight/KAS/6ad14434fa4b9e000754b81b",
-     "date": "Oct 15"
-    }
-   ]
-  },
   "HBAR": {
-   "summary": "The news is constructive: Deutsche Bank is staking HBAR and tokenized stocks are now on HashPack. It runs against the short, though ETF flows are flat.",
+   "summary": "Mixed for the short. The Deutsche Bank staking headline (via Taurus) is bullish, but the HBAR ETF has had flat flows since Oct 2 and Hitachi left the council. No unlock overhang.",
    "news": [
     {
-     "title": "Deutsche Bank stakes HBAR and issues tokenized RWA shares via Taurus",
-     "url": "https://en.coin-turk.com/deutsche-bank-adopts-hbar-staking-and-tokenization-via-taurus-platform/",
+     "title": "Taurus integration gives Deutsche Bank HBAR staking and tokenization; Hitachi exits Hedera council",
+     "url": "https://en.coinotag.com/taurus-integrates-hedera-hbar-staking-deutsche-bank",
      "date": "Oct 12"
     },
     {
-     "title": "HashPack adds trading of Robinhood-issued tokenized stocks on Hedera",
-     "url": "https://cryptoticker.io/en/hedera-hashpack-stock-tokens-trading/",
-     "date": "Oct 12"
+     "title": "HBAR's monthly gain seen as retail-driven while its spot ETF took no new money Oct 2-12",
+     "url": "https://finance.yahoo.com/markets/crypto/articles/hedera-17-month-xrp-1-195014926.html",
+     "date": "Oct 13"
     },
     {
-     "title": "Canary spot HBAR ETF sees flat flows as altcoin ETFs stall",
+     "title": "Hedera spot ETF among altcoin funds with zero net flows on Oct 13",
      "url": "https://tokenpost.com/news/investing/31673",
      "date": "Oct 14"
     }
    ]
   },
-  "JUP": {
-   "summary": "JUP is up about 51% in four weeks. Jupiter Lend is now Solana's largest lending market, and the YOLO launch adds momentum against the short. JUP is reported fully unlocked.",
+  "FET": {
+   "summary": "No FET-specific catalyst and no unlock overhang. FET fell about 9% in the Oct 13 AI/KOSPI selloff, so the long depends on AI-sector risk sentiment recovering.",
    "news": [
     {
-     "title": "Jupiter launches YOLO, an experimental 1000x leverage product backed by a liquidity pool",
-     "url": "https://getchainnews.com/en/newflash/0dB0ExALVO",
-     "date": "Oct 15"
-    },
+     "title": "KOSPI crash drags AI tokens lower; FET down about 9% on the day",
+     "url": "https://cryptorank.io/news/feed/7be62-south-koreas-kospi-crashes-6-5-today-ai-crypto-down-10",
+     "date": "Oct 13"
+    }
+   ]
+  },
+  "APT": {
+   "summary": "Supportive for the long: contributor and investor vesting ended in October, cutting monthly unlocks about 60% to ~4.5M APT. Encrypted mempool and Block-STM v2 went live. Next (smaller) unlock is Nov 11-12.",
+   "news": [
     {
-     "title": "JUP up about 51% in four weeks as Jupiter Lend passes Kamino; fees remain below the 2025 peak",
-     "url": "https://cryptobriefing.com/jup-rises-jupiter-fees-decline/",
+     "title": "Aptos contributor/investor vesting ends; monthly releases fall ~60% to ~4.54M APT",
+     "url": "https://finance.yahoo.com/markets/crypto/articles/aptos-ends-four-token-unlocks-224106151.html",
      "date": "Oct 13"
     },
     {
-     "title": "NEAR liquidity reaches Solana via Sunrise and can be traded on Jupiter",
-     "url": "https://getchainnews.com/en/newflash/rkVbaJAnBw",
-     "date": "Oct 16"
-    }
-   ]
-  },
-  "FET": {
-   "summary": "There is no FET-specific catalyst. It is trading with the broad AI and tech selloff.",
-   "news": [
-    {
-     "title": "FET down about 3% in a broad AI and tech selloff",
-     "url": "https://coinmarketcap.com/top-stories/6ad25a8ac32e4538f4fa9c63/",
-     "date": "Oct 16"
-    }
-   ]
-  },
-  "SYRUP": {
-   "summary": "The Q3 update was solid: $1.7B in loans and 2.9M SYRUP bought back. Buybacks support the long, and about 98% of supply already circulates.",
-   "news": [
-    {
-     "title": "Maple Q3: $1.7B in active loans, $4.4M revenue, 2.9M SYRUP bought back",
-     "url": "https://maple.finance/insights/maple-q3-ecosystem-update",
+     "title": "Aptos enables opt-in encrypted mempool on mainnet",
+     "url": "https://coinmarketcap.com/community/articles/6ad0fc07c487575c4ddfa783",
      "date": "Oct 15"
     },
     {
-     "title": "Henri Arslanian joins Maple's Q3 results call on buybacks and onchain lending",
-     "url": "https://coinfomania.com/henri-arslanian-joins-maple-finance-for-q3-results-discussion/",
-     "date": "Oct 12"
+     "title": "Block-STM v2 becomes the default execution engine on Aptos mainnet",
+     "url": "https://www.tradingview.com/news/coindar:c22add2f1094b:0-aptos-enables-block-stm-v2-on-mainnet/",
+     "date": "Oct 15"
+    }
+   ],
+   "unlock": {
+    "date": "Nov 11",
+    "date_iso": "2026-11-11",
+    "amount": "~4.54M APT",
+    "note": "Community and Foundation pools (monthly linear); contributor/investor vesting has ended. Some sources point to Nov 12.",
+    "source": "https://tokenomist.ai/aptos"
+   }
+  },
+  "SYRUP": {
+   "summary": "Steady fundamentals for the long: Q3 loans $1.67B (+12% YoY, -9% QoQ) with ongoing revenue buybacks. About 98% of supply circulates, so no unlock risk.",
+   "news": [
+    {
+     "title": "Maple Q3: loans outstanding $1.67B, up 12% YoY but down 9% QoQ",
+     "url": "https://tokenpost.com/news/business/33697",
+     "date": "Oct 16"
     },
     {
-     "title": "Citrini Research names Maple a possible winner from Wall Street blockchain adoption",
+     "title": "Citrini Research lists SYRUP among tokens to watch for institutional adoption",
      "url": "https://www.ccn.com/news/crypto/bitcoin-ethereum-best-wall-streets-blockchain-citrini-8-alternatives/",
      "date": "Oct 12"
     }
    ]
   },
-  "ATOM": {
-   "summary": "Wells Fargo building tokenized deposits on Cosmos tech is a positive headline against the short. ATOM has no vesting unlocks (inflationary supply).",
+  "DOT": {
+   "summary": "Supports the short: DOT sold off after the dotUSD launch (~8.7% below Oct 10) amid debate over its USDT backing, and funding is slightly negative. Inflationary issuance, no discrete unlock.",
    "news": [
     {
-     "title": "Wells Fargo building a 24/7 tokenized deposit system on Cosmos technology",
-     "url": "https://www.kucoin.com/news/insight/ATOM/6aca2f8d44c21300078909a9",
-     "date": "Oct 10"
+     "title": "DOT trades ~8.7% below its Oct 10 level near $1.16 despite the dotUSD referendum passing",
+     "url": "https://www.tokenpost.com/news/investing/34004",
+     "date": "Oct 17"
+    },
+    {
+     "title": "Ref 1954 pushes dotUSD as Polkadot's preferred stablecoin, sparking USDT-backing debate",
+     "url": "https://en.coin-turk.com/polkadot-foundation-backs-dotusd-as-primary-stablecoin-triggers-debate-over-usdt-reserves/",
+     "date": "Oct 12"
+    },
+    {
+     "title": "New DOT DAO strategy mandate proposed on OpenGov",
+     "url": "https://coinmarketcap.com/community/articles/6acdd36df0e09614760a63a9",
+     "date": "Oct 13"
     }
    ]
   },
-  "ALT": {
-   "summary": "240.8M ALT unlocks on Oct 25, which is 2.4% of total supply and a larger share of circulating supply. It lands inside the window of the short. There is no news this week.",
-   "news": [],
-   "unlock": {
-    "date": "Oct 25",
-    "date_iso": "2026-10-25",
-    "amount": "240.8M ALT",
-    "note": "Monthly vesting, 2.4% of total supply. Recipients are foundation, investors, insiders and community per Tokenomics.com (Tokenomist lists advisors).",
-    "source": "https://app.tokenomics.com/tokenomics/altlayer/unlocks"
-   }
-  },
   "SEI": {
-   "summary": "About 55.6M SEI (around 0.8% of circulating supply) unlocked Oct 15. The next ecosystem-reserve unlock is Nov 15. Giga upgrade progress is supportive for the long.",
+   "summary": "For the long, the Staked SEI ETF (REX-Osprey) has an Oct 23 effective date in its filing, though not SEC-approved. The Oct 15 unlock (~0.84% of circulating) is done; the next is Nov 15.",
    "news": [
     {
-     "title": "Sei migrates EVM storage to FlatKV ahead of the Giga upgrade",
-     "url": "https://coinmarketcap.com/community/articles/6acf562d9f589f5f735016df",
-     "date": "Oct 14"
+     "title": "CFTC-regulated SEI perpetual futures go live for US users on OG.com Markets",
+     "url": "https://cryptobriefing.com/sei-perpetual-futures-og-com-markets/",
+     "date": "Oct 16"
     },
     {
-     "title": "Monthly unlock releases about 55.6M SEI (around 0.84% of circulating supply)",
+     "title": "Sei Giga roadmap marks Autobahn consensus mainnet as coming soon",
+     "url": "https://tokenpost.com/news/technology/33112",
+     "date": "Oct 16"
+    },
+    {
+     "title": "About 55.6M SEI unlocked, roughly 0.84% of circulating supply",
      "url": "https://www.tapbit.com/en/learn/article/sei-price-outlook-october-15-token-unlock-20261015",
-     "date": "Oct 15"
-    },
-    {
-     "title": "Sei outlines Giga roadmap: EVM-only chain, 200k TPS target, no mainnet date",
-     "url": "https://coinmarketcap.com/community/articles/6ad1263a614ab63dcd4efa89",
      "date": "Oct 15"
     }
    ],
@@ -151,97 +117,198 @@
     "date_iso": "2026-11-15",
     "amount": "undisclosed",
     "note": "Ecosystem reserve, monthly",
-    "source": "https://www.tokenomist.ai/sei-network"
+    "source": "https://tokenomist.ai/sei-network"
    }
   },
-  "INJ": {
-   "summary": "Momentum around ETF filings (Canary staked INJ ETF) and the leadership meetings with US regulators is a headline risk for the short. INJ has no unlocks.",
+  "OP": {
+   "summary": "The short is against strong momentum: OP is up ~66% in four weeks on Unichain moving to OP Enterprise and planned buybacks (which only start Feb 2027). The Oct 29 Unichain mainnet cutover is a possible sell-the-news date. No unlock before December.",
    "news": [
     {
-     "title": "Injective leadership meets White House, SEC and CFTC officials on tokenization",
-     "url": "https://www.coingabbar.com/en/injective-price-prediction-after-ceo-sec-cftc-meeting",
-     "date": "Oct 15"
-    },
-    {
-     "title": "Canary's proposed staked INJ ETF (INJC) on Cboe; 21Shares and REX-Osprey filings pending",
-     "url": "https://cryptobriefing.com/injective-inj-injc-staked-etf-filing/",
-     "date": "Oct 14"
-    },
-    {
-     "title": "Gulf Labs (Thailand's Gulf Group) joins as an institutional Injective validator",
-     "url": "https://cryptobriefing.com/injective-gulf-labs-institutional-validator-thailand/",
+     "title": "OP jumps 18% on Unichain migration and buyback plans, extending a 4-week rally",
+     "url": "https://cryptobriefing.com/optimism-op-jumps-18-percent-four-week-gain/",
      "date": "Oct 13"
     },
     {
-     "title": "INJ made tradable from X via Cashtag links to major exchanges",
-     "url": "https://coinmarketcap.com/community/articles/6aca460d742077364391e2ac",
-     "date": "Oct 10"
+     "title": "Unichain moves to OP Enterprise; mainnet cutover set for Oct 29",
+     "url": "https://coinmarketcap.com/academy/article/unichain-op-enterprise-migration-interop",
+     "date": "Oct 13"
+    },
+    {
+     "title": "Lido adds direct ETH staking on Optimism and other L2s via Chainlink CCIP",
+     "url": "https://www.tradingview.com/news/coinmarketcal:b86bfc6b5094b:0-chainlink-ccip-powers-lido-s-direct-eth-staking-on-four-l2-networks-15-oct-2026/",
+     "date": "Oct 15"
+    },
+    {
+     "title": "OP Stack chains handled about two-thirds of Ethereum L2/L3 transactions Jan-Sep",
+     "url": "https://tokenpost.com/news/technology/33659",
+     "date": "Oct 17"
+    }
+   ]
+  },
+  "INJ": {
+   "summary": "The short faces a fresh squeeze: INJ rose ~30% on Oct 16 after leadership met White House, SEC and CFTC officials, with open interest up 44%. Pending INJ ETF filings are the main headline risk. No unlocks.",
+   "news": [
+    {
+     "title": "INJ rallies about 30% after Injective leadership meets White House, SEC and CFTC officials",
+     "url": "https://financefeeds.com/injective-price-prediction-inj-white-house-sec/",
+     "date": "Oct 16"
+    },
+    {
+     "title": "Analysts note the Washington meeting is not an approval and price may be ahead of facts",
+     "url": "https://www.coingabbar.com/en/injective-price-prediction-after-ceo-sec-cftc-meeting",
+     "date": "Oct 16"
     }
    ]
   },
   "GRASS": {
-   "summary": "A contributor and investor unlock is due Oct 28, inside the window of the short. Sources disagree on the size and none give a percent of supply.",
+   "summary": "Clear supply catalyst for the short: ~31.6M GRASS (~4.5% of circulating, per DropsTab) unlocks Oct 28 as the extended contributor lock-up ends.",
    "news": [
     {
-     "title": "Grass sets Jan 22, 2027 final claim deadline for the Season 2 airdrop",
-     "url": "https://www.coingabbar.com/en/grass-airdrop-season-2-claim-deadline-grass-coin-price-today",
+     "title": "Grass launches a Contents API that turns web pages into clean text for AI agents",
+     "url": "https://tokenpost.com/news/technology/30436",
+     "date": "Oct 12"
+    },
+    {
+     "title": "Grass Airdrop Season 2 claim deadline set for Jan 22, 2027",
+     "url": "https://coinmarketcap.com/community/articles/6acdfd9e724b776df7c8a2c2",
      "date": "Oct 13"
     }
    ],
    "unlock": {
     "date": "Oct 28",
     "date_iso": "2026-10-28",
-    "amount": "~31.6M GRASS per DropsTab (other sources lower)",
-    "note": "Contributors (team) cliff start plus early investors",
-    "source": "https://tokenomist.ai/grass/updates"
+    "amount": "31.58M GRASS",
+    "pct_supply": "4.5",
+    "note": "Contributors (team) cliff start after a one-year lock-up extension; date confirmed by Tokenomist, amount from DropsTab only",
+    "source": "https://dropstab.com/coins/grass"
    }
   },
   "ONDO": {
-   "summary": "Growth is supportive for the long: TVL is above $4B and the OpenAI pre-IPO note launched. The next unlock is the January cliff, outside the window.",
+   "summary": "Fundamentals support the long (TVL above $4B, tokenized stocks growing). The risk is market share: DWF Labs puts Ondo's tokenized-equity share at 26%, down from 56%. Next unlock is Jan 18, 2027.",
    "news": [
-    {
-     "title": "Ondo launches an OpenAI Exposure Note, its first tokenized pre-IPO asset",
-     "url": "https://coinfomania.com/ondo-launches-openai-exposure-note-tokenizing-pre-ipo-asset/",
-     "date": "Oct 15"
-    },
     {
      "title": "Ondo TVL tops $4B on tokenized stock growth",
      "url": "https://www.thestreet.com/crypto/markets/ondo-hits-4-billion-tvl-on-tokenized-stock-growth",
      "date": "Oct 14"
+    },
+    {
+     "title": "Ondo Intelligent Portfolios go live on Gate",
+     "url": "https://coinmarketcap.com/community/articles/6ad21eaa5983ca64022aa8ab",
+     "date": "Oct 16"
+    },
+    {
+     "title": "DWF Labs: Ondo's tokenized-equity volume share falls to 26% from 56%",
+     "url": "https://thedefiant.io/news/tradfi-and-fintech/tokenized-equities-reached-3-8-billion-this-year-dwf-labs-says",
+     "date": "Oct 16"
     }
    ]
   },
   "kPEPE": {
-   "summary": "There is no material PEPE news this week. PEPE is fully circulating.",
-   "news": []
-  },
-  "BCH": {
-   "summary": "CME BCH futures are set to launch Oct 19, pending regulatory review. That could be a catalyst for the long.",
+   "summary": "For the long, Canary's amended spot PEPE ETF filing could revive speculative demand, but PEPE is a pure beta trade that fell after the hot CPI print. Fully circulating, no unlocks.",
    "news": [
     {
-     "title": "CME cash-settled BCH futures still slated for Oct 19, pending review",
-     "url": "https://www.ad-hoc-news.de/boerse/news/marktberichte/bitcoin-cash-price-falls-6-14-percent-to-283-91-usd-on-october-16-2026/70342728",
-     "date": "Oct 16"
+     "title": "Canary Capital amends S-1 for a proposed spot PEPE ETF",
+     "url": "https://coinmarketcap.com/community/articles/6acddccd3ec54b485c7dd7e6",
+     "date": "Oct 13"
+    },
+    {
+     "title": "PEPE shows the sharpest activity jump on Korean exchanges despite a daily drop",
+     "url": "https://tokenpost.com/news/investing/32497",
+     "date": "Oct 15"
     }
    ]
   },
-  "ETH": {
-   "summary": "Spot ETH ETFs had about $60M of outflows and VanEck dropped its staked ETH ETF. Both are mild headwinds for the long.",
+  "ARB": {
+   "summary": "Supply supports the short: the Oct 16 team/investor unlock (~1.56% of circulating) just landed, the DAO is voting on 100M more ARB for incentives, and the next unlock is Nov 16.",
    "news": [
     {
-     "title": "VanEck withdraws its proposed Lido staked ETH ETF",
-     "url": "https://cryptobriefing.com/vaneck-withdraws-lido-staked-ethereum-etf/",
-     "date": "Oct 14"
-    },
-    {
-     "title": "Standard Chartered opens spot BTC/ETH trading to UAE professional investors",
-     "url": "https://cointelegraph.com/news/standard-chartered-bitcoin-ether-trading-professional-investors-uae",
-     "date": "Oct 14"
-    },
-    {
-     "title": "Spot ETH ETFs see about $60M net outflows, led by ETHA",
-     "url": "https://coinmarketcap.com/community/articles/6ad1cca05983ca64022aa7c0",
+     "title": "Monthly ARB unlock releases ~92.65M tokens (~1.56% of circulating) to team and investors",
+     "url": "https://finance.yahoo.com/markets/crypto/articles/3-token-unlocks-watch-third-082936698.html",
      "date": "Oct 16"
+    },
+    {
+     "title": "ArbitrumDAO votes on stablecoin incentives including 100M extra ARB for DRIP",
+     "url": "https://crypto.news/crypto-week-ahead-5-events-traders-should-watch/",
+     "date": "Oct 15"
+    }
+   ],
+   "unlock": {
+    "date": "Nov 16",
+    "date_iso": "2026-11-16",
+    "amount": "~93M ARB",
+    "note": "Monthly cliff for team, advisors and investors",
+    "source": "https://tokenomist.ai/arbitrum/unlock-events"
+   }
+  },
+  "ETH": {
+   "summary": "Schwab's retail ETH rollout is a structural positive for the long, but spot ETF outflows, the CPI-driven selloff and a near-zero burn are near-term headwinds. No unlocks.",
+   "news": [
+    {
+     "title": "Charles Schwab opens spot ETH trading to eligible US retail clients",
+     "url": "https://tokenpost.com/news/business/33537",
+     "date": "Oct 16"
+    },
+    {
+     "title": "US spot ETH ETFs see ~$70M net outflows",
+     "url": "https://cryptobriefing.com/bitcoin-etfs-82-million-outflows-october-16/",
+     "date": "Oct 16"
+    },
+    {
+     "title": "Hot US CPI print triggers ~6% ETH drop and ~$950M in liquidations",
+     "url": "https://coinmarketcap.com/community/articles/6ad0892dc487575c4ddfa665",
+     "date": "Oct 15"
+    },
+    {
+     "title": "ETH burn falls to about 0.5% of issuance as next-upgrade clients ship",
+     "url": "https://cryptoticker.io/en/ethereum-forecast-net-issuance-burn-october-2026/",
+     "date": "Oct 17"
+    }
+   ]
+  },
+  "HYPE": {
+   "summary": "For the long, Pump.fun's Hyperliquid perps front end adds volume, but spot HYPE ETFs posted their first weekly outflow in ten weeks. Next core-contributor unlock is Nov 6 (size undisclosed; Oct's batch went OTC).",
+   "news": [
+    {
+     "title": "US spot HYPE ETFs post ~$17.5M weekly outflow, ending a nine-week inflow streak",
+     "url": "https://coinmarketcap.com/community/articles/6ad329d5614ab63dcd4efd88",
+     "date": "Oct 17"
+    },
+    {
+     "title": "Pump.fun launches a perpetuals interface powered by Hyperliquid",
+     "url": "https://coinmarketcap.com/community/articles/6ad30db5d115c82f7c5afff0",
+     "date": "Oct 17"
+    }
+   ],
+   "unlock": {
+    "date": "Nov 6",
+    "date_iso": "2026-11-06",
+    "amount": "undisclosed",
+    "note": "Core contributors, monthly; Oct 6 batch (3.75M HYPE) was sold OTC to one buyer",
+    "source": "https://www.tokenomist.ai/hyperliquid"
+   }
+  },
+  "ICP": {
+   "summary": "The ckSOL/ChatGPT-plugin bounce has faded (about $3.45 to $3.00), which suits the short; further DFINITY integration headlines are the squeeze risk. Inflationary supply, no discrete unlock.",
+   "news": [
+    {
+     "title": "DFINITY launches ckSOL for bridgeless ICP-Solana interaction",
+     "url": "https://coinmarketcap.com/community/articles/6ad1c598614ab63dcd4efb37",
+     "date": "Oct 16"
+    },
+    {
+     "title": "Official ICP plugin goes live in ChatGPT's plugin directory",
+     "url": "https://coinmarketcap.com/community/articles/6ad1576fc487575c4ddfa7fa",
+     "date": "Oct 15"
+    },
+    {
+     "title": "ICP enables native protocol timers for self-scheduling canisters",
+     "url": "https://coinmarketcap.com/community/articles/6ad13448d115c82f7c5afd5c",
+     "date": "Oct 15"
+    },
+    {
+     "title": ".icp top-level domain application clears ICANN initial review",
+     "url": "https://www.kucoin.com/news/insight/ICP/6acb553844c21300078926ec",
+     "date": "Oct 11"
     }
    ]
   }
