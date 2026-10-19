@@ -510,11 +510,11 @@ async function loadManual(){
       const fails=Object.entries(t.checks||{}).filter(([,ok])=>!ok).map(([k])=>MCHECK[k]||k);
       const cls=t.net>0?"up":t.net<0?"down":"";
       const ent=t.entries.map(e=>fmt(e.px)).join(" / ");
-      return `<tr><td><b>${esc(t.coin)}</b> <span class="pill ${t.side}">${t.side}</span> <span class="pill ${t.status==="closed"?"":"at"}">${esc(t.status)}</span></td>
+      return `<tr><td><b>${esc(t.coin)}</b> <span class="pill ${t.side}">${t.side}</span> <span class="pill ${t.status==="pending"||t.status==="open"?"at":""}">${esc(t.status)}</span></td>
         <td>${t.placed.slice(5,10)}</td><td>${ent}</td><td>${fmt(t.stop)}</td><td>${(t.tp||[]).map(x=>fmt(x.px)+(x.pct<100?` (${x.pct}%)`:"")).join(" / ")}</td>
         <td>$${t.risk_usd.toFixed(2)}</td><td>${t.planned_rr}R</td>
-        <td class="${cls}">${t.net==null?"–":(t.net>=0?"+":"")+t.net.toFixed(2)}</td><td class="${cls}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td>
-        <td style="white-space:normal;text-align:left;min-width:180px">${fails.length?`<span class="down">missed: ${fails.map(esc).join(", ")}</span>`:'<span class="up">all followed</span>'}</td></tr>`;}).join("");
+        <td class="${cls}">${t.net==null||t.status==="cancelled"?"–":(t.net>=0?"+":"")+t.net.toFixed(2)}</td><td class="${cls}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td>
+        <td style="white-space:normal;text-align:left;min-width:180px">${t.status==="cancelled"?'<span class="muted">cancelled, not filled</span>':fails.length?`<span class="down">missed: ${fails.map(esc).join(", ")}</span>`:'<span class="up">all followed</span>'}</td></tr>`;}).join("");
     document.getElementById("mnotes").innerHTML=m.trades.slice().reverse().map(t=>`<p style="margin:4px 0"><b>${esc(t.coin)}:</b> ${(t.notes||[]).map(esc).join(" ")}</p>`).join("")+`<p style="margin:4px 0">${esc(m.note||"")}</p>`;
     document.getElementById("msec").hidden=false;
   }catch(e){}

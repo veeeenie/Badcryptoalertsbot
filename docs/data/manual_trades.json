@@ -1,28 +1,114 @@
 {
-  "updated_at": "2026-10-19T07:20:00Z",
+  "updated_at": "2026-10-19T10:30:00Z",
   "venue": "Variational Omni",
   "wallet": "0xfb4e07C7BF05464e6206abc93873078f2fc53991",
   "note": "Logged by hand: Variational doesn't publish per-wallet trades, and on-chain only shows USDC deposits and withdrawals. Updated from screenshots of Open Orders / Trade History.",
   "trades": [
     {
-      "coin": "HBAR", "side": "short", "status": "pending",
+      "coin": "HBAR",
+      "side": "short",
+      "status": "cancelled",
       "placed": "2026-10-19T07:06:51Z",
-      "entries": [{"px": 0.0856, "qty": 500, "usd": 42.80}],
-      "stop": 0.0902, "tp": [{"px": 0.0730, "pct": 100}],
-      "risk_usd": 2.30, "planned_rr": 2.74,
-      "scanner": {"setup": "Weekly rejection short, rating A", "zone": [0.0835, 0.0872], "stop": 0.0902, "t1": 0.0776, "t2": 0.0648, "status": "at level, wait for a daily rejection close"},
+      "entries": [
+        {
+          "px": 0.0856,
+          "qty": 500,
+          "usd": 42.8
+        }
+      ],
+      "stop": 0.0902,
+      "tp": [
+        {
+          "px": 0.073,
+          "pct": 100
+        }
+      ],
+      "risk_usd": 2.3,
+      "planned_rr": 2.74,
+      "scanner": {
+        "setup": "Weekly rejection short, rating A",
+        "zone": [
+          0.0835,
+          0.0872
+        ],
+        "stop": 0.0902,
+        "t1": 0.0776,
+        "t2": 0.0648,
+        "status": "at level, wait for a daily rejection close"
+      },
       "checks": {
-        "stop_at_entry": true, "tp_at_entry": true, "max_3_entries": true, "min_10_usd": true,
-        "rr_1_5": true, "risk_within_plan": true,
-        "exit_plan": false, "confirmed_entry": false
+        "stop_at_entry": true,
+        "tp_at_entry": true,
+        "max_3_entries": true,
+        "min_10_usd": true,
+        "rr_1_5": true,
+        "risk_within_plan": true,
+        "exit_plan": false,
+        "confirmed_entry": false
       },
       "notes": [
         "Same stop as the scanner (0.0902).",
         "Exit: whole position at 0.0730, not half at T1 0.0776 then breakeven, rest at T2 0.0648 (rule 10).",
         "Price is already in the zone, so rule 3 wants a daily rejection close first; this resting limit can fill without one.",
-        "Risk $2.30 vs the $2 plan (within the 25% tolerance). Fee $0."
+        "Risk $2.30 vs the $2 plan (within the 25% tolerance). Fee $0.",
+        "Cancelled on 19 Oct before it filled."
       ],
-      "fill_px": null, "exit_px": null, "net": null, "r": null
+      "fill_px": null,
+      "exit_px": null,
+      "net": 0,
+      "r": null
+    },
+    {
+      "coin": "SOL",
+      "side": "long",
+      "status": "pending",
+      "placed": "2026-10-19T10:16:06Z",
+      "entries": [
+        {
+          "px": 97.3,
+          "qty": 0.8,
+          "usd": 77.84
+        }
+      ],
+      "stop": 94.175,
+      "tp": [
+        {
+          "px": 106.8,
+          "pct": 100
+        }
+      ],
+      "risk_usd": 2.5,
+      "planned_rr": 3.04,
+      "scanner": {
+        "setup": "Weekly support long, daily flip, grade A+ (area of interest 96.24, 3 touches)",
+        "zone": [
+          97.22,
+          99.65
+        ],
+        "stop": 94.79,
+        "t1": 106.8,
+        "t2": 118.23,
+        "status": "PLACE LIMITS"
+      },
+      "checks": {
+        "stop_at_entry": true,
+        "tp_at_entry": true,
+        "max_3_entries": true,
+        "min_10_usd": true,
+        "rr_1_5": true,
+        "risk_within_plan": true,
+        "exit_plan": false,
+        "confirmed_entry": true
+      },
+      "notes": [
+        "A+ setup on the scanner (PLACE LIMITS): entry at the bottom of the 97.22\u201399.65 zone, stop 94.175 a little below the scanner's 94.79.",
+        "Exit: whole position at T1 106.80, not half there, stop to breakeven, rest at T2 118.23 (rule 11).",
+        "Risk $2.50, right at the 25% tolerance over the $2 plan. Fee $0."
+      ],
+      "fill_px": null,
+      "exit_px": null,
+      "net": null,
+      "r": null
     }
   ]
 }
