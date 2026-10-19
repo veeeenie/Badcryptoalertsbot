@@ -184,7 +184,12 @@ def round_level(x):
 
 STRONG_MOVE_PCT = 25.0     # a 14-day move this big counts as a strong move (rule 6)
 STRONG_STRETCH_PCT = 15.0  # ...as does price this far from the daily 25 EMA
-TOP_K = int(os.getenv("TOP_K", "8"))   # how many setups count as "top" (dashboard default, Telegram)
+TOP_K = int(os.getenv("TOP_K", "5"))   # "Act now" list: the best setups to place limits on / enter (dashboard cards, Telegram)
+WATCH_K = 8                             # "Waiting for a daily close" list (compact rows, no alert until confirmed)
+# 19 Oct 2026 (trader's decision, backed by the backtest): only rating-A setups are kept, and setups whose
+# move already played out (stale) are removed. B/C ratings lost money in the two-year backtest.
+KEEP_RATINGS = ("A",)
+ACTION_TEXT = {"ENTER": "ENTER", "LIMITS": "PLACE LIMITS", "WAIT": "WAIT FOR CLOSE"}
 ALERTS_PAUSED = os.getenv("ALERTS_PAUSED", "0") == "1"   # backtest validated 17 Oct 2026; set ALERTS_PAUSED=1 to pause
 MAX_ALERTS = 3                          # most individual alerts per scan; the rest go in one summary line
 SCORE_RATING = {"A": 6, "B": 3, "C": 0}
@@ -507,6 +512,11 @@ def analyse(coin_row, daily):
             x["why"] += (" The last rejection already ran to T1" if ran else " Price has already moved away from the zone") + \
                         ": don't chase it; the resting limits only fill on a fresh retest of the zone."
 
+    # ---- price already beyond T1 (the zone is still ahead, but the move looks "done" from here);
+    #      flagged only, tested in the backtest before it is used to remove anything
+    for x in setups:
+        x["past_t1"] = bool(x.get("t1")) and (price < x["t1"] if x["side"] == "short" else price > x["t1"])
+
     # ---- entry rule: price already in the zone -> enter only after a confirmed daily rejection
     for x in setups:
         if x["status"] == "at level":
@@ -622,28 +632,26 @@ def telegram(text):
         return False
 
 
-def alert_text(s, price, reason_head):
+def alert_text(s, price):
     side = "🔴" if s["side"] == "short" else "🟢"
-    ins = " / ".join(f"{fmt(e['px'])} ({e['pct']}%)" for e in s["entries"])
-    outs = " / ".join(f"{fmt(x['px'])} ({x['pct']}%, {x['r']}R)" for x in s["exits"])
+    act = ACTION_TEXT[s["action"]]
+    head = {"ENTER": "daily close confirmed the rejection: place the orders now",
+            "LIMITS": "price is heading to the zone: place the limits, stop and both take-profits now"}[s["action"]]
+    ins = " / ".join(f"{fmt(e['px'])}" for e in s["entries"])
+    t2 = f" · T2 {fmt(s['t2'])}" if s.get("t2") else ""
     lines = [
-        f"{side} <b>{s['coin']}</b> · {LABEL[s['type']]} · {reason_head}",
-        f"Price {fmt(price)} · zone {fmt(s['zone'][0])}–{fmt(s['zone'][1])}",
-        f"Entries: {ins}",
-        f"Stop {fmt(s['stop'])} ({s['risk_pct']:.1f}% from avg entry {fmt(s['entry'])})",
-        f"Exits: {outs} · blended {s['rr']}R",
-        f"Size for ${RISK_USD:g} risk: ${s['size_usd']:,.0f} total position",
-        s["why"],
-        "Rules: resting limits at the zone only, never chase. Place the stop and both take-profits with the entry.",
+        f"{side} <b>{s['coin']} {s['side'].upper()}</b> · <b>{act}</b>",
+        head,
+        f"Zone {fmt(s['zone'][0])}–{fmt(s['zone'][1])} (price {fmt(price)})",
+        f"Limits {ins} · Stop {fmt(s['stop'])}",
+        f"T1 {fmt(s['t1'])} (half, then stop to breakeven){t2} · {s['rr']}R",
+        f"${RISK_USD:g} risk → ${s['size_usd']:,.0f} position",
     ]
-    if s.get("trending"):
-        lines.append("🔥 Trending on CoinGecko searches right now")
-    if s.get("confluence"):
-        lines.append(f"Rating {s['rating']}: lines up with " + ", ".join(s["confluence"]))
+    if s.get("trend") == "daily flip":
+        lines.append("Against the weekly trend (daily flip)")
     if s.get("unlock"):
         u = s["unlock"]
-        lines.append(f"⚠️ Unlock {u['date']}: {u.get('pct', '?')}% of supply "
-                     f"({'risk for this long' if s['side'] == 'long' else 'supports the short'})")
+        lines.append(f"⚠️ Unlock {u['date']}: {u.get('pct', '?')}% of supply")
     return "\n".join(lines)
 
 
@@ -704,6 +712,9 @@ def main():
             errors.append(f"{row['coin']}: {e}")
         time.sleep(0.35)  # stay well inside Hyperliquid's rate limit
 
+    dropped = {"rating": sum(1 for s in all_setups if s.get("rating") not in KEEP_RATINGS),
+               "stale": sum(1 for s in all_setups if s.get("rating") in KEEP_RATINGS and s.get("stale"))}
+    all_setups = [s for s in all_setups if s.get("rating") in KEEP_RATINGS and not s.get("stale")]
     order = {"confirmed": 0, "at level": 1, "approaching": 2}
     all_setups.sort(key=lambda s: (s.get("rating", "C"), order.get(s["status"], 2), -s["rr"]))
     # one setup per coin: keep the best (at level first, then highest R)
@@ -727,8 +738,27 @@ def main():
                            - (2 if s.get("needs_confirmation") and s["status"] != "confirmed" else 0)
                            - (2 if s.get("unlock") and s["side"] == "long" else 0), 2)
     all_setups.sort(key=lambda s: -s["score"])
-    for i, s in enumerate(all_setups):
-        s["top"] = i < TOP_K and s.get("rating") in ("A", "B")
+    # ---- one plain action per setup:
+    #      ENTER  = the daily close confirmed the rejection: place the orders now
+    #      WAIT   = price is in the zone or it's against a strong move: nothing until a daily close confirms
+    #      LIMITS = price is heading to the zone: place the resting limits, stop and take-profits now
+    for s in all_setups:
+        if s["status"] == "confirmed":
+            s["action"] = "ENTER"
+        elif s.get("needs_confirmation"):
+            s["action"] = "WAIT"
+        else:
+            s["action"] = "LIMITS"
+    act = [s for s in all_setups if s["action"] in ("ENTER", "LIMITS")]
+    act.sort(key=lambda s: (0 if s["action"] == "ENTER" else 1, -s["score"]))
+    wait = [s for s in all_setups if s["action"] == "WAIT"]
+    for s in all_setups:
+        s["top"] = False
+        s["watch"] = False
+    for s in act[:TOP_K]:
+        s["top"] = True
+    for s in wait[:WATCH_K]:
+        s["watch"] = True
 
     now = datetime.now(timezone.utc).isoformat(timespec="seconds")
     out = {
@@ -738,6 +768,8 @@ def main():
         "alerts_paused": ALERTS_PAUSED,
         "universe_size": len(all_info),
         "setups": all_setups,
+        "dropped": dropped,
+        "keep_ratings": list(KEEP_RATINGS),
         "coins": sorted(all_info, key=lambda r: -r["vol24h"]),
         "errors": errors[:20],
         "runtime_s": round(time.time() - started, 1),
@@ -762,32 +794,37 @@ def main():
     live_ids = {x["id"] for x in all_setups}
     # forget alerts only once a setup has left the scan, so each setup alerts at most once per stage
     alerted = {k: v for k, v in alerted.items() if k.rsplit(":", 1)[0] in live_ids or now_ts - v < 86400}
-    v2 = state.get("version") == 2
+    v3 = state.get("version") == 3
     due = []
     for s in all_setups:
-        new_seen[s["id"]] = s["status"]
-        if s["status"] == "approaching" or not s.get("top"):
+        new_seen[s["id"]] = s["action"]
+        # alert when a setup joins the Act-now list (place limits) and when a rejection is confirmed (enter);
+        # never for "wait for close" — that one pings only once the daily close confirms it
+        if s["action"] == "WAIT" or not s.get("top"):
             continue
-        if s.get("needs_confirmation") and s["status"] != "confirmed":
-            continue                          # rule 5: no alert until the rejection is confirmed
-        key = s["id"] + ":" + s["status"]
+        key = s["id"] + ":" + s["action"]
         if key in alerted:
             continue
         alerted[key] = now_ts
-        if first_run or not v2:
+        if first_run or not v3:
             continue                          # first run of this version: mark as sent, stay quiet
         due.append(s)
+    due.sort(key=lambda s: 0 if s["action"] == "ENTER" else 1)
     for s in due[:MAX_ALERTS]:
-        head = "retest confirmed on the daily" if s["status"] == "confirmed" else "price at entry"
-        msgs.append(alert_text(s, price_of[s["coin"]], head))
+        msgs.append(alert_text(s, price_of[s["coin"]]))
     if len(due) > MAX_ALERTS:
-        msgs.append(f"+{len(due) - MAX_ALERTS} more top setups reached entry: " +
-                    ", ".join(x["coin"] for x in due[MAX_ALERTS:]) + ". Details on the dashboard.")
-    if first_run and all_setups:
-        top = [x for x in all_setups if x.get("top")]
-        msgs.append("<b>Setup scanner is live.</b> Top setups:\n\n" +
-                    "\n".join(f"• {x['coin']} {LABEL[x['type']]} entry {fmt(x['entry'])} "
-                               f"({x['dist_pct']:+.1f}%), {x['rr']}R, {x['status']}" for x in top))
+        msgs.append(f"+{len(due) - MAX_ALERTS} more: " +
+                    ", ".join(f"{x['coin']} ({ACTION_TEXT[x['action']]})" for x in due[MAX_ALERTS:]) +
+                    ". Details on the dashboard.")
+    if (first_run or not v3) and all_setups:
+        acts = [x for x in all_setups if x.get("top")]
+        waits = [x for x in all_setups if x.get("watch")]
+        msgs.append("<b>Setup Desk updated: A-rated setups only, played-out moves removed.</b>\n\n"
+                    "<b>Act now</b>\n" + ("\n".join(f"• {x['coin']} {x['side'].upper()} · {ACTION_TEXT[x['action']]} · "
+                                                      f"zone {fmt(x['zone'][0])}–{fmt(x['zone'][1])} · {x['rr']}R" for x in acts) or "none") +
+                    "\n\n<b>Waiting for a daily close</b>\n" +
+                    (", ".join(f"{x['coin']} {x['side']}" for x in waits) or "none") +
+                    "\n\nYou'll get a ping when a new setup joins Act now, and when a wait turns into ENTER.")
     if ALERTS_PAUSED:
         print(f"alerts paused: {len(msgs)} message(s) not sent")
     else:
@@ -795,7 +832,7 @@ def main():
             telegram(m)
             time.sleep(1)
     with open(STATE_PATH, "w") as f:
-        json.dump({"version": 2, "seen": new_seen, "alerted": alerted, "updated": now}, f)
+        json.dump({"version": 3, "seen": new_seen, "alerted": alerted, "updated": now}, f)
 
     print(f"setups: {len(all_setups)}, alerts: {len(msgs)}, errors: {len(errors)}, "
           f"time: {out['runtime_s']}s")

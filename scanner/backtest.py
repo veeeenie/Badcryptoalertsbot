@@ -128,18 +128,20 @@ def tradeable(s):
     return not (s.get("needs_confirmation") and s["status"] != "confirmed")
 
 
+def live(s):
+    """The live rules (19 Oct 2026): rating A only, played-out (stale) setups removed."""
+    return tradeable(s) and s.get("rating") == "A" and not s.get("stale")
+
+
 VARIANTS = {
-    "Your rules · fixed T2":                      dict(pick=tradeable, be=True, runner=False),
-    "Your rules · runner exits on weekly":        dict(pick=tradeable, be=True, runner=True),
-    "Fixed T2 · weekly-trend trades only":        dict(pick=lambda s: tradeable(s) and s.get("trend") == "weekly", be=True, runner=False),
-    "Fixed T2 · daily-flip trades only":          dict(pick=lambda s: tradeable(s) and s.get("trend") == "daily flip", be=True, runner=False),
-    "Fixed T2 · no daily-flip shorts":            dict(pick=lambda s: tradeable(s) and not (s.get("trend") == "daily flip" and s["side"] == "short"), be=True, runner=False),
-    "Fixed T2 · no breakeven (rest rides to T2/stop)": dict(pick=tradeable, be=False, runner=False),
-    "Fixed T2 · stop beyond last 2 weeks' wick":  dict(pick=tradeable, be=True, runner=False, alt=True),
-    "Fixed T2 · rating A only":                   dict(pick=lambda s: tradeable(s) and s.get("rating") == "A", be=True, runner=False),
-    "Fixed T2 · A only, no daily-flip shorts":    dict(pick=lambda s: tradeable(s) and s.get("rating") == "A" and not (s.get("trend") == "daily flip" and s["side"] == "short"), be=True, runner=False),
-    "Fixed T2 · A only, entry within 5%":         dict(pick=lambda s: tradeable(s) and s.get("rating") == "A" and abs(s.get("dist_pct") or 0) <= 5, be=True, runner=False),
-    "Fixed T2 · A only, within 5%, R ≥ 2":        dict(pick=lambda s: tradeable(s) and s.get("rating") == "A" and abs(s.get("dist_pct") or 0) <= 5 and s["rr"] >= 2, be=True, runner=False),
+    "Live rules · A only, stale removed":         dict(pick=live, be=True, runner=False),
+    "A only, stale kept":                         dict(pick=lambda s: tradeable(s) and s.get("rating") == "A", be=True, runner=False),
+    "Previous rules · all ratings (A/B/C)":       dict(pick=tradeable, be=True, runner=False),
+    "Live · no daily-flip shorts":                dict(pick=lambda s: live(s) and not (s.get("trend") == "daily flip" and s["side"] == "short"), be=True, runner=False),
+    "Live · daily-flip trades only":              dict(pick=lambda s: live(s) and s.get("trend") == "daily flip", be=True, runner=False),
+    "Live · no breakeven (rest rides to T2/stop)": dict(pick=live, be=False, runner=False),
+    "Live · stop beyond last 2 weeks' wick":      dict(pick=live, be=True, runner=False, alt=True),
+    "Live · also drop if price is already past T1": dict(pick=lambda s: live(s) and not s.get("past_t1"), be=True, runner=False),
 }
 
 
@@ -273,7 +275,7 @@ def main():
         variants[name] = {"all": sm["summary"].get("all"), "by_year": sm["by_year"],
                           "long": sm["summary"].get("side:long"), "short": sm["summary"].get("side:short"),
                           "exits": sm["exits"]}
-    main_v = VARIANTS["Your rules · fixed T2"]          # the live rules (rule 10: fixed weekly T2)
+    main_v = VARIANTS["Live rules · A only, stale removed"]
     base = simulate(signals, main_v["pick"], main_v["be"], main_v["runner"])
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),

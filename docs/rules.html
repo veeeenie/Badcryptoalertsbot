@@ -44,20 +44,21 @@ li p{margin:4px 0 0;color:var(--muted);font-size:14px}
     <h1>Rule Book</h1>
     <a href="./">Back to Setup Desk</a>
   </header>
-  <p class="lead">Trading is a business here, not a guess. Every trade passes all of these or it doesn't get placed. Updated 17 October 2026; changed only by deliberate decision, never mid-trade.</p>
+  <p class="lead">Trading is a business here, not a guess. Every trade passes all of these or it doesn't get placed. Updated 19 October 2026; changed only by deliberate decision, never mid-trade.</p>
 
   <section>
     <h2>Structure</h2>
     <ol>
       <li><b>Higher timeframes first.</b><p>Weekly and daily decide the trade. Ignore every timeframe below the daily.</p><div class="how">setups are built on weekly levels; the daily times the entry</div></li>
       <li><b>Weekly trend first; a fully flipped daily also counts.</b><p>Trade in the weekly trend's direction. A trade against it is allowed only when the daily 25/50/100 EMAs are fully stacked the other way.</p><div class="how">those setups are labelled "Daily flip" and ranked below weekly-trend setups</div></li>
+      <li><b>A-rated setups only.</b><p>The entry zone is a weekly level with at least one more level sitting at it (another weekly level, or a daily EMA). Setups whose move already played out don't count.</p><div class="how">B/C and played-out setups are removed (backtest: A-only +0.137R a trade, B-rated −0.05R)</div></li>
     </ol>
   </section>
 
   <section>
     <h2>Entries</h2>
-    <ol style="counter-reset:r 2">
-      <li><b>Enter only at the planned zone with resting limits. Never chase.</b><p>If price is already sitting in the zone, enter only after a daily close confirms the rejection. If price leaves without filling, the trade is missed, not chased.</p><div class="how">"Wait for rejection" until the daily confirms</div></li>
+    <ol style="counter-reset:r 3">
+      <li><b>Enter only at the planned zone with resting limits. Never chase.</b><p>If price is already sitting in the zone, enter only after a daily close confirms the rejection. If price leaves without filling, the trade is missed, not chased.</p><div class="how">each setup shows one action: PLACE LIMITS, WAIT FOR CLOSE (a daily candle must close back out of the zone in your direction; daily candles close 5:30 am IST), or ENTER (that close just happened)</div></li>
       <li><b>Tranches: in and out in at most 3 orders, each at least $10.</b><p>The dollar risk decides how many tranches fit: a tight stop allows 3, a wider stop 2 or 1.</p><div class="how">tranche prices and sizes shown per setup</div></li>
       <li><b>Against a strong move, wait for a confirmed rejection.</b><p>A strong move is 25% or more in 14 days, or 15% or more from the daily 25 EMA.</p></li>
     </ol>
@@ -65,7 +66,7 @@ li p{margin:4px 0 0;color:var(--muted);font-size:14px}
 
   <section>
     <h2>Risk</h2>
-    <ol style="counter-reset:r 5">
+    <ol style="counter-reset:r 6">
       <li><b>Nothing gets in without a stop and take-profit, placed with the entry.</b></li>
       <li><b>The stop is backed by structure and never moved to fit.</b><p>It sits beyond the zone and any weekly level just past it. The only move ever made: to breakeven once T1 is hit. A trade that has gone our way is never allowed to turn into a loss.</p></li>
       <li><b>Only asymmetric trades: more than 1:1.5.</b><p>Blended reward-to-risk from the average entry.</p></li>
@@ -75,19 +76,19 @@ li p{margin:4px 0 0;color:var(--muted);font-size:14px}
 
   <section>
     <h2>Exits</h2>
-    <ol style="counter-reset:r 9">
+    <ol style="counter-reset:r 10">
       <li><b>Enter on the daily, exit at weekly targets.</b><p>Take half at T1 and move the stop to breakeven. Take the rest at the next weekly level (T2). Don't wait for a weekly close to turn against the trade: after breakeven, normal pullbacks stop the runner out first.</p><div class="how">backtest: fixed weekly T2 made +112R (positive 6 of 6 years) vs +42R for exiting the runner on a weekly close</div></li>
     </ol>
   </section>
 
   <section>
     <h2>Discipline</h2>
-    <ol style="counter-reset:r 10">
+    <ol style="counter-reset:r 11">
       <li><b>Don't force the trade. Cash is a position.</b></li>
     </ol>
   </section>
 
-  <p class="foot">Simplified by the trader on 17 October 2026. Rules 2, 3 (price already in the zone), 7 (breakeven) and 10 were decided after the two-year backtest on the Setup Desk dashboard.</p>
+  <p class="foot">Simplified by the trader on 17 October 2026; rule 3 (A-rated only) added on 19 October 2026 after the two-year backtest. Rules 2, 4 (price already in the zone), 8 (breakeven) and 11 were decided after the backtest on the Setup Desk dashboard.</p>
 </div>
 </body>
 </html>
