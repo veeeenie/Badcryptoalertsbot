@@ -423,7 +423,7 @@ async function drawChart(box,s,tf){
   line(s.stop,v("--short"),"SL",0,2); line(s.t1,v("--long"),"T1",0,2); if(s.t2) line(s.t2,v("--long"),"T2",2,1);
   (s.levels_extra||[]).filter(x=>x.kind==="aoi").forEach(x=>line(x.v,v("--accent"),"AOI",1,2));
   (s.levels_extra||[]).filter(x=>x.kind!=="aoi").forEach(x=>line(x.v,v("--muted"),x.name.replace(/ \(.*\)/,""),3,1));
-  const n=bars.length, show=tf==="D"?180:tf==="W"?104:60;
+  const n=bars.length, show=tf==="D"?120:tf==="W"?52:n;
   ch.timeScale().setVisibleLogicalRange({from:Math.max(0,n-show),to:n+3});
   new ResizeObserver(()=>ch.applyOptions({width:el.clientWidth})).observe(el);
 }
