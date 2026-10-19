@@ -142,6 +142,7 @@ VARIANTS = {
     "Live · no breakeven (rest rides to T2/stop)": dict(pick=live, be=False, runner=False),
     "Live · stop beyond last 2 weeks' wick":      dict(pick=live, be=True, runner=False, alt=True),
     "Live · also drop if price is already past T1": dict(pick=lambda s: live(s) and not s.get("past_t1"), be=True, runner=False),
+    "Live · A+ only (area of interest at the zone)": dict(pick=lambda s: live(s) and s.get("grade") == "A+", be=True, runner=False),
 }
 
 

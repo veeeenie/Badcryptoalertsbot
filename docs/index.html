@@ -113,7 +113,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 .card .top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
 .card .top b.c{font:700 20px var(--font-display);letter-spacing:.02em}
 .act{font:700 12px var(--font-body);letter-spacing:.06em;padding:4px 9px;border-radius:4px}
-.act.ENTER{background:var(--long);color:var(--panel)} .act.LIMITS{background:var(--ink);color:var(--bg)} .act.WAIT{background:var(--warn-bg);color:var(--warn);border:1px dashed var(--warn)}
+.act.ENTER{background:var(--long);color:var(--panel)} .act.LIMITS{background:var(--ink);color:var(--bg)} .act.aplus{background:var(--accent);color:var(--panel)} .act.WAIT{background:var(--warn-bg);color:var(--warn);border:1px dashed var(--warn)}
 .card .r{margin-left:auto;font:600 15px var(--font-mono);color:var(--accent)}
 .card .size{font:13px var(--font-mono);color:var(--muted)}
 .card .say{margin:0;font-size:14px}
@@ -264,7 +264,7 @@ function render(){
     : `<div class="empty">Nothing to act on right now. Cash is a position; the scanner checks again every hour.</div>`;
   document.querySelector("#wt tbody").innerHTML=wait.length? wait.map(s=>{
     const cond=s.side==="short"?`below ${fmt(s.zone[0])}, red`:`above ${fmt(s.zone[1])}, green`;
-    return `<tr><td><b>${esc(s.coin)}</b> <span class="pill ${s.side}">${s.side}</span>${s.trend==="daily flip"?' <span class="pill">daily flip</span>':""}</td><td>${fmt(s.zone[0])}–${fmt(s.zone[1])}</td><td>${cond}</td><td>${fmt(s.stop)}</td><td>${fmt(s.t1)}</td><td>${s.t2?fmt(s.t2):"–"}</td><td>${s.rr.toFixed(1)}</td></tr>`;}).join("")
+    return `<tr><td><b>${esc(s.coin)}</b>${s.grade==="A+"?' <span class="act aplus">A+</span>':""} <span class="pill ${s.side}">${s.side}</span>${s.trend==="daily flip"?' <span class="pill">daily flip</span>':""}</td><td>${fmt(s.zone[0])}–${fmt(s.zone[1])}</td><td>${cond}</td><td>${fmt(s.stop)}</td><td>${fmt(s.t1)}</td><td>${s.t2?fmt(s.t2):"–"}</td><td>${s.rr.toFixed(1)}</td></tr>`;}).join("")
     : `<tr><td colspan="7" class="muted" style="text-align:left">None right now.</td></tr>`;
   renderCoins();
   renderNews();
@@ -295,7 +295,7 @@ function cardHTML(s,p){
   const say=s.action==="ENTER"?"Confirmed at the last daily close. Place the orders now."
            :"Price is heading to the zone. Place the limits, stop and both take-profits now.";
   return `<details class="card ${side}"><summary>
-    <div class="top"><b class="c">${esc(s.coin)}</b><span class="pill ${side}">${side}</span><span class="act ${s.action}">${ACT_TXT[s.action]}</span>${s.trend==="daily flip"?'<span class="pill">daily flip</span>':""}${(un||s.unlock)?'<span class="pill unlock">unlock</span>':""}<span class="r">${s.rr.toFixed(1)}R</span></div>
+    <div class="top"><b class="c">${esc(s.coin)}</b><span class="pill ${side}">${side}</span><span class="act ${s.action}">${ACT_TXT[s.action]}</span>${s.grade==="A+"?'<span class="act aplus" title="Area of interest (3+ weekly touches) at the zone">A+</span>':""}${s.trend==="daily flip"?'<span class="pill">daily flip</span>':""}${(un||s.unlock)?'<span class="pill unlock">unlock</span>':""}<span class="r">${s.rr.toFixed(1)}R</span></div>
     <p class="say">${say} <span class="muted">Price ${fmt(p)}${size?` · $${size.toFixed(0)} position at $${RISK} risk`:""}</span></p>
     <div class="kv"><div><span>Zone</span>${fmt(s.zone[0])}–${fmt(s.zone[1])}</div><div><span>Stop</span>${fmt(s.stop)}</div><div><span>T1 · half</span>${fmt(s.t1)}</div><div><span>T2 · rest</span>${s.t2?fmt(s.t2):"–"}</div></div>
     ${ladder(s,p)}
@@ -305,7 +305,8 @@ function cardHTML(s,p){
     ${s.entries?`<p><b>Limits:</b> ${s.entries.map(e=>`${fmt(e.px)} <span class="muted">${e.pct}%${size?` · $${(size*e.pct/100).toFixed(0)}`:""}</span>`).join(" · ")}</p>`:""}
     <p><b>Exit:</b> half at T1 <span class="muted">(${s.exits?.[0]?.r}R)</span>, move the stop to breakeven, rest at T2${s.rr2?` <span class="muted">(${s.rr2}R)</span>`:""}. Stop is ${s.risk_pct.toFixed(1)}% from the average entry ${fmt(s.entry)}.</p>
     <p class="muted">${esc(s.why)} Lines up with ${(s.confluence||[]).map(esc).join(", ")}.</p>
-    ${s.extra&&s.extra.length?`<p class="muted"><b>Also near the zone (being tested):</b> ${s.extra.map(esc).join(", ")}.</p>`:""}
+    ${s.aoi&&s.aoi.length?`<p><b>A+:</b> ${s.aoi.map(esc).join(", ")} at the zone. Areas of interest added edge in the backtest (+0.19R a trade vs +0.11R without).</p>`:""}
+    ${(s.extra||[]).filter(e=>!e.startsWith("area")).length?`<p class="muted">Also near the zone: ${(s.extra||[]).filter(e=>!e.startsWith("area")).map(esc).join(", ")}. Fibs and monthly EMAs showed no extra edge in the backtest, so they don't change the grade.</p>`:""}
     ${s.unlock?`<p><b>Unlock in 14 days:</b> ${esc(s.unlock.date)}, ${esc(s.unlock.pct)}% of supply.</p>`:""}
     ${intel.summary?`<p>${esc(intel.summary)}</p>`:""}
     ${news.length?`<ul>${news.slice(0,4).map(n=>`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a> <span class="muted">${esc(n.date||"")}</span></li>`).join("")}</ul>`:""}

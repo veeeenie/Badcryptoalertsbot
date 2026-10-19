@@ -571,6 +571,10 @@ def analyse(coin_row, daily):
             hit = [(name, kind) for v, name, kind in extra_levels if v and lo - 0.5 * a <= v <= hi + 0.5 * a]
             x["extra"] = [name for name, _ in hit]
             x["extra_kinds"] = sorted({kind for _, kind in hit})
+            # A+ = rating A plus an area of interest (a level with 3+ weekly touches) at the zone.
+            # Backtest 19 Oct 2026: +0.194R a trade vs +0.109R without; fibs and monthly EMAs showed no edge.
+            x["aoi"] = [name for name, kind in hit if kind == "aoi"]
+            x["grade"] = "A+" if x["aoi"] and x["rating"] == "A" else x["rating"]
 
     info["notes"] = notes[:6]
     return info, setups
@@ -798,6 +802,7 @@ def main():
     for s in all_setups:
         s["score"] = round(SCORE_RATING.get(s.get("rating"), 0) + SCORE_STATUS.get(s["status"], 0)
                            + (2 if s.get("trend") == "weekly" else 0)
+                           + (3 if s.get("grade") == "A+" else 0)
                            + min(s["rr"], 6) * 0.5 - abs(s["dist_pct"]) * 0.1
                            - (2 if s.get("needs_confirmation") and s["status"] != "confirmed" else 0)
                            - (2 if s.get("unlock") and s["side"] == "long" else 0), 2)
