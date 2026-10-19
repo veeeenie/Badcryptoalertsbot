@@ -215,6 +215,7 @@ def simulate(signals, pick, be, runner=False, alt=False):
                 "type": s["type"], "side": s["side"], "rating": s.get("rating"), "status": s["status"],
                 "planned_rr": s["rr"], "risk_pct": s["risk_pct"],
                 "needs_confirmation": bool(s.get("needs_confirmation")), "trend": s.get("trend"),
+                "extra_kinds": s.get("extra_kinds", []),
             })
             trades.append(res)
             busy_until = t + 1 + res["days"]
@@ -277,8 +278,26 @@ def main():
                           "exits": sm["exits"]}
     main_v = VARIANTS["Live rules · A only, stale removed"]
     base = simulate(signals, main_v["pick"], main_v["be"], main_v["runner"])
+    # ---- which extra confluence sources add edge (live rules only)
+    def mini(ts):
+        if not ts:
+            return None
+        rs = [t["r"] for t in ts]
+        return {"trades": len(ts), "win_rate": round(100 * sum(1 for r in rs if r > 0) / len(ts), 1),
+                "avg_r": round(sum(rs) / len(ts), 3), "total_r": round(sum(rs), 1)}
+    confluence = {}
+    for kind, label in (("fib_swing", "fib of the last weekly swing"), ("fib_macro", "fib of ATL–ATH"),
+                        ("aoi", "area of interest (3+ touches)"), ("monthly", "monthly EMA")):
+        confluence[f"with {label}"] = mini([t for t in base if kind in t["extra_kinds"]])
+        confluence[f"without {label}"] = mini([t for t in base if kind not in t["extra_kinds"]])
+    for n in (0, 1, 2, 3):
+        confluence[f"{n}{'+' if n == 3 else ''} extra sources"] = mini(
+            [t for t in base if (len(t["extra_kinds"]) >= 3 if n == 3 else len(t["extra_kinds"]) == n)])
+    for k, v in confluence.items():
+        print(f"  {k:42} {v}")
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "confluence": confluence,
         "runtime_s": secs,
         "coins": len(signals),
         "settings": {"step_days": STEP, "entry_days": ENTRY_DAYS, "hold_days": HOLD_DAYS,

@@ -548,6 +548,30 @@ def analyse(coin_row, daily):
         weekly_hits = sum(1 for nm in near if nm.startswith("weekly"))
         x["rating"] = "A" if weekly_hits >= 1 and len(near) >= 2 else ("B" if near else "C")
 
+    # ---- extra confluence (measured, not yet used for the rating): fib retracements of the last major
+    #      weekly swing (the move into the current 52-week high or low) and of the all-time low-to-high
+    #      move, areas of interest (levels with 3+ weekly swing touches), and monthly 25/50/100 EMAs
+    if setups:
+        extra_levels = []
+        wk = weekly[-52:]
+        hi_i = max(range(len(wk)), key=lambda i: wk[i]["h"]); lo_i = min(range(len(wk)), key=lambda i: wk[i]["l"])
+        for v, r in fib_levels(wk[hi_i]["h"], wk[lo_i]["l"], hi_i > lo_i):
+            extra_levels.append((v, f"fib {r} (last swing)", "fib_swing"))
+        hi_i = max(range(len(weekly)), key=lambda i: weekly[i]["h"]); lo_i = min(range(len(weekly)), key=lambda i: weekly[i]["l"])
+        for v, r in fib_levels(weekly[hi_i]["h"], weekly[lo_i]["l"], hi_i > lo_i):
+            extra_levels.append((v, f"fib {r} (ATL–ATH)", "fib_macro"))
+        for v, n in areas_of_interest(closed_w, 0.6 * a):
+            extra_levels.append((v, f"area of interest {fmt(v)} ({n} touches)", "aoi"))
+        mc = [m["c"] for m in monthly_from_daily(daily)]
+        for n in EMA_LENGTHS:
+            if len(mc) >= n:
+                extra_levels.append((ema(mc, n)[-1], f"monthly {n} EMA", "monthly"))
+        for x in setups:
+            lo, hi = x["zone"]
+            hit = [(name, kind) for v, name, kind in extra_levels if v and lo - 0.5 * a <= v <= hi + 0.5 * a]
+            x["extra"] = [name for name, _ in hit]
+            x["extra_kinds"] = sorted({kind for _, kind in hit})
+
     info["notes"] = notes[:6]
     return info, setups
 
@@ -585,6 +609,46 @@ def swing_levels(candles, k=5):
         if l == min(c["l"] for c in win):
             out.append((l, "low"))
     return out
+
+
+FIB_RATIOS = (0.236, 0.382, 0.5, 0.618, 0.786)
+
+
+def fib_levels(hi, lo, up):
+    """Retracement levels of a move. up=True: the move went up into `hi` (levels sit below hi)."""
+    rng = hi - lo
+    return [((hi - r * rng) if up else (lo + r * rng), r) for r in FIB_RATIOS]
+
+
+def monthly_from_daily(daily):
+    """Calendar-month candles (UTC). Last month may be partial."""
+    out, cur, key = [], None, None
+    for d in daily:
+        dt = datetime.fromtimestamp(d["t"] / 1000, tz=timezone.utc)
+        k = (dt.year, dt.month)
+        if k != key:
+            if cur:
+                out.append(cur)
+            key, cur = k, {"t": d["t"], "o": d["o"], "h": d["h"], "l": d["l"], "c": d["c"]}
+        else:
+            cur["h"] = max(cur["h"], d["h"]); cur["l"] = min(cur["l"], d["l"]); cur["c"] = d["c"]
+    if cur:
+        out.append(cur)
+    return out
+
+
+def areas_of_interest(weekly_closed, width, min_touches=3):
+    """Horizontal levels price reacted to several times: weekly swing highs and lows (all history)
+    grouped within `width`; a group with at least `min_touches` pivots is an area of interest."""
+    piv = sorted(v for v, _ in swing_levels(weekly_closed, k=2))
+    groups, cur = [], []
+    for v in piv:
+        if cur and v - cur[0] > width:
+            groups.append(cur); cur = []
+        cur.append(v)
+    if cur:
+        groups.append(cur)
+    return [(sum(g) / len(g), len(g)) for g in groups if len(g) >= min_touches]
 
 
 def trend_label(E):

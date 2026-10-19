@@ -38,6 +38,12 @@ h2{font:600 18px/1.2 var(--font-display);letter-spacing:.02em;margin:0;text-tran
 .meta b{color:var(--ink);font-weight:500}
 .stale{color:var(--warn)}
 .strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+button.stat{all:unset;box-sizing:border-box;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+button.stat:hover{border-color:var(--muted)}
+button.stat[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 -3px 0 var(--ink)}
+button.stat:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:560px){button.stat .v small{display:block;font-size:11px;line-height:1.3}}
 .stat{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
 .stat .k{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
 .stat .v{font:500 22px var(--font-mono);font-variant-numeric:tabular-nums}
@@ -146,9 +152,9 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
   </header>
 
   <div class="banner" id="banner" hidden>Testing mode: the rules are being checked against two years of history. Telegram alerts are paused and these setups are not yet validated.</div>
-  <section class="strip" id="strip" aria-label="Summary"></section>
+  <section class="strip tiles" id="strip" role="group" aria-label="Show setups"></section>
 
-  <section style="display:grid;gap:10px">
+  <section style="display:grid;gap:10px" id="actsec">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center">
       <h2>Act now</h2>
       <label class="riskbox" for="risk">Risk per trade $<input id="risk" type="number" min="0.5" step="0.5" inputmode="decimal"></label>
@@ -156,7 +162,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
     <div class="list" id="list"><div class="empty">Waiting for the first scan.</div></div>
   </section>
 
-  <section style="display:grid;gap:10px">
+  <section style="display:grid;gap:10px" id="waitsec">
     <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>Waiting for a daily close</h2><span class="muted" style="font-size:13px">Price is in the zone or it's against a strong move. Nothing to do until a daily candle (closes 5:30 am IST) confirms; Telegram pings you when it does.</span></div>
     <div class="tablebox"><table id="wt"><thead><tr><th scope="col">Setup</th><th scope="col">Zone</th><th scope="col">Enter if a daily candle closes</th><th scope="col">Stop</th><th scope="col">T1</th><th scope="col">T2</th><th scope="col">R</th></tr></thead><tbody></tbody></table></div>
   </section>
@@ -203,8 +209,9 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 <script>
 const LABEL={support_long:"Weekly support long",rejection_short:"Weekly rejection short",reclaim_long:"Weekly reclaim long"};
 const OPEN=new Set();
-let DATA=null, INTEL={coins:{}}, FILTER="best", SORT={key:"vol24h",dir:-1}, RISK=2;
+let DATA=null, INTEL={coins:{}}, VIEW="act", SORT={key:"vol24h",dir:-1}, RISK=2;
 try{const r=parseFloat(localStorage.getItem("sd-risk")); if(r>0) RISK=r;}catch(e){}
+try{const v=localStorage.getItem("sd-view"); if(["all","act","wait"].includes(v)) VIEW=v;}catch(e){}
 
 function fmt(x){
   if(x==null||isNaN(x)) return "–";
@@ -242,13 +249,16 @@ function render(){
   const stale=(Date.now()-new Date(DATA.generated_at))>3*3600e3;
   meta.innerHTML=`Scan <b class="${stale?"stale":""}">${ago(DATA.generated_at)}</b> · ${DATA.universe_size} coins · news ${ago(INTEL.generated_at)}`;
   const S=DATA.setups||[];
-  const act=S.filter(s=>s.top), wait=S.filter(s=>s.watch), dr=DATA.dropped||{};
+  const act=S.filter(s=>s.action==="ENTER"||s.action==="LIMITS").sort((x,y)=>(x.action==="ENTER"?0:1)-(y.action==="ENTER"?0:1)||y.score-x.score);
+  const wait=S.filter(s=>s.action==="WAIT").sort((x,y)=>y.score-x.score);
+  const nEnter=act.filter(s=>s.action==="ENTER").length;
   document.getElementById("strip").innerHTML=[
-    ["Act now",act.length,act.filter(s=>s.action==="ENTER").length?`${act.filter(s=>s.action==="ENTER").length} confirmed`:"place limits"],
-    ["Waiting for close",wait.length,""],
-    ["A-rated found",S.length,"one per coin"],
-    ["Removed",(dr.rating||0)+(dr.stale||0),`${dr.rating||0} B/C · ${dr.stale||0} played out`],
-  ].map(([k,v,sub])=>`<div class="stat"><div class="k">${k}</div><div class="v">${v} <small>${sub}</small></div></div>`).join("");
+    ["all","A-rated",S.length,"all setups"],
+    ["act","Act now",act.length,nEnter?`${nEnter} confirmed`:"place limits"],
+    ["wait","Waiting",wait.length,"for a daily close"],
+  ].map(([v,k,n,sub])=>`<button type="button" class="stat" data-v="${v}" aria-pressed="${VIEW===v}"><div class="k">${k}</div><div class="v">${n} <small>${sub}</small></div></button>`).join("");
+  document.getElementById("actsec").hidden=VIEW==="wait";
+  document.getElementById("waitsec").hidden=VIEW==="act";
   const price={}; (DATA.coins||[]).forEach(c=>price[c.coin]=c.price);
   document.getElementById("list").innerHTML=act.length? act.map(s=>cardHTML(s,price[s.coin])).join("")
     : `<div class="empty">Nothing to act on right now. Cash is a position; the scanner checks again every hour.</div>`;
@@ -295,6 +305,7 @@ function cardHTML(s,p){
     ${s.entries?`<p><b>Limits:</b> ${s.entries.map(e=>`${fmt(e.px)} <span class="muted">${e.pct}%${size?` · $${(size*e.pct/100).toFixed(0)}`:""}</span>`).join(" · ")}</p>`:""}
     <p><b>Exit:</b> half at T1 <span class="muted">(${s.exits?.[0]?.r}R)</span>, move the stop to breakeven, rest at T2${s.rr2?` <span class="muted">(${s.rr2}R)</span>`:""}. Stop is ${s.risk_pct.toFixed(1)}% from the average entry ${fmt(s.entry)}.</p>
     <p class="muted">${esc(s.why)} Lines up with ${(s.confluence||[]).map(esc).join(", ")}.</p>
+    ${s.extra&&s.extra.length?`<p class="muted"><b>Also near the zone (being tested):</b> ${s.extra.map(esc).join(", ")}.</p>`:""}
     ${s.unlock?`<p><b>Unlock in 14 days:</b> ${esc(s.unlock.date)}, ${esc(s.unlock.pct)}% of supply.</p>`:""}
     ${intel.summary?`<p>${esc(intel.summary)}</p>`:""}
     ${news.length?`<ul>${news.slice(0,4).map(n=>`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a> <span class="muted">${esc(n.date||"")}</span></li>`).join("")}</ul>`:""}
@@ -323,14 +334,14 @@ function renderNews(){
   const nm=document.getElementById("nmeta"), nl=document.getElementById("nlist");
   if(!keys.length){return;}
   nm.textContent=`Updated ${ago(INTEL.generated_at)} · researched for the coins with setups · refreshed daily at 7:47 IST`;
-  const set={}; (DATA?.setups||[]).forEach(s=>{ if(!set[s.coin]||s.top) set[s.coin]=s; });
-  const rank=k=>{const s=set[k]; return s?(s.top?0:1):2;};
+  const set={}; (DATA?.setups||[]).forEach(s=>{ set[s.coin]=s; });
+  const rank=k=>{const s=set[k]; return s?(s.action==="WAIT"?1:0):2;};
   keys.sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));
   nl.innerHTML=keys.map(k=>{
     const c=C[k], s=set[k], un=c.unlock, news=c.news||[];
     const side=s?s.side:"";
     return `<article class="ncard ${side}">
-      <div class="hd"><b>${esc(k)}</b>${s?`<span class="pill ${side}">${LABEL[s.type]||esc(s.type)}</span>${s.top?'<span class="pill">Top setup</span>':""}`:'<span class="pill">No setup now</span>'}</div>
+      <div class="hd"><b>${esc(k)}</b>${s?`<span class="pill ${side}">${LABEL[s.type]||esc(s.type)}</span><span class="pill">${s.action==="WAIT"?"Waiting":"Act now"}</span>`:'<span class="pill">No setup now</span>'}</div>
       ${c.summary?`<p>${esc(c.summary)}</p>`:""}
       ${un?`<div class="un"><b>Unlock ${esc(un.date||"")}</b>${un.amount?" · "+esc(un.amount):""}${un.pct_supply?" · "+esc(un.pct_supply)+"% of supply":""}${un.note?" · "+esc(un.note):""}${un.source?` · <a href="${esc(un.source)}" target="_blank" rel="noopener">source</a>`:""}</div>`:""}
       ${news.length?`<ul>${news.map(n=>`<li><a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title)}</a> <span class="muted">${esc(n.date||"")}</span></li>`).join("")}</ul>`:'<p class="muted">No material news in the last 7 days.</p>'}
@@ -355,6 +366,12 @@ function renderCoins(){
   }).join("");
 }
 
+document.getElementById("strip").addEventListener("click",e=>{
+  const b=e.target.closest("button.stat"); if(!b) return;
+  VIEW=b.dataset.v; try{localStorage.setItem("sd-view",VIEW);}catch(e){}
+  render();
+  document.getElementById(VIEW==="wait"?"waitsec":"actsec").scrollIntoView({behavior:"smooth",block:"start"});
+});
 document.getElementById("coins").addEventListener("click",e=>{
   const row=e.target.closest("tr.coinrow");
   if(row){const k=row.dataset.coin; OPEN.has(k)?OPEN.delete(k):OPEN.add(k); renderCoins(); return;}
