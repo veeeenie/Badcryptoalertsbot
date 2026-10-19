@@ -136,6 +136,10 @@ VARIANTS = {
     "Fixed T2 · no daily-flip shorts":            dict(pick=lambda s: tradeable(s) and not (s.get("trend") == "daily flip" and s["side"] == "short"), be=True, runner=False),
     "Fixed T2 · no breakeven (rest rides to T2/stop)": dict(pick=tradeable, be=False, runner=False),
     "Fixed T2 · stop beyond last 2 weeks' wick":  dict(pick=tradeable, be=True, runner=False, alt=True),
+    "Fixed T2 · rating A only":                   dict(pick=lambda s: tradeable(s) and s.get("rating") == "A", be=True, runner=False),
+    "Fixed T2 · A only, no daily-flip shorts":    dict(pick=lambda s: tradeable(s) and s.get("rating") == "A" and not (s.get("trend") == "daily flip" and s["side"] == "short"), be=True, runner=False),
+    "Fixed T2 · A only, entry within 5%":         dict(pick=lambda s: tradeable(s) and s.get("rating") == "A" and abs(s.get("dist_pct") or 0) <= 5, be=True, runner=False),
+    "Fixed T2 · A only, within 5%, R ≥ 2":        dict(pick=lambda s: tradeable(s) and s.get("rating") == "A" and abs(s.get("dist_pct") or 0) <= 5 and s["rr"] >= 2, be=True, runner=False),
 }
 
 
