@@ -122,7 +122,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 <div class="wrap">
   <header>
     <h1>Setup Desk</h1>
-    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline"><a class="rulelink" href="#news">News</a><a class="rulelink" href="#journal">Journal</a><a class="rulelink" href="#backtest">Backtest</a><a class="rulelink" href="rules.html">Rule book</a><div class="meta" id="meta">Loading scan…</div></div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline"><a class="rulelink" href="#news">News</a><a class="rulelink" href="#journal">Journal</a><a class="rulelink" href="#variational">Variational</a><a class="rulelink" href="#backtest">Backtest</a><a class="rulelink" href="rules.html">Rule book</a><div class="meta" id="meta">Loading scan…</div></div>
   </header>
 
   <div class="banner" id="banner" hidden>Testing mode: the rules are being checked against two years of history. Telegram alerts are paused and these setups are not yet validated.</div>
@@ -157,6 +157,13 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
     <div class="strip" id="jstrip"></div>
     <div class="tablebox"><table id="jt"><thead><tr><th scope="col">Trade</th><th scope="col">Opened</th><th scope="col">Entries</th><th scope="col">Avg entry</th><th scope="col">Stop</th><th scope="col">Planned risk</th><th scope="col">Avg exit</th><th scope="col">Net $</th><th scope="col">R</th><th scope="col">Rules</th></tr></thead><tbody></tbody></table></div>
     <p class="foot">From your trade.xyz wallet's public fills and orders, refreshed hourly. Planned stop = the stop attached to your entry orders. R = net P&amp;L after fees ÷ planned risk. Rule checks: stop and TP placed with the entry, at most 3 entries of at least $10, planned reward above 1.5R, stop never widened, risk within your $2 plan.</p>
+  </section>
+
+  <section style="display:grid;gap:10px" id="msec" hidden>
+    <a id="variational"></a>
+    <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>Variational log</h2><span class="muted" style="font-size:13px" id="mmeta"></span></div>
+    <div class="tablebox"><table id="mt"><thead><tr><th scope="col">Trade</th><th scope="col">Placed</th><th scope="col">Entry</th><th scope="col">Stop</th><th scope="col">Take profit</th><th scope="col">Risk</th><th scope="col">Planned R</th><th scope="col">Net $</th><th scope="col">R</th><th scope="col">Rules</th></tr></thead><tbody></tbody></table></div>
+    <div id="mnotes" class="foot"></div>
   </section>
 
   <section style="display:grid;gap:10px" id="btsec" hidden>
@@ -399,7 +406,27 @@ async function loadJournal(){
     document.getElementById("jsec").hidden=false;
   }catch(e){}
 }
-load(); loadBT(); loadJournal(); setInterval(()=>{load();loadJournal();},10*60*1000);
+const MCHECK={stop_at_entry:"stop with entry",tp_at_entry:"TP with entry",max_3_entries:"≤3 entries",min_10_usd:"orders ≥ $10",rr_1_5:"> 1.5R",risk_within_plan:"risk ≤ plan",exit_plan:"half at T1, rest at T2",confirmed_entry:"daily rejection first"};
+async function loadManual(){
+  try{
+    const m=await fetch("data/manual_trades.json?t="+Date.now()).then(r=>r.ok?r.json():null);
+    if(!m||!m.trades||!m.trades.length) return;
+    const w=m.wallet||"";
+    document.getElementById("mmeta").textContent=`${m.venue} · ${w.slice(0,6)}…${w.slice(-4)} · logged by hand · updated ${ago(m.updated_at)}`;
+    document.querySelector("#mt tbody").innerHTML=[...m.trades].reverse().map(t=>{
+      const fails=Object.entries(t.checks||{}).filter(([,ok])=>!ok).map(([k])=>MCHECK[k]||k);
+      const cls=t.net>0?"up":t.net<0?"down":"";
+      const ent=t.entries.map(e=>fmt(e.px)).join(" / ");
+      return `<tr><td><b>${esc(t.coin)}</b> <span class="pill ${t.side}">${t.side}</span> <span class="pill ${t.status==="closed"?"":"at"}">${esc(t.status)}</span></td>
+        <td>${t.placed.slice(5,10)}</td><td>${ent}</td><td>${fmt(t.stop)}</td><td>${(t.tp||[]).map(x=>fmt(x.px)+(x.pct<100?` (${x.pct}%)`:"")).join(" / ")}</td>
+        <td>$${t.risk_usd.toFixed(2)}</td><td>${t.planned_rr}R</td>
+        <td class="${cls}">${t.net==null?"–":(t.net>=0?"+":"")+t.net.toFixed(2)}</td><td class="${cls}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td>
+        <td style="white-space:normal;text-align:left;min-width:180px">${fails.length?`<span class="down">missed: ${fails.map(esc).join(", ")}</span>`:'<span class="up">all followed</span>'}</td></tr>`;}).join("");
+    document.getElementById("mnotes").innerHTML=m.trades.slice().reverse().map(t=>`<p style="margin:4px 0"><b>${esc(t.coin)}:</b> ${(t.notes||[]).map(esc).join(" ")}</p>`).join("")+`<p style="margin:4px 0">${esc(m.note||"")}</p>`;
+    document.getElementById("msec").hidden=false;
+  }catch(e){}
+}
+load(); loadBT(); loadJournal(); loadManual(); setInterval(()=>{load();loadJournal();loadManual();},10*60*1000);
 </script>
 </body>
 </html>

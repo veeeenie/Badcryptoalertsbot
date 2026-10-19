@@ -1,0 +1,28 @@
+{
+  "updated_at": "2026-10-19T07:20:00Z",
+  "venue": "Variational Omni",
+  "wallet": "0xfb4e07C7BF05464e6206abc93873078f2fc53991",
+  "note": "Logged by hand: Variational doesn't publish per-wallet trades, and on-chain only shows USDC deposits and withdrawals. Updated from screenshots of Open Orders / Trade History.",
+  "trades": [
+    {
+      "coin": "HBAR", "side": "short", "status": "pending",
+      "placed": "2026-10-19T07:06:51Z",
+      "entries": [{"px": 0.0856, "qty": 500, "usd": 42.80}],
+      "stop": 0.0902, "tp": [{"px": 0.0730, "pct": 100}],
+      "risk_usd": 2.30, "planned_rr": 2.74,
+      "scanner": {"setup": "Weekly rejection short, rating A", "zone": [0.0835, 0.0872], "stop": 0.0902, "t1": 0.0776, "t2": 0.0648, "status": "at level, wait for a daily rejection close"},
+      "checks": {
+        "stop_at_entry": true, "tp_at_entry": true, "max_3_entries": true, "min_10_usd": true,
+        "rr_1_5": true, "risk_within_plan": true,
+        "exit_plan": false, "confirmed_entry": false
+      },
+      "notes": [
+        "Same stop as the scanner (0.0902).",
+        "Exit: whole position at 0.0730, not half at T1 0.0776 then breakeven, rest at T2 0.0648 (rule 10).",
+        "Price is already in the zone, so rule 3 wants a daily rejection close first; this resting limit can fill without one.",
+        "Risk $2.30 vs the $2 plan (within the 25% tolerance). Fee $0."
+      ],
+      "fill_px": null, "exit_px": null, "net": null, "r": null
+    }
+  ]
+}
