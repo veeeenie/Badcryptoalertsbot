@@ -574,6 +574,8 @@ def analyse(coin_row, daily):
             # A+ = rating A plus an area of interest (a level with 3+ weekly touches) at the zone.
             # Backtest 19 Oct 2026: +0.194R a trade vs +0.109R without; fibs and monthly EMAs showed no edge.
             x["aoi"] = [name for name, kind in hit if kind == "aoi"]
+            x["levels_extra"] = [{"v": v, "name": name, "kind": kind} for v, name, kind in extra_levels
+                                 if v and lo - 0.5 * a <= v <= hi + 0.5 * a]
             x["grade"] = "A+" if x["aoi"] and x["rating"] == "A" else x["rating"]
 
     info["notes"] = notes[:6]

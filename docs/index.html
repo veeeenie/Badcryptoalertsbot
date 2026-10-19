@@ -121,6 +121,11 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
 .kv div{background:var(--bg);border-radius:4px;padding:6px 8px;min-width:0}
 .kv span{display:block;font:500 11px var(--font-body);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
 .lad{position:relative;height:34px;margin:2px 4px 0}
+.chartbox{display:grid;gap:6px}
+.chartbox .tf{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.chartbox .tf button{font:600 12px var(--font-mono);border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:4px;padding:3px 9px;cursor:pointer}
+.chartbox .tf button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chart{height:320px;border:1px solid var(--line);border-radius:6px;overflow:hidden}
 .lad .seg{position:absolute;top:12px;height:8px}
 .lad .zn{position:absolute;top:8px;height:16px;background:var(--muted);opacity:.35;border-radius:2px}
 .lad .tk{position:absolute;top:0;font:500 10px var(--font-mono);color:var(--muted);transform:translateX(-50%);white-space:nowrap}
@@ -206,6 +211,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
   <p class="foot">Scans the top 100 Hyperliquid perps every hour on daily candles; weekly candles start Monday 00:00 UTC and EMAs use the 3-EMA [Krypt] formula. Only rating-A setups are kept: the entry zone is a weekly level (weekly 25/50/100 EMA or weekly swing high/low) with at least one more level sitting at it. Setups whose move already played out are removed. Each setup shows one action: PLACE LIMITS (price is heading to the zone), WAIT FOR CLOSE (price is already in the zone, or it is against a strong move: a daily candle must close back out of the zone in the trade's direction first), or ENTER (that close just happened). Blended reward-to-risk above 1.5, stop within 15% of the average entry, each tranche at least $10 at your dollar risk. These are filters for charts worth checking, not trade instructions.</p>
 </div>
 
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
 <script>
 const LABEL={support_long:"Weekly support long",rejection_short:"Weekly rejection short",reclaim_long:"Weekly reclaim long"};
 const OPEN=new Set();
@@ -302,6 +308,7 @@ function cardHTML(s,p){
     <span class="muted" style="font-size:12px">Details ▾</span>
   </summary>
   <div class="detail">
+    <div class="chartbox" data-coin="${esc(s.coin)}"><div class="tf">Chart <button type="button" data-tf="M">M</button><button type="button" data-tf="W" aria-pressed="true">W</button><button type="button" data-tf="D">D</button><span>EMAs 25/50/100 (Krypt) · zone grey · stop red · targets green · areas of interest blue</span></div><div class="chart"></div></div>
     ${s.entries?`<p><b>Limits:</b> ${s.entries.map(e=>`${fmt(e.px)} <span class="muted">${e.pct}%${size?` · $${(size*e.pct/100).toFixed(0)}`:""}</span>`).join(" · ")}</p>`:""}
     <p><b>Exit:</b> half at T1 <span class="muted">(${s.exits?.[0]?.r}R)</span>, move the stop to breakeven, rest at T2${s.rr2?` <span class="muted">(${s.rr2}R)</span>`:""}. Stop is ${s.risk_pct.toFixed(1)}% from the average entry ${fmt(s.entry)}.</p>
     <p class="muted">${esc(s.why)} Lines up with ${(s.confluence||[]).map(esc).join(", ")}.</p>
@@ -367,6 +374,71 @@ function renderCoins(){
   }).join("");
 }
 
+
+// ---- chart on each card: Hyperliquid daily candles, aggregated to weekly (Mon UTC) / monthly
+const CANDLES={};
+async function hlDaily(coin){
+  if(CANDLES[coin]) return CANDLES[coin];
+  const now=Date.now();
+  const r=await fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({type:"candleSnapshot",req:{coin,interval:"1d",startTime:now-1500*864e5,endTime:now}})});
+  const d=(await r.json()).map(b=>({t:b.t,o:+b.o,h:+b.h,l:+b.l,c:+b.c}));
+  CANDLES[coin]=d; return d;
+}
+function agg(d,tf){
+  if(tf==="D") return d;
+  const out=[]; let cur=null, key=null;
+  for(const b of d){
+    const dt=new Date(b.t);
+    const k=tf==="W"? Math.floor((b.t/864e5+3)/7) : dt.getUTCFullYear()*12+dt.getUTCMonth();
+    if(k!==key){ if(cur) out.push(cur); key=k; cur={...b}; }
+    else { cur.h=Math.max(cur.h,b.h); cur.l=Math.min(cur.l,b.l); cur.c=b.c; }
+  }
+  if(cur) out.push(cur); return out;
+}
+function kema(vals,n){ // 3-EMA [Krypt]: drop the first candle, seed with the next close
+  const out=vals.map(()=>null); if(vals.length<3) return out;
+  const k=2/(n+1); let e=vals[1]; out[1]=null;
+  for(let i=2;i<vals.length;i++){ e=vals[i]*k+e*(1-k); out[i]=e; }  // drawn from the start, like TradingView
+  return out;
+}
+async function drawChart(box,s,tf){
+  const el=box.querySelector(".chart"); el.innerHTML="";
+  if(!window.LightweightCharts){ el.textContent="Chart library didn't load."; return; }
+  let d; try{ d=await hlDaily(s.coin); }catch(e){ el.textContent="Couldn't load candles from Hyperliquid."; return; }
+  const cs=getComputedStyle(document.documentElement), v=n=>cs.getPropertyValue(n).trim();
+  const bars=agg(d,tf);
+  const ch=LightweightCharts.createChart(el,{height:320,layout:{background:{color:v("--panel")},textColor:v("--muted"),fontFamily:"IBM Plex Mono, monospace"},
+    grid:{vertLines:{color:v("--line")},horzLines:{color:v("--line")}},rightPriceScale:{borderColor:v("--line")},timeScale:{borderColor:v("--line")},
+    localization:{priceFormatter:x=>fmt(x)}});
+  const cdl=ch.addCandlestickSeries({upColor:v("--long"),downColor:v("--short"),borderVisible:false,wickUpColor:v("--long"),wickDownColor:v("--short")});
+  cdl.setData(bars.map(b=>({time:Math.floor(b.t/1000),open:b.o,high:b.h,low:b.l,close:b.c})));
+  const closes=bars.map(b=>b.c);
+  [[25,"#e8893a"],[50,"#4f7fd1"],[100,"#b8487a"]].forEach(([n,c])=>{
+    const e=kema(closes,n), ser=ch.addLineSeries({color:c,lineWidth:2,priceLineVisible:false,lastValueVisible:false});
+    ser.setData(bars.map((b,i)=>e[i]==null?null:{time:Math.floor(b.t/1000),value:e[i]}).filter(Boolean));
+  });
+  const line=(price,color,title,style=0,w=1)=>cdl.createPriceLine({price,color,lineWidth:w,lineStyle:style,axisLabelVisible:true,title});
+  line(s.zone[0],v("--muted"),"zone",2); line(s.zone[1],v("--muted"),"zone",2);
+  line(s.stop,v("--short"),"SL",0,2); line(s.t1,v("--long"),"T1",0,2); if(s.t2) line(s.t2,v("--long"),"T2",2,1);
+  (s.levels_extra||[]).filter(x=>x.kind==="aoi").forEach(x=>line(x.v,v("--accent"),"AOI",1,2));
+  (s.levels_extra||[]).filter(x=>x.kind!=="aoi").forEach(x=>line(x.v,v("--muted"),x.name.replace(/ \(.*\)/,""),3,1));
+  const n=bars.length, show=tf==="D"?180:tf==="W"?104:60;
+  ch.timeScale().setVisibleLogicalRange({from:Math.max(0,n-show),to:n+3});
+  new ResizeObserver(()=>ch.applyOptions({width:el.clientWidth})).observe(el);
+}
+document.getElementById("list").addEventListener("toggle",e=>{
+  const det=e.target; if(!det.open) return;
+  const box=det.querySelector(".chartbox"); if(!box||box.dataset.done) return;
+  const s=(DATA.setups||[]).find(x=>x.coin===box.dataset.coin); if(!s) return;
+  box.dataset.done="1"; drawChart(box,s,"W");
+},true);
+document.getElementById("list").addEventListener("click",e=>{
+  const b=e.target.closest(".chartbox .tf button"); if(!b) return;
+  const box=b.closest(".chartbox"); const s=(DATA.setups||[]).find(x=>x.coin===box.dataset.coin); if(!s) return;
+  box.querySelectorAll(".tf button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  drawChart(box,s,b.dataset.tf);
+});
 document.getElementById("strip").addEventListener("click",e=>{
   const b=e.target.closest("button.stat"); if(!b) return;
   VIEW=b.dataset.v; try{localStorage.setItem("sd-view",VIEW);}catch(e){}
