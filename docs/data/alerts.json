@@ -1,0 +1,15 @@
+{
+  "note": "Custom price alerts checked by the hourly scan. Trendlines are defined by two points (date, price) and extended in a straight line (linear price scale, like TradingView).",
+  "alerts": [
+    {
+      "id": "JUP-trendline",
+      "coin": "JUP",
+      "type": "trendline",
+      "name": "JUP downtrend line from the all-time high",
+      "p1": {"date": "2024-04-01", "price": 1.8363},
+      "p2": {"date": "2026-10-19", "price": 0.3832},
+      "source": "Read from the trader's Binance weekly chart (yellow line through the Apr 2024 and Dec 2024 highs), 20 Oct 2026",
+      "touch_pct": 1.0
+    }
+  ]
+}

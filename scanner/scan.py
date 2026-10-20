@@ -764,6 +764,79 @@ def coingecko_trending():
         return set()
 
 
+# ---------------------------------------------------------------- custom alerts (trendlines)
+
+ALERTS_PATH = os.path.join(DATA_DIR, "alerts.json")
+
+
+def line_value(al, ts_ms):
+    """Price of a two-point trendline at a time (linear in time and price)."""
+    t1 = datetime.fromisoformat(al["p1"]["date"]).replace(tzinfo=timezone.utc).timestamp() * 1000
+    t2 = datetime.fromisoformat(al["p2"]["date"]).replace(tzinfo=timezone.utc).timestamp() * 1000
+    p1, p2 = al["p1"]["price"], al["p2"]["price"]
+    return p1 + (p2 - p1) * (ts_ms - t1) / (t2 - t1)
+
+
+def check_custom_alerts(state):
+    """Trendline alerts: once a week when price reaches the line, and once when a weekly candle
+    closes above it (for lines price is under) or below it (for lines price is above).
+    Returns (messages, rows for the dashboard)."""
+    try:
+        with open(ALERTS_PATH) as f:
+            cfg = json.load(f).get("alerts", [])
+    except (OSError, ValueError):
+        return [], []
+    sent = state.setdefault("custom", {})
+    msgs, rows = [], []
+    now_ms = time.time() * 1000
+    for al in cfg:
+        if al.get("type") != "trendline":
+            continue
+        try:
+            d = daily_candles(al["coin"], days=21)
+        except Exception as e:
+            print("custom alert error", al["id"], e, file=sys.stderr)
+            continue
+        if not d:
+            continue
+        price = d[-1]["c"]
+        line = line_value(al, now_ms)
+        above = price > line
+        weekly = weekly_from_daily(d)
+        week_key = datetime.fromtimestamp(weekly[-1]["t"] / 1000, tz=timezone.utc).date().isoformat()
+        tol = al.get("touch_pct", 1.0) / 100
+        today = d[-1]
+        touched = today["h"] >= line * (1 - tol) and today["l"] <= line * (1 + tol)
+        rows.append({"id": al["id"], "coin": al["coin"], "name": al["name"], "line": line, "price": price,
+                     "dist_pct": (price / line - 1) * 100, "slope_per_week": line_value(al, now_ms + 7 * 86400e3) - line,
+                     "touched_today": touched})
+        k = f"{al['id']}:touch:{week_key}"
+        if touched and k not in sent:
+            sent[k] = time.time()
+            msgs.append(f"📐 <b>{al['coin']}</b> reached the trendline: {al['name']}\n"
+                        f"Line {fmt(line)} · price {fmt(price)} (today's range {fmt(today['l'])}–{fmt(today['h'])})\n"
+                        f"Watch the weekly close: above the line = breakout, rejection = the line holds.")
+        if len(weekly) >= 2:
+            last = weekly[-2]                                   # last closed week (Mon-Sun UTC)
+            close_ms = weekly[-1]["t"]
+            lv = line_value(al, close_ms)
+            prev_lv = line_value(al, weekly[-3]["t"]) if len(weekly) >= 3 else lv
+            prev_close = weekly[-3]["c"] if len(weekly) >= 3 else last["c"]
+            for side, crossed in (("above", last["c"] > lv and prev_close <= prev_lv),
+                                  ("below", last["c"] < lv and prev_close >= prev_lv)):
+                k = f"{al['id']}:wclose_{side}:{week_key}"
+                if crossed and k not in sent:
+                    sent[k] = time.time()
+                    msgs.append(f"📐 <b>{al['coin']}</b> weekly close {side.upper()} the trendline: {al['name']}\n"
+                                f"Close {fmt(last['c'])} vs line {fmt(lv)}. "
+                                + ("Breakout of the downtrend line; check the scanner for a retest long." if side == "above"
+                                   else "Lost the line; it now acts as resistance."))
+    # keep the state small: forget keys older than 60 days
+    for k in [k for k, v in sent.items() if time.time() - v > 60 * 86400]:
+        del sent[k]
+    return msgs, rows
+
+
 # ---------------------------------------------------------------- main
 
 def main():
@@ -896,6 +969,11 @@ def main():
                     "\n\n<b>Waiting for a daily close</b>\n" +
                     (", ".join(f"{x['coin']} {x['side']}" for x in waits) or "none") +
                     "\n\nYou'll get a ping when a new setup joins Act now, and when a wait turns into ENTER.")
+    custom_msgs, custom_rows = check_custom_alerts(state)
+    msgs.extend(custom_msgs)
+    out["custom_alerts"] = custom_rows
+    with open(SETUPS_PATH, "w") as f:
+        json.dump(out, f, separators=(",", ":"))
     if ALERTS_PAUSED:
         print(f"alerts paused: {len(msgs)} message(s) not sent")
     else:
@@ -903,7 +981,7 @@ def main():
             telegram(m)
             time.sleep(1)
     with open(STATE_PATH, "w") as f:
-        json.dump({"version": 3, "seen": new_seen, "alerted": alerted, "updated": now}, f)
+        json.dump({"version": 3, "seen": new_seen, "alerted": alerted, "custom": state.get("custom", {}), "updated": now}, f)
 
     print(f"setups: {len(all_setups)}, alerts: {len(msgs)}, errors: {len(errors)}, "
           f"time: {out['runtime_s']}s")
