@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-20T14:45:00Z",
+  "updated_at": "2026-10-20T14:50:00Z",
   "venue": "Variational Omni",
   "wallet": "0xfb4e07C7BF05464e6206abc93873078f2fc53991",
   "note": "Logged by hand: Variational doesn't publish per-wallet trades, and on-chain only shows USDC deposits and withdrawals. Updated from screenshots of Open Orders / Trade History.",
@@ -220,11 +220,6 @@
           "px": 1.04,
           "qty": 20,
           "usd": 20.8
-        },
-        {
-          "px": 1.085,
-          "qty": 50,
-          "usd": 54.25
         }
       ],
       "stop": 1.14,
@@ -234,8 +229,8 @@
           "pct": 100
         }
       ],
-      "risk_usd": 4.75,
-      "planned_rr": 3.71,
+      "risk_usd": 2.0,
+      "planned_rr": 2.2,
       "scanner": {
         "setup": "Weekly rejection short, grade A, WAIT FOR CLOSE",
         "zone": [
@@ -252,14 +247,14 @@
         "max_3_entries": true,
         "min_10_usd": true,
         "rr_1_5": true,
-        "risk_within_plan": false,
+        "risk_within_plan": true,
         "exit_plan": false,
         "confirmed_entry": false
       },
       "notes": [
         "20 SUI filled at 1.04 on 20 Oct (before a daily close confirmed the rejection). Risk on the filled 20 with the 1.14 stop: $2.00, the full plan.",
-        "The 50 SUI limit at 1.085 is still resting: if it fills, total risk becomes $4.75.",
-        "Whole position at 0.82 (T2): no half at T1 0.984."
+        "Whole position at 0.82 (T2): no half at T1 0.984.",
+        "The 50 SUI add at 1.085 was cancelled on 20 Oct, so risk stays at $2.00."
       ],
       "fill_px": 1.04,
       "exit_px": null,
