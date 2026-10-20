@@ -173,7 +173,7 @@ tr.notes ul{margin:0;padding-left:18px;max-width:80ch}
   </section>
 
   <section style="display:grid;gap:10px" id="alsec" hidden>
-    <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>Trendline alerts</h2><span class="muted" style="font-size:13px">Checked every hour. Telegram pings once a week when price reaches the line, and on a weekly close through it.</span></div>
+    <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline"><h2>Price alerts</h2><span class="muted" style="font-size:13px">Checked every hour. Telegram pings once a week when price reaches a line or level, on a weekly close through a trendline, and on a daily close through a level.</span></div>
     <div class="tablebox"><table id="alt"><thead><tr><th scope="col">Coin</th><th scope="col">Line</th><th scope="col">Line now</th><th scope="col">Price</th><th scope="col">Distance</th><th scope="col">Line moves</th></tr></thead><tbody></tbody></table></div>
   </section>
 
@@ -279,7 +279,7 @@ function render(){
     : `<tr><td colspan="7" class="muted" style="text-align:left">None right now.</td></tr>`;
   const AL=DATA.custom_alerts||[];
   document.getElementById("alsec").hidden=!AL.length;
-  document.querySelector("#alt tbody").innerHTML=AL.map(a=>`<tr><td><b>${esc(a.coin)}</b>${a.touched_today?' <span class="pill at">at the line</span>':""}</td><td style="white-space:normal;text-align:left">${esc(a.name)}</td><td>${fmt(a.line)}</td><td>${fmt(a.price)}</td><td class="${a.dist_pct>=0?"up":"down"}">${pct(a.dist_pct)}</td><td>${a.slope_per_week>=0?"+":"−"}${fmt(Math.abs(a.slope_per_week))} a week</td></tr>`).join("");
+  document.querySelector("#alt tbody").innerHTML=AL.map(a=>`<tr><td><b>${esc(a.coin)}</b>${a.touched_today?' <span class="pill at">at the line</span>':""}</td><td style="white-space:normal;text-align:left">${esc(a.name)}</td><td>${fmt(a.line)}</td><td>${fmt(a.price)}</td><td class="${a.dist_pct>=0?"up":"down"}">${pct(a.dist_pct)}</td><td>${Math.abs(a.slope_per_week)<1e-12?"flat (level)":(a.slope_per_week>=0?"+":"−")+fmt(Math.abs(a.slope_per_week))+" a week"}</td></tr>`).join("");
   renderCoins();
   renderNews();
 }
