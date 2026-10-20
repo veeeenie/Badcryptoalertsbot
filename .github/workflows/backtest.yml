@@ -39,5 +39,7 @@ jobs:
           git add docs/data/backtest.json
           git diff --cached --quiet && exit 0
           git commit -m "Backtest $(date -u +'%Y-%m-%d %H:%M') UTC"
-          git pull --rebase --autostash
-          git push
+          for i in 1 2 3; do
+            git pull --rebase -X theirs origin main && git push origin HEAD:main && break
+            sleep 5
+          done
