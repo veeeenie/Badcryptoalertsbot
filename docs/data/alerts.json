@@ -1,15 +1,57 @@
 {
-  "note": "Custom price alerts checked by the hourly scan. Trendlines are defined by two points (date, price) and extended in a straight line (linear price scale, like TradingView).",
+  "note": "Custom price alerts checked by the hourly scan. Trendlines: two points (date, price) extended in a straight line; Telegram once a week when price reaches the line and on a weekly close through it. Levels: a flat price; Telegram once a week when price reaches it and on a daily close through it.",
   "alerts": [
     {
       "id": "JUP-trendline",
       "coin": "JUP",
       "type": "trendline",
       "name": "JUP downtrend line from the all-time high",
-      "p1": {"date": "2024-04-01", "price": 1.8363},
-      "p2": {"date": "2026-10-19", "price": 0.3832},
+      "p1": {
+        "date": "2024-04-01",
+        "price": 1.8363
+      },
+      "p2": {
+        "date": "2026-10-19",
+        "price": 0.3832
+      },
       "source": "Read from the trader's Binance weekly chart (yellow line through the Apr 2024 and Dec 2024 highs), 20 Oct 2026",
       "touch_pct": 1.0
+    },
+    {
+      "id": "PONS-321",
+      "coin": "PONS",
+      "type": "level",
+      "price": 0.321,
+      "name": "PONS daily 100 EMA area (~$321M market cap), first resistance",
+      "touch_pct": 1.0,
+      "source": "Trader's TradingView market-cap chart, 20 Oct 2026 (market cap ≈ price × 1B)",
+      "meaning_touch": "First hurdle of the 320–390M resistance band: a daily rejection here is the short idea; a daily close above opens 375–390M.",
+      "meaning_above": "Reclaimed the daily 100 EMA: next resistance 375–390M (daily 25/50 EMAs + 0.618 fib).",
+      "meaning_below": "Lost it again: resistance holds."
+    },
+    {
+      "id": "PONS-242",
+      "coin": "PONS",
+      "type": "level",
+      "price": 0.242,
+      "name": "PONS weekly 25 EMA area (~$242M), top of the 222–242M support",
+      "touch_pct": 1.0,
+      "source": "Trader's TradingView market-cap chart, 20 Oct 2026 (market cap ≈ price × 1B)",
+      "meaning_touch": "Into the 222–242M support zone. No long until a daily candle closes back up (rule 6: strong move).",
+      "meaning_above": "Daily close back above the top of support after trading below it: the confirmation for a long idea (discretionary, $2 risk).",
+      "meaning_below": "Daily close inside the support zone; 222M (0.786 fib) is next."
+    },
+    {
+      "id": "PONS-222",
+      "coin": "PONS",
+      "type": "level",
+      "price": 0.2217,
+      "name": "PONS 0.786 fib (~$222M), bottom of the support zone",
+      "touch_pct": 1.0,
+      "source": "Trader's TradingView market-cap chart, 20 Oct 2026 (market cap ≈ price × 1B)",
+      "meaning_touch": "At the bottom of the 222–242M support zone.",
+      "meaning_above": "Daily close back above the zone bottom: a bounce attempt; confirmation is a close back above 242M.",
+      "meaning_below": "Daily close below the support zone: no long; the pump has fully unwound toward the base."
     }
   ]
 }

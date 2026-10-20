@@ -770,7 +770,9 @@ ALERTS_PATH = os.path.join(DATA_DIR, "alerts.json")
 
 
 def line_value(al, ts_ms):
-    """Price of a two-point trendline at a time (linear in time and price)."""
+    """Price of a two-point trendline at a time (linear in time and price); flat for a level."""
+    if al.get("type") == "level":
+        return al["price"]
     t1 = datetime.fromisoformat(al["p1"]["date"]).replace(tzinfo=timezone.utc).timestamp() * 1000
     t2 = datetime.fromisoformat(al["p2"]["date"]).replace(tzinfo=timezone.utc).timestamp() * 1000
     p1, p2 = al["p1"]["price"], al["p2"]["price"]
@@ -790,7 +792,7 @@ def check_custom_alerts(state):
     msgs, rows = [], []
     now_ms = time.time() * 1000
     for al in cfg:
-        if al.get("type") != "trendline":
+        if al.get("type") not in ("trendline", "level"):
             continue
         try:
             d = daily_candles(al["coin"], days=21)
@@ -813,10 +815,24 @@ def check_custom_alerts(state):
         k = f"{al['id']}:touch:{week_key}"
         if touched and k not in sent:
             sent[k] = time.time()
-            msgs.append(f"📐 <b>{al['coin']}</b> reached the trendline: {al['name']}\n"
-                        f"Line {fmt(line)} · price {fmt(price)} (today's range {fmt(today['l'])}–{fmt(today['h'])})\n"
-                        f"Watch the weekly close: above the line = breakout, rejection = the line holds.")
-        if len(weekly) >= 2:
+            if al.get("type") == "level":
+                msgs.append(f"📍 <b>{al['coin']}</b> reached {fmt(line)}: {al['name']}\n"
+                            f"Price {fmt(price)} (today's range {fmt(today['l'])}–{fmt(today['h'])}). {al.get('meaning_touch', '')}".strip())
+            else:
+                msgs.append(f"📐 <b>{al['coin']}</b> reached the trendline: {al['name']}\n"
+                            f"Line {fmt(line)} · price {fmt(price)} (today's range {fmt(today['l'])}–{fmt(today['h'])})\n"
+                            f"Watch the weekly close: above the line = breakout, rejection = the line holds.")
+        # levels: also a daily close through the level (the confirmation rule 6 asks for)
+        if al.get("type") == "level" and len(d) >= 3:
+            lc, pc = d[-2]["c"], d[-3]["c"]                     # last closed day and the one before
+            day_key = datetime.fromtimestamp(d[-2]["t"] / 1000, tz=timezone.utc).date().isoformat()
+            for side, crossed in (("above", lc > line >= pc), ("below", lc < line <= pc)):
+                k = f"{al['id']}:dclose_{side}:{day_key}"
+                if crossed and k not in sent:
+                    sent[k] = time.time()
+                    msgs.append(f"📍 <b>{al['coin']}</b> daily close {side.upper()} {fmt(line)}: {al['name']}\n"
+                                f"Close {fmt(lc)} (previous close {fmt(pc)}). {al.get('meaning_' + side, '')}".strip())
+        if al.get("type") == "trendline" and len(weekly) >= 2:
             last = weekly[-2]                                   # last closed week (Mon-Sun UTC)
             close_ms = weekly[-1]["t"]
             lv = line_value(al, close_ms)
