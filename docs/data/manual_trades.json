@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-19T10:30:00Z",
+  "updated_at": "2026-10-20T14:45:00Z",
   "venue": "Variational Omni",
   "wallet": "0xfb4e07C7BF05464e6206abc93873078f2fc53991",
   "note": "Logged by hand: Variational doesn't publish per-wallet trades, and on-chain only shows USDC deposits and withdrawals. Updated from screenshots of Open Orders / Trade History.",
@@ -104,6 +104,217 @@
         "A+ setup on the scanner (PLACE LIMITS): entry at the bottom of the 97.22\u201399.65 zone, stop 94.175 a little below the scanner's 94.79.",
         "Exit: whole position at T1 106.80, not half there, stop to breakeven, rest at T2 118.23 (rule 11).",
         "Risk $2.50, right at the 25% tolerance over the $2 plan. Fee $0."
+      ],
+      "fill_px": null,
+      "exit_px": null,
+      "net": null,
+      "r": null
+    },
+    {
+      "coin": "HYPE",
+      "side": "long",
+      "status": "pending",
+      "placed": "2026-10-19T14:42:42Z",
+      "entries": [
+        {
+          "px": 70.3,
+          "qty": 1,
+          "usd": 70.3
+        }
+      ],
+      "stop": 68.1,
+      "tp": [
+        {
+          "px": 82.7,
+          "pct": 100
+        }
+      ],
+      "risk_usd": 2.2,
+      "planned_rr": 5.64,
+      "scanner": {
+        "setup": "Weekly support long, grade A, PLACE LIMITS",
+        "zone": [
+          70.43,
+          75.15
+        ],
+        "stop": 68.36,
+        "t1": 82.72,
+        "t2": 93.75
+      },
+      "checks": {
+        "stop_at_entry": true,
+        "tp_at_entry": true,
+        "max_3_entries": true,
+        "min_10_usd": true,
+        "rr_1_5": true,
+        "risk_within_plan": true,
+        "exit_plan": false,
+        "confirmed_entry": true
+      },
+      "notes": [
+        "Entry at the bottom of the scanner zone; stop 68.10 just below the scanner's 68.36.",
+        "Whole position at T1 82.70; rule 11 would take half there and the rest at T2 93.75."
+      ],
+      "fill_px": null,
+      "exit_px": null,
+      "net": null,
+      "r": null
+    },
+    {
+      "coin": "LTC",
+      "side": "short",
+      "status": "pending",
+      "placed": "2026-10-20T12:45:51Z",
+      "entries": [
+        {
+          "px": 64.4,
+          "qty": 1.124,
+          "usd": 72.39
+        }
+      ],
+      "stop": 66.0,
+      "tp": [
+        {
+          "px": 50.0,
+          "pct": 100
+        }
+      ],
+      "risk_usd": 1.8,
+      "planned_rr": 8.99,
+      "scanner": {
+        "setup": "Weekly rejection short, grade A+, WAIT FOR CLOSE",
+        "zone": [
+          60.6,
+          64.47
+        ],
+        "stop": 65.94,
+        "t1": 57.67,
+        "t2": 49.65
+      },
+      "checks": {
+        "stop_at_entry": true,
+        "tp_at_entry": true,
+        "max_3_entries": true,
+        "min_10_usd": true,
+        "rr_1_5": true,
+        "risk_within_plan": true,
+        "exit_plan": false,
+        "confirmed_entry": false
+      },
+      "notes": [
+        "Limit at the top of the zone; the scanner says wait for a daily close back below 60.60 first.",
+        "Whole position at 50.00 (T2): no half at T1 57.67, so a winner can round-trip."
+      ],
+      "fill_px": null,
+      "exit_px": null,
+      "net": null,
+      "r": null
+    },
+    {
+      "coin": "SUI",
+      "side": "short",
+      "status": "pending",
+      "placed": "2026-10-20T13:58:03Z",
+      "entries": [
+        {
+          "px": 1.04,
+          "qty": 20,
+          "usd": 20.8
+        },
+        {
+          "px": 1.085,
+          "qty": 50,
+          "usd": 54.25
+        }
+      ],
+      "stop": 1.14,
+      "tp": [
+        {
+          "px": 0.82,
+          "pct": 100
+        }
+      ],
+      "risk_usd": 4.75,
+      "planned_rr": 3.71,
+      "scanner": {
+        "setup": "Weekly rejection short, grade A, WAIT FOR CLOSE",
+        "zone": [
+          1.043,
+          1.085
+        ],
+        "stop": 1.122,
+        "t1": 0.984,
+        "t2": 0.819
+      },
+      "checks": {
+        "stop_at_entry": true,
+        "tp_at_entry": true,
+        "max_3_entries": true,
+        "min_10_usd": true,
+        "rr_1_5": true,
+        "risk_within_plan": false,
+        "exit_plan": false,
+        "confirmed_entry": false
+      },
+      "notes": [
+        "Risk $4.75 if both fill (2.4x the $2 plan): about 30 SUI total fits $2 with this stop.",
+        "The 1.04 limit is at market (SUI 1.041) while the scanner says wait for a daily close below 1.043.",
+        "Whole position at 0.82 (T2): no half at T1 0.984."
+      ],
+      "fill_px": null,
+      "exit_px": null,
+      "net": null,
+      "r": null
+    },
+    {
+      "coin": "ICP",
+      "side": "short",
+      "status": "pending",
+      "placed": "2026-10-20T14:32:01Z",
+      "entries": [
+        {
+          "px": 3.1,
+          "qty": 10,
+          "usd": 31.0
+        },
+        {
+          "px": 3.1,
+          "qty": 20,
+          "usd": 62.0
+        }
+      ],
+      "stop": 3.34,
+      "tp": [
+        {
+          "px": 2.35,
+          "pct": 100
+        }
+      ],
+      "risk_usd": 7.2,
+      "planned_rr": 3.13,
+      "scanner": {
+        "setup": "Weekly rejection short, grade A+, PLACE LIMITS",
+        "zone": [
+          3.112,
+          3.227
+        ],
+        "stop": 3.341,
+        "t1": 2.947,
+        "t2": 2.357
+      },
+      "checks": {
+        "stop_at_entry": true,
+        "tp_at_entry": true,
+        "max_3_entries": true,
+        "min_10_usd": true,
+        "rr_1_5": true,
+        "risk_within_plan": false,
+        "exit_plan": false,
+        "confirmed_entry": true
+      },
+      "notes": [
+        "Two sell limits at the same price (10 and 20 ICP): 30 ICP = $7.20 risk, 3.6x the plan. Looks like a duplicate; 10 ICP = $2.40.",
+        "Whole position at 2.35 (T2): no half at T1 2.95."
       ],
       "fill_px": null,
       "exit_px": null,
