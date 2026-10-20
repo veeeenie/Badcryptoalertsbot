@@ -213,7 +213,7 @@
     {
       "coin": "SUI",
       "side": "short",
-      "status": "pending",
+      "status": "open",
       "placed": "2026-10-20T13:58:03Z",
       "entries": [
         {
@@ -257,11 +257,11 @@
         "confirmed_entry": false
       },
       "notes": [
-        "Risk $4.75 if both fill (2.4x the $2 plan): about 30 SUI total fits $2 with this stop.",
-        "The 1.04 limit is at market (SUI 1.041) while the scanner says wait for a daily close below 1.043.",
+        "20 SUI filled at 1.04 on 20 Oct (before a daily close confirmed the rejection). Risk on the filled 20 with the 1.14 stop: $2.00, the full plan.",
+        "The 50 SUI limit at 1.085 is still resting: if it fills, total risk becomes $4.75.",
         "Whole position at 0.82 (T2): no half at T1 0.984."
       ],
-      "fill_px": null,
+      "fill_px": 1.04,
       "exit_px": null,
       "net": null,
       "r": null
@@ -269,7 +269,7 @@
     {
       "coin": "ICP",
       "side": "short",
-      "status": "pending",
+      "status": "cancelled",
       "placed": "2026-10-20T14:32:01Z",
       "entries": [
         {
@@ -314,11 +314,12 @@
       },
       "notes": [
         "Two sell limits at the same price (10 and 20 ICP): 30 ICP = $7.20 risk, 3.6x the plan. Looks like a duplicate; 10 ICP = $2.40.",
-        "Whole position at 2.35 (T2): no half at T1 2.95."
+        "Whole position at 2.35 (T2): no half at T1 2.95.",
+        "Both ICP orders cancelled on 20 Oct before filling."
       ],
       "fill_px": null,
       "exit_px": null,
-      "net": null,
+      "net": 0,
       "r": null
     }
   ]
