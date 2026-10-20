@@ -142,6 +142,7 @@ VARIANTS = {
     "Live · no breakeven (rest rides to T2/stop)": dict(pick=live, be=False, runner=False),
     "Live · stop beyond last 2 weeks' wick":      dict(pick=live, be=True, runner=False, alt=True),
     "Live · also drop if price is already past T1": dict(pick=lambda s: live(s) and not s.get("past_t1"), be=True, runner=False),
+    "Live · young coins (50–99 weeks) short on weekly 25/50": dict(pick=live, be=True, runner=False, alt="young"),
     "Live · A+ only (area of interest at the zone)": dict(pick=lambda s: live(s) and s.get("grade") == "A+", be=True, runner=False),
 }
 
@@ -183,13 +184,21 @@ def collect():
                 _, setups = scan.analyse(r, hist)
                 scan.RECENT_WEEKS_STOP = 2                  # variant: stop beyond the last 2 weeks' wick
                 _, alt = scan.analyse(r, hist)
+                scan.RECENT_WEEKS_STOP = 0
+                young = None
+                if len(scan.weekly_from_daily(hist)) < 100:  # variant: young coins judged on weekly 25/50
+                    scan.YOUNG_TREND = 1
+                    _, young = scan.analyse(r, hist)
             except Exception as e:
                 print("analyse error", coin, e, file=sys.stderr)
                 continue
             finally:
                 scan.RECENT_WEEKS_STOP = 0
-            if setups or alt:
-                sig.append((t, setups, alt))
+                scan.YOUNG_TREND = 0
+            if young is None:
+                young = setups
+            if setups or alt or young:
+                sig.append((t, setups, alt, young))
         out[coin] = (daily, sig, week_end)
     return out, round(time.time() - started)
 
@@ -198,8 +207,8 @@ def simulate(signals, pick, be, runner=False, alt=False):
     trades = []
     for coin, (daily, sig, week_end) in signals.items():
         busy_until = -1
-        for t, setups0, setups1 in sig:
-            setups = setups1 if alt else setups0
+        for t, setups0, setups1, setups2 in sig:
+            setups = setups2 if alt == "young" else setups1 if alt else setups0
             if t <= busy_until:
                 continue
             cands = [s for s in setups if pick(s)]
@@ -217,6 +226,7 @@ def simulate(signals, pick, be, runner=False, alt=False):
                 "planned_rr": s["rr"], "risk_pct": s["risk_pct"],
                 "needs_confirmation": bool(s.get("needs_confirmation")), "trend": s.get("trend"),
                 "extra_kinds": s.get("extra_kinds", []),
+                "young_trend": bool(s.get("young_trend")),
             })
             trades.append(res)
             busy_until = t + 1 + res["days"]
@@ -296,9 +306,18 @@ def main():
             [t for t in base if (len(t["extra_kinds"]) >= 3 if n == 3 else len(t["extra_kinds"]) == n)])
     for k, v in confluence.items():
         print(f"  {k:42} {v}")
+    yv = VARIANTS["Live · young coins (50–99 weeks) short on weekly 25/50"]
+    ytr = simulate(signals, yv["pick"], yv["be"], yv["runner"], "young")
+    young_only = [t for t in ytr if t.get("young_trend")]
+    young_stats = {"young-coin shorts added by the rule": mini(young_only),
+                   "young-coin shorts by year": {y: mini([t for t in young_only if t["date"][:4] == y])
+                                                 for y in sorted({t["date"][:4] for t in young_only})},
+                   "coins": sorted({t["coin"] for t in young_only})}
+    print("young:", young_stats)
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "confluence": confluence,
+        "young_trend": young_stats,
         "runtime_s": secs,
         "coins": len(signals),
         "settings": {"step_days": STEP, "entry_days": ENTRY_DAYS, "hold_days": HOLD_DAYS,

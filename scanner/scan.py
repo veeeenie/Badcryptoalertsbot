@@ -39,6 +39,10 @@ MAX_STOP_PCT = 15.0   # skip setups whose stop is more than 15% from entry (too 
 # last N weekly candles (current week included) when price has traded through the zone, so the stop
 # never sits inside this week's or last week's wick.
 RECENT_WEEKS_STOP = int(os.getenv("RECENT_WEEKS_STOP", "0"))
+# Under test (20 Oct 2026, backtest variant only; live = 0): coins with 50-99 weeks of history have no weekly
+# 100 EMA, so they can never be weekly-trend shorts. With this on, their weekly downtrend is judged on the
+# 25/50 only: price below the weekly 50 EMA and the 25 under the 50.
+YOUNG_TREND = int(os.getenv("YOUNG_TREND", "0"))
 RISK_USD = float(os.getenv("RISK_USD", "2"))  # dollar risk per trade used for the position-size hint
 SKIP = {"PURR"}       # spot-like / illiquid names to ignore
 
@@ -343,6 +347,9 @@ def analyse(coin_row, daily):
     w25_slope = slope(w[25], 4) or 0
     w_long = bool(wE[50]) and price > wE[50] and w25_slope >= -0.01
     w_short = bool(wE[100] and wE[25] and wE[50]) and price < wE[100] and wE[25] < wE[50]
+    young_short = False
+    if YOUNG_TREND and not wE[100] and wE[25] and wE[50] and price < wE[50] and wE[25] < wE[50]:
+        w_short = young_short = True
     # rule 1 (as updated): weekly trend first, but a daily that has completely flipped
     # (25/50/100 EMAs fully stacked the other way) also allows trades in the daily's direction
     d_bull = all(dE[n] for n in EMA_LENGTHS) and dE[25] > dE[50] > dE[100]
@@ -459,6 +466,7 @@ def analyse(coin_row, daily):
     setups = [x for x in candidates if x]
     for x in setups:
         x["trend"] = trend_of[x["side"]]
+        x["young_trend"] = young_short and x["side"] == "short" and x["trend"] == "weekly"
         if x["trend"] == "daily flip":
             x["why"] = (f"Against the weekly trend: the daily 25/50/100 EMAs are fully stacked "
                         f"{'bullish' if x['side'] == 'long' else 'bearish'}. " + x["why"].split(". ", 1)[-1])
