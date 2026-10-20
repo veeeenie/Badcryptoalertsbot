@@ -149,6 +149,9 @@ VARIANTS = {
     "Live · also drop if price is already past T1": dict(pick=lambda s: live(s) and not s.get("past_t1"), be=True, runner=False),
     "Live · young coins (50–99 weeks) short on weekly 25/50": dict(pick=live, be=True, runner=False, alt="young"),
     "Live + trend pullbacks at daily levels":     dict(pick=live_pb, be=True, runner=False),
+    "Live + pullback shorts only":                dict(pick=lambda s: live(s) or (live_pb(s) and s.get("pullback") and s["side"] == "short"), be=True, runner=False),
+    "Live + pullbacks, daily close confirmed only": dict(pick=lambda s: live(s) or (live_pb(s) and s.get("pullback") and s["status"] == "confirmed"), be=True, runner=False),
+    "Live + pullback shorts, confirmed only":     dict(pick=lambda s: live(s) or (live_pb(s) and s.get("pullback") and s["side"] == "short" and s["status"] == "confirmed"), be=True, runner=False),
     "Live · A+ only (area of interest at the zone)": dict(pick=lambda s: live(s) and s.get("grade") == "A+", be=True, runner=False),
 }
 
@@ -329,6 +332,13 @@ def main():
                       "pullback shorts": mini([t for t in pb if t["side"] == "short"]),
                       "weekly-level trades in the same run": mini([t for t in ptr if not t.get("pullback")]),
                       "pullbacks by year": {y: mini([t for t in pb if t["date"][:4] == y]) for y in sorted({t["date"][:4] for t in pb})}}
+    for name in ("Live + pullback shorts only", "Live + pullbacks, daily close confirmed only",
+                 "Live + pullback shorts, confirmed only"):
+        vv = VARIANTS[name]
+        tr = simulate(signals, vv["pick"], vv["be"], vv["runner"])
+        pullback_stats[f"{name}: pullback trades"] = mini([t for t in tr if t.get("pullback")])
+        pullback_stats[f"{name}: pullbacks by year"] = {y: (mini([t for t in tr if t.get("pullback") and t["date"][:4] == y]) or {}).get("total_r")
+                                                        for y in sorted({t["date"][:4] for t in tr if t.get("pullback")})}
     print("pullbacks:", pullback_stats)
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
