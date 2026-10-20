@@ -130,6 +130,11 @@ def tradeable(s):
 
 def live(s):
     """The live rules (19 Oct 2026): rating A only, played-out (stale) setups removed."""
+    return tradeable(s) and s.get("rating") == "A" and not s.get("stale") and not s.get("pullback")
+
+
+def live_pb(s):
+    """Live rules plus trend pullbacks at daily levels."""
     return tradeable(s) and s.get("rating") == "A" and not s.get("stale")
 
 
@@ -143,6 +148,7 @@ VARIANTS = {
     "Live · stop beyond last 2 weeks' wick":      dict(pick=live, be=True, runner=False, alt=True),
     "Live · also drop if price is already past T1": dict(pick=lambda s: live(s) and not s.get("past_t1"), be=True, runner=False),
     "Live · young coins (50–99 weeks) short on weekly 25/50": dict(pick=live, be=True, runner=False, alt="young"),
+    "Live + trend pullbacks at daily levels":     dict(pick=live_pb, be=True, runner=False),
     "Live · A+ only (area of interest at the zone)": dict(pick=lambda s: live(s) and s.get("grade") == "A+", be=True, runner=False),
 }
 
@@ -227,6 +233,7 @@ def simulate(signals, pick, be, runner=False, alt=False):
                 "needs_confirmation": bool(s.get("needs_confirmation")), "trend": s.get("trend"),
                 "extra_kinds": s.get("extra_kinds", []),
                 "young_trend": bool(s.get("young_trend")),
+                "pullback": bool(s.get("pullback")),
             })
             trades.append(res)
             busy_until = t + 1 + res["days"]
@@ -314,10 +321,20 @@ def main():
                                                  for y in sorted({t["date"][:4] for t in young_only})},
                    "coins": sorted({t["coin"] for t in young_only})}
     print("young:", young_stats)
+    pv = VARIANTS["Live + trend pullbacks at daily levels"]
+    ptr = simulate(signals, pv["pick"], pv["be"], pv["runner"])
+    pb = [t for t in ptr if t.get("pullback")]
+    pullback_stats = {"pullback trades": mini(pb),
+                      "pullback longs": mini([t for t in pb if t["side"] == "long"]),
+                      "pullback shorts": mini([t for t in pb if t["side"] == "short"]),
+                      "weekly-level trades in the same run": mini([t for t in ptr if not t.get("pullback")]),
+                      "pullbacks by year": {y: mini([t for t in pb if t["date"][:4] == y]) for y in sorted({t["date"][:4] for t in pb})}}
+    print("pullbacks:", pullback_stats)
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "confluence": confluence,
         "young_trend": young_stats,
+        "pullbacks": pullback_stats,
         "runtime_s": secs,
         "coins": len(signals),
         "settings": {"step_days": STEP, "entry_days": ENTRY_DAYS, "hold_days": HOLD_DAYS,

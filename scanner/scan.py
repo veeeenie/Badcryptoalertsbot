@@ -43,6 +43,10 @@ RECENT_WEEKS_STOP = int(os.getenv("RECENT_WEEKS_STOP", "0"))
 # 100 EMA, so they can never be weekly-trend shorts. With this on, their weekly downtrend is judged on the
 # 25/50 only: price below the weekly 50 EMA and the 25 under the 50.
 YOUNG_TREND = int(os.getenv("YOUNG_TREND", "0"))
+# Under test (20 Oct 2026): trend pullbacks at daily levels. When the weekly trend and the fully stacked daily
+# EMAs agree, also plan an entry at the nearest daily support/resistance (daily swing + daily EMA) instead of
+# waiting for a weekly level far away. Always computed (tagged "pullback"); only shown live if PULLBACKS_LIVE=1.
+PULLBACKS_LIVE = int(os.getenv("PULLBACKS_LIVE", "0"))
 RISK_USD = float(os.getenv("RISK_USD", "2"))  # dollar risk per trade used for the position-size hint
 SKIP = {"PURR"}       # spot-like / illiquid names to ignore
 
@@ -367,14 +371,14 @@ def analyse(coin_row, daily):
     obstacles = [o["mid"] for o in zones] + [v for v in dE.values() if v] + \
                 [v for v, _ in swing_levels(daily[-181:-1], k=5)]
 
-    def build(kind, z, typ, why):
+    def build(kind, z, typ, why, zl=None):
         """Plan a tranche trade at weekly zone z. Stop sits beyond the zone and beyond any weekly
         level just past it (supply/demand that would otherwise sit right behind the stop)."""
         lo, hi = min(z["lo"], z["mid"] - 0.25 * a), max(z["hi"], z["mid"] + 0.25 * a)
         if kind == "long":
             entries = (hi, z["mid"], lo)                      # scale in from the top of the zone down
             stop = lo - 0.5 * a
-            for o in sorted([o for o in zones if o["hi"] < lo], key=lambda o: -o["hi"]):
+            for o in sorted([o for o in (zl or zones) if o["hi"] < lo], key=lambda o: -o["hi"]):
                 if o["hi"] >= stop - a:                       # another level right under the stop: go below it
                     stop = o["lo"] - 0.5 * a
                 else:
@@ -391,7 +395,7 @@ def analyse(coin_row, daily):
         else:
             entries = (lo, z["mid"], hi)                      # scale in from the bottom of the zone up
             stop = hi + 0.5 * a
-            for o in sorted([o for o in zones if o["lo"] > hi], key=lambda o: o["lo"]):
+            for o in sorted([o for o in (zl or zones) if o["lo"] > hi], key=lambda o: o["lo"]):
                 if o["lo"] <= stop + a:
                     stop = o["hi"] + 0.5 * a
                 else:
@@ -462,6 +466,28 @@ def analyse(coin_row, daily):
                 break
             if tried >= 2:
                 break
+
+    # ---- D) trend pullback at daily levels (under test): weekly trend and fully stacked daily EMAs agree;
+    #         zone = daily swing high/low (last 4 months) clustered with a daily 25/50 EMA (2+ levels)
+    raw_d = [(dE[n], f"daily {n} EMA") for n in (25, 50) if dE[n]]
+    for v, kind in swing_levels(daily[-121:-1], k=5):
+        raw_d.append((v, f"daily swing {kind} {fmt(v)}"))
+    dzones = [z for z in cluster_levels(raw_d, a) if len(z["names"]) >= 2 and any("swing" in n for n in z["names"])]
+    have = {x["side"] for x in candidates if x}
+    if w_long and d_bull and "long" not in have:
+        for z in sorted([o for o in dzones if o["hi"] < price], key=lambda o: -o["mid"])[:1]:
+            s_ = build("long", z, "pullback_long",
+                       f"Weekly uptrend and daily EMAs fully stacked bullish: buy the pullback into daily support "
+                       f"({z['label']}) in tranches; wrong on a daily close below the zone.", zl=dzones)
+            if s_:
+                s_["pullback"] = True; s_["dz_names"] = z["names"]; candidates.append(s_)
+    if w_short and d_bear and "short" not in have:
+        for z in sorted([o for o in dzones if o["lo"] > price], key=lambda o: o["mid"])[:1]:
+            s_ = build("short", z, "pullback_short",
+                       f"Weekly downtrend and daily EMAs fully stacked bearish: short the rally into daily resistance "
+                       f"({z['label']}) in tranches; wrong on a daily close above the zone.", zl=dzones)
+            if s_:
+                s_["pullback"] = True; s_["dz_names"] = z["names"]; candidates.append(s_)
 
     setups = [x for x in candidates if x]
     for x in setups:
@@ -549,6 +575,13 @@ def analyse(coin_row, daily):
     for x in setups:
         z = by_label.get(x["level"])
         near = list(z["names"][1:]) if z else []
+        if x.get("pullback"):
+            # daily-level zone: its own members, plus any weekly level inside it
+            near = list(x["dz_names"][1:]) + [n for o in zones for n in o["names"]
+                                              if x["zone"][0] - 0.5 * a <= o["mid"] <= x["zone"][1] + 0.5 * a]
+            x["confluence"] = near
+            x["rating"] = "A"                                  # 2+ daily levels incl. a swing, by construction
+            continue
         for n in EMA_LENGTHS:
             if dE[n] and x["zone"][0] - a <= dE[n] <= x["zone"][1] + a:
                 near.append(f"daily {n} EMA")
@@ -691,7 +724,8 @@ def fmt(x):
 
 
 LABEL = {"support_long": "Weekly support LONG", "rejection_short": "Weekly rejection SHORT",
-         "reclaim_long": "Weekly reclaim LONG"}
+         "reclaim_long": "Weekly reclaim LONG", "pullback_long": "Trend pullback LONG",
+         "pullback_short": "Trend pullback SHORT"}
 
 
 def telegram(text):
@@ -881,7 +915,8 @@ def main():
 
     dropped = {"rating": sum(1 for s in all_setups if s.get("rating") not in KEEP_RATINGS),
                "stale": sum(1 for s in all_setups if s.get("rating") in KEEP_RATINGS and s.get("stale"))}
-    all_setups = [s for s in all_setups if s.get("rating") in KEEP_RATINGS and not s.get("stale")]
+    all_setups = [s for s in all_setups if s.get("rating") in KEEP_RATINGS and not s.get("stale")
+                  and (PULLBACKS_LIVE or not s.get("pullback"))]
     order = {"confirmed": 0, "at level": 1, "approaching": 2}
     all_setups.sort(key=lambda s: (s.get("rating", "C"), order.get(s["status"], 2), -s["rr"]))
     # one setup per coin: keep the best (at level first, then highest R)
