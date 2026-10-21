@@ -42,7 +42,7 @@ FEE_IN, FEE_OUT = 0.00015, 0.00045
 OUT_PATH = os.path.join(scan.DATA_DIR, "backtest.json")
 
 
-def play(setup, future, be_after_t1=False, runner=False, week_end=None, start=0):
+def play(setup, future, be_after_t1=False, runner=False, week_end=None, start=0, cancel_on_t1=False, price0=None):
     """runner=True: after T1 the rest is not closed at T2; it is closed at the close of the first
     week that closes beyond the weekly 25 EMA against the trade (week_end maps a daily index to
     (weekly close, weekly 25 EMA) on the last day of each week)."""
@@ -57,7 +57,15 @@ def play(setup, future, be_after_t1=False, runner=False, week_end=None, start=0)
     fees = 0.0
     t1_done = False
     first_fill_day = None
+    t1_before_fill = False
+    # only counts when price started on the zone side of T1 (retests from beyond T1 are a different trade)
+    watch_t1 = price0 is not None and ((side == 1 and price0 < t1) or (side == -1 and price0 > t1))
     for i, c in enumerate(future):
+        # price reached T1 while nothing was filled: the move ran without us
+        if watch_t1 and not filled and ((side == 1 and c["h"] >= t1) or (side == -1 and c["l"] <= t1)):
+            t1_before_fill = True
+            if cancel_on_t1:
+                return None
         # 1) fills (only while entries are live)
         if not t1_done and i < ENTRY_DAYS:
             for j, (px, q) in enumerate(entries):
@@ -78,7 +86,7 @@ def play(setup, future, be_after_t1=False, runner=False, week_end=None, start=0)
             pnl += side * (stop - avg) * open_qty
             fees += stop * open_qty * FEE_OUT
             how = "stop" if not t1_done else ("breakeven after T1" if be_after_t1 else "stop after T1")
-            return result(setup, pnl, fees, risk_unit, filled, how, i)
+            return result(setup, pnl, fees, risk_unit, filled, how, i, t1bf=t1_before_fill)
         # 3) targets
         if not t1_done and ((side == 1 and c["h"] >= t1) or (side == -1 and c["l"] <= t1)):
             t1_done = True
@@ -88,7 +96,7 @@ def play(setup, future, be_after_t1=False, runner=False, week_end=None, start=0)
             fees += t1 * q * FEE_OUT
             open_qty -= q
             if open_qty <= 1e-12:
-                return result(setup, pnl, fees, risk_unit, filled, "T1", i)
+                return result(setup, pnl, fees, risk_unit, filled, "T1", i, t1bf=t1_before_fill)
             if be_after_t1:
                 stop = avg                              # rest of the trade can't lose
         if runner and t1_done and week_end is not None and (start + i) in week_end:
@@ -96,26 +104,27 @@ def play(setup, future, be_after_t1=False, runner=False, week_end=None, start=0)
             if w25 is not None and ((side == 1 and wclose < w25) or (side == -1 and wclose > w25)):
                 pnl += side * (wclose - avg) * open_qty
                 fees += wclose * open_qty * FEE_OUT
-                return result(setup, pnl, fees, risk_unit, filled, "runner: weekly close", i)
+                return result(setup, pnl, fees, risk_unit, filled, "runner: weekly close", i, t1bf=t1_before_fill)
         if not runner and t1_done and t2 is not None and ((side == 1 and c["h"] >= t2) or (side == -1 and c["l"] <= t2)):
             pnl += side * (t2 - avg) * open_qty
             fees += t2 * open_qty * FEE_OUT
-            return result(setup, pnl, fees, risk_unit, filled, "T2", i)
+            return result(setup, pnl, fees, risk_unit, filled, "T2", i, t1bf=t1_before_fill)
         # 4) time stop
         if first_fill_day is not None and i - first_fill_day >= (HOLD_DAYS if not runner else RUNNER_MAX_DAYS):
             pnl += side * (c["c"] - avg) * open_qty
             fees += c["c"] * open_qty * FEE_OUT
-            return result(setup, pnl, fees, risk_unit, filled, "time", i)
+            return result(setup, pnl, fees, risk_unit, filled, "time", i, t1bf=t1_before_fill)
     if not filled:
         return None
     avg = sum(p * q for p, q in filled) / sum(q for _, q in filled)
     last = future[-1]["c"] if future else avg
     pnl += side * (last - avg) * open_qty
-    return result(setup, pnl, fees, risk_unit, filled, "open at end", len(future) - 1)
+    return result(setup, pnl, fees, risk_unit, filled, "open at end", len(future) - 1, t1bf=t1_before_fill)
 
 
-def result(setup, pnl, fees, risk_unit, filled, how, days):
+def result(setup, pnl, fees, risk_unit, filled, how, days, t1bf=False):
     return {
+        "t1_before_fill": t1bf,
         "r": round((pnl - fees) / risk_unit, 3),
         "fill_pct": round(sum(q for _, q in filled) * 100),
         "exit": how,
@@ -152,6 +161,8 @@ VARIANTS = {
     "Live + pullback shorts only":                dict(pick=lambda s: live(s) or (live_pb(s) and s.get("pullback") and s["side"] == "short"), be=True, runner=False),
     "Live + pullbacks, daily close confirmed only": dict(pick=lambda s: live(s) or (live_pb(s) and s.get("pullback") and s["status"] == "confirmed"), be=True, runner=False),
     "Live + pullback shorts, confirmed only":     dict(pick=lambda s: live(s) or (live_pb(s) and s.get("pullback") and s["side"] == "short" and s["status"] == "confirmed"), be=True, runner=False),
+    "Live · cancel limits once T1 is hit before a fill": dict(pick=live, be=True, runner=False, cancel_on_t1=True),
+    "Live · enter at market on the signal day (no limits)": dict(pick=live, be=True, runner=False, market=True),
     "Live · A+ only (area of interest at the zone)": dict(pick=lambda s: live(s) and s.get("grade") == "A+", be=True, runner=False),
 }
 
@@ -212,7 +223,10 @@ def collect():
     return out, round(time.time() - started)
 
 
-def simulate(signals, pick, be, runner=False, alt=False):
+FILLS = {}
+
+
+def simulate(signals, pick, be, runner=False, alt=False, cancel_on_t1=False, market=False):
     trades = []
     for coin, (daily, sig, week_end) in signals.items():
         busy_until = -1
@@ -225,10 +239,19 @@ def simulate(signals, pick, be, runner=False, alt=False):
                 continue
             cands.sort(key=lambda s: (s.get("rating", "C"), -s["rr"]))
             s = cands[0]
-            res = play(s, daily[t + 1:], be_after_t1=be, runner=runner, week_end=week_end, start=t + 1)
+            if market:
+                px = daily[t]["c"]
+                sgn = 1 if s["side"] == "long" else -1
+                if sgn * (px - s["stop"]) <= 0 or sgn * (s["t1"] - px) <= 0:
+                    continue
+                s = dict(s, entries=[{"px": px, "pct": 100}], entry=px)
+            FILLS.setdefault((pick, alt, cancel_on_t1, market), [0, 0])[0] += 1
+            res = play(s, daily[t + 1:], be_after_t1=be, runner=runner, week_end=week_end, start=t + 1,
+                       cancel_on_t1=cancel_on_t1, price0=daily[t]["c"])
             if res is None:
                 busy_until = t + ENTRY_DAYS
                 continue
+            FILLS[(pick, alt, cancel_on_t1, market)][1] += 1
             res.update({
                 "coin": coin, "date": datetime.fromtimestamp(daily[t]["t"] / 1000, tz=timezone.utc).date().isoformat(),
                 "type": s["type"], "side": s["side"], "rating": s.get("rating"), "status": s["status"],
@@ -292,7 +315,7 @@ def main():
     signals, secs = collect()
     variants = {}
     for name, v in VARIANTS.items():
-        tr = simulate(signals, v["pick"], v["be"], v["runner"], v.get("alt", False))
+        tr = simulate(signals, v["pick"], v["be"], v["runner"], v.get("alt", False), v.get("cancel_on_t1", False), v.get("market", False))
         sm = summarise(tr)
         variants[name] = {"all": sm["summary"].get("all"), "by_year": sm["by_year"],
                           "long": sm["summary"].get("side:long"), "short": sm["summary"].get("side:short"),
@@ -340,11 +363,24 @@ def main():
         pullback_stats[f"{name}: pullbacks by year"] = {y: (mini([t for t in tr if t.get("pullback") and t["date"][:4] == y]) or {}).get("total_r")
                                                         for y in sorted({t["date"][:4] for t in tr if t.get("pullback")})}
     print("pullbacks:", pullback_stats)
+    FILLS.clear()
+    lv = VARIANTS["Live rules · A only, stale removed"]
+    ltr = simulate(signals, lv["pick"], lv["be"], lv["runner"])
+    sig_n, fill_n = FILLS.get((lv["pick"], False, False, False), [0, 0])
+    entry_stats = {
+        "live: signals acted on (one per coin at a time)": sig_n,
+        "live: filled within 10 days": fill_n,
+        "live: fill rate %": round(100 * fill_n / sig_n, 1) if sig_n else None,
+        "live: filled after price had already reached T1": mini([t for t in ltr if t.get("t1_before_fill")]),
+        "live: filled before price reached T1": mini([t for t in ltr if not t.get("t1_before_fill")]),
+    }
+    print("entries:", entry_stats)
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "confluence": confluence,
         "young_trend": young_stats,
         "pullbacks": pullback_stats,
+        "entries": entry_stats,
         "runtime_s": secs,
         "coins": len(signals),
         "settings": {"step_days": STEP, "entry_days": ENTRY_DAYS, "hold_days": HOLD_DAYS,
