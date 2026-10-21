@@ -163,6 +163,9 @@ VARIANTS = {
     "Live + pullback shorts, confirmed only":     dict(pick=lambda s: live(s) or (live_pb(s) and s.get("pullback") and s["side"] == "short" and s["status"] == "confirmed"), be=True, runner=False),
     "Live · cancel limits once T1 is hit before a fill": dict(pick=live, be=True, runner=False, cancel_on_t1=True),
     "Live · enter at market on the signal day (no limits)": dict(pick=live, be=True, runner=False, market=True),
+    "Live · no setups on coins under 50 weeks":   dict(pick=lambda s: live(s) and s.get("weeks", 999) >= 50, be=True, runner=False),
+    "Live · tighter confluence (daily EMAs within 0.5 ATR)": dict(pick=lambda s: tradeable(s) and s.get("rating_tight") == "A" and not s.get("stale") and not s.get("pullback"), be=True, runner=False),
+    "Live · both": dict(pick=lambda s: tradeable(s) and s.get("rating_tight") == "A" and not s.get("stale") and not s.get("pullback") and s.get("weeks", 999) >= 50, be=True, runner=False),
     "Live · A+ only (area of interest at the zone)": dict(pick=lambda s: live(s) and s.get("grade") == "A+", be=True, runner=False),
 }
 

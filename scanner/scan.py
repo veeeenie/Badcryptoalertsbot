@@ -491,6 +491,7 @@ def analyse(coin_row, daily):
 
     setups = [x for x in candidates if x]
     for x in setups:
+        x["weeks"] = len(weekly)
         x["trend"] = trend_of[x["side"]]
         x["young_trend"] = young_short and x["side"] == "short" and x["trend"] == "weekly"
         if x["trend"] == "daily flip":
@@ -588,6 +589,13 @@ def analyse(coin_row, daily):
         x["confluence"] = near
         weekly_hits = sum(1 for nm in near if nm.startswith("weekly"))
         x["rating"] = "A" if weekly_hits >= 1 and len(near) >= 2 else ("B" if near else "C")
+        # under test (22 Oct): daily EMAs only count when within half an ATR of the zone
+        near_t = list(z["names"][1:]) if z else []
+        for n in EMA_LENGTHS:
+            if dE[n] and x["zone"][0] - 0.5 * a <= dE[n] <= x["zone"][1] + 0.5 * a:
+                near_t.append(f"daily {n} EMA")
+        wh_t = sum(1 for nm in near_t if nm.startswith("weekly"))
+        x["rating_tight"] = "A" if wh_t >= 1 and len(near_t) >= 2 else ("B" if near_t else "C")
 
     # ---- extra confluence (measured, not yet used for the rating): fib retracements of the last major
     #      weekly swing (the move into the current 52-week high or low) and of the all-time low-to-high
@@ -945,9 +953,15 @@ def main():
     #      ENTER  = the daily close confirmed the rejection: place the orders now
     #      WAIT   = price is in the zone or it's against a strong move: nothing until a daily close confirms
     #      LIMITS = price is heading to the zone: place the resting limits, stop and take-profits now
+    px_of = {c["coin"]: c["price"] for c in all_info}
     for s in all_setups:
-        if s["status"] == "confirmed":
+        p_ = px_of.get(s["coin"])
+        at_zone = p_ is not None and ((s["side"] == "long" and p_ <= s["zone"][1] * (1 + AT_LEVEL)) or
+                                      (s["side"] == "short" and p_ >= s["zone"][0] * (1 - AT_LEVEL)))
+        if s["status"] == "confirmed" and at_zone:
             s["action"] = "ENTER"
+        elif s["status"] == "confirmed":
+            s["action"] = "LIMITS"                    # confirmed, but price already bounced away: limits wait for a retest
         elif s.get("needs_confirmation"):
             s["action"] = "WAIT"
         else:
