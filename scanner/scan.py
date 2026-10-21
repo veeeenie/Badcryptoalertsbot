@@ -335,6 +335,11 @@ def analyse(coin_row, daily):
     if missing:
         notes.append(f"Only {len(wc)} weeks of history: no weekly {'/'.join(map(str, missing))} EMA yet" +
                      (" so no setups" if 50 in missing else " so no shorts (they need the weekly 100 EMA)"))
+        if 50 in missing:
+            # 22 Oct 2026: enforce what the note says. Under 50 weeks the backtest never saw these coins
+            # (it needs ~57 weeks of warm-up), so their setups were untested (e.g. SKR daily-flip long).
+            info["notes"] = notes[:6]
+            return info, []
 
     # ---- weekly levels: the 25/50/100 EMAs plus weekly swing highs and lows (last 2 years),
     #      grouped into zones when they sit within one daily ATR of each other
