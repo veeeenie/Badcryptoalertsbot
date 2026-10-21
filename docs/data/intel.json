@@ -1,279 +1,201 @@
 {
- "generated_at": "2026-10-20T02:34:04Z",
- "coins": {
-  "BNB": {
-   "summary": "The 37th quarterly burn (about 1.65M BNB) was reported Oct 19, so that catalyst has passed. Price at 727 is still below the 738.7 long level, and ~$750 is the level the market is watching. BNB has no vesting unlocks.",
-   "news": [
-    {
-     "title": "BNB Chain completes 37th quarterly burn of about 1.65M BNB (~$1.2B)",
-     "url": "https://www.kucoin.com/news/flash/bnb-chain-completes-37th-quarterly-burn-destroys-1-2b-in-bnb-tokens",
-     "date": "Oct 19"
+  "generated_at": "2026-10-21T02:29:40Z",
+  "coins": {
+    "BNB": {
+      "summary": "No price-moving BNB news found for the past week and no scheduled unlocks; the long at the weekly swing-high retest trades on market structure alone.",
+      "news": []
     },
-    {
-     "title": "Tokenized stocks on BNB Chain grow $239M in a week toward $1.5B",
-     "url": "https://cryptobriefing.com/bnb-chain-tokenized-stock-market-cap-grows/",
-     "date": "Oct 19"
+    "TRX": {
+      "summary": "Tron Inc. (Nasdaq: TRON), which holds a large TRX treasury, became a Super Representative. Not a big catalyst. TRX has no vesting unlocks.",
+      "news": [
+        {
+          "title": "Tron Inc. elected a TRON Super Representative, moving into block production and governance revenue",
+          "url": "https://www.globenewswire.com/news-release/2026/10/19/3383451/0/en/tron-inc-elected-as-super-representative-on-tron-network-expanding-into-revenue-generating-blockchain-infrastructure-and-governance.html",
+          "date": "Oct 19"
+        }
+      ]
     },
-    {
-     "title": "Binance to shut Binance Pool and cloud mining on Nov 10",
-     "url": "https://unchainedcrypto.com/binance-closes-its-mining-pool-and-cloud-mining-gives-miners-four-weeks-to-move-hashrate/",
-     "date": "Oct 13"
+    "SYRUP": {
+      "summary": "Fundamentals look steady: Maple's loan book is growing, syrupUSDC has expanded to Solana and buybacks continue. SYRUP is fully unlocked, so there is no supply overhang for the long.",
+      "news": [
+        {
+          "title": "Maple active loans reach about $1.7B in Q3, up 12% while DeFi lending fell",
+          "url": "https://www.onebullex.com/pt-br/news/articles/maple-finance-q3-loans-hit-1-7-billion-up-12-as-defi-lending-falls-29-4",
+          "date": "Oct 17"
+        },
+        {
+          "title": "Maple's syrupUSDC yield stablecoin expands to Solana",
+          "url": "https://maple.finance/insights/syrupusdc-expands-to-solana",
+          "date": "Oct 17"
+        }
+      ]
+    },
+    "SUI": {
+      "summary": "Bullish ecosystem news (Hashi BTC lending nearing mainnet, ongoing buybacks) works against the short. A Community Reserve unlock on Nov 1 has an undisclosed amount, and the team/VC vesting has ended.",
+      "news": [
+        {
+          "title": "Hashi Bitcoin lending on Sui nears phased mainnet with $500M+ in partner commitments, including Anchorage",
+          "url": "https://bitcoinist.com/sui-hashi-bitcoin-lending-500-million-commitments/",
+          "date": "Oct 18"
+        },
+        {
+          "title": "Sui buybacks total about 916K SUI year to date, funded by stablecoin yield and fees",
+          "url": "https://coinmarketcap.com/community/articles/6ad6364fc053e3400b949717",
+          "date": "Oct 19"
+        },
+        {
+          "title": "Robinhood runs a $5-in-SUI learn-and-earn promotion",
+          "url": "https://coinmarketcap.com/community/articles/6ad550a0bb33ce40ac553f4d",
+          "date": "Oct 18"
+        }
+      ],
+      "unlock": {
+        "date": "Nov 1",
+        "date_iso": "2026-11-01",
+        "amount": "not disclosed",
+        "note": "Community Reserve per Tokenomist (amount paywalled). DropsTab shows small monthly tranches (Community Reserve, Mysten treasury, early contributors). Investor/team vesting has ended.",
+        "source": "https://www.tokenomist.ai/sui"
+      }
+    },
+    "APT": {
+      "summary": "Investor and contributor vesting ended Oct 12, cutting monthly unlocks by about 60%, which takes some sell pressure off and works against the short. The next unlock is a Community tranche on Nov 11 with an undisclosed amount.",
+      "news": [
+        {
+          "title": "Aptos ships an opt-in encrypted mempool on mainnet to curb front-running",
+          "url": "https://coinmarketcap.com/community/articles/6ad0fc07c487575c4ddfa783",
+          "date": "Oct 15"
+        },
+        {
+          "title": "Block-STM v2 parallel execution enabled by default on Aptos mainnet",
+          "url": "https://www.tradingview.com/news/coindar:c22add2f1094b:0-aptos-enables-block-stm-v2-on-mainnet/",
+          "date": "Oct 15"
+        },
+        {
+          "title": "Staking emissions still outpace burns, so APT net supply grows about 1.4M a month",
+          "url": "https://bitcoinist.com/aptos-token-burn-174000-supply-staking-emissions/",
+          "date": "Oct 18"
+        }
+      ],
+      "unlock": {
+        "date": "Nov 11",
+        "date_iso": "2026-11-11",
+        "amount": "not disclosed",
+        "note": "Community allocation per Tokenomist (amount paywalled). The four-year investor/core-contributor schedule ended Oct 12.",
+        "source": "https://tokenomist.ai/aptos/unlock-events"
+      }
+    },
+    "LTC": {
+      "summary": "Only small Canary spot ETF flows this week. LTC is proof-of-work with no unlocks, so there is nothing that changes the short thesis.",
+      "news": [
+        {
+          "title": "Canary Litecoin ETF (LTCC) takes about $581K in inflows after a week of flat flows",
+          "url": "https://tokenpost.com/news/investing/35274",
+          "date": "Oct 20"
+        }
+      ]
+    },
+    "JUP": {
+      "summary": "The 1000x 'YOLO' perps launch did about $1B in volume on its first day, but JUP fell with the market. No dated unlock before Dec 5; the next Jupuary cliff is reported for Jan 2027.",
+      "news": [
+        {
+          "title": "Jupiter launches 'YOLO', an unaudited 500x-1000x leverage product on SOL/BTC/ETH",
+          "url": "https://coinmarketcap.com/top-stories/6ad0dd9231381a2cec7a380c/",
+          "date": "Oct 15"
+        },
+        {
+          "title": "Jupiter's 1000x perps product does about $1B in volume on day one",
+          "url": "https://coinmarketcap.com/top-stories/6ad23d3ec32e4538f4fa73e2/",
+          "date": "Oct 16"
+        }
+      ]
+    },
+    "FET": {
+      "summary": "FET is still recovering from the Sep 20 SingularityNET bridge exploit, and AGIX-to-FET conversions remain paused. Tokenomist lists an AGIX-migration pool release on Oct 28 with no amount, but another source shows all unlocks complete, so treat it as low confidence.",
+      "news": [
+        {
+          "title": "Commentary notes FET lagging the rally while AGIX-to-FET conversions stay paused after the bridge exploit",
+          "url": "https://coinmarketcap.com/community/articles/6ad3aabf614ab63dcd4efe3a",
+          "date": "Oct 17"
+        }
+      ],
+      "unlock": {
+        "date": "Oct 28",
+        "date_iso": "2026-10-28",
+        "amount": "not disclosed",
+        "note": "AGIX migration pool per Tokenomist; app.tokenomics.com shows all unlocks complete. This is a migration release, not team/investor vesting, and its supply impact is uncertain while conversions are paused. Low confidence.",
+        "source": "https://www.tokenomist.ai/fetch-ai/unlock-events"
+      }
+    },
+    "RSR": {
+      "summary": "Nothing new this week. The Oct 12 Upbit listing spike is the last big catalyst, and governance's 'High burn' setting pauses treasury unlocks this quarter.",
+      "news": []
+    },
+    "JTO": {
+      "summary": "No JTO-specific news; it fell with the Oct 15 altcoin selloff. There is no cliff unlock, but linear weekly vesting (about 2.6M JTO to investors and contributors) adds steady supply, which suits the short.",
+      "news": [
+        {
+          "title": "JTO drops about 6% in a broad altcoin selloff tied to an Asian equity rout",
+          "url": "https://www.coindesk.com/markets/2026/10/15/bitcoin-holds-above-usd80-000-as-an-asian-stock-rout-drags-altcoins-lower",
+          "date": "Oct 15"
+        }
+      ]
+    },
+    "ATOM": {
+      "summary": "No verifiable price-moving ATOM news this week. ATOM is inflationary with no vesting cliffs.",
+      "news": []
+    },
+    "WLD": {
+      "summary": "WLD jumped about 14% on World's World ID suite for banks, which supports the long. Supply keeps unlocking continuously at about 2.9M WLD/day, with no single cliff.",
+      "news": [
+        {
+          "title": "WLD surges about 14% as World launches World ID verification for banks and financial firms",
+          "url": "https://tradersunion.com/news/cryptocurrency-news/show/3894740-worldcoin-surges-14-3percent-today-on/",
+          "date": "Oct 21"
+        }
+      ]
+    },
+    "OP": {
+      "summary": "OP has strong momentum against the short: it rallied on Unichain moving to OP Enterprise (mainnet move Oct 29) and on Upgrade 20 buybacks, which start Feb 2027. A small Seed Fund unlock follows on Dec 1.",
+      "news": [
+        {
+          "title": "OP rallies about 22% on Unichain's move to OP Enterprise; Upgrade 20 directs 50% of Superchain revenue to OP buybacks",
+          "url": "https://www.interactivecrypto.com/optimism-s-op-token-rallies-unichain-deal-and-buybacks-signal-new-value-era",
+          "date": "Oct 14"
+        }
+      ],
+      "unlock": {
+        "date": "Dec 1",
+        "date_iso": "2026-12-01",
+        "amount": "4.47M OP",
+        "note": "Seed Fund cliff (0.1% of max supply), single source DefiLlama.",
+        "source": "https://defillama.com/protocol/unlocks/optimism-foundation"
+      }
+    },
+    "HBAR": {
+      "summary": "No verified HBAR news this week. Before the window, tokenized stocks went live on HashPack and Hitachi left the Hedera Council. There are no scheduled unlocks.",
+      "news": []
+    },
+    "SEI": {
+      "summary": "The REX-Osprey staked SEI ETF registration is due to go effective around Oct 23, which is a risk for the short. Monthly Ecosystem Reserve unlock on Nov 15; the Oct 15 tranche (about 55.6M SEI) was absorbed without a sell-off.",
+      "news": [
+        {
+          "title": "Monthly ecosystem unlock of about 55.6M SEI absorbed without a sell-off",
+          "url": "https://www.tapbit.com/en/learn/article/sei-price-outlook-october-15-token-unlock-20261015",
+          "date": "Oct 15"
+        },
+        {
+          "title": "CFTC-regulated exchange self-certifies USD-settled SEI perpetual futures",
+          "url": "https://coinmarketcap.com/community/articles/6ad27a10d115c82f7c5aff89",
+          "date": "Oct 16"
+        }
+      ],
+      "unlock": {
+        "date": "Nov 15",
+        "date_iso": "2026-11-15",
+        "amount": "not disclosed",
+        "note": "Monthly Ecosystem Reserve release per Tokenomist (amount paywalled; Oct tranche was ~55.6M SEI).",
+        "source": "https://tokenomist.ai/sei-network/unlock-events"
+      }
     }
-   ]
-  },
-  "SKR": {
-   "summary": "A 100M SKR unlock lands tomorrow, Oct 21 (1% of total supply; roughly 1.4% of circulating using the source's circulating figure), while price sits just under the 0.01456 long level. The Ledger Atom partnership is the main positive item.",
-   "news": [
-    {
-     "title": "Solana Mobile names Ledger its first hardware partner; Atom ships with the Seeker app",
-     "url": "https://www.cryptotimes.io/2026/10/15/ledger-atom-to-ship-with-solana-mobiles-seeker-app-amid-cryptobilis-implant-probe/",
-     "date": "Oct 15"
-    }
-   ],
-   "unlock": {
-    "date": "Oct 21",
-    "date_iso": "2026-10-21",
-    "amount": "100M SKR",
-    "note": "Community per tokenomics.com (DropsTab says Growth & Partnerships). Source states 1% of total supply; ~1.4% of circulating is computed from its 7.16B circulating figure. Recurs monthly on the 21st.",
-    "source": "https://app.tokenomics.com/tokenomics/seeker-solana-mobile/unlocks"
-   }
-  },
-  "TRX": {
-   "summary": "Tron Inc.'s $200M at-the-market share sale to buy TRX supports the long near 0.332, but TRX supply keeps growing on net every day. No unlocks.",
-   "news": [
-    {
-     "title": "Tron Inc. opens a $200M at-the-market share offering to fund TRX purchases",
-     "url": "https://cryptobriefing.com/tron-inc-200m-atm-offering-trx/",
-     "date": "Oct 15"
-    },
-    {
-     "title": "TRX supply up on net for 108 straight days despite $2.2T in Q3 stablecoin volume",
-     "url": "https://cryptoslate.com/trons-stablecoin-growth-has-not-made-trx-deflationary/",
-     "date": "Oct 17"
-    }
-   ]
-  },
-  "FET": {
-   "summary": "No FET-specific news Oct 13-20 and no scheduled unlock (vesting finished Jan 2025). The open item is the Sept token-converter exploit (~8.7M FET): conversions are still paused and an incident report is pending.",
-   "news": []
-  },
-  "ATOM": {
-   "summary": "News is bank-tokenization adoption (Wells Fargo consortium on Cosmos ledger tech, Jack Henry tokenized deposits) rather than anything hitting supply. No unlocks; Stride stATOM redemptions resume around Nov 20.",
-   "news": [
-    {
-     "title": "Wells Fargo-led consortium plans 2027 stablecoin; its tokenized-deposit work uses Cosmos ledger tech",
-     "url": "https://crypto-economy.com/?p=337845",
-     "date": "Oct 13"
-    },
-    {
-     "title": "Cosmos tokenization suite lets banks issue deposits linked to Jack Henry core systems",
-     "url": "https://coinfomania.com/cosmos-unveils-tokenization-suite-for-banks-enhancing",
-     "date": "Oct 19"
-    }
-   ]
-  },
-  "INJ": {
-   "summary": "INJ hit a one-year high near $9.1 on Oct 16 after White House, SEC and CFTC meetings; the short near 8.55 sits below that high. Pending staked-INJ ETF filings (21Shares, Canary, REX-Osprey) are the main upside risk. Fully unlocked.",
-   "news": [
-    {
-     "title": "INJ jumps about 27% after Injective team meets White House, SEC and CFTC officials",
-     "url": "https://www.cryptotimes.io/2026/10/16/injective-price-surges-27-as-protocol-advances-regulatory-and-institutional-push/",
-     "date": "Oct 16"
-    },
-    {
-     "title": "Staked-INJ ETF filings from 21Shares, Canary and REX-Osprey drive outperformance",
-     "url": "https://cryptobriefing.com/injective-inj-surges-etf-staking-filings/",
-     "date": "Oct 16"
-    },
-    {
-     "title": "Canary files amended S-1 for its staked INJ ETF",
-     "url": "https://cryptobriefing.com/injective-inj-injc-staked-etf-filing/",
-     "date": "Oct 14"
-    }
-   ]
-  },
-  "OP": {
-   "summary": "For the short near 0.133, Unichain's mainnet move to OP Enterprise on Oct 29 is the dated upside risk; OP has already given back part of its mid-October jump. No unlock confirmed in the window (Tokenomist: next Jan 10, 2027).",
-   "news": [
-    {
-     "title": "Unichain begins migration to OP Enterprise, mainnet set for Oct 29; OP rallies ~18-20%",
-     "url": "https://www.cryptotimes.io/2026/10/14/optimisms-op-token-climbs-nearly-20-as-unichain-shifts-to-op-enterprise/",
-     "date": "Oct 14"
-    },
-    {
-     "title": "OP up 66% over four weeks; tokenized money-market funds reportedly explored on OP Mainnet",
-     "url": "https://cryptobriefing.com/optimism-op-jumps-18-percent-four-week-gain/",
-     "date": "Oct 13"
-    }
-   ]
-  },
-  "ONDO": {
-   "summary": "Ondo passed $4B TVL, but its share of tokenized equities has fallen to about 26% as Binance and Robinhood gain. No unlock until a large release on Jan 18, 2027.",
-   "news": [
-    {
-     "title": "Ondo TVL passes $4B with over $1.3B in tokenized stocks and ETFs",
-     "url": "https://www.thestreet.com/crypto/markets/ondo-hits-4-billion-tvl-on-tokenized-stock-growth",
-     "date": "Oct 14"
-    },
-    {
-     "title": "DWF Labs: Ondo's tokenized-stock share drops to ~26% as rivals grow",
-     "url": "https://cryptoticker.io/en/ondo-tvl-market-share-tokenized-stocks/",
-     "date": "Oct 18"
-    }
-   ]
-  },
-  "IO": {
-   "summary": "No project news this week beyond a thin-volume 17% pop on Oct 13. The Nov 11 monthly unlock (~15.86M IO, 2% of total supply, mostly private investors) is the known supply event for the short.",
-   "news": [
-    {
-     "title": "IO jumps ~17.6% in a DePIN rally on thin spot volume",
-     "url": "https://coinmarketcap.com/cmc-ai/io-net/latest-updates/",
-     "date": "Oct 13"
-    }
-   ],
-   "unlock": {
-    "date": "Nov 11",
-    "date_iso": "2026-11-11",
-    "amount": "15,857,166 IO",
-    "note": "Monthly tranche: private investors ~47.6%, community ~35.2%, insiders ~17.2%. Tokenomist gives the same date. 2% of total supply; circulating % not stated.",
-    "source": "https://app.tokenomics.com/tokenomics/io-net/unlocks"
-   }
-  },
-  "ETH": {
-   "summary": "Spot ETH ETFs lost about $320M more in the week to Oct 16 (October near $1B), with price just above the ~2369 long level. Glamsterdam hits the Hoodi testnet Oct 26 and the Fed decides Oct 28. No unlocks.",
-   "news": [
-    {
-     "title": "Spot ETH ETFs shed ~$320M in the week to Oct 16, mostly from ETHA",
-     "url": "https://www.tradingnews.com/news/ethereum-defends-2325-usd-as-etha-drives-91-percent-of-outflows",
-     "date": "Oct 19"
-    },
-    {
-     "title": "Glamsterdam enters final testnet phase; Hoodi activation set for Oct 26",
-     "url": "https://coinmarketcap.com/community/articles/6ad524154644b97307cc5735",
-     "date": "Oct 18"
-    },
-    {
-     "title": "ETH ETFs end a 10-day outflow streak with one inflow day",
-     "url": "https://www.cryptotimes.io/2026/10/13/ethereum-price-today-ethereum-jumps-above-2500-after-tenth-straight-etf-outflow/",
-     "date": "Oct 13"
-    }
-   ]
-  },
-  "SEI": {
-   "summary": "For the short (price 0.0599 below the 0.063 level), the REX-Osprey staked SEI ETF's Oct 23 target effective date is the squeeze risk, though trading isn't guaranteed. Next unlock is an Ecosystem Reserve release Nov 15, amount not disclosed.",
-   "news": [
-    {
-     "title": "SEI slides back toward $0.060 from its October high near $0.081",
-     "url": "https://tokenpost.com/news/investing/34933",
-     "date": "Oct 19"
-    },
-    {
-     "title": "Monthly unlock of ~55.56M SEI (~0.84% of circulating) passes",
-     "url": "https://www.tapbit.com/en/learn/article/sei-price-outlook-october-15-token-unlock-20261015",
-     "date": "Oct 15"
-    },
-    {
-     "title": "Sei Giga update: storage migration done, Autobahn consensus still undated",
-     "url": "https://coinmarketcap.com/cmc-ai/sei/latest-updates/",
-     "date": "Oct 16"
-    }
-   ],
-   "unlock": {
-    "date": "Nov 15",
-    "date_iso": "2026-11-15",
-    "amount": "undisclosed",
-    "note": "Monthly Ecosystem Reserve release; Tokenomist dates it but the amount is paywalled (Oct 15 tranche was ~55.56M SEI).",
-    "source": "https://tokenomist.ai/sei-network/unlock-events"
-   }
-  },
-  "SOL": {
-   "summary": "Alpenglow activates on mainnet tomorrow, Oct 21 (~14:50 UTC), targeting ~150ms finality; a smooth or rough rollout is the main event risk for the long from 98.3. SOL ETFs saw small outflows. No unlocks.",
-   "news": [
-    {
-     "title": "Solana confirms Alpenglow mainnet activation on Oct 21 (epoch 1064)",
-     "url": "https://www.kucoin.com/news/flash/solana-s-alpenglow-mainnet-upgrade-activates-on-october-21",
-     "date": "Oct 13"
-    },
-    {
-     "title": "Alpenglow replaces TowerBFT, aiming for ~150ms finality",
-     "url": "https://cryptobriefing.com/solana-targets-150-millisecond-finality-with-alpenglow-upgrade-on-oct-21/",
-     "date": "Oct 14"
-    },
-    {
-     "title": "SOL ETFs post ~$10M outflows after a 14-week inflow streak ends",
-     "url": "https://www.tradingnews.com/news/solana-106-usd-defends-100-usd-as-alpenglow-promises-150-millisecond-finality",
-     "date": "Oct 16"
-    }
-   ]
-  },
-  "HYPE": {
-   "summary": "Treasury buying and US-policy headlines offset ~$18M of weekly spot-ETF outflows; price is ~8% above the 72.5 long level. Next unlock is dated Oct 29 by Tokenomics.com (14.18M HYPE) but Nov 6 by Tokenomist, so treat the timing as uncertain.",
-   "news": [
-    {
-     "title": "Hyperliquid founder pushes for US rules that would exempt its blockchain (Bloomberg)",
-     "url": "https://www.bloomberg.com/news/articles/2026-10-15/hyperliquid-founder-yan-seeks-us-rules-that-spare-its-blockchain",
-     "date": "Oct 15"
-    },
-    {
-     "title": "Hyperliquid Strategies adds 180K HYPE, holdings near 38.7M",
-     "url": "https://www.tokenpost.com/news/business/32355",
-     "date": "Oct 15"
-    },
-    {
-     "title": "Kinetiq sets Nov 9 mainnet for its HYPE-gas Elysium L2",
-     "url": "https://coinmarketcap.com/community/articles/6ad61c88fc94c136a4a2e325",
-     "date": "Oct 19"
-    },
-    {
-     "title": "US spot HYPE ETFs see ~$18M weekly net outflows",
-     "url": "https://coinmarketcap.com/community/articles/6ad5e8f8a442e82f65d3d256",
-     "date": "Oct 19"
-    }
-   ],
-   "unlock": {
-    "date": "Oct 29",
-    "date_iso": "2026-10-29",
-    "amount": "14,175,778 HYPE",
-    "note": "Insiders ~46.6%, community ~46.3%, foundation ~7%. Tokenomist instead lists Nov 6 (core contributors, no amount). Circulating % not stated.",
-    "source": "https://app.tokenomics.com/tokenomics/hyperliquid/unlocks"
-   }
-  },
-  "DOGE": {
-   "summary": "For the short (price 0.079, below the 0.0873 level), Bitwise's DOGE ETF is liquidating with payouts Oct 22, while whales added ~600M DOGE since Oct 12. No vesting unlocks.",
-   "news": [
-    {
-     "title": "Bitwise Dogecoin ETF liquidates; cash payouts Oct 22",
-     "url": "https://coinmarketcap.com/top-stories/6acd760c6b26253364675c96/",
-     "date": "Oct 13"
-    },
-    {
-     "title": "Large holders add ~600M DOGE since Oct 12 as price slides",
-     "url": "https://en.coin-turk.com/dogecoin-falls-7-6yuzde-as-large-holders-add-600-million-doge-since-october-12",
-     "date": "Oct 17"
-    }
-   ]
-  },
-  "ZK": {
-   "summary": "ZK ran ~42% in the week to Oct 16 on ZK-sector strength and the Airbender Prime prover, and sits ~8% above the 0.01345 long level. Next unlock is Nov 17 (~173M ZK to investors and team).",
-   "news": [
-    {
-     "title": "Matter Labs unveils Airbender Prime, proving most Ethereum blocks in under 10s on one GPU",
-     "url": "https://thecurrencyanalytics.com/altcoins/matter-labs-prover-eth-blocks-10-seconds-303482",
-     "date": "Oct 14"
-    },
-    {
-     "title": "ZK among the week's top gainers, up ~42% over Oct 10-16",
-     "url": "https://www.bitunix.com/hub/blog/market-update/token-pulse-1016",
-     "date": "Oct 16"
-    }
-   ],
-   "unlock": {
-    "date": "Nov 17",
-    "date_iso": "2026-11-17",
-    "amount": "173,444,425 ZK",
-    "note": "Private investors ~59.4%, team ~40.6%. Tokenomist gives the same date. Circulating % not stated.",
-    "source": "https://app.tokenomics.com/tokenomics/zksync/unlocks"
-   }
   }
- }
 }
