@@ -1,12 +1,28 @@
 {
-  "generated_at": "2026-10-21T02:29:40Z",
+  "generated_at": "2026-10-22T02:27:20Z",
   "coins": {
     "BNB": {
-      "summary": "No price-moving BNB news found for the past week and no scheduled unlocks; the long at the weekly swing-high retest trades on market structure alone.",
-      "news": []
+      "summary": "Mildly supportive for the long: the Oct 19 quarterly burn removed about 1.65M BNB, and treasury firm BNB Standard (515K+ BNB) rings the Nasdaq bell Oct 26. BNB has no vesting unlocks.",
+      "news": [
+        {
+          "title": "BNB Chain completes its 37th quarterly auto-burn, about 1.65M BNB (~$1.2B)",
+          "url": "https://cryptoslate.com/bnb-chain-burns-1-2b-in-october-tokens-leaving-real-supply-impact-hidden/",
+          "date": "Oct 19"
+        },
+        {
+          "title": "BNB Chain announces a new high-throughput EVM L1, testnet targeted for year-end",
+          "url": "https://tokenpost.com/news/technology/35392",
+          "date": "Oct 20"
+        },
+        {
+          "title": "Treasury company BNB Standard (Nasdaq: BNC) names new CEO, plans Nasdaq bell ceremony Oct 26",
+          "url": "https://en.cryptonomist.ch/2026/10/21/bnb-standard-nasdaq-event/",
+          "date": "Oct 21"
+        }
+      ]
     },
     "TRX": {
-      "summary": "Tron Inc. (Nasdaq: TRON), which holds a large TRX treasury, became a Super Representative. Not a big catalyst. TRX has no vesting unlocks.",
+      "summary": "Tron Inc., a large TRX treasury holder, became a Super Representative; a minor positive for the long. TRX has no vesting unlocks.",
       "news": [
         {
           "title": "Tron Inc. elected a TRON Super Representative, moving into block production and governance revenue",
@@ -16,12 +32,17 @@
       ]
     },
     "SYRUP": {
-      "summary": "Fundamentals look steady: Maple's loan book is growing, syrupUSDC has expanded to Solana and buybacks continue. SYRUP is fully unlocked, so there is no supply overhang for the long.",
+      "summary": "SYRUP fell about 24% in a week with the DeFi downturn even as buybacks doubled (1.37M SYRUP bought with September revenue). Fully unlocked, so no supply overhang for the long.",
       "news": [
         {
-          "title": "Maple active loans reach about $1.7B in Q3, up 12% while DeFi lending fell",
-          "url": "https://www.onebullex.com/pt-br/news/articles/maple-finance-q3-loans-hit-1-7-billion-up-12-as-defi-lending-falls-29-4",
-          "date": "Oct 17"
+          "title": "SYRUP drops about 24% in a week, underperforming BTC and ETH as DeFi TVL shrinks",
+          "url": "https://cryptobriefing.com/maple-syrup-token-slides-24-percent/",
+          "date": "Oct 19"
+        },
+        {
+          "title": "Maple's September-revenue buyback takes in about 1.37M SYRUP, double August's",
+          "url": "https://tokenpost.com/news/business/35072",
+          "date": "Oct 19"
         },
         {
           "title": "Maple's syrupUSDC yield stablecoin expands to Solana",
@@ -30,36 +51,14 @@
         }
       ]
     },
-    "SUI": {
-      "summary": "Bullish ecosystem news (Hashi BTC lending nearing mainnet, ongoing buybacks) works against the short. A Community Reserve unlock on Nov 1 has an undisclosed amount, and the team/VC vesting has ended.",
-      "news": [
-        {
-          "title": "Hashi Bitcoin lending on Sui nears phased mainnet with $500M+ in partner commitments, including Anchorage",
-          "url": "https://bitcoinist.com/sui-hashi-bitcoin-lending-500-million-commitments/",
-          "date": "Oct 18"
-        },
-        {
-          "title": "Sui buybacks total about 916K SUI year to date, funded by stablecoin yield and fees",
-          "url": "https://coinmarketcap.com/community/articles/6ad6364fc053e3400b949717",
-          "date": "Oct 19"
-        },
-        {
-          "title": "Robinhood runs a $5-in-SUI learn-and-earn promotion",
-          "url": "https://coinmarketcap.com/community/articles/6ad550a0bb33ce40ac553f4d",
-          "date": "Oct 18"
-        }
-      ],
-      "unlock": {
-        "date": "Nov 1",
-        "date_iso": "2026-11-01",
-        "amount": "not disclosed",
-        "note": "Community Reserve per Tokenomist (amount paywalled). DropsTab shows small monthly tranches (Community Reserve, Mysten treasury, early contributors). Investor/team vesting has ended.",
-        "source": "https://www.tokenomist.ai/sui"
-      }
-    },
     "APT": {
-      "summary": "Investor and contributor vesting ended Oct 12, cutting monthly unlocks by about 60%, which takes some sell pressure off and works against the short. The next unlock is a Community tranche on Nov 11 with an undisclosed amount.",
+      "summary": "Works against the short: investor/contributor vesting ended in October, cutting monthly unlocks about 60%, and APT bounced about 6% on that repricing. Next unlock is a Community tranche on Nov 11 (amount not disclosed).",
       "news": [
+        {
+          "title": "APT rises about 6% as markets reprice the end of investor vesting",
+          "url": "https://coinmarketcap.com/top-stories/6ad7840f6b70f57fdc58602c/",
+          "date": "Oct 20"
+        },
         {
           "title": "Aptos ships an opt-in encrypted mempool on mainnet to curb front-running",
           "url": "https://coinmarketcap.com/community/articles/6ad0fc07c487575c4ddfa783",
@@ -85,7 +84,7 @@
       }
     },
     "LTC": {
-      "summary": "Only small Canary spot ETF flows this week. LTC is proof-of-work with no unlocks, so there is nothing that changes the short thesis.",
+      "summary": "Only small Canary spot ETF inflows. LTC is proof-of-work with no unlocks, so nothing changes the short thesis.",
       "news": [
         {
           "title": "Canary Litecoin ETF (LTCC) takes about $581K in inflows after a week of flat flows",
@@ -94,23 +93,8 @@
         }
       ]
     },
-    "JUP": {
-      "summary": "The 1000x 'YOLO' perps launch did about $1B in volume on its first day, but JUP fell with the market. No dated unlock before Dec 5; the next Jupuary cliff is reported for Jan 2027.",
-      "news": [
-        {
-          "title": "Jupiter launches 'YOLO', an unaudited 500x-1000x leverage product on SOL/BTC/ETH",
-          "url": "https://coinmarketcap.com/top-stories/6ad0dd9231381a2cec7a380c/",
-          "date": "Oct 15"
-        },
-        {
-          "title": "Jupiter's 1000x perps product does about $1B in volume on day one",
-          "url": "https://coinmarketcap.com/top-stories/6ad23d3ec32e4538f4fa73e2/",
-          "date": "Oct 16"
-        }
-      ]
-    },
     "FET": {
-      "summary": "FET is still recovering from the Sep 20 SingularityNET bridge exploit, and AGIX-to-FET conversions remain paused. Tokenomist lists an AGIX-migration pool release on Oct 28 with no amount, but another source shows all unlocks complete, so treat it as low confidence.",
+      "summary": "No fresh catalyst for the long; AGIX-to-FET conversions are still paused after the Sep 20 bridge exploit. Tokenomist lists an AGIX-migration pool release on Oct 28 with no amount, but another source shows all unlocks complete (low confidence).",
       "news": [
         {
           "title": "Commentary notes FET lagging the rally while AGIX-to-FET conversions stay paused after the bridge exploit",
@@ -126,12 +110,16 @@
         "source": "https://www.tokenomist.ai/fetch-ai/unlock-events"
       }
     },
-    "RSR": {
-      "summary": "Nothing new this week. The Oct 12 Upbit listing spike is the last big catalyst, and governance's 'High burn' setting pauses treasury unlocks this quarter.",
+    "ETC": {
+      "summary": "No price-moving ETC news this week. Proof-of-work with no unlocks; the Sep 28 block-reward cut already happened, so the short trades on structure alone.",
+      "news": []
+    },
+    "SUPER": {
+      "summary": "No SUPER-specific news this week. Vesting completed in Jan 2024, so there is no unlock overhang; the short trades on structure alone.",
       "news": []
     },
     "JTO": {
-      "summary": "No JTO-specific news; it fell with the Oct 15 altcoin selloff. There is no cliff unlock, but linear weekly vesting (about 2.6M JTO to investors and contributors) adds steady supply, which suits the short.",
+      "summary": "No JTO-specific news since the Oct 15 selloff. No cliff unlock, but linear weekly vesting to investors and contributors adds steady supply, which suits the short.",
       "news": [
         {
           "title": "JTO drops about 6% in a broad altcoin selloff tied to an Asian equity rout",
@@ -144,39 +132,8 @@
       "summary": "No verifiable price-moving ATOM news this week. ATOM is inflationary with no vesting cliffs.",
       "news": []
     },
-    "WLD": {
-      "summary": "WLD jumped about 14% on World's World ID suite for banks, which supports the long. Supply keeps unlocking continuously at about 2.9M WLD/day, with no single cliff.",
-      "news": [
-        {
-          "title": "WLD surges about 14% as World launches World ID verification for banks and financial firms",
-          "url": "https://tradersunion.com/news/cryptocurrency-news/show/3894740-worldcoin-surges-14-3percent-today-on/",
-          "date": "Oct 21"
-        }
-      ]
-    },
-    "OP": {
-      "summary": "OP has strong momentum against the short: it rallied on Unichain moving to OP Enterprise (mainnet move Oct 29) and on Upgrade 20 buybacks, which start Feb 2027. A small Seed Fund unlock follows on Dec 1.",
-      "news": [
-        {
-          "title": "OP rallies about 22% on Unichain's move to OP Enterprise; Upgrade 20 directs 50% of Superchain revenue to OP buybacks",
-          "url": "https://www.interactivecrypto.com/optimism-s-op-token-rallies-unichain-deal-and-buybacks-signal-new-value-era",
-          "date": "Oct 14"
-        }
-      ],
-      "unlock": {
-        "date": "Dec 1",
-        "date_iso": "2026-12-01",
-        "amount": "4.47M OP",
-        "note": "Seed Fund cliff (0.1% of max supply), single source DefiLlama.",
-        "source": "https://defillama.com/protocol/unlocks/optimism-foundation"
-      }
-    },
-    "HBAR": {
-      "summary": "No verified HBAR news this week. Before the window, tokenized stocks went live on HashPack and Hitachi left the Hedera Council. There are no scheduled unlocks.",
-      "news": []
-    },
     "SEI": {
-      "summary": "The REX-Osprey staked SEI ETF registration is due to go effective around Oct 23, which is a risk for the short. Monthly Ecosystem Reserve unlock on Nov 15; the Oct 15 tranche (about 55.6M SEI) was absorbed without a sell-off.",
+      "summary": "Supportive for the long: the REX-Osprey staked SEI ETF has an Oct 23 target effective date (trading may come later). Monthly Ecosystem Reserve unlock on Nov 15; the Oct 15 tranche (~55.6M SEI) was absorbed without a sell-off.",
       "news": [
         {
           "title": "Monthly ecosystem unlock of about 55.6M SEI absorbed without a sell-off",
@@ -187,6 +144,11 @@
           "title": "CFTC-regulated exchange self-certifies USD-settled SEI perpetual futures",
           "url": "https://coinmarketcap.com/community/articles/6ad27a10d115c82f7c5aff89",
           "date": "Oct 16"
+        },
+        {
+          "title": "Sei cumulative DEX volume nears $16B, though activity is concentrated on one venue",
+          "url": "https://coinmarketcap.com/community/articles/6ad7337b67df9058833fcae0",
+          "date": "Oct 20"
         }
       ],
       "unlock": {
@@ -196,6 +158,73 @@
         "note": "Monthly Ecosystem Reserve release per Tokenomist (amount paywalled; Oct tranche was ~55.6M SEI).",
         "source": "https://tokenomist.ai/sei-network/unlock-events"
       }
+    },
+    "OP": {
+      "summary": "Risk for the short: the OP buyback program has bought over 9.4M OP and Unichain moves to OP Enterprise on Oct 29. A small Seed Fund unlock follows on Dec 1.",
+      "news": [
+        {
+          "title": "Optimism's buyback program passes 9.4M OP purchased",
+          "url": "https://www.tokenpost.com/news/insights/35453",
+          "date": "Oct 20"
+        }
+      ],
+      "unlock": {
+        "date": "Dec 1",
+        "date_iso": "2026-12-01",
+        "amount": "4.47M OP",
+        "note": "Seed Fund cliff (0.1% of max supply), single source DefiLlama.",
+        "source": "https://defillama.com/protocol/unlocks/optimism-foundation"
+      }
+    },
+    "WLD": {
+      "summary": "Supports the long: WLD rallied on World ID for banks, though no paying bank customer is named yet. Supply keeps unlocking continuously at about 2.9M WLD/day with no single cliff.",
+      "news": [
+        {
+          "title": "WLD surges about 14% as World launches World ID verification for banks and financial firms",
+          "url": "https://tradersunion.com/news/cryptocurrency-news/show/3894740-worldcoin-surges-14-3percent-today-on/",
+          "date": "Oct 21"
+        },
+        {
+          "title": "World presents World ID for banking at Money20/20; no named bank customer yet",
+          "url": "https://cryptoticker.io/en/worldcoin-wld-price-world-id-banks/",
+          "date": "Oct 20"
+        }
+      ]
+    },
+    "INJ": {
+      "summary": "Risk for the short: a staked INJ ETF is pending, a new native USDC route went live and the monthly buyback-and-burn continues (7.2M+ INJ burned). INJ is fully unlocked.",
+      "news": [
+        {
+          "title": "Injective adds a native USDC route via Circle CCTP; staked INJ ETF filings still pending",
+          "url": "https://coinmarketcap.com/top-stories/6ad25a8ac32e4538f4fa9c64/",
+          "date": "Oct 16"
+        },
+        {
+          "title": "Injective's cumulative burns pass 7.2M INJ through its community buyback",
+          "url": "https://cryptobriefing.com/injective-burns-over-7-million-inj-buyback/",
+          "date": "Oct 21"
+        },
+        {
+          "title": "INJ falls about 7% in the macro selloff after a hot US CPI print",
+          "url": "https://coinmarketcap.com/top-stories/6ad034d231381a2cec7994ec/",
+          "date": "Oct 15"
+        }
+      ]
+    },
+    "HBAR": {
+      "summary": "Minor news only (IBM catalog listing for Hedera's agent-ID tool, SEC comment letter); nothing that clearly threatens the short. No scheduled unlocks.",
+      "news": [
+        {
+          "title": "Hedera's IDTrust agent-identity tool listed in IBM's watsonx catalog",
+          "url": "https://coinmarketcap.com/community/articles/6ad79a901b448e06e2db3e85",
+          "date": "Oct 20"
+        },
+        {
+          "title": "Hedera and five other projects ask the SEC to codify digital-commodity status",
+          "url": "https://coinmarketcap.com/community/articles/6ad85ac11d7628424dc17414",
+          "date": "Oct 21"
+        }
+      ]
     }
   }
 }
