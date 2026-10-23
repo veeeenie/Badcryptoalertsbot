@@ -53,6 +53,9 @@ MAX_DIST_ATR = 2.0     # zones whose near edge is more than 2 weekly ATRs from p
 MIN_RR = 1.4           # the gate: reward-to-risk of the whole plan from the average entry; trader, 23 Oct 2026
 ENTRY_SPLIT = (0.2, 0.3, 0.5)         # size grows toward the best price: near edge 20%, middle 30%, far edge (by the stop) 50%; trader, 23 Oct 2026
 EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, then the one after (or the last swing)
+RISK_USD = 3.0         # dollars lost if every order fills and the stop is hit; trader, 23 Oct 2026
+MIN_ORDER_USD = 10.0   # Hyperliquid's smallest order value
+LIQ_BUFFER = 2.0       # liquidation at least 2x the stop distance away when suggesting leverage
 STOP_BUFFER_ATR = 0.1  # stop sits a tenth of a weekly ATR beyond the zone's far edge
 
 
@@ -268,6 +271,26 @@ def plan(closed, price, trend, d):
     return best if best else (None, "no trade")
 
 
+def sizing(p, max_lev):
+    """Order sizes so the whole plan loses RISK_USD if every order fills and the stop is hit, plus a leverage
+    suggestion: the highest whole leverage that keeps (isolated) liquidation at least LIQ_BUFFER x the stop
+    distance away, measured from the first entry (the one furthest from the stop)."""
+    qty = RISK_USD / abs(p["avg_entry"] - p["stop"])
+    orders = []
+    for e, w in zip(p["entries"], ENTRY_SPLIT):
+        orders.append({"price": e, "share": round(w * 100), "size": qty * w, "usd": round(qty * w * e, 2),
+                       "risk_usd": round(qty * w * abs(e - p["stop"]), 2)})
+    notional = sum(o["usd"] for o in orders)
+    stop_dist = abs(p["stop"] - p["entries"][0]) / p["entries"][0]
+    max_lev = int(max_lev or 10)
+    mmr = 1 / (2 * max_lev)                      # Hyperliquid maintenance margin: half the initial margin at max leverage
+    lev = max(1, min(max_lev, int(1 / (LIQ_BUFFER * stop_dist + mmr))))
+    return {"risk_usd": RISK_USD, "size_total": qty, "notional_usd": round(notional, 2), "orders": orders,
+            "leverage": lev, "max_leverage": max_lev, "margin_usd": round(notional / lev, 2),
+            "risk_first_only_usd": orders[0]["risk_usd"],
+            "small_orders": [o["share"] for o in orders if o["usd"] < MIN_ORDER_USD]}
+
+
 def main():
     now_ms = int(time.time() * 1000)
     rows, notrade, skipped = [], [], {"young": [], "no_trend": 0}
@@ -294,6 +317,7 @@ def main():
             print(f"{coin:8} {trend:4} no trade: {why}")
             continue
         p.update({"coin": coin, "price": price, "trend": trend, "ema_basis": d["ema_basis"], "weeks": len(closed)})
+        p["sizing"] = sizing(p, r.get("max_lev"))
         rows.append(p)
         print(f"{coin:8} {p['side']:5} entries {[round(e, 6) for e in p['entries']]} stop {p['stop']:.6g} "
               f"tps {[round(t, 6) for t in p['tps']]} {p['rr']}:1 dist {p['distance_pct']}%")
@@ -301,7 +325,7 @@ def main():
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "scanned": len(coins),
-        "gate_rr": MIN_RR,
+        "gate_rr": MIN_RR, "risk_usd": RISK_USD,
         "counts": {"trades": len(rows), "trend_no_trade": len(notrade), "no_trend": skipped["no_trend"],
                    "too_young": len(skipped["young"])},
         "rows": rows,
