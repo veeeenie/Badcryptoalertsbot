@@ -201,6 +201,23 @@ def iso(ms):
     return datetime.fromtimestamp(ms / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
 
 
+def merge_small(entries, stop):
+    """Sizes the 20 : 30 : 50 orders for RISK_USD. An order below the $10 exchange minimum is merged into the
+    next order toward the best price (the last one into the one before), and the sizes are worked out again.
+    Returns (entries, weights, average entry)."""
+    prices, ws = list(entries), list(ENTRY_SPLIT)
+    while True:
+        avg = sum(e * w for e, w in zip(prices, ws)) / sum(ws)
+        qty = RISK_USD / abs(avg - stop)
+        small = [i for i, (e, w) in enumerate(zip(prices, ws)) if qty * w * e < MIN_ORDER_USD]
+        if not small or len(prices) == 1:
+            return prices, ws, avg
+        i = small[0]
+        j = i + 1 if i + 1 < len(prices) else i - 1
+        ws[j] += ws[i]
+        del prices[i], ws[i]
+
+
 def plan(closed, price, trend, d):
     """The nearest zone in the trend's direction that gives a trade passing the gate.
     Returns (plan, None) or (None, reason)."""
@@ -226,8 +243,8 @@ def plan(closed, price, trend, d):
         levels = (near, (near + far) / 2, far)
         # levels price has already passed would fill straight away, at today's price
         entries = [max(x, price) if short else min(x, price) for x in levels]
-        avg = sum(e * w for e, w in zip(entries, ENTRY_SPLIT))
         stop = far + STOP_BUFFER_ATR * A if short else far - STOP_BUFFER_ATR * A
+        entries, weights, avg = merge_small(entries, stop)
         risk = abs(stop - avg)
         if short:
             raw = sorted((o["top"] for o in zs if o["kind"] == opp and o["top"] < near), reverse=True)
@@ -260,12 +277,12 @@ def plan(closed, price, trend, d):
                 best = (None, f"best zone {z['bottom']:.4g}-{z['top']:.4g} gives {min(rr, rr_first):.1f}:1")
             continue
         dist = max(0.0, (near / price - 1) if short else (1 - near / price))
-        dist_best = max(0.0, (far / price - 1) if short else (1 - far / price))   # to the biggest (50%) order
+        dist_best = max(0.0, (entries[-1] / price - 1) if short else (1 - entries[-1] / price))   # to the biggest order
         return {
             "side": "short" if short else "long", "zone_low": z["bottom"], "zone_high": z["top"],
             "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"],
             "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
-            "entries": entries, "entry_split": [round(w * 100) for w in ENTRY_SPLIT], "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2), "rr_first_only": round(rr_first, 2),
+            "entries": entries, "entry_split": [round(w * 100) for w in weights], "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2), "rr_first_only": round(rr_first, 2),
             "risk_pct": round(risk / avg * 100, 1), "distance_pct": round(dist * 100, 1), "distance_best_pct": round(dist_best * 100, 1), "at_zone": dist == 0.0,
         }, None
     return best if best else (None, "no trade")
@@ -277,7 +294,7 @@ def sizing(p, max_lev):
     distance away, measured from the first entry (the one furthest from the stop)."""
     qty = RISK_USD / abs(p["avg_entry"] - p["stop"])
     orders = []
-    for e, w in zip(p["entries"], ENTRY_SPLIT):
+    for e, w in zip(p["entries"], [x / 100 for x in p["entry_split"]]):
         orders.append({"price": e, "share": round(w * 100), "size": qty * w, "usd": round(qty * w * e, 2),
                        "risk_usd": round(qty * w * abs(e - p["stop"]), 2)})
     notional = sum(o["usd"] for o in orders)

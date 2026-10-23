@@ -63,19 +63,20 @@ tr:last-child td{border-bottom:0}
 const f=x=>x==null?"–":(Math.abs(x)>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):Math.abs(x)>=1?x.toFixed(3):x.toPrecision(4));
 fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
   const c=w.counts, when=new Date(w.generated_at).toLocaleString([], {day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
-  document.getElementById("wmeta").textContent=`${c.trades} trade ideas from the top ${w.scanned} coins. Each is at least ${w.gate_rr} : 1 with all orders filled and with only the first, at a weekly zone within 2 weekly ATRs of price. Sizes risk $${w.risk_usd} if every order fills and the stop is hit. Leverage is the highest that keeps liquidation (isolated margin) at least twice as far as the stop. Updated ${when}.`;
+  document.getElementById("wmeta").textContent=`${c.trades} trade ideas from the top ${w.scanned} coins. Each is at least ${w.gate_rr} : 1 with all orders filled and with only the first, at a weekly zone within 2 weekly ATRs of price. Sizes risk $${w.risk_usd} if every order fills and the stop is hit, split 20 : 30 : 50 toward the best price (orders under $10 merge into the next). Leverage is the highest that keeps liquidation (isolated margin) at least twice as far as the stop. Updated ${when}.`;
   const fs=x=>x>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):x>=10?x.toFixed(1):x>=1?x.toFixed(2):x.toPrecision(3);
   const pct=(e,p)=>Math.abs(e/p-1)*100;
   document.getElementById("wrows").innerHTML=w.rows.length?w.rows.map(r=>{
     const z=r.sizing, cls=r.side==="short"?"down":"up", basis=r.ema_basis!=="25/50/100"?` <span class="muted">weekly ${r.ema_basis} EMA</span>`:"";
     const orders=z.orders.map(o=>{const now=o.price===r.price, d=pct(o.price,r.price);
       return `<tr><td>${o.share}%</td><td>${now?"<b>now</b>":f(o.price)}</td><td>${fs(o.size)}</td><td>$${o.usd.toFixed(2)}</td><td>${now?"–":d.toFixed(1)+"%"}</td></tr>`;}).join("");
-    const warn=z.small_orders.length?`<div class="warn">${z.small_orders.length>1?`The ${z.small_orders.join("% and ")}% orders are`:`The ${z.small_orders[0]}% order is`} under Hyperliquid's $10 minimum order.</div>`:"";
+    const merged=r.entry_split.length<3?`<div class="muted">Orders under $10 were merged into the next one, so the split is ${r.entry_split.join(" : ")}.</div>`:"";
+    const warn=z.small_orders.length?`<div class="warn">At $${z.risk_usd} risk the whole position is under Hyperliquid's $10 minimum order.</div>`:"";
     return `<article class="card">
       <div class="ch"><span class="coin">${r.coin}</span><b class="${cls}">${r.side==="short"?"Short":"Long"}</b><span class="muted">price ${f(r.price)}</span>${basis}<span class="rr"><b>${r.rr.toFixed(1)}</b> : 1 <span class="muted">· ${r.rr_first_only.toFixed(1)} first only</span></span></div>
       <table><thead><tr><th>Share</th><th>Price</th><th>Size (${r.coin})</th><th>Value</th><th>From price</th></tr></thead><tbody>${orders}</tbody></table>
       <div class="line"><b>Stop</b> ${f(r.stop)} · <b>Take-profit</b> ${r.tps.map(f).join(" then ")}${r.tps.length>1?" (half each)":""}</div>
-      <div class="line"><b>Total</b> $${z.notional_usd.toFixed(0)} · <b>Leverage</b> ${z.leverage}× isolated · <b>Margin</b> $${z.margin_usd.toFixed(2)} · <b>Risk</b> $${z.risk_usd.toFixed(2)} <span class="muted">($${z.risk_first_only_usd.toFixed(2)} if only the first fills)</span></div>${warn}
+      <div class="line"><b>Total</b> $${z.notional_usd.toFixed(0)} · <b>Leverage</b> ${z.leverage}× isolated · <b>Margin</b> $${z.margin_usd.toFixed(2)} · <b>Risk</b> $${z.risk_usd.toFixed(2)} <span class="muted">($${z.risk_first_only_usd.toFixed(2)} if only the first fills)</span></div>${merged}${warn}
     </article>`;
   }).join(""):'<p class="muted">No trade passes the rules right now. Stay in cash.</p>';
   const nt=w.trend_no_trade||[];
