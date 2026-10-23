@@ -1,0 +1,27 @@
+name: Dump weekly candles (temporary)
+on:
+  push:
+    branches: [debug-weekly]
+    paths: [".github/workflows/dump.yml"]
+permissions:
+  contents: write
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+      - run: pip install -r scanner/requirements.txt
+      - run: |
+          cd scanner && python - <<'PY'
+          import json, scan
+          out = {}
+          for r in scan.universe():
+              try: out[r["coin"]] = {"price": r["price"], "weekly": scan.weekly_from_daily(scan.daily_candles(r["coin"]))}
+              except Exception as e: print(r["coin"], e)
+          json.dump(out, open("../weekly_dump.json", "w"))
+          PY
+      - run: |
+          git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
+          git add weekly_dump.json && git commit -qm "weekly dump" && git push -q origin HEAD:debug-weekly
