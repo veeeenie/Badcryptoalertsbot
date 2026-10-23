@@ -18,10 +18,15 @@ For the top Hyperliquid perps by volume:
        supply (move down): bottom = lowest body of the base, top = highest high of the base and the move candle
      A zone is dropped once a weekly candle closes through its far side. Each later visit into the zone counts
      as a test; zones tested more than once are dropped.
-  3. For each trending coin, the nearest zone in the trend's direction: supply above price for a downtrend,
-     demand below price for an uptrend, and how far price is from it.
+  3. Trade plan for each trending coin: the nearest zone in the trend's direction (supply above price for a
+     downtrend, demand below for an uptrend), at most one weekly ATR tall, that passes the gate.
+       entries:     three equal tranches at the zone's near edge, middle and far edge
+       stop:        a tenth of a weekly ATR beyond the zone's far edge
+       take-profit: two equal exits at the near edge of the next two opposite zones or the last weekly swing,
+                    each at least 1R from the average entry (one exit if only one qualifies)
+       gate:        reward-to-risk of the whole plan from the average entry at least 1.4 : 1
 
-Writes docs/data/watchlist.json. No trade plans and no alerts yet.
+Writes docs/data/watchlist.json. No alerts yet.
 """
 import json
 import os
@@ -40,6 +45,11 @@ DECISIVE = 0.5         # decisive candle: body >= 50% of its range
 BASE_BODY_RANGE = 0.5  # base candle: body <= 50% of its range
 BASE_MAX = 3
 MAX_TESTS = 1          # zones visited more than once are dropped
+MAX_ZONE_ATR = 1.0     # zones taller than one weekly ATR are not traded (stop too far); trader, 23 Oct 2026
+MIN_RR = 1.4           # the gate: reward-to-risk of the whole plan from the average entry; trader, 23 Oct 2026
+ENTRY_SPLIT = (1 / 3, 1 / 3, 1 / 3)   # three equal entries: near edge, middle, far edge of the zone
+EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, then the one after (or the last swing)
+STOP_BUFFER_ATR = 0.1  # stop sits a tenth of a weekly ATR beyond the zone's far edge
 
 
 def atr_series(c, n=ATR_N):
@@ -184,9 +194,70 @@ def iso(ms):
     return datetime.fromtimestamp(ms / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
 
 
+def plan(closed, price, trend, d):
+    """The nearest zone in the trend's direction that gives a trade passing the gate.
+    Returns (plan, None) or (None, reason)."""
+    A = atr_series(closed)[-1]
+    zs = zones(closed)
+    short = trend == "down"
+    kind, opp = ("supply", "demand") if short else ("demand", "supply")
+    cands = [z for z in zs if z["kind"] == kind and z["top"] - z["bottom"] <= MAX_ZONE_ATR * A
+             and (z["top"] > price if short else z["bottom"] < price)]
+    if not cands:
+        tall = [z for z in zs if z["kind"] == kind and (z["top"] > price if short else z["bottom"] < price)]
+        return None, ("only zones taller than a weekly ATR" if tall else f"no {kind} zone")
+    cands.sort(key=lambda z: z["bottom"] if short else -z["top"])
+    best = None
+    for z in cands:
+        near, far = (z["bottom"], z["top"]) if short else (z["top"], z["bottom"])
+        levels = (near, (near + far) / 2, far)
+        # levels price has already passed would fill straight away, at today's price
+        entries = [max(x, price) if short else min(x, price) for x in levels]
+        avg = sum(e * w for e, w in zip(entries, ENTRY_SPLIT))
+        stop = far + STOP_BUFFER_ATR * A if short else far - STOP_BUFFER_ATR * A
+        risk = abs(stop - avg)
+        if short:
+            raw = sorted((o["top"] for o in zs if o["kind"] == opp and o["top"] < near), reverse=True)
+            swing = d["last_swing_low"] if d["last_swing_low"] < near else None
+        else:
+            raw = sorted(o["bottom"] for o in zs if o["kind"] == opp and o["bottom"] > near)
+            swing = d["last_swing_high"] if d["last_swing_high"] > near else None
+        if swing is not None:
+            raw = sorted(raw + [swing], reverse=short)
+        tz = []   # each take-profit at least 1R from the average entry; skip one within a quarter ATR of the last
+        for t in raw:
+            if (avg - t if short else t - avg) < risk:
+                continue
+            if tz and abs(t - tz[-1]) < 0.25 * A:
+                continue
+            tz.append(t)
+        if not tz:
+            best = best or (None, "no zone or swing at least 1R away to take profit at")
+            continue
+        tp1 = tz[0]
+        tp2 = tz[1] if len(tz) > 1 else None
+        tps = [tp1, tp2] if tp2 is not None else [tp1]
+        split = EXIT_SPLIT if tp2 is not None else (1.0,)
+        exit_ = sum(t * w for t, w in zip(tps, split))
+        rr = (avg - exit_) / risk if short else (exit_ - avg) / risk
+        if rr < MIN_RR:
+            if best is None or best[0] is None and "reward" not in best[1]:
+                best = (None, f"best zone {z['bottom']:.4g}-{z['top']:.4g} gives {rr:.1f}:1")
+            continue
+        dist = max(0.0, (near / price - 1) if short else (1 - near / price))
+        return {
+            "side": "short" if short else "long", "zone_low": z["bottom"], "zone_high": z["top"],
+            "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"],
+            "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
+            "entries": entries, "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2),
+            "risk_pct": round(risk / avg * 100, 1), "distance_pct": round(dist * 100, 1), "at_zone": dist == 0.0,
+        }, None
+    return best if best else (None, "no trade")
+
+
 def main():
     now_ms = int(time.time() * 1000)
-    rows, skipped = [], {"young": [], "no_trend": 0, "no_zone": []}
+    rows, notrade, skipped = [], [], {"young": [], "no_trend": 0}
     coins = universe()
     for r in coins:
         coin, price = r["coin"], r["price"]
@@ -204,42 +275,26 @@ def main():
                 skipped["no_trend"] += 1
                 skipped.setdefault("detail", []).append({"coin": coin, "ema": d.get("ema"), "structure": d.get("structure")})
             continue
-        cands = []
-        for z in zones(closed):
-            if trend == "down" and z["kind"] == "supply" and z["top"] > price:
-                cands.append(z)
-            if trend == "up" and z["kind"] == "demand" and z["bottom"] < price:
-                cands.append(z)
-        if not cands:
-            skipped["no_zone"].append(coin)
+        p, why = plan(closed, price, trend, d)
+        if p is None:
+            notrade.append({"coin": coin, "trend": trend, "ema_basis": d["ema_basis"], "why": why})
+            print(f"{coin:8} {trend:4} no trade: {why}")
             continue
-        if trend == "down":
-            z = min(cands, key=lambda z: z["bottom"])
-            dist = max(0.0, z["bottom"] / price - 1)
-        else:
-            z = max(cands, key=lambda z: z["top"])
-            dist = max(0.0, 1 - z["top"] / price)
-        rows.append({
-            "coin": coin, "price": price, "trend": trend,
-            "zone_kind": z["kind"], "zone_near": z["bottom"] if trend == "down" else z["top"],
-            "zone_far": z["top"] if trend == "down" else z["bottom"],
-            "zone_width_pct": round((z["top"] / z["bottom"] - 1) * 100, 1),
-            "distance_pct": round(dist * 100, 1), "at_zone": dist == 0.0,
-            "tests": z["tests"], "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
-            "ema_basis": d["ema_basis"], "weeks": len(closed), "ema50": d["ema50"], "last_swing_high": d["last_swing_high"], "last_swing_low": d["last_swing_low"],
-        })
-        print(f"{coin:8} {trend:4} {z['kind']} {z['bottom']:.6g}-{z['top']:.6g} dist {dist*100:.1f}% tests {z['tests']}")
+        p.update({"coin": coin, "price": price, "trend": trend, "ema_basis": d["ema_basis"], "weeks": len(closed)})
+        rows.append(p)
+        print(f"{coin:8} {p['side']:5} entries {[round(e, 6) for e in p['entries']]} stop {p['stop']:.6g} "
+              f"tps {[round(t, 6) for t in p['tps']]} {p['rr']}:1 dist {p['distance_pct']}%")
     rows.sort(key=lambda x: x["distance_pct"])
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "scanned": len(coins),
-        "counts": {"listed": len(rows), "down": sum(x["trend"] == "down" for x in rows),
-                   "up": sum(x["trend"] == "up" for x in rows), "no_trend": skipped["no_trend"],
-                   "too_young": len(skipped["young"]), "trend_but_no_zone": len(skipped["no_zone"])},
-        "trend_but_no_zone": skipped["no_zone"],
+        "gate_rr": MIN_RR,
+        "counts": {"trades": len(rows), "trend_no_trade": len(notrade), "no_trend": skipped["no_trend"],
+                   "too_young": len(skipped["young"])},
+        "rows": rows,
+        "trend_no_trade": notrade,
         "no_trend_detail": skipped.get("detail", []),
         "too_young": skipped["young"],
-        "rows": rows,
     }
     with open(OUT_PATH, "w") as f:
         json.dump(out, f, indent=1)
