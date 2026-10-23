@@ -2,93 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Rule Book · Setup Desk</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rule Book</title>
 <style>
-:root{
-  --bg:#f3f5f7; --panel:#ffffff; --ink:#16212b; --muted:#5d6b78; --line:#dde3e9; --accent:#1d5f86; --warn:#a36a00;
-  --font-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
-  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --font-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0f161d; --panel:#16202a; --ink:#e4eaf0; --muted:#93a2b0; --line:#26323e; --accent:#6fb3dc; --warn:#e2b04d; color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0f161d; --panel:#16202a; --ink:#e4eaf0; --muted:#93a2b0; --line:#26323e; --accent:#6fb3dc; --warn:#e2b04d; color-scheme:dark}
+:root{--bg:#f6f7f8;--panel:#fff;--ink:#17202a;--muted:#5f6b76;--line:#dfe3e7;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11161b;--panel:#182029;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#11161b;--panel:#182029;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;color-scheme:dark}
 *{box-sizing:border-box}
-html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--font-body);
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.wrap{max-width:760px;margin:0 auto;padding-block:20px 56px;display:grid;gap:22px}
-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
-h1{font:700 28px/1.1 var(--font-display);margin:0}
-h2{font:600 16px/1.2 var(--font-display);letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px;color:var(--muted)}
-a{color:var(--accent)}
-.lead{margin:0;color:var(--muted);max-width:65ch}
-ol{margin:0;padding:0;list-style:none;display:grid;gap:10px;counter-reset:r}
-li{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:12px 14px 12px 52px;position:relative;counter-increment:r}
-li::before{content:counter(r);position:absolute;left:14px;top:11px;font:600 18px var(--font-mono);color:var(--accent)}
-li b{display:block;font-weight:600}
-li p{margin:4px 0 0;color:var(--muted);font-size:14px}
-.how{font:12px var(--font-mono);color:var(--muted);margin-top:6px}
-.how::before{content:"Scanner: "}
-.foot{font-size:13px;color:var(--muted)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif;padding:0 16px}
+main{max-width:640px;margin:0 auto;padding:28px 0 48px}
+h1{font-size:26px;margin:0 0 6px}
+p.lead{color:var(--muted);margin:0 0 20px}
+ol{padding-left:22px;margin:0;display:grid;gap:12px}
+li b{display:block}
+li span{color:var(--muted);font-size:14px}
+a{color:inherit}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>Rule Book</h1>
-    <a href="./">Back to Setup Desk</a>
-  </header>
-  <p class="lead">Trading is a business here, not a guess. Every trade passes all of these or it doesn't get placed. Updated 19 October 2026; changed only by deliberate decision, never mid-trade.</p>
-
-  <section>
-    <h2>Structure</h2>
-    <ol>
-      <li><b>Higher timeframes first.</b><p>Weekly and daily decide the trade. Ignore every timeframe below the daily.</p><div class="how">setups are built on weekly levels; the daily times the entry</div></li>
-      <li><b>Weekly trend first; a fully flipped daily also counts.</b><p>Trade in the weekly trend's direction. A trade against it is allowed only when the daily 25/50/100 EMAs are fully stacked the other way.</p><div class="how">those setups are labelled "Daily flip" and ranked below weekly-trend setups</div></li>
-      <li><b>A-rated setups only.</b><p>The entry zone is a weekly level with at least one more level sitting at it (another weekly level, or a daily EMA). Setups whose move already played out don't count.</p><div class="how">B/C and played-out setups are removed (backtest: A-only +0.137R a trade, B-rated −0.05R)</div></li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>Entries</h2>
-    <ol style="counter-reset:r 3">
-      <li><b>Enter only at the planned zone with resting limits. Never chase.</b><p>If price is already sitting in the zone, enter only after a daily close confirms the rejection. If price leaves without filling, the trade is missed, not chased.</p><div class="how">each setup shows one action: PLACE LIMITS, WAIT FOR CLOSE (a daily candle must close back out of the zone in your direction; daily candles close 5:30 am IST), or ENTER (that close just happened)</div></li>
-      <li><b>Tranches: in and out in at most 3 orders, each at least $10.</b><p>The dollar risk decides how many tranches fit: a tight stop allows 3, a wider stop 2 or 1.</p><div class="how">tranche prices and sizes shown per setup</div></li>
-      <li><b>Against a strong move, wait for a confirmed rejection.</b><p>A strong move is 25% or more in 14 days, or 15% or more from the daily 25 EMA.</p></li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>Risk</h2>
-    <ol style="counter-reset:r 6">
-      <li><b>Nothing gets in without a stop and take-profit, placed with the entry.</b></li>
-      <li><b>The stop is backed by structure and never moved to fit.</b><p>It sits beyond the zone and any weekly level just past it. The only move ever made: to breakeven once T1 is hit. A trade that has gone our way is never allowed to turn into a loss.</p></li>
-      <li><b>Only asymmetric trades: more than 1:1.5.</b><p>Blended reward-to-risk from the average entry.</p></li>
-      <li><b>Size by dollar risk, not leverage. Currently $2 per trade.</b><p>That is for the whole trade, all tranches together, not per tranche.</p></li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>Exits</h2>
-    <ol style="counter-reset:r 10">
-      <li><b>Enter on the daily, exit at weekly targets.</b><p>Take half at T1 and move the stop to breakeven. Take the rest at the next weekly level (T2). Don't wait for a weekly close to turn against the trade: after breakeven, normal pullbacks stop the runner out first.</p><div class="how">backtest: fixed weekly T2 made +112R (positive 6 of 6 years) vs +42R for exiting the runner on a weekly close</div></li>
-    </ol>
-  </section>
-
-  <section>
-    <h2>Discipline</h2>
-    <ol style="counter-reset:r 11">
-      <li><b>Don't force the trade. Cash is a position.</b></li>
-    </ol>
-  </section>
-
-  <p class="foot">Simplified by the trader on 17 October 2026; rule 3 (A-rated only) added on 19 October 2026 after the two-year backtest. Rules 2, 4 (price already in the zone), 8 (breakeven) and 11 were decided after the backtest on the Setup Desk dashboard.</p>
-</div>
+<main>
+  <h1>Rule Book</h1>
+  <p class="lead">Reset on 23 October 2026 to the trader's own rules. New rules get added one at a time, by decision.</p>
+  <ol>
+    <li><b>Long timeframes come first.</b><span>Weekly and daily structure decide the trade; lower timeframes don't.</span></li>
+    <li><b>The stop is backed by structure (supply or demand) and never moved to fit the entry.</b></li>
+    <li><b>Don't force the trade.</b><span>No asymmetric higher-timeframe setup means stay in cash.</span></li>
+    <li><b>Nothing gets in without a stop-loss and a take-profit.</b></li>
+    <li><b>Enter and exit in tranches.</b></li>
+  </ol>
+  <p class="lead" style="margin-top:24px"><a href="./">Back to the journal</a></p>
+</main>
 </body>
 </html>

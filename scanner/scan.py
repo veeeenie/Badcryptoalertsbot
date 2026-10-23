@@ -198,7 +198,7 @@ WATCH_K = 8                             # "Waiting for a daily close" list (comp
 # move already played out (stale) are removed. B/C ratings lost money in the two-year backtest.
 KEEP_RATINGS = ("A",)
 ACTION_TEXT = {"ENTER": "ENTER", "LIMITS": "PLACE LIMITS", "WAIT": "WAIT FOR CLOSE"}
-ALERTS_PAUSED = os.getenv("ALERTS_PAUSED", "0") == "1"   # backtest validated 17 Oct 2026; set ALERTS_PAUSED=1 to pause
+ALERTS_PAUSED = os.getenv("ALERTS_PAUSED", "1") == "1"   # 23 Oct 2026: rules reset by the trader; setup alerts off (price alerts still send)
 MAX_ALERTS = 3                          # most individual alerts per scan; the rest go in one summary line
 SCORE_RATING = {"A": 6, "B": 3, "C": 0}
 SCORE_STATUS = {"confirmed": 4, "at level": 2, "approaching": 0}
@@ -1053,7 +1053,10 @@ def main():
     with open(SETUPS_PATH, "w") as f:
         json.dump(out, f, separators=(",", ":"))
     if ALERTS_PAUSED:
-        print(f"alerts paused: {len(msgs)} message(s) not sent")
+        print(f"setup alerts paused: {len(msgs) - len(custom_msgs)} message(s) not sent")
+        for m in custom_msgs:                       # the trader's own price alerts still go out
+            telegram(m)
+            time.sleep(1)
     else:
         for m in msgs:
             telegram(m)
