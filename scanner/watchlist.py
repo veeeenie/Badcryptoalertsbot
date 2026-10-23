@@ -8,7 +8,8 @@ For the top Hyperliquid perps by volume:
                   and price has not gone back above the last swing high.
      An uptrend is the mirror. Anything else is "no trend" and is left off the list.
   2. Weekly supply and demand zones: the base before a strong weekly move.
-       strong move: a weekly candle whose body is at least 1.2x the weekly ATR(14) and at least 60% of its range
+       strong move: 1-3 decisive weekly candles (body at least half the range) in one direction that together
+                    move at least half the weekly ATR(14) (weekly crypto ATR is large: long wicks)
        base:        the 1-3 small-bodied candles (body at most half the range) right before it,
                     or the single candle before it when there are none
        demand (move up):   top = highest body of the base, bottom = lowest low of the base and the move candle
@@ -31,8 +32,9 @@ OUT_PATH = os.path.join(DATA_DIR, "watchlist.json")
 EMA_LENGTHS = (25, 50, 100)
 SWING_K = 4            # a weekly swing high/low is the extreme of a 9-week window (4 weeks each side); trader's choice, 23 Oct 2026
 ATR_N = 14
-MOVE_BODY_ATR = 1.2    # strong move: body >= 1.2 x weekly ATR ...
-MOVE_BODY_RANGE = 0.6  # ... and body >= 60% of the candle's range
+MOVE_ATR = 0.5         # strong move: 1-3 decisive candles in one direction that together move >= half a weekly ATR
+MOVE_MAX = 3
+DECISIVE = 0.5         # decisive candle: body >= 50% of its range
 BASE_BODY_RANGE = 0.5  # base candle: body <= 50% of its range
 BASE_MAX = 3
 MAX_TESTS = 1          # zones visited more than once are dropped
@@ -101,38 +103,51 @@ def weekly_trend(c, price, k=None):
     return None, d
 
 
+def decisive(x):
+    r = x["h"] - x["l"]
+    return r > 0 and abs(x["c"] - x["o"]) >= DECISIVE * r
+
+
 def zones(c):
     """Supply/demand zones from closed weekly candles that are still standing."""
     A = atr_series(c)
     found = []
-    for i in range(1, len(c)):
+    i = 1
+    while i < len(c):
         a = A[i - 1]
-        m = c[i]
-        body, rng = abs(m["c"] - m["o"]), m["h"] - m["l"]
-        if a is None or rng <= 0 or body < MOVE_BODY_ATR * a or body < MOVE_BODY_RANGE * rng:
+        if a is None or not decisive(c[i]):
+            i += 1
             continue
-        up = m["c"] > m["o"]
+        up = c[i]["c"] > c[i]["o"]
+        j = i          # the move: 1-3 decisive candles in the same direction
+        while j + 1 < len(c) and j - i + 1 < MOVE_MAX and decisive(c[j + 1]) and (c[j + 1]["c"] > c[j + 1]["o"]) == up:
+            j += 1
+        move = abs(c[j]["c"] - c[i]["o"])
+        if move < MOVE_ATR * a:
+            i += 1
+            continue
         base = []
-        j = i - 1
-        while j >= 0 and len(base) < BASE_MAX:
-            b = c[j]
+        k = i - 1
+        while k >= 0 and len(base) < BASE_MAX:
+            b = c[k]
             br = b["h"] - b["l"]
             if br > 0 and abs(b["c"] - b["o"]) <= BASE_BODY_RANGE * br:
-                base.insert(0, b); j -= 1
+                base.insert(0, b); k -= 1
             else:
                 break
         if not base:
             base = [c[i - 1]]
+        leg = c[i:j + 1]
         if up:
             top = max(max(b["o"], b["c"]) for b in base)
-            bottom = min([b["l"] for b in base] + [m["l"]])
+            bottom = min(x["l"] for x in base + leg[:1])
         else:
             bottom = min(min(b["o"], b["c"]) for b in base)
-            top = max([b["h"] for b in base] + [m["h"]])
-        if top <= bottom:
-            continue
-        found.append({"kind": "demand" if up else "supply", "top": top, "bottom": bottom,
-                      "base_start": base[0]["t"], "formed": m["t"], "i": i})
+            top = max(x["h"] for x in base + leg[:1])
+        if top > bottom:
+            found.append({"kind": "demand" if up else "supply", "top": top, "bottom": bottom,
+                          "base_start": base[0]["t"], "formed": c[j]["t"], "i": j})
+        i = j + 1
     standing = []
     for z in found:
         tests, broken, away = 0, False, False
