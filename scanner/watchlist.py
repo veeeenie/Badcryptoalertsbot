@@ -232,20 +232,11 @@ def rejection_level(closed, short, A):
 
 
 def merge_small(entries, stop):
-    """Sizes the 20 : 30 : 50 orders for RISK_USD. An order below the $10 exchange minimum is merged into the
-    next order toward the best price (the last one into the one before), and the sizes are worked out again.
+    """Keeps all three 20 : 30 : 50 orders (trader, 23 Oct 2026: no merging; the risk rises instead, see sizing).
     Returns (entries, weights, average entry)."""
-    prices, ws = list(entries), list(ENTRY_SPLIT)
-    while True:
-        avg = sum(e * w for e, w in zip(prices, ws)) / sum(ws)
-        qty = RISK_USD / abs(avg - stop)
-        small = [i for i, (e, w) in enumerate(zip(prices, ws)) if qty * w * e < MIN_ORDER_USD]
-        if not small or len(prices) == 1:
-            return prices, ws, avg
-        i = small[0]
-        j = i + 1 if i + 1 < len(prices) else i - 1
-        ws[j] += ws[i]
-        del prices[i], ws[i]
+    ws = list(ENTRY_SPLIT)
+    avg = sum(e * w for e, w in zip(entries, ws))
+    return list(entries), ws, avg
 
 
 def plan(closed, price, trend, d):
@@ -327,9 +318,13 @@ def sizing(p, max_lev):
     """Order sizes so the whole plan loses RISK_USD if every order fills and the stop is hit, plus a leverage
     suggestion: the highest whole leverage that keeps (isolated) liquidation at least LIQ_BUFFER x the stop
     distance away, measured from the first entry (the one furthest from the stop)."""
+    weights = [x / 100 for x in p["entry_split"]]
     qty = RISK_USD / abs(p["avg_entry"] - p["stop"])
+    # if $3 can't fund every order at Hyperliquid's $10 minimum, the risk rises just enough that it can
+    qty = max([qty] + [MIN_ORDER_USD * 1.01 / (w * e) for e, w in zip(p["entries"], weights)])
+    risk = qty * abs(p["avg_entry"] - p["stop"])
     orders = []
-    for e, w in zip(p["entries"], [x / 100 for x in p["entry_split"]]):
+    for e, w in zip(p["entries"], weights):
         orders.append({"price": e, "share": round(w * 100), "size": qty * w, "usd": round(qty * w * e, 2),
                        "risk_usd": round(qty * w * abs(e - p["stop"]), 2)})
     notional = sum(o["usd"] for o in orders)
@@ -337,7 +332,7 @@ def sizing(p, max_lev):
     max_lev = int(max_lev or 10)
     mmr = 1 / (2 * max_lev)                      # Hyperliquid maintenance margin: half the initial margin at max leverage
     lev = max(1, min(max_lev, int(1 / (LIQ_BUFFER * stop_dist + mmr))))
-    return {"risk_usd": RISK_USD, "size_total": qty, "notional_usd": round(notional, 2), "orders": orders,
+    return {"risk_usd": round(risk, 2), "risk_raised": risk > RISK_USD + 0.005, "size_total": qty, "notional_usd": round(notional, 2), "orders": orders,
             "leverage": lev, "max_leverage": max_lev, "margin_usd": round(notional / lev, 2),
             "risk_first_only_usd": orders[0]["risk_usd"],
             "small_orders": [o["share"] for o in orders if o["usd"] < MIN_ORDER_USD]}
