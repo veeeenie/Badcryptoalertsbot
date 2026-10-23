@@ -314,7 +314,7 @@ def plan(closed, price, trend, d):
         dist_best = max(0.0, (entries[-1] / price - 1) if short else (1 - entries[-1] / price))   # to the biggest order
         return {
             "side": "short" if short else "long", "zone_low": z["bottom"], "zone_high": z["top"],
-            "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"], "rejection_level": level,
+            "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"], "rejection_level": level if far == level else None,   # only when it sets the stop
             "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
             "entries": entries, "entry_split": [round(w * 100) for w in weights], "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2), "rr_first_only": round(rr_first, 2),
             "risk_pct": round(risk / avg * 100, 1), "distance_pct": round(dist * 100, 1), "distance_best_pct": round(dist_best * 100, 1), "at_zone": dist == 0.0,
