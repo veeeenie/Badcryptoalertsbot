@@ -1,0 +1,51 @@
+{
+ "generated_at": "2026-10-23T01:22:12+00:00",
+ "scanned": 100,
+ "counts": {
+  "listed": 2,
+  "down": 0,
+  "up": 2,
+  "no_trend": 64,
+  "too_young": 33,
+  "trend_but_no_zone": 1
+ },
+ "trend_but_no_zone": [
+  "JTO"
+ ],
+ "rows": [
+  {
+   "coin": "ZEC",
+   "price": 1214.6,
+   "trend": "up",
+   "zone_kind": "demand",
+   "zone_near": 1228.0,
+   "zone_far": 1045.6,
+   "zone_width_pct": 17.4,
+   "distance_pct": 0.0,
+   "at_zone": true,
+   "tests": 1,
+   "base_from": "2026-09-07",
+   "formed": "2026-09-14",
+   "ema50": 622.7947816558467,
+   "last_swing_high": 1695.0,
+   "last_swing_low": 451.3
+  },
+  {
+   "coin": "XMR",
+   "price": 603.79,
+   "trend": "up",
+   "zone_kind": "demand",
+   "zone_near": 163.33,
+   "zone_far": 140.68,
+   "zone_width_pct": 16.1,
+   "distance_pct": 72.9,
+   "at_zone": false,
+   "tests": 0,
+   "base_from": "2024-11-11",
+   "formed": "2024-12-02",
+   "ema50": 405.6015146248479,
+   "last_swing_high": 635.24,
+   "last_swing_low": 299.14
+  }
+ ]
+}
