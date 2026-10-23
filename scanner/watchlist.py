@@ -55,7 +55,8 @@ def atr_series(c, n=ATR_N):
     return out
 
 
-def swings(c, k=SWING_K):
+def swings(c, k=None):
+    k = k or SWING_K
     highs, lows = [], []
     for i in range(k, len(c) - k):
         h, l = c[i]["h"], c[i]["l"]
@@ -66,7 +67,7 @@ def swings(c, k=SWING_K):
     return highs, lows
 
 
-def weekly_trend(c, price):
+def weekly_trend(c, price, k=None):
     """Returns ("up"|"down"|None, details)."""
     closes = [x["c"] for x in c]
     E = {}
@@ -74,7 +75,7 @@ def weekly_trend(c, price):
         if len(closes) < n:          # only use an EMA once there are at least n weekly candles
             return None, {"why": f"under {n} weeks of history"}
         E[n] = ema(closes, n)[-1]
-    highs, lows = swings(c)
+    highs, lows = swings(c, k)
     if len(highs) < 2 or len(lows) < 2:
         return None, {"why": "not enough weekly swings"}
     (ih1, h1), (ih2, h2) = highs[-2], highs[-1]
@@ -170,6 +171,10 @@ def main():
             continue
         closed = [w for w in weekly if w["t"] + 7 * 86_400_000 <= now_ms]
         trend, d = weekly_trend(closed, price)
+        for kk in (3, 4, 6):   # temporary: how the list changes with bigger swings
+            tk, _ = weekly_trend(closed, price, kk)
+            if tk:
+                skipped.setdefault(f"k{kk}", []).append(f"{coin} {tk}")
         if trend is None:
             if "history" in d.get("why", ""):
                 skipped["young"].append(coin)
@@ -212,6 +217,7 @@ def main():
         "trend_but_no_zone": skipped["no_zone"],
         "no_trend_detail": skipped.get("detail", []),
         "too_young": skipped["young"],
+        "compare_swing_size": {k: skipped.get(k, []) for k in ("k3", "k4", "k6")},
         "rows": rows,
     }
     with open(OUT_PATH, "w") as f:
