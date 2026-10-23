@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-23T01:25:22+00:00",
+ "generated_at": "2026-10-23T01:29:08+00:00",
  "scanned": 100,
  "counts": {
   "listed": 2,
@@ -366,13 +366,62 @@
   "INIT",
   "S",
   "AZTEC",
-  "SKY",
-  "2Z"
+  "2Z",
+  "SKY"
  ],
+ "compare_swing_size": {
+  "k3": [
+   "ZEC up",
+   "DOT down",
+   "ZK down",
+   "ATOM down",
+   "REZ down"
+  ],
+  "k4": [
+   "DOGE down",
+   "ALT down",
+   "OP down",
+   "DOT down",
+   "SEI down",
+   "HBAR down",
+   "ZK down",
+   "MNT down",
+   "ATOM down",
+   "WIF down",
+   "ALGO down",
+   "ETC down",
+   "REZ down",
+   "kSHIB down"
+  ],
+  "k6": [
+   "kPEPE down",
+   "SUI down",
+   "DOGE down",
+   "ADA down",
+   "ALT down",
+   "FIL down",
+   "APT down",
+   "OP down",
+   "DOT down",
+   "SEI down",
+   "HBAR down",
+   "BCH down",
+   "ZK down",
+   "kBONK down",
+   "MNT down",
+   "ATOM down",
+   "WIF down",
+   "DYM down",
+   "ALGO down",
+   "ETC down",
+   "SAND down",
+   "kSHIB down"
+  ]
+ },
  "rows": [
   {
    "coin": "ZEC",
-   "price": 1216.0891,
+   "price": 1220.2,
    "trend": "up",
    "zone_kind": "demand",
    "zone_near": 1228.0,
@@ -389,7 +438,7 @@
   },
   {
    "coin": "XMR",
-   "price": 604.07,
+   "price": 605.024,
    "trend": "up",
    "zone_kind": "demand",
    "zone_near": 163.33,
