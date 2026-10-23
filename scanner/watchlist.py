@@ -56,7 +56,7 @@ EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, th
 RISK_USD = 3.0         # dollars lost if every order fills and the stop is hit; trader, 23 Oct 2026
 MIN_ORDER_USD = 10.0   # Hyperliquid's smallest order value
 LIQ_BUFFER = 2.0       # liquidation at least 2x the stop distance away when suggesting leverage
-STOP_BUFFER_ATR = 0.1  # stop sits a tenth of a weekly ATR beyond the rejection level (or the zone's far edge)
+STOP_BUFFER_ATR = 0.25 # stop sits a quarter of a weekly ATR beyond the rejection cluster (or the zone); trader, 23 Oct 2026
 REJECT_LOOK = 13       # weeks searched for the start of the current counter-move
 CLUSTER_WEEKS = 52     # weekly highs/lows of the past year count towards a rejection cluster
 CLUSTER_ATR = 0.2      # highs within a fifth of a weekly ATR of each other form a cluster
@@ -271,12 +271,13 @@ def plan(closed, price, trend, d):
     best = None
     for z in cands:
         near, far = (z["bottom"], z["top"]) if short else (z["top"], z["bottom"])
-        # entries run from the zone up to the rejection level (the biggest order there); the stop sits just beyond it
-        far = max(far, level) if short else min(far, level)
+        # entries stay inside the zone, where price is likely to reach them; the stop sits a quarter of a weekly
+        # ATR beyond the rejection cluster (or the zone, if that's further), so a sweep of the level doesn't take it
+        anchor = max(far, level) if short else min(far, level)
         levels = (near, (near + far) / 2, far)
         # levels price has already passed would fill straight away, at today's price
         entries = [max(x, price) if short else min(x, price) for x in levels]
-        stop = far + STOP_BUFFER_ATR * A if short else far - STOP_BUFFER_ATR * A
+        stop = anchor + STOP_BUFFER_ATR * A if short else anchor - STOP_BUFFER_ATR * A
         entries, weights, avg = merge_small(entries, stop)
         risk = abs(stop - avg)
         if short:
@@ -314,7 +315,7 @@ def plan(closed, price, trend, d):
         dist_best = max(0.0, (entries[-1] / price - 1) if short else (1 - entries[-1] / price))   # to the biggest order
         return {
             "side": "short" if short else "long", "zone_low": z["bottom"], "zone_high": z["top"],
-            "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"], "rejection_level": level if far == level else None,   # only when it sets the stop
+            "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"], "rejection_level": level if anchor == level else None,   # only when it sets the stop
             "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
             "entries": entries, "entry_split": [round(w * 100) for w in weights], "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2), "rr_first_only": round(rr_first, 2),
             "risk_pct": round(risk / avg * 100, 1), "distance_pct": round(dist * 100, 1), "distance_best_pct": round(dist_best * 100, 1), "at_zone": dist == 0.0,
