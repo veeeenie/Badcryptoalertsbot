@@ -79,7 +79,8 @@ def weekly_trend(c, price):
         return None, {"why": "not enough weekly swings"}
     (ih1, h1), (ih2, h2) = highs[-2], highs[-1]
     (il1, l1), (il2, l2) = lows[-2], lows[-1]
-    d = {"ema25": E[25], "ema50": E[50], "ema100": E[100], "last_swing_high": h2, "last_swing_low": l2}
+    d = {"ema25": E[25], "ema50": E[50], "ema100": E[100], "last_swing_high": h2, "last_swing_low": l2,
+         "swing_highs": [h1, h2], "swing_lows": [l1, l2]}
     ema_down = E[25] < E[50] < E[100] and price < E[50]
     ema_up = E[25] > E[50] > E[100] and price > E[50]
     broke_high = price > h2 or any(x["c"] > h2 for x in c[ih2 + 1:])
@@ -90,8 +91,12 @@ def weekly_trend(c, price):
         return "down", d
     if ema_up and struct_up:
         return "up", d
-    d["why"] = ("EMAs " + ("down" if ema_down else "up" if ema_up else "mixed")
-                + ", structure " + ("down" if struct_down else "up" if struct_up else "mixed"))
+    d["ema"] = "down" if ema_down else "up" if ema_up else "mixed"
+    d["structure"] = ("down" if struct_down else "up" if struct_up else
+                      ("LH+LL but price back above last swing high" if h2 < h1 and l2 < l1 else
+                       "HH+HL but price back below last swing low" if h2 > h1 and l2 > l1 else
+                       "lower high, higher low" if h2 < h1 else "higher high, lower low"))
+    d["why"] = f"EMAs {d['ema']}, structure {d['structure']}"
     return None, d
 
 
@@ -170,6 +175,7 @@ def main():
                 skipped["young"].append(coin)
             else:
                 skipped["no_trend"] += 1
+                skipped.setdefault("detail", []).append({"coin": coin, "ema": d.get("ema"), "structure": d.get("structure")})
             continue
         cands = []
         for z in zones(closed):
@@ -204,6 +210,8 @@ def main():
                    "up": sum(x["trend"] == "up" for x in rows), "no_trend": skipped["no_trend"],
                    "too_young": len(skipped["young"]), "trend_but_no_zone": len(skipped["no_zone"])},
         "trend_but_no_zone": skipped["no_zone"],
+        "no_trend_detail": skipped.get("detail", []),
+        "too_young": skipped["young"],
         "rows": rows,
     }
     with open(OUT_PATH, "w") as f:
