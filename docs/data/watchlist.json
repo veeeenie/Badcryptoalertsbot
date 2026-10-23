@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-10-23T04:09:24+00:00",
+ "generated_at": "2026-10-23T05:09:24+00:00",
  "scanned": 100,
  "gate_rr": 1.4,
  "counts": {
-  "trades": 8,
-  "trend_no_trade": 14,
+  "trades": 9,
+  "trend_no_trade": 13,
   "no_trend": 74,
   "too_young": 4
  },
@@ -18,8 +18,8 @@
    "base_from": "2026-08-24",
    "formed": "2026-08-31",
    "entries": [
-    78.015,
-    78.015,
+    77.975,
+    77.975,
     76.594
    ],
    "entry_split": [
@@ -27,18 +27,18 @@
     30,
     50
    ],
-   "avg_entry": 77.30449999999999,
+   "avg_entry": 77.2845,
    "stop": 75.51892053980575,
    "tps": [
     86.648
    ],
-   "rr": 5.23,
-   "rr_first_only": 3.46,
+   "rr": 5.3,
+   "rr_first_only": 3.53,
    "risk_pct": 2.3,
    "distance_pct": 0.0,
    "at_zone": true,
    "coin": "HYPE",
-   "price": 78.015,
+   "price": 77.975,
    "trend": "up",
    "ema_basis": "25/50",
    "weeks": 98
@@ -70,10 +70,10 @@
    "rr": 5.62,
    "rr_first_only": 2.13,
    "risk_pct": 4.2,
-   "distance_pct": 1.7,
+   "distance_pct": 2.7,
    "at_zone": false,
    "coin": "DOT",
-   "price": 1.1835,
+   "price": 1.1731,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 305
@@ -105,10 +105,10 @@
    "rr": 4.88,
    "rr_first_only": 1.73,
    "risk_pct": 3.9,
-   "distance_pct": 8.1,
+   "distance_pct": 7.8,
    "at_zone": false,
    "coin": "ETC",
-   "price": 7.8454,
+   "price": 7.8721,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 288
@@ -140,10 +140,10 @@
    "rr": 8.19,
    "rr_first_only": 3.2,
    "risk_pct": 6.3,
-   "distance_pct": 12.4,
+   "distance_pct": 12.2,
    "at_zone": false,
    "coin": "MORPHO",
-   "price": 2.2837,
+   "price": 2.2779,
    "trend": "up",
    "ema_basis": "25/50",
    "weeks": 99
@@ -175,13 +175,48 @@
    "rr": 7.25,
    "rr_first_only": 2.46,
    "risk_pct": 5.7,
-   "distance_pct": 18.6,
+   "distance_pct": 18.7,
    "at_zone": false,
    "coin": "MNT",
-   "price": 0.5331,
+   "price": 0.53268,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 133
+  },
+  {
+   "side": "long",
+   "zone_low": 0.048514,
+   "zone_high": 0.058894,
+   "zone_atr": 0.82,
+   "tests": 1,
+   "base_from": "2026-06-22",
+   "formed": "2026-06-29",
+   "entries": [
+    0.058894,
+    0.053704,
+    0.048514
+   ],
+   "entry_split": [
+    20,
+    30,
+    50
+   ],
+   "avg_entry": 0.052147,
+   "stop": 0.0472530405046005,
+   "tps": [
+    0.08241,
+    0.090473
+   ],
+   "rr": 7.01,
+   "rr_first_only": 2.37,
+   "risk_pct": 9.4,
+   "distance_pct": 19.4,
+   "at_zone": false,
+   "coin": "SKY",
+   "price": 0.073052,
+   "trend": "up",
+   "ema_basis": "25/50",
+   "weeks": 58
   },
   {
    "side": "short",
@@ -210,10 +245,10 @@
    "rr": 7.89,
    "rr_first_only": 4.28,
    "risk_pct": 2.2,
-   "distance_pct": 20.6,
+   "distance_pct": 20.4,
    "at_zone": false,
    "coin": "DOGE",
-   "price": 0.07954,
+   "price": 0.079646,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 322
@@ -245,10 +280,10 @@
    "rr": 5.11,
    "rr_first_only": 1.58,
    "risk_pct": 7.0,
-   "distance_pct": 30.7,
+   "distance_pct": 31.1,
    "at_zone": false,
    "coin": "ZK",
-   "price": 0.013226,
+   "price": 0.01318,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 123
@@ -279,10 +314,10 @@
    "rr": 7.51,
    "rr_first_only": 2.56,
    "risk_pct": 5.4,
-   "distance_pct": 38.1,
+   "distance_pct": 37.3,
    "at_zone": false,
    "coin": "WLFI",
-   "price": 0.054266,
+   "price": 0.054585,
    "trend": "down",
    "ema_basis": "25/50",
    "weeks": 61
@@ -302,15 +337,15 @@
    "why": "nearest zone more than 2 weekly ATRs away"
   },
   {
-   "coin": "NIL",
-   "trend": "down",
-   "ema_basis": "25/50",
-   "why": "only zones taller than a weekly ATR"
-  },
-  {
    "coin": "OP",
    "trend": "down",
    "ema_basis": "25/50/100",
+   "why": "only zones taller than a weekly ATR"
+  },
+  {
+   "coin": "NIL",
+   "trend": "down",
+   "ema_basis": "25/50",
    "why": "only zones taller than a weekly ATR"
   },
   {
@@ -320,13 +355,13 @@
    "why": "only zones taller than a weekly ATR"
   },
   {
-   "coin": "SEI",
+   "coin": "HBAR",
    "trend": "down",
    "ema_basis": "25/50/100",
    "why": "only zones taller than a weekly ATR"
   },
   {
-   "coin": "HBAR",
+   "coin": "SEI",
    "trend": "down",
    "ema_basis": "25/50/100",
    "why": "only zones taller than a weekly ATR"
@@ -366,12 +401,6 @@
    "trend": "down",
    "ema_basis": "25/50",
    "why": "no supply zone"
-  },
-  {
-   "coin": "2Z",
-   "trend": "down",
-   "ema_basis": "25/50",
-   "why": "nearest zone more than 2 weekly ATRs away"
   }
  ],
  "no_trend_detail": [
@@ -412,7 +441,7 @@
   },
   {
    "coin": "WLD",
-   "ema": "mixed",
+   "ema": "down",
    "structure": "up"
   },
   {
@@ -432,7 +461,7 @@
   },
   {
    "coin": "kPEPE",
-   "ema": "down",
+   "ema": "mixed",
    "structure": "lower high, higher low"
   },
   {
@@ -461,11 +490,6 @@
    "structure": "LH+LL but price back above last swing high"
   },
   {
-   "coin": "CRV",
-   "ema": "mixed",
-   "structure": "LH+LL but price back above last swing high"
-  },
-  {
    "coin": "TAO",
    "ema": "down",
    "structure": "up"
@@ -478,6 +502,11 @@
   {
    "coin": "ADA",
    "ema": "down",
+   "structure": "LH+LL but price back above last swing high"
+  },
+  {
+   "coin": "CRV",
+   "ema": "mixed",
    "structure": "LH+LL but price back above last swing high"
   },
   {
@@ -506,24 +535,19 @@
    "structure": "up"
   },
   {
-   "coin": "FARTCOIN",
-   "ema": "down",
-   "structure": "up"
-  },
-  {
    "coin": "BNB",
    "ema": "mixed",
    "structure": "higher high, lower low"
   },
   {
-   "coin": "AVAX",
-   "ema": "down",
-   "structure": "lower high, higher low"
-  },
-  {
    "coin": "PAXG",
    "ema": "mixed",
    "structure": "down"
+  },
+  {
+   "coin": "AVAX",
+   "ema": "down",
+   "structure": "lower high, higher low"
   },
   {
    "coin": "LTC",
@@ -539,6 +563,11 @@
    "coin": "TIA",
    "ema": "down",
    "structure": "lower high, higher low"
+  },
+  {
+   "coin": "FARTCOIN",
+   "ema": "down",
+   "structure": "up"
   },
   {
    "coin": "JUP",
@@ -571,9 +600,9 @@
    "structure": null
   },
   {
-   "coin": "XLM",
+   "coin": "MON",
    "ema": "down",
-   "structure": "lower high, higher low"
+   "structure": "up"
   },
   {
    "coin": "ASTER",
@@ -581,14 +610,14 @@
    "structure": "higher high, lower low"
   },
   {
-   "coin": "MON",
+   "coin": "XLM",
    "ema": "down",
-   "structure": "up"
+   "structure": "lower high, higher low"
   },
   {
-   "coin": "TRX",
+   "coin": "DASH",
    "ema": "up",
-   "structure": "lower high, higher low"
+   "structure": "higher high, lower low"
   },
   {
    "coin": "SPX",
@@ -596,9 +625,9 @@
    "structure": "up"
   },
   {
-   "coin": "DASH",
+   "coin": "TRX",
    "ema": "up",
-   "structure": "higher high, lower low"
+   "structure": "lower high, higher low"
   },
   {
    "coin": "ETHFI",
@@ -621,11 +650,6 @@
    "structure": "up"
   },
   {
-   "coin": "LDO",
-   "ema": "down",
-   "structure": "LH+LL but price back above last swing high"
-  },
-  {
    "coin": "W",
    "ema": "down",
    "structure": "LH+LL but price back above last swing high"
@@ -634,6 +658,11 @@
    "coin": "FET",
    "ema": "down",
    "structure": "higher high, lower low"
+  },
+  {
+   "coin": "LDO",
+   "ema": "down",
+   "structure": "LH+LL but price back above last swing high"
   },
   {
    "coin": "SKR",
@@ -646,9 +675,9 @@
    "structure": "lower high, higher low"
   },
   {
-   "coin": "PYTH",
-   "ema": "mixed",
-   "structure": "lower high, higher low"
+   "coin": "RENDER",
+   "ema": "down",
+   "structure": "up"
   },
   {
    "coin": "JTO",
@@ -656,14 +685,14 @@
    "structure": "lower high, higher low"
   },
   {
-   "coin": "RENDER",
-   "ema": "down",
-   "structure": "up"
-  },
-  {
    "coin": "MET",
    "ema": "mixed",
    "structure": "LH+LL but price back above last swing high"
+  },
+  {
+   "coin": "PYTH",
+   "ema": "mixed",
+   "structure": "lower high, higher low"
   },
   {
    "coin": "CC",
@@ -701,6 +730,11 @@
    "structure": "up"
   },
   {
+   "coin": "DYM",
+   "ema": "down",
+   "structure": "lower high, higher low"
+  },
+  {
    "coin": "SOPH",
    "ema": "down",
    "structure": "higher high, lower low"
@@ -711,19 +745,9 @@
    "structure": "lower high, higher low"
   },
   {
-   "coin": "DYM",
-   "ema": "down",
-   "structure": "lower high, higher low"
-  },
-  {
    "coin": "STX",
    "ema": "down",
    "structure": "LH+LL but price back above last swing high"
-  },
-  {
-   "coin": "AZTEC",
-   "ema": null,
-   "structure": null
   },
   {
    "coin": "KAITO",
@@ -734,6 +758,11 @@
    "coin": "KAS",
    "ema": "down",
    "structure": "LH+LL but price back above last swing high"
+  },
+  {
+   "coin": "AZTEC",
+   "ema": null,
+   "structure": null
   },
   {
    "coin": "MELANIA",
