@@ -257,12 +257,13 @@ def plan(closed, price, trend, d):
                 best = (None, f"best zone {z['bottom']:.4g}-{z['top']:.4g} gives {min(rr, rr_first):.1f}:1")
             continue
         dist = max(0.0, (near / price - 1) if short else (1 - near / price))
+        dist_best = max(0.0, (far / price - 1) if short else (1 - far / price))   # to the biggest (50%) order
         return {
             "side": "short" if short else "long", "zone_low": z["bottom"], "zone_high": z["top"],
             "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"],
             "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
             "entries": entries, "entry_split": [round(w * 100) for w in ENTRY_SPLIT], "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2), "rr_first_only": round(rr_first, 2),
-            "risk_pct": round(risk / avg * 100, 1), "distance_pct": round(dist * 100, 1), "at_zone": dist == 0.0,
+            "risk_pct": round(risk / avg * 100, 1), "distance_pct": round(dist * 100, 1), "distance_best_pct": round(dist_best * 100, 1), "at_zone": dist == 0.0,
         }, None
     return best if best else (None, "no trade")
 

@@ -31,8 +31,8 @@ tr:last-child td{border-bottom:0}
   <h2>Trade ideas</h2>
   <p class="muted" id="wmeta">Coins in a clear weekly trend with a plan at a weekly supply or demand zone. Orders wait at the zone; we don't chase.</p>
   <div class="box"><table>
-    <thead><tr><th>Coin</th><th>Side</th><th>Price</th><th>Entries (20% · 30% · 50%)</th><th>Stop</th><th>Take-profit</th><th>Reward : risk</th><th>Stop distance</th><th>Price to zone</th></tr></thead>
-    <tbody id="wrows"><tr><td colspan="9" class="muted">Loading…</td></tr></tbody>
+    <thead><tr><th>Coin</th><th>Side</th><th>Price</th><th>Entries (20% · 30% · 50%)</th><th>Stop</th><th>Take-profit</th><th>Reward : risk</th><th>Stop distance</th><th>To first entry (20%)</th><th>To best entry (50%)</th></tr></thead>
+    <tbody id="wrows"><tr><td colspan="10" class="muted">Loading…</td></tr></tbody>
   </table></div>
   <p class="muted" id="wnone"></p>
   <h2>Journal</h2>
@@ -50,12 +50,12 @@ fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
   document.getElementById("wrows").innerHTML=w.rows.length?w.rows.map(r=>{
     const cls=r.side==="short"?"down":"up", basis=r.ema_basis!=="25/50/100"?` <span class="muted">(${r.ema_basis})</span>`:"";
     const ent=r.entries.map(e=>e===r.price?"now":f(e)).join(" · ");
-    return `<tr><td><b>${r.coin}</b>${basis}</td><td class="${cls}">${r.side==="short"?"Short":"Long"}</td><td>${f(r.price)}</td><td>${ent}</td><td>${f(r.stop)}</td><td>${r.tps.map(f).join(" · ")}</td><td><b>${r.rr.toFixed(1)}</b> : 1<br><span class="muted">${r.rr_first_only!=null?r.rr_first_only.toFixed(1)+" if only first fills":""}</span></td><td>${r.risk_pct}%</td><td>${r.at_zone?"<b>In zone</b>":r.distance_pct+"%"}</td></tr>`;
-  }).join(""):'<tr><td colspan="9" class="muted">No trade passes the rules right now. Stay in cash.</td></tr>';
+    return `<tr><td><b>${r.coin}</b>${basis}</td><td class="${cls}">${r.side==="short"?"Short":"Long"}</td><td>${f(r.price)}</td><td>${ent}</td><td>${f(r.stop)}</td><td>${r.tps.map(f).join(" · ")}</td><td><b>${r.rr.toFixed(1)}</b> : 1<br><span class="muted">${r.rr_first_only!=null?r.rr_first_only.toFixed(1)+" if only first fills":""}</span></td><td>${r.risk_pct}%</td><td>${r.at_zone?"<b>Now</b>":r.distance_pct+"%"}</td><td>${r.distance_best_pct!=null?r.distance_best_pct+"%":"–"}</td></tr>`;
+  }).join(""):'<tr><td colspan="10" class="muted">No trade passes the rules right now. Stay in cash.</td></tr>';
   const nt=w.trend_no_trade||[];
   const g={};(w.trend_no_trade||[]).forEach(x=>{const k=x.why.startsWith("best zone")?"below the 1.4 : 1 gate":x.why;(g[k]=g[k]||[]).push(`${x.coin} ${x.trend==="down"?"↓":"↑"}`);});
   document.getElementById("wnone").innerHTML=`<b>In a weekly trend, but no trade:</b> `+(Object.keys(g).length?Object.entries(g).map(([k,v])=>`${k[0].toUpperCase()+k.slice(1)}: ${v.join(", ")}`).join(". "):"none")+`. ${c.no_trend} coins have no clear weekly trend; ${c.too_young} have under 25 weeks of history.`;
-}).catch(()=>{document.getElementById("wrows").innerHTML='<tr><td colspan="9" class="muted">Trade ideas not built yet.</td></tr>';});
+}).catch(()=>{document.getElementById("wrows").innerHTML='<tr><td colspan="10" class="muted">Trade ideas not built yet.</td></tr>';});
 fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   const s=j.summary;
   document.getElementById("meta").textContent=`Journal of trade.xyz trades since ${j.since} · ${s.trades} closed, ${s.wins} wins, net ${s.net_usd>=0?"+":"−"}$${Math.abs(s.net_usd).toFixed(2)}, ${s.total_r>=0?"+":""}${s.total_r}R · updated hourly`;
