@@ -20,12 +20,13 @@ For the top Hyperliquid perps by volume:
      as a test; zones tested more than once are dropped.
   3. Trade plan for each trending coin: the nearest zone in the trend's direction (supply above price for a
      downtrend, demand below for an uptrend), at most one weekly ATR tall, that passes the gate.
-       entries:     three tranches at the zone's near edge, middle and far edge, sized 1 : 2 : 3 so the
+       entries:     three tranches at the zone's near edge, middle and far edge, sized 20 : 30 : 50 so the
                     biggest order sits at the best price, next to the stop
        stop:        a tenth of a weekly ATR beyond the zone's far edge
        take-profit: two equal exits at the near edge of the next two opposite zones or the last weekly swing,
                     each at least 1R from the average entry (one exit if only one qualifies)
-       gate:        reward-to-risk of the whole plan from the average entry at least 1.4 : 1
+       gate:        reward-to-risk at least 1.4 : 1 with all orders filled (from the average entry)
+                    and with only the first order filled; trader, 23 Oct 2026
 
 Writes docs/data/watchlist.json. No alerts yet.
 """
@@ -48,7 +49,7 @@ BASE_MAX = 3
 MAX_TESTS = 1          # zones visited more than once are dropped
 MAX_ZONE_ATR = 1.0     # zones taller than one weekly ATR are not traded (stop too far); trader, 23 Oct 2026
 MIN_RR = 1.4           # the gate: reward-to-risk of the whole plan from the average entry; trader, 23 Oct 2026
-ENTRY_SPLIT = (1 / 6, 2 / 6, 3 / 6)   # size grows toward the best price: near edge 1/6, middle 2/6, far edge (by the stop) 3/6; trader, 23 Oct 2026
+ENTRY_SPLIT = (0.2, 0.3, 0.5)         # size grows toward the best price: near edge 20%, middle 30%, far edge (by the stop) 50%; trader, 23 Oct 2026
 EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, then the one after (or the last swing)
 STOP_BUFFER_ATR = 0.1  # stop sits a tenth of a weekly ATR beyond the zone's far edge
 
@@ -243,9 +244,9 @@ def plan(closed, price, trend, d):
         rr = (avg - exit_) / risk if short else (exit_ - avg) / risk
         e1 = entries[0]   # if price only reaches the first (smallest) order
         rr_first = (e1 - exit_) / abs(stop - e1) if short else (exit_ - e1) / abs(stop - e1)
-        if rr < MIN_RR:
-            if best is None or best[0] is None and "reward" not in best[1]:
-                best = (None, f"best zone {z['bottom']:.4g}-{z['top']:.4g} gives {rr:.1f}:1")
+        if rr < MIN_RR or rr_first < MIN_RR:   # the gate holds with all orders filled AND with only the first
+            if best is None or best[0] is None and "gives" not in best[1]:
+                best = (None, f"best zone {z['bottom']:.4g}-{z['top']:.4g} gives {min(rr, rr_first):.1f}:1")
             continue
         dist = max(0.0, (near / price - 1) if short else (1 - near / price))
         return {
