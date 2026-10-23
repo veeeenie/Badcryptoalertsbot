@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-23T08:55:30+00:00",
+ "generated_at": "2026-10-23T09:09:34+00:00",
  "scanned": 100,
  "gate_rr": 1.4,
  "risk_usd": 3.0,
@@ -19,8 +19,8 @@
    "base_from": "2026-08-24",
    "formed": "2026-08-31",
    "entries": [
-    78.673,
-    78.673,
+    78.483,
+    78.483,
     76.594
    ],
    "entry_split": [
@@ -28,53 +28,53 @@
     30,
     50
    ],
-   "avg_entry": 77.6335,
+   "avg_entry": 77.5385,
    "stop": 75.51892053980575,
    "tps": [
     86.648
    ],
-   "rr": 4.26,
-   "rr_first_only": 2.53,
-   "risk_pct": 2.7,
+   "rr": 4.51,
+   "rr_first_only": 2.75,
+   "risk_pct": 2.6,
    "distance_pct": 0.0,
-   "distance_best_pct": 2.6,
+   "distance_best_pct": 2.4,
    "at_zone": true,
    "coin": "HYPE",
-   "price": 78.673,
+   "price": 78.483,
    "trend": "up",
    "ema_basis": "25/50",
    "weeks": 98,
    "sizing": {
     "risk_usd": 3.0,
-    "size_total": 1.4187218103993187,
-    "notional_usd": 110.13,
+    "size_total": 1.4854577693672169,
+    "notional_usd": 115.18,
     "orders": [
      {
-      "price": 78.673,
+      "price": 78.483,
       "share": 20,
-      "size": 0.28374436207986375,
-      "usd": 22.32,
-      "risk_usd": 0.89
+      "size": 0.2970915538734434,
+      "usd": 23.32,
+      "risk_usd": 0.88
      },
      {
-      "price": 78.673,
+      "price": 78.483,
       "share": 30,
-      "size": 0.4256165431197956,
-      "usd": 33.48,
-      "risk_usd": 1.34
+      "size": 0.44563733081016504,
+      "usd": 34.97,
+      "risk_usd": 1.32
      },
      {
       "price": 76.594,
       "share": 50,
-      "size": 0.7093609051996593,
-      "usd": 54.33,
-      "risk_usd": 0.76
+      "size": 0.7427288846836084,
+      "usd": 56.89,
+      "risk_usd": 0.8
      }
     ],
     "leverage": 7,
     "max_leverage": 10,
-    "margin_usd": 15.73,
-    "risk_first_only_usd": 0.89,
+    "margin_usd": 16.45,
+    "risk_first_only_usd": 0.88,
     "small_orders": []
    }
   },
@@ -105,11 +105,11 @@
    "rr": 5.62,
    "rr_first_only": 2.13,
    "risk_pct": 4.2,
-   "distance_pct": 0.9,
-   "distance_best_pct": 8.6,
+   "distance_pct": 1.1,
+   "distance_best_pct": 8.8,
    "at_zone": false,
    "coin": "DOT",
-   "price": 1.1939,
+   "price": 1.1914,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 305,
@@ -172,11 +172,11 @@
    "rr": 5.82,
    "rr_first_only": 2.99,
    "risk_pct": 7.3,
-   "distance_pct": 6.9,
-   "distance_best_pct": 18.5,
+   "distance_pct": 7.3,
+   "distance_best_pct": 19.1,
    "at_zone": false,
    "coin": "REZ",
-   "price": 0.004179,
+   "price": 0.00416,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 129,
@@ -234,11 +234,11 @@
    "rr": 4.88,
    "rr_first_only": 1.73,
    "risk_pct": 3.9,
-   "distance_pct": 7.3,
-   "distance_best_pct": 15.2,
+   "distance_pct": 7.5,
+   "distance_best_pct": 15.4,
    "at_zone": false,
    "coin": "ETC",
-   "price": 7.9047,
+   "price": 7.8931,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 288,
@@ -303,11 +303,11 @@
    "rr": 8.19,
    "rr_first_only": 3.2,
    "risk_pct": 6.3,
-   "distance_pct": 12.6,
-   "distance_best_pct": 22.0,
+   "distance_pct": 12.5,
+   "distance_best_pct": 21.9,
    "at_zone": false,
    "coin": "MORPHO",
-   "price": 2.2868,
+   "price": 2.2848,
    "trend": "up",
    "ema_basis": "25/50",
    "weeks": 99,
@@ -372,11 +372,11 @@
    "rr": 7.89,
    "rr_first_only": 4.28,
    "risk_pct": 2.2,
-   "distance_pct": 19.0,
-   "distance_best_pct": 21.9,
+   "distance_pct": 19.3,
+   "distance_best_pct": 22.1,
    "at_zone": false,
    "coin": "DOGE",
-   "price": 0.080584,
+   "price": 0.080411,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 322,
@@ -443,7 +443,7 @@
    "distance_best_pct": 32.9,
    "at_zone": false,
    "coin": "WIF",
-   "price": 0.20241,
+   "price": 0.20243,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 148,
@@ -499,11 +499,11 @@
    "rr": 9.48,
    "rr_first_only": 5.25,
    "risk_pct": 4.5,
-   "distance_pct": 25.5,
-   "distance_best_pct": 33.3,
+   "distance_pct": 25.6,
+   "distance_best_pct": 33.4,
    "at_zone": false,
    "coin": "MNT",
-   "price": 0.53706,
+   "price": 0.53688,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 133,
@@ -559,11 +559,11 @@
    "rr": 9.16,
    "rr_first_only": 5.07,
    "risk_pct": 7.5,
-   "distance_pct": 26.0,
-   "distance_best_pct": 33.2,
+   "distance_pct": 25.9,
+   "distance_best_pct": 33.0,
    "at_zone": false,
    "coin": "SKY",
-   "price": 0.072609,
+   "price": 0.072456,
    "trend": "up",
    "ema_basis": "25/50",
    "weeks": 58,
@@ -620,11 +620,11 @@
    "rr": 7.51,
    "rr_first_only": 2.56,
    "risk_pct": 5.4,
-   "distance_pct": 38.9,
-   "distance_best_pct": 56.3,
+   "distance_pct": 39.4,
+   "distance_best_pct": 56.8,
    "at_zone": false,
    "coin": "WLFI",
-   "price": 0.053945,
+   "price": 0.053785,
    "trend": "down",
    "ema_basis": "25/50",
    "weeks": 61,
@@ -687,11 +687,11 @@
    "rr": 6.73,
    "rr_first_only": 3.64,
    "risk_pct": 5.5,
-   "distance_pct": 44.3,
-   "distance_best_pct": 55.2,
+   "distance_pct": 44.9,
+   "distance_best_pct": 55.9,
    "at_zone": false,
    "coin": "ZK",
-   "price": 0.012964,
+   "price": 0.012903,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 123,
@@ -879,14 +879,14 @@
    "structure": "lower high, higher low"
   },
   {
-   "coin": "AAVE",
-   "ema": "mixed",
-   "structure": "up"
-  },
-  {
    "coin": "STRK",
    "ema": "down",
    "structure": "LH+LL but price back above last swing high"
+  },
+  {
+   "coin": "AAVE",
+   "ema": "mixed",
+   "structure": "up"
   },
   {
    "coin": "ADA",
@@ -934,11 +934,6 @@
    "structure": "up"
   },
   {
-   "coin": "AVAX",
-   "ema": "down",
-   "structure": "lower high, higher low"
-  },
-  {
    "coin": "PAXG",
    "ema": "mixed",
    "structure": "down"
@@ -952,6 +947,11 @@
    "coin": "FIL",
    "ema": "down",
    "structure": "LH+LL but price back above last swing high"
+  },
+  {
+   "coin": "AVAX",
+   "ema": "down",
+   "structure": "lower high, higher low"
   },
   {
    "coin": "ICP",
@@ -1014,17 +1014,17 @@
    "structure": "lower high, higher low"
   },
   {
-   "coin": "SPX",
-   "ema": "down",
-   "structure": "up"
-  },
-  {
    "coin": "XLM",
    "ema": "down",
    "structure": "lower high, higher low"
   },
   {
    "coin": "RUNE",
+   "ema": "down",
+   "structure": "up"
+  },
+  {
+   "coin": "SPX",
    "ema": "down",
    "structure": "up"
   },
@@ -1074,14 +1074,14 @@
    "structure": "higher high, lower low"
   },
   {
-   "coin": "LDO",
-   "ema": "down",
-   "structure": "LH+LL but price back above last swing high"
-  },
-  {
    "coin": "PYTH",
    "ema": "mixed",
    "structure": "lower high, higher low"
+  },
+  {
+   "coin": "LDO",
+   "ema": "down",
+   "structure": "LH+LL but price back above last swing high"
   },
   {
    "coin": "CC",
@@ -1104,11 +1104,6 @@
    "structure": "higher high, lower low"
   },
   {
-   "coin": "MEGA",
-   "ema": "down",
-   "structure": "LH+LL but price back above last swing high"
-  },
-  {
    "coin": "AR",
    "ema": "mixed",
    "structure": "higher high, lower low"
@@ -1119,14 +1114,14 @@
    "structure": "LH+LL but price back above last swing high"
   },
   {
+   "coin": "MEGA",
+   "ema": "down",
+   "structure": "LH+LL but price back above last swing high"
+  },
+  {
    "coin": "VIRTUAL",
    "ema": "down",
    "structure": "up"
-  },
-  {
-   "coin": "EIGEN",
-   "ema": "down",
-   "structure": "lower high, higher low"
   },
   {
    "coin": "JTO",
@@ -1134,14 +1129,19 @@
    "structure": "lower high, higher low"
   },
   {
-   "coin": "STX",
+   "coin": "EIGEN",
    "ema": "down",
-   "structure": "LH+LL but price back above last swing high"
+   "structure": "lower high, higher low"
   },
   {
    "coin": "MELANIA",
    "ema": "down",
    "structure": "up"
+  },
+  {
+   "coin": "STX",
+   "ema": "down",
+   "structure": "LH+LL but price back above last swing high"
   },
   {
    "coin": "DYM",
