@@ -58,6 +58,9 @@ MIN_ORDER_USD = 10.0   # Hyperliquid's smallest order value
 LIQ_BUFFER = 2.0       # liquidation at least 2x the stop distance away when suggesting leverage
 STOP_BUFFER_ATR = 0.1  # stop sits a tenth of a weekly ATR beyond the rejection level (or the zone's far edge)
 REJECT_LOOK = 13       # weeks searched for the start of the current counter-move
+CLUSTER_WEEKS = 52     # weekly highs/lows of the past year count towards a rejection cluster
+CLUSTER_ATR = 0.2      # highs within a fifth of a weekly ATR of each other form a cluster
+CLUSTER_MIN = 3        # at least three rejections
 
 
 def atr_series(c, n=ATR_N):
@@ -202,16 +205,30 @@ def iso(ms):
     return datetime.fromtimestamp(ms / 1000, tz=timezone.utc).strftime("%Y-%m-%d")
 
 
-def rejection_level(closed, short, look=None):
-    """Where price has been turned back in the current counter-move: for a short, the highest weekly high since
-    the bounce began (the lowest low of the last REJECT_LOOK weeks); for a long, the lowest weekly low since the
-    latest peak. The stop goes slightly beyond it; trader, 23 Oct 2026."""
-    rec = closed[-(look or REJECT_LOOK):]
+def rejection_level(closed, short, A):
+    """The level where most of the rejections cluster; the stop goes slightly beyond it (trader, 23 Oct 2026).
+    For a short: find the peak of the current bounce (highest weekly high since the lowest low of the last
+    REJECT_LOOK weeks), then the highest price at or below that peak where at least CLUSTER_MIN weekly highs
+    of the past CLUSTER_WEEKS weeks sit within CLUSTER_ATR weekly ATRs of each other. A lone wick above the
+    cluster is ignored. No cluster -> the peak itself. A long is the mirror, using weekly lows."""
+    rec = closed[-REJECT_LOOK:]
+    year = closed[-CLUSTER_WEEKS:]
+    tol = CLUSTER_ATR * A
     if short:
         i = min(range(len(rec)), key=lambda k: rec[k]["l"])
-        return max(x["h"] for x in rec[i:])
+        peak = max(x["h"] for x in rec[i:])
+        highs = [x["h"] for x in year if x["h"] <= peak]
+        for L in sorted(set(highs), reverse=True):
+            if sum(1 for h in highs if L - tol <= h <= L) >= CLUSTER_MIN:
+                return L
+        return peak
     i = max(range(len(rec)), key=lambda k: rec[k]["h"])
-    return min(x["l"] for x in rec[i:])
+    trough = min(x["l"] for x in rec[i:])
+    lows = [x["l"] for x in year if x["l"] >= trough]
+    for L in sorted(set(lows)):
+        if sum(1 for l in lows if L <= l <= L + tol) >= CLUSTER_MIN:
+            return L
+    return trough
 
 
 def merge_small(entries, stop):
@@ -250,7 +267,7 @@ def plan(closed, price, trend, d):
     if not cands:
         return None, "nearest zone more than 2 weekly ATRs away"
     cands.sort(key=lambda z: z["bottom"] if short else -z["top"])
-    level = rejection_level(closed, short)
+    level = rejection_level(closed, short, A)
     best = None
     for z in cands:
         near, far = (z["bottom"], z["top"]) if short else (z["top"], z["bottom"])
