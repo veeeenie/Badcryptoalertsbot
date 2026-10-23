@@ -19,7 +19,8 @@ For the top Hyperliquid perps by volume:
      A zone is dropped once a weekly candle closes through its far side. Each later visit into the zone counts
      as a test; zones tested more than once are dropped.
   3. Trade plan for each trending coin: the nearest zone in the trend's direction (supply above price for a
-     downtrend, demand below for an uptrend), at most one weekly ATR tall, that passes the gate.
+     downtrend, demand below for an uptrend), at most one weekly ATR tall and within 2 weekly ATRs of price,
+     that passes the gate.
        entries:     three tranches at the zone's near edge, middle and far edge, sized 20 : 30 : 50 so the
                     biggest order sits at the best price, next to the stop
        stop:        a tenth of a weekly ATR beyond the zone's far edge
@@ -48,6 +49,7 @@ BASE_BODY_RANGE = 0.5  # base candle: body <= 50% of its range
 BASE_MAX = 3
 MAX_TESTS = 1          # zones visited more than once are dropped
 MAX_ZONE_ATR = 1.0     # zones taller than one weekly ATR are not traded (stop too far); trader, 23 Oct 2026
+MAX_DIST_ATR = 2.0     # zones whose near edge is more than 2 weekly ATRs from price are not shown; trader, 23 Oct 2026
 MIN_RR = 1.4           # the gate: reward-to-risk of the whole plan from the average entry; trader, 23 Oct 2026
 ENTRY_SPLIT = (0.2, 0.3, 0.5)         # size grows toward the best price: near edge 20%, middle 30%, far edge (by the stop) 50%; trader, 23 Oct 2026
 EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, then the one after (or the last swing)
@@ -203,11 +205,17 @@ def plan(closed, price, trend, d):
     zs = zones(closed)
     short = trend == "down"
     kind, opp = ("supply", "demand") if short else ("demand", "supply")
-    cands = [z for z in zs if z["kind"] == kind and z["top"] - z["bottom"] <= MAX_ZONE_ATR * A
-             and (z["top"] > price if short else z["bottom"] < price)]
+    side_ok = [z for z in zs if z["kind"] == kind and (z["top"] > price if short else z["bottom"] < price)]
+    if not side_ok:
+        return None, f"no {kind} zone"
+    short_enough = [z for z in side_ok if z["top"] - z["bottom"] <= MAX_ZONE_ATR * A]
+    if not short_enough:
+        return None, "only zones taller than a weekly ATR"
+    # price must be within 2 weekly ATRs of the zone's near edge
+    cands = [z for z in short_enough
+             if ((z["bottom"] - price) if short else (price - z["top"])) <= MAX_DIST_ATR * A]
     if not cands:
-        tall = [z for z in zs if z["kind"] == kind and (z["top"] > price if short else z["bottom"] < price)]
-        return None, ("only zones taller than a weekly ATR" if tall else f"no {kind} zone")
+        return None, "nearest zone more than 2 weekly ATRs away"
     cands.sort(key=lambda z: z["bottom"] if short else -z["top"])
     best = None
     for z in cands:
