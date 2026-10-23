@@ -4,6 +4,8 @@ Weekly watchlist (rebuild step 1, 23 Oct 2026).
 For the top Hyperliquid perps by volume:
   1. Weekly trend. A coin is in a downtrend only when the weekly EMAs AND the weekly structure agree:
        EMAs:      25 < 50 < 100 on closed weekly candles, and price below the 50
+                  younger coins (trader, 23 Oct 2026): 50-99 weeks -> 25 < 50 and price below the 50;
+                  25-49 weeks -> price below the 25 and the 25 falling over 4 weeks; under 25 weeks -> skipped
        structure: the last two weekly swing highs (highest week of a 9-week window) are lower highs, the last two swing lows are lower lows,
                   and price has not gone back above the last swing high.
      An uptrend is the mirror. Anything else is "no trend" and is left off the list.
@@ -72,20 +74,29 @@ def swings(c, k=None):
 def weekly_trend(c, price, k=None):
     """Returns ("up"|"down"|None, details)."""
     closes = [x["c"] for x in c]
-    E = {}
-    for n in EMA_LENGTHS:
-        if len(closes) < n:          # only use an EMA once there are at least n weekly candles
-            return None, {"why": f"under {n} weeks of history"}
-        E[n] = ema(closes, n)[-1]
+    if len(closes) < 25:             # an EMA is only used once there are at least that many weekly candles
+        return None, {"why": "under 25 weeks of history"}
+    E = {n: ema(closes, n)[-1] for n in EMA_LENGTHS if len(closes) >= n}
     highs, lows = swings(c, k)
     if len(highs) < 2 or len(lows) < 2:
         return None, {"why": "not enough weekly swings"}
     (ih1, h1), (ih2, h2) = highs[-2], highs[-1]
     (il1, l1), (il2, l2) = lows[-2], lows[-1]
-    d = {"ema25": E[25], "ema50": E[50], "ema100": E[100], "last_swing_high": h2, "last_swing_low": l2,
+    d = {"ema25": E.get(25), "ema50": E.get(50), "ema100": E.get(100), "last_swing_high": h2, "last_swing_low": l2,
          "swing_highs": [h1, h2], "swing_lows": [l1, l2]}
-    ema_down = E[25] < E[50] < E[100] and price < E[50]
-    ema_up = E[25] > E[50] > E[100] and price > E[50]
+    if 100 in E:                     # 100+ weeks: 25/50/100 stacked, price on the trend side of the 50
+        d["ema_basis"] = "25/50/100"
+        ema_down = E[25] < E[50] < E[100] and price < E[50]
+        ema_up = E[25] > E[50] > E[100] and price > E[50]
+    elif 50 in E:                    # 50-99 weeks: 25/50 stacked, price on the trend side of the 50
+        d["ema_basis"] = "25/50"
+        ema_down = E[25] < E[50] and price < E[50]
+        ema_up = E[25] > E[50] and price > E[50]
+    else:                            # 25-49 weeks: price on the trend side of the 25, and the 25 sloping that way (4 weeks)
+        d["ema_basis"] = "25"
+        e25 = ema(closes, 25)
+        ema_down = price < E[25] and e25[-1] < e25[-5]
+        ema_up = price > E[25] and e25[-1] > e25[-5]
     broke_high = price > h2 or any(x["c"] > h2 for x in c[ih2 + 1:])
     broke_low = price < l2 or any(x["c"] < l2 for x in c[il2 + 1:])
     struct_down = h2 < h1 and l2 < l1 and not broke_high
@@ -215,7 +226,7 @@ def main():
             "zone_width_pct": round((z["top"] / z["bottom"] - 1) * 100, 1),
             "distance_pct": round(dist * 100, 1), "at_zone": dist == 0.0,
             "tests": z["tests"], "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
-            "ema50": d["ema50"], "last_swing_high": d["last_swing_high"], "last_swing_low": d["last_swing_low"],
+            "ema_basis": d["ema_basis"], "weeks": len(closed), "ema50": d["ema50"], "last_swing_high": d["last_swing_high"], "last_swing_low": d["last_swing_low"],
         })
         print(f"{coin:8} {trend:4} {z['kind']} {z['bottom']:.6g}-{z['top']:.6g} dist {dist*100:.1f}% tests {z['tests']}")
     rows.sort(key=lambda x: x["distance_pct"])
