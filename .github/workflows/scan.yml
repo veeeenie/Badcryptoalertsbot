@@ -37,7 +37,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          JOURNAL_WALLET: "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
+          JOURNAL_WALLETS: "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE:2026-10-09,0xfb4e07C7BF05464e6206abc93873078f2fc53991:2026-10-23"
           LOOP_MINUTES: ${{ github.event_name == 'schedule' && '330' || '0' }}
         run: |
           git config user.name "setup-scanner"

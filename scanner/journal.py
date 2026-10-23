@@ -1,5 +1,5 @@
 """
-Trade journal for the trader's trade.xyz / Hyperliquid wallet.
+Trade journal for the trader's trade.xyz / Hyperliquid wallets (JOURNAL_WALLETS).
 
 Reads public data only (no keys): fills (userFillsByTime) and order history (historicalOrders).
 Groups fills into trades (a position going from flat to flat on one coin), then for each trade works out:
@@ -24,10 +24,13 @@ import requests
 HL_URL = "https://api.hyperliquid.xyz/info"
 WALLET = os.getenv("JOURNAL_WALLET", "")
 START = os.getenv("JOURNAL_START", "2026-10-09")        # journal starts the week trading got serious
-PLAN_RISK_USD = float(os.getenv("RISK_USD", "2"))
+# several wallets: "address:start-date,address:start-date"
+WALLETS = [tuple(x.split(":")) for x in os.getenv("JOURNAL_WALLETS", "").split(",") if ":" in x] or \
+          ([(WALLET, START)] if WALLET else [])
+PLAN_RISK_USD = float(os.getenv("JOURNAL_RISK_USD", "3"))   # trader's rule, 23 Oct 2026
 MIN_ORDER_USD = 10.0
 MAX_ENTRIES = 3
-MIN_RR = 1.5
+MIN_RR = 1.4                                                # trader's gate, 23 Oct 2026
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "docs", "data", "journal.json")
 
@@ -173,17 +176,10 @@ def summarise_trade(t, coin_orders, by_oid, closed):
     }
 
 
-def main():
-    if not WALLET:
-        print("JOURNAL_WALLET not set; skipping journal")
-        return
-    start_ms = int(datetime.fromisoformat(START).replace(tzinfo=timezone.utc).timestamp() * 1000)
-    fills = hl({"type": "userFillsByTime", "user": WALLET, "startTime": start_ms, "aggregateByTime": True})
-    orders = hl({"type": "historicalOrders", "user": WALLET})
-    trades = build_trades(fills, orders)
+def summarise(trades):
     closed = [t for t in trades if t["closed"]]
     rs = [t["r"] for t in closed if t["r"] is not None]
-    summary = {
+    return {
         "trades": len(closed),
         "open": len(trades) - len(closed),
         "wins": sum(1 for t in closed if t["net"] > 0),
@@ -195,12 +191,31 @@ def main():
         "check_rates": {k: round(100 * sum(1 for t in closed if t["checks"][k]) / len(closed))
                         for k in (closed[0]["checks"] if closed else {})},
     }
+
+
+def main():
+    if not WALLETS:
+        print("JOURNAL_WALLETS not set; skipping journal")
+        return
+    all_trades, wallets = [], []
+    for address, start in WALLETS:
+        start_ms = int(datetime.fromisoformat(start).replace(tzinfo=timezone.utc).timestamp() * 1000)
+        fills = hl({"type": "userFillsByTime", "user": address, "startTime": start_ms, "aggregateByTime": True})
+        orders = hl({"type": "historicalOrders", "user": address})
+        trades = build_trades(fills, orders)
+        label = "…" + address[-4:]
+        for t in trades:
+            t["wallet"] = label
+        all_trades += trades
+        wallets.append({"address": address, "label": label, "since": start, "summary": summarise(trades)})
+        print(f"journal {label}: {wallets[-1]['summary']['trades']} closed, {wallets[-1]['summary']['open']} open")
+    all_trades.sort(key=lambda x: x["opened"])
     out = {"generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-           "since": START, "plan_risk_usd": PLAN_RISK_USD, "summary": summary, "trades": trades}
+           "since": min(w["since"] for w in wallets), "plan_risk_usd": PLAN_RISK_USD,
+           "summary": summarise(all_trades), "wallets": wallets, "trades": all_trades}
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w") as f:
         json.dump(out, f, separators=(",", ":"))
-    print(f"journal: {len(closed)} closed, {summary['open']} open, net ${summary['net_usd']}, avg {summary['avg_r']}R")
 
 
 if __name__ == "__main__":

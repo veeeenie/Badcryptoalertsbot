@@ -85,10 +85,12 @@ fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
 }).catch(()=>{document.getElementById("wrows").innerHTML='<p class="muted">Trade ideas not built yet.</p>';});
 fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   const s=j.summary;
-  document.getElementById("meta").textContent=`Journal of trade.xyz trades since ${j.since} · ${s.trades} closed, ${s.wins} wins, net ${s.net_usd>=0?"+":"−"}$${Math.abs(s.net_usd).toFixed(2)}, ${s.total_r>=0?"+":""}${s.total_r}R · updated hourly`;
+  const sm=x=>`${x.trades} closed${x.open?`, ${x.open} open`:""}, ${x.wins} wins, net ${x.net_usd>=0?"+":"−"}$${Math.abs(x.net_usd).toFixed(2)}${x.total_r!=null?`, ${x.total_r>=0?"+":""}${x.total_r}R`:""}`;
+  const ws=(j.wallets||[]).map(x=>`wallet ${x.label} since ${x.since}: ${sm(x.summary)}`).join(" · ");
+  document.getElementById("meta").textContent=`trade.xyz trades, updated hourly. All wallets: ${sm(s)}.${ws?" "+ws+".":""}`;
   document.getElementById("rows").innerHTML=[...j.trades].reverse().map(t=>{
     const c=t.net>0?"up":t.net<0?"down":"";
-    return `<tr><td><b>${t.coin}</b> ${t.side}${t.closed?"":" (open)"}</td><td data-label="Opened">${t.opened.slice(5,10)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Stop">${f(t.stop)}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Exit">${f(t.avg_exit)}</td><td data-label="Net $" class="${c}">${t.closed?(t.net>=0?"+":"")+t.net.toFixed(2):"–"}</td><td data-label="R" class="${c}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td></tr>`;
+    return `<tr><td><b>${t.coin}</b> ${t.side}${t.closed?"":" (open)"}${t.wallet?` <span class="muted">${t.wallet}</span>`:""}</td><td data-label="Opened">${t.opened.slice(5,10)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Stop">${f(t.stop)}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Exit">${f(t.avg_exit)}</td><td data-label="Net $" class="${c}">${t.closed?(t.net>=0?"+":"")+t.net.toFixed(2):"–"}</td><td data-label="R" class="${c}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td></tr>`;
   }).join("");
 }).catch(()=>{document.getElementById("rows").innerHTML='<tr><td colspan="8" class="muted">Journal not available.</td></tr>';});
 </script>
