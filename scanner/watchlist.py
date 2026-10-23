@@ -4,7 +4,7 @@ Weekly watchlist (rebuild step 1, 23 Oct 2026).
 For the top Hyperliquid perps by volume:
   1. Weekly trend. A coin is in a downtrend only when the weekly EMAs AND the weekly structure agree:
        EMAs:      25 < 50 < 100 on closed weekly candles, and price below the 50
-       structure: the last two weekly swing highs are lower highs, the last two swing lows are lower lows,
+       structure: the last two weekly swing highs (highest week of a 9-week window) are lower highs, the last two swing lows are lower lows,
                   and price has not gone back above the last swing high.
      An uptrend is the mirror. Anything else is "no trend" and is left off the list.
   2. Weekly supply and demand zones: the base before a strong weekly move.
@@ -29,7 +29,7 @@ from scan import DATA_DIR, universe, daily_candles, weekly_from_daily, ema
 
 OUT_PATH = os.path.join(DATA_DIR, "watchlist.json")
 EMA_LENGTHS = (25, 50, 100)
-SWING_K = 2            # a weekly swing high/low beats the 2 weeks on each side
+SWING_K = 4            # a weekly swing high/low is the extreme of a 9-week window (4 weeks each side); trader's choice, 23 Oct 2026
 ATR_N = 14
 MOVE_BODY_ATR = 1.2    # strong move: body >= 1.2 x weekly ATR ...
 MOVE_BODY_RANGE = 0.6  # ... and body >= 60% of the candle's range
@@ -171,10 +171,6 @@ def main():
             continue
         closed = [w for w in weekly if w["t"] + 7 * 86_400_000 <= now_ms]
         trend, d = weekly_trend(closed, price)
-        for kk in (3, 4, 6):   # temporary: how the list changes with bigger swings
-            tk, _ = weekly_trend(closed, price, kk)
-            if tk:
-                skipped.setdefault(f"k{kk}", []).append(f"{coin} {tk}")
         if trend is None:
             if "history" in d.get("why", ""):
                 skipped["young"].append(coin)
@@ -217,7 +213,6 @@ def main():
         "trend_but_no_zone": skipped["no_zone"],
         "no_trend_detail": skipped.get("detail", []),
         "too_young": skipped["young"],
-        "compare_swing_size": {k: skipped.get(k, []) for k in ("k3", "k4", "k6")},
         "rows": rows,
     }
     with open(OUT_PATH, "w") as f:
