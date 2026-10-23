@@ -20,7 +20,8 @@ For the top Hyperliquid perps by volume:
      as a test; zones tested more than once are dropped.
   3. Trade plan for each trending coin: the nearest zone in the trend's direction (supply above price for a
      downtrend, demand below for an uptrend), at most one weekly ATR tall, that passes the gate.
-       entries:     three equal tranches at the zone's near edge, middle and far edge
+       entries:     three tranches at the zone's near edge, middle and far edge, sized 1 : 2 : 3 so the
+                    biggest order sits at the best price, next to the stop
        stop:        a tenth of a weekly ATR beyond the zone's far edge
        take-profit: two equal exits at the near edge of the next two opposite zones or the last weekly swing,
                     each at least 1R from the average entry (one exit if only one qualifies)
@@ -47,7 +48,7 @@ BASE_MAX = 3
 MAX_TESTS = 1          # zones visited more than once are dropped
 MAX_ZONE_ATR = 1.0     # zones taller than one weekly ATR are not traded (stop too far); trader, 23 Oct 2026
 MIN_RR = 1.4           # the gate: reward-to-risk of the whole plan from the average entry; trader, 23 Oct 2026
-ENTRY_SPLIT = (1 / 3, 1 / 3, 1 / 3)   # three equal entries: near edge, middle, far edge of the zone
+ENTRY_SPLIT = (1 / 6, 2 / 6, 3 / 6)   # size grows toward the best price: near edge 1/6, middle 2/6, far edge (by the stop) 3/6; trader, 23 Oct 2026
 EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, then the one after (or the last swing)
 STOP_BUFFER_ATR = 0.1  # stop sits a tenth of a weekly ATR beyond the zone's far edge
 
@@ -240,6 +241,8 @@ def plan(closed, price, trend, d):
         split = EXIT_SPLIT if tp2 is not None else (1.0,)
         exit_ = sum(t * w for t, w in zip(tps, split))
         rr = (avg - exit_) / risk if short else (exit_ - avg) / risk
+        e1 = entries[0]   # if price only reaches the first (smallest) order
+        rr_first = (e1 - exit_) / abs(stop - e1) if short else (exit_ - e1) / abs(stop - e1)
         if rr < MIN_RR:
             if best is None or best[0] is None and "reward" not in best[1]:
                 best = (None, f"best zone {z['bottom']:.4g}-{z['top']:.4g} gives {rr:.1f}:1")
@@ -249,7 +252,7 @@ def plan(closed, price, trend, d):
             "side": "short" if short else "long", "zone_low": z["bottom"], "zone_high": z["top"],
             "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"],
             "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
-            "entries": entries, "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2),
+            "entries": entries, "entry_split": [round(w * 100) for w in ENTRY_SPLIT], "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2), "rr_first_only": round(rr_first, 2),
             "risk_pct": round(risk / avg * 100, 1), "distance_pct": round(dist * 100, 1), "at_zone": dist == 0.0,
         }, None
     return best if best else (None, "no trade")
