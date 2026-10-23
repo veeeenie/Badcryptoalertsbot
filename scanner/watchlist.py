@@ -276,7 +276,8 @@ def plan(closed, price, trend, d):
             if best is None or best[0] is None and "gives" not in best[1]:
                 best = (None, f"best zone {z['bottom']:.4g}-{z['top']:.4g} gives {min(rr, rr_first):.1f}:1")
             continue
-        dist = max(0.0, (near / price - 1) if short else (1 - near / price))
+        first = entries[0]   # the first order left after merging
+        dist = max(0.0, (first / price - 1) if short else (1 - first / price))
         dist_best = max(0.0, (entries[-1] / price - 1) if short else (1 - entries[-1] / price))   # to the biggest order
         return {
             "side": "short" if short else "long", "zone_low": z["bottom"], "zone_high": z["top"],
