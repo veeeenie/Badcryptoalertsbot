@@ -21,7 +21,7 @@ For the top Hyperliquid perps by volume:
   3. Trade plan for each trending coin: the nearest zone in the trend's direction (supply above price for a
      downtrend, demand below for an uptrend), at most one weekly ATR tall and within 2 weekly ATRs of price,
      that passes the gate.
-       entries:     three tranches at the zone's near edge, middle and far edge, sized 20 : 30 : 50 so the
+       entries:     three tranches at the zone's near edge (or today's price, if price is already inside), middle and far edge, sized 20 : 30 : 50 so the
                     biggest order sits at the best price, next to the stop
        stop:        a tenth of a weekly ATR beyond the zone's far edge
        take-profit: two equal exits at the near edge of the next two opposite zones or the last weekly swing,
@@ -266,7 +266,9 @@ def plan(closed, price, trend, d):
         # entries stay inside the zone, where price is likely to reach them; the stop sits a quarter of a weekly
         # ATR beyond the rejection cluster (or the zone, if that's further), so a sweep of the level doesn't take it
         anchor = max(far, level) if short else min(far, level)
-        levels = (near, (near + far) / 2, far)
+        # price already inside the zone: the ladder starts at today's price and runs to the far edge (no stacking)
+        start = min(far, max(near, price)) if short else max(far, min(near, price))
+        levels = (start, (start + far) / 2, far)
         # levels price has already passed would fill straight away, at today's price
         entries = [max(x, price) if short else min(x, price) for x in levels]
         stop = anchor + STOP_BUFFER_ATR * A if short else anchor - STOP_BUFFER_ATR * A
