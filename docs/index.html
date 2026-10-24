@@ -11,9 +11,25 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:0 16px}
-main{max-width:1040px;margin:0 auto;padding:28px 0 48px;display:grid;gap:14px;min-width:0}
+main{max-width:1040px;margin:0 auto;padding:18px 0 48px;display:grid;gap:14px;min-width:0}
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -16px;padding:0 16px}
+.navin{max-width:1040px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 0}
+.brand{font-weight:700;margin-right:auto;font-size:16px}
+nav a{text-decoration:none;font-size:13.5px;font-weight:600;padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:var(--panel);transition:box-shadow .2s,border-color .2s,color .2s}
+nav a.active{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent),0 0 14px color-mix(in srgb,var(--accent) 35%,transparent)}
+nav a.ext{font-weight:500;color:var(--muted)}
+.anchor{scroll-margin-top:calc(var(--navh,56px) + 10px)}
+details.sec{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0}
+details.sec>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;border-radius:10px}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::before{content:"›";display:inline-block;width:12px;color:var(--muted);transition:transform .15s;font-size:18px}
+details.sec[open]>summary::before{transform:rotate(90deg)}
+details.sec>summary:hover{background:var(--soft)}
+details.sec>summary .st{font-size:18px;font-weight:700}
+.secbody{padding:0 16px 16px;display:grid;gap:12px;min-width:0}
+.secbody .box{background:var(--bg)}
+@media (max-width:520px){.brand{display:none}nav a{font-size:12.5px;padding:4px 9px}}
 header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
-h1{font-size:26px;margin:0}
 h2{font-size:19px;margin:18px 0 0}
 h3{font-size:15px;margin:6px 0 0}
 a{color:inherit}
@@ -69,29 +85,48 @@ code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
 </style>
 </head>
 <body>
+<nav id="nav"><div class="navin">
+  <span class="brand">Setup Desk</span>
+  <a href="#ideas" data-sec="ideas">Trade ideas</a>
+  <a href="#journal" data-sec="journal">Journal</a>
+  <a href="#closed" data-sec="closed">Closed trades</a>
+  <a href="#alerts" data-sec="alerts">Price alerts</a>
+  <a href="rules.html" class="ext">Rule book</a>
+</div></nav>
 <main>
-  <header><h1>Setup Desk</h1><span><a href="#alerts">Alerts</a> · <a href="rules.html">Rule book</a></span></header>
-
+  <section id="ideas" class="anchor">
   <h2>Trade ideas</h2>
   <p class="muted" id="wmeta">Loading…</p>
   <div id="wrows"></div>
   <p class="muted" id="wnone"></p>
+  </section>
 
-  <h2>Journal</h2>
-  <h3>Open positions <span class="muted">· live from Hyperliquid · <a href="#" id="lrefresh">refresh</a></span></h3>
+  <details class="sec anchor" id="journal">
+  <summary><span class="st">Journal</span><span class="muted" id="jhint">open positions, live</span></summary>
+  <div class="secbody">
+  <p class="muted">Live from Hyperliquid, refreshed every minute · <a href="#" id="lrefresh">refresh now</a></p>
   <p class="muted" id="lmeta">Loading…</p>
   <div class="box"><table class="stack">
     <thead><tr><th>Position</th><th>Size</th><th>Entry</th><th>Price</th><th>P&amp;L</th><th>R</th><th>Stop</th><th>Take-profit</th><th>Liquidation</th></tr></thead>
     <tbody id="lrows"><tr><td colspan="9" class="muted">Loading…</td></tr></tbody>
   </table></div>
-  <h3>Closed trades</h3>
+  </div>
+  </details>
+
+  <details class="sec anchor" id="closed">
+  <summary><span class="st">Closed trades</span><span class="muted" id="chint"></span></summary>
+  <div class="secbody">
   <p class="muted" id="meta">Loading…</p>
   <div class="box"><table class="stack">
     <thead><tr><th>Trade</th><th>Opened</th><th>Entry</th><th>Stop</th><th>Take-profit</th><th>Exit</th><th>Net $</th><th>R</th></tr></thead>
     <tbody id="rows"><tr><td colspan="8" class="muted">Loading…</td></tr></tbody>
   </table></div>
+  </div>
+  </details>
 
-  <h2 id="alerts">Price alerts</h2>
+  <details class="sec anchor" id="alerts">
+  <summary><span class="st">Price alerts</span><span class="muted" id="alhint"></span></summary>
+  <div class="secbody">
   <p class="muted">Telegram pings you when price reaches a level or line (checked hourly against the day's high and low). Adding or removing one opens a pre-filled GitHub issue: press <b>Create</b> and it's applied within a minute. You can also message the bot: <code>/alert DOT 1.30 note</code>, <code>/trendline COIN 2026-05-11 1.44 2026-09-21 1.307</code>, <code>/alerts</code>, <code>/remove ID</code> (answered at the next hourly check).</p>
   <div class="box"><table class="stack">
     <thead><tr><th>Alert</th><th>Level now</th><th>Price</th><th>Distance</th><th></th></tr></thead>
@@ -110,6 +145,8 @@ code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
     </div>
     <div><button type="submit">Add alert</button> <span class="muted" id="ahint"></span></div>
   </form>
+  </div>
+  </details>
 </main>
 <script>
 const f=x=>x==null?"–":(Math.abs(x)>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):Math.abs(x)>=1?x.toFixed(3):x.toPrecision(4));
@@ -178,6 +215,7 @@ fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   const s=j.summary;
   const sm=x=>`${x.trades} closed${x.open?`, ${x.open} open`:""}, ${x.wins} wins, net ${x.net_usd>=0?"+":"−"}$${Math.abs(x.net_usd).toFixed(2)}${x.total_r!=null?`, ${x.total_r>=0?"+":""}${x.total_r}R`:""}`;
   const ws=(j.wallets||[]).map(x=>`wallet ${x.label} since ${ist(x.since)}: ${sm(x.summary)}`).join(" · ");
+  document.getElementById("chint").innerHTML=`${s.trades} closed · ${s.wins} wins · net <b class="${s.net_usd>=0?"up":"down"}">${s.net_usd>=0?"+":"−"}$${Math.abs(s.net_usd).toFixed(2)}</b>`;
   document.getElementById("meta").textContent=`trade.xyz trades. All wallets: ${sm(s)}.${ws?" "+ws+".":""} Updated ${ist(j.generated_at,true)}.`;
   window.JOURNAL=j; document.dispatchEvent(new Event("journal-ready"));
   document.getElementById("rows").innerHTML=[...j.trades].filter(t=>t.closed).reverse().map(t=>{
@@ -220,6 +258,7 @@ async function live(){
       metas.push(`wallet ${w.label}: USDC ${usd(tot)}, ${usd(hold)} in use, <b>${usd(Math.max(0,tot-hold))} free</b>, open P&L ${sgn(wPnl)}`);
     });
     document.getElementById("lrows").innerHTML=rows.join("")||'<tr><td colspan="9" class="muted">No open positions.</td></tr>';
+    document.getElementById("jhint").innerHTML=`${rows.length} open · P&L <b class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</b>`;
     document.getElementById("lmeta").innerHTML=metas.join(" · ")+`. Total open P&L <b class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</b>. Checked ${ist(new Date().toISOString(),true)}.`;
   }catch(e){
     const open=(j.trades||[]).filter(t=>!t.closed);
@@ -235,6 +274,7 @@ const issue=title=>window.open(`https://github.com/${REPO}/issues/new?title=${en
 const lineNow=a=>{if(a.type==="level")return a.price;const t1=Date.parse(a.p1.date),t2=Date.parse(a.p2.date);return a.p1.price+(a.p2.price-a.p1.price)*(Date.now()-t1)/(t2-t1);};
 Promise.all([fetch("data/alerts.json?t="+Date.now()).then(r=>r.json()),HL({type:"allMids"}).catch(()=>({}))]).then(([cfg,mids])=>{
   const al=cfg.alerts||[];
+  document.getElementById("alhint").textContent=`${al.length} active`;
   document.getElementById("arows").innerHTML=al.map(a=>{const lv=lineNow(a),px=mids[a.coin]?+mids[a.coin]:null;
     return `<tr><td><b>${a.coin}</b> ${a.type==="level"?"level":"trendline"} <span class="muted">${a.name||""} · ID ${a.id}</span></td>
       <td data-label="Level now">${f(lv)}</td><td data-label="Price">${px?f(px):"–"}</td>
@@ -276,6 +316,30 @@ document.addEventListener("ideas-ready",()=>{
     });
   }).catch(()=>{document.querySelectorAll(".intel").forEach(el=>el.innerHTML='<h4>News &amp; unlocks</h4><div class="muted">Not available.</div>');});
 });
+
+// ---- top buttons: open the section, scroll to it, and glow for the section on screen
+document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("click",e=>{
+  e.preventDefault(); const el=document.getElementById(a.dataset.sec); pinned=a.dataset.sec;
+  if(el.tagName==="DETAILS") el.open=true;
+  el.scrollIntoView({behavior:"smooth",block:"start"}); history.replaceState(null,"","#"+a.dataset.sec); markActive();
+}));
+const secs=["ideas","journal","closed","alerts"].map(id=>document.getElementById(id));
+let pinned=null;   // the section just tapped stays lit until you scroll yourself
+["wheel","touchmove","keydown"].forEach(ev=>addEventListener(ev,()=>{pinned=null;},{passive:true}));
+function markActive(){
+  const y=window.innerHeight*0.35; let cur=secs[0].id;
+  if(pinned){document.querySelectorAll("nav a[data-sec]").forEach(a=>a.classList.toggle("active",a.dataset.sec===pinned));return;}
+  secs.forEach(el=>{if(el.getBoundingClientRect().top<=y) cur=el.id;});
+  const scrollable=document.documentElement.scrollHeight>window.innerHeight+10;
+  if(scrollable&&window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4) cur=secs[secs.length-1].id;
+  document.querySelectorAll("nav a[data-sec]").forEach(a=>a.classList.toggle("active",a.dataset.sec===cur));
+}
+const setNavH=()=>document.documentElement.style.setProperty("--navh",document.getElementById("nav").offsetHeight+"px");
+setNavH(); addEventListener("resize",setNavH);
+addEventListener("scroll",markActive,{passive:true}); addEventListener("resize",markActive);
+document.querySelectorAll("details.sec").forEach(d=>d.addEventListener("toggle",markActive));
+markActive();
+if(location.hash){const el=document.getElementById(location.hash.slice(1)); if(el&&el.tagName==="DETAILS") el.open=true;}
 </script>
 </body>
 </html>
