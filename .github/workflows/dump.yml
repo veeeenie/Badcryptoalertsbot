@@ -1,4 +1,4 @@
-name: CORS check (temporary)
+name: Dump daily candles (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -6,16 +6,29 @@ on:
 permissions:
   contents: write
 jobs:
-  check:
+  dump:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+      - run: pip install requests
       - run: |
-          {
-          echo "== preflight"
-          curl -s -i -X OPTIONS https://api.hyperliquid.xyz/info -H "Origin: https://veeeenie.github.io" -H "Access-Control-Request-Method: POST" -H "Access-Control-Request-Headers: content-type" | head -20
-          echo "== post"
-          curl -s -i -X POST https://api.hyperliquid.xyz/info -H "Origin: https://veeeenie.github.io" -H "Content-Type: application/json" -d '{"type":"allMids"}' | head -15
-          } > cors_check.txt 2>&1
+          git fetch -q origin main && git checkout origin/main -- scanner
+          cd scanner && python - <<'PY'
+          import json, gzip, time, scan
+          out = {}
+          for r in scan.universe():
+              try:
+                  out[r["coin"]] = {"price": r["price"], "max_lev": r["max_lev"], "daily": scan.daily_candles(r["coin"], days=1500)}
+              except Exception as e:
+                  print(r["coin"], e)
+              time.sleep(0.3)
+          with gzip.open("../daily_dump.json.gz", "wt") as f:
+              json.dump(out, f)
+          print(len(out), "coins")
+          PY
+      - run: |
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add cors_check.txt && git commit -qm "cors check" && git push -q origin HEAD:debug-weekly
+          git rm -rq --cached scanner 2>/dev/null || true
+          git add daily_dump.json.gz && git commit -qm "daily dump" && git push -q origin HEAD:debug-weekly
