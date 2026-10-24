@@ -1,230 +1,128 @@
 {
-  "generated_at": "2026-10-22T02:27:20Z",
-  "coins": {
-    "BNB": {
-      "summary": "Mildly supportive for the long: the Oct 19 quarterly burn removed about 1.65M BNB, and treasury firm BNB Standard (515K+ BNB) rings the Nasdaq bell Oct 26. BNB has no vesting unlocks.",
-      "news": [
-        {
-          "title": "BNB Chain completes its 37th quarterly auto-burn, about 1.65M BNB (~$1.2B)",
-          "url": "https://cryptoslate.com/bnb-chain-burns-1-2b-in-october-tokens-leaving-real-supply-impact-hidden/",
-          "date": "Oct 19"
-        },
-        {
-          "title": "BNB Chain announces a new high-throughput EVM L1, testnet targeted for year-end",
-          "url": "https://tokenpost.com/news/technology/35392",
-          "date": "Oct 20"
-        },
-        {
-          "title": "Treasury company BNB Standard (Nasdaq: BNC) names new CEO, plans Nasdaq bell ceremony Oct 26",
-          "url": "https://en.cryptonomist.ch/2026/10/21/bnb-standard-nasdaq-event/",
-          "date": "Oct 21"
-        }
-      ]
+ "generated_at": "2026-10-24T07:04:22Z",
+ "coins": {
+  "HYPE": {
+   "side": "long",
+   "stance": "neutral",
+   "summary": "Treasury buying continues (Hyperliquid Strategies added about 130K HYPE and raised its buyback to $100M), but RWA perp share is slipping and the monthly core-contributor unlock lands Nov 6 (size not disclosed; the Oct batch was 3.75M HYPE). Mixed for the long.",
+   "news": [
+    {
+     "title": "Hyperliquid Strategies raises its share buyback from $30M to $100M, extended to Oct 2027",
+     "url": "https://www.fxstreet.com/cryptocurrencies/news/hyperliquid-strategies-lifts-buyback-to-100m-as-hype-trades-21-off-peak-202610240520",
+     "date": "Oct 23"
     },
-    "TRX": {
-      "summary": "Tron Inc., a large TRX treasury holder, became a Super Representative; a minor positive for the long. TRX has no vesting unlocks.",
-      "news": [
-        {
-          "title": "Tron Inc. elected a TRON Super Representative, moving into block production and governance revenue",
-          "url": "https://www.globenewswire.com/news-release/2026/10/19/3383451/0/en/tron-inc-elected-as-super-representative-on-tron-network-expanding-into-revenue-generating-blockchain-infrastructure-and-governance.html",
-          "date": "Oct 19"
-        }
-      ]
+    {
+     "title": "Hyperliquid's share of RWA perp volume falls from about 80% to 26% as Binance and OKX compete",
+     "url": "https://fxstreet.com/cryptocurrencies/news/why-hyperliquid-is-losing-rwa-market-share-to-centralized-exchanges-202610230400",
+     "date": "Oct 23"
     },
-    "SYRUP": {
-      "summary": "SYRUP fell about 24% in a week with the DeFi downturn even as buybacks doubled (1.37M SYRUP bought with September revenue). Fully unlocked, so no supply overhang for the long.",
-      "news": [
-        {
-          "title": "SYRUP drops about 24% in a week, underperforming BTC and ETH as DeFi TVL shrinks",
-          "url": "https://cryptobriefing.com/maple-syrup-token-slides-24-percent/",
-          "date": "Oct 19"
-        },
-        {
-          "title": "Maple's September-revenue buyback takes in about 1.37M SYRUP, double August's",
-          "url": "https://tokenpost.com/news/business/35072",
-          "date": "Oct 19"
-        },
-        {
-          "title": "Maple's syrupUSDC yield stablecoin expands to Solana",
-          "url": "https://maple.finance/insights/syrupusdc-expands-to-solana",
-          "date": "Oct 17"
-        }
-      ]
-    },
-    "APT": {
-      "summary": "Works against the short: investor/contributor vesting ended in October, cutting monthly unlocks about 60%, and APT bounced about 6% on that repricing. Next unlock is a Community tranche on Nov 11 (amount not disclosed).",
-      "news": [
-        {
-          "title": "APT rises about 6% as markets reprice the end of investor vesting",
-          "url": "https://coinmarketcap.com/top-stories/6ad7840f6b70f57fdc58602c/",
-          "date": "Oct 20"
-        },
-        {
-          "title": "Aptos ships an opt-in encrypted mempool on mainnet to curb front-running",
-          "url": "https://coinmarketcap.com/community/articles/6ad0fc07c487575c4ddfa783",
-          "date": "Oct 15"
-        },
-        {
-          "title": "Block-STM v2 parallel execution enabled by default on Aptos mainnet",
-          "url": "https://www.tradingview.com/news/coindar:c22add2f1094b:0-aptos-enables-block-stm-v2-on-mainnet/",
-          "date": "Oct 15"
-        },
-        {
-          "title": "Staking emissions still outpace burns, so APT net supply grows about 1.4M a month",
-          "url": "https://bitcoinist.com/aptos-token-burn-174000-supply-staking-emissions/",
-          "date": "Oct 18"
-        }
-      ],
-      "unlock": {
-        "date": "Nov 11",
-        "date_iso": "2026-11-11",
-        "amount": "not disclosed",
-        "note": "Community allocation per Tokenomist (amount paywalled). The four-year investor/core-contributor schedule ended Oct 12.",
-        "source": "https://tokenomist.ai/aptos/unlock-events"
-      }
-    },
-    "LTC": {
-      "summary": "Only small Canary spot ETF inflows. LTC is proof-of-work with no unlocks, so nothing changes the short thesis.",
-      "news": [
-        {
-          "title": "Canary Litecoin ETF (LTCC) takes about $581K in inflows after a week of flat flows",
-          "url": "https://tokenpost.com/news/investing/35274",
-          "date": "Oct 20"
-        }
-      ]
-    },
-    "FET": {
-      "summary": "No fresh catalyst for the long; AGIX-to-FET conversions are still paused after the Sep 20 bridge exploit. Tokenomist lists an AGIX-migration pool release on Oct 28 with no amount, but another source shows all unlocks complete (low confidence).",
-      "news": [
-        {
-          "title": "Commentary notes FET lagging the rally while AGIX-to-FET conversions stay paused after the bridge exploit",
-          "url": "https://coinmarketcap.com/community/articles/6ad3aabf614ab63dcd4efe3a",
-          "date": "Oct 17"
-        }
-      ],
-      "unlock": {
-        "date": "Oct 28",
-        "date_iso": "2026-10-28",
-        "amount": "not disclosed",
-        "note": "AGIX migration pool per Tokenomist; app.tokenomics.com shows all unlocks complete. This is a migration release, not team/investor vesting, and its supply impact is uncertain while conversions are paused. Low confidence.",
-        "source": "https://www.tokenomist.ai/fetch-ai/unlock-events"
-      }
-    },
-    "ETC": {
-      "summary": "No price-moving ETC news this week. Proof-of-work with no unlocks; the Sep 28 block-reward cut already happened, so the short trades on structure alone.",
-      "news": []
-    },
-    "SUPER": {
-      "summary": "No SUPER-specific news this week. Vesting completed in Jan 2024, so there is no unlock overhang; the short trades on structure alone.",
-      "news": []
-    },
-    "JTO": {
-      "summary": "No JTO-specific news since the Oct 15 selloff. No cliff unlock, but linear weekly vesting to investors and contributors adds steady supply, which suits the short.",
-      "news": [
-        {
-          "title": "JTO drops about 6% in a broad altcoin selloff tied to an Asian equity rout",
-          "url": "https://www.coindesk.com/markets/2026/10/15/bitcoin-holds-above-usd80-000-as-an-asian-stock-rout-drags-altcoins-lower",
-          "date": "Oct 15"
-        }
-      ]
-    },
-    "ATOM": {
-      "summary": "No verifiable price-moving ATOM news this week. ATOM is inflationary with no vesting cliffs.",
-      "news": []
-    },
-    "SEI": {
-      "summary": "Supportive for the long: the REX-Osprey staked SEI ETF has an Oct 23 target effective date (trading may come later). Monthly Ecosystem Reserve unlock on Nov 15; the Oct 15 tranche (~55.6M SEI) was absorbed without a sell-off.",
-      "news": [
-        {
-          "title": "Monthly ecosystem unlock of about 55.6M SEI absorbed without a sell-off",
-          "url": "https://www.tapbit.com/en/learn/article/sei-price-outlook-october-15-token-unlock-20261015",
-          "date": "Oct 15"
-        },
-        {
-          "title": "CFTC-regulated exchange self-certifies USD-settled SEI perpetual futures",
-          "url": "https://coinmarketcap.com/community/articles/6ad27a10d115c82f7c5aff89",
-          "date": "Oct 16"
-        },
-        {
-          "title": "Sei cumulative DEX volume nears $16B, though activity is concentrated on one venue",
-          "url": "https://coinmarketcap.com/community/articles/6ad7337b67df9058833fcae0",
-          "date": "Oct 20"
-        }
-      ],
-      "unlock": {
-        "date": "Nov 15",
-        "date_iso": "2026-11-15",
-        "amount": "not disclosed",
-        "note": "Monthly Ecosystem Reserve release per Tokenomist (amount paywalled; Oct tranche was ~55.6M SEI).",
-        "source": "https://tokenomist.ai/sei-network/unlock-events"
-      }
-    },
-    "OP": {
-      "summary": "Risk for the short: the OP buyback program has bought over 9.4M OP and Unichain moves to OP Enterprise on Oct 29. A small Seed Fund unlock follows on Dec 1.",
-      "news": [
-        {
-          "title": "Optimism's buyback program passes 9.4M OP purchased",
-          "url": "https://www.tokenpost.com/news/insights/35453",
-          "date": "Oct 20"
-        }
-      ],
-      "unlock": {
-        "date": "Dec 1",
-        "date_iso": "2026-12-01",
-        "amount": "4.47M OP",
-        "note": "Seed Fund cliff (0.1% of max supply), single source DefiLlama.",
-        "source": "https://defillama.com/protocol/unlocks/optimism-foundation"
-      }
-    },
-    "WLD": {
-      "summary": "Supports the long: WLD rallied on World ID for banks, though no paying bank customer is named yet. Supply keeps unlocking continuously at about 2.9M WLD/day with no single cliff.",
-      "news": [
-        {
-          "title": "WLD surges about 14% as World launches World ID verification for banks and financial firms",
-          "url": "https://tradersunion.com/news/cryptocurrency-news/show/3894740-worldcoin-surges-14-3percent-today-on/",
-          "date": "Oct 21"
-        },
-        {
-          "title": "World presents World ID for banking at Money20/20; no named bank customer yet",
-          "url": "https://cryptoticker.io/en/worldcoin-wld-price-world-id-banks/",
-          "date": "Oct 20"
-        }
-      ]
-    },
-    "INJ": {
-      "summary": "Risk for the short: a staked INJ ETF is pending, a new native USDC route went live and the monthly buyback-and-burn continues (7.2M+ INJ burned). INJ is fully unlocked.",
-      "news": [
-        {
-          "title": "Injective adds a native USDC route via Circle CCTP; staked INJ ETF filings still pending",
-          "url": "https://coinmarketcap.com/top-stories/6ad25a8ac32e4538f4fa9c64/",
-          "date": "Oct 16"
-        },
-        {
-          "title": "Injective's cumulative burns pass 7.2M INJ through its community buyback",
-          "url": "https://cryptobriefing.com/injective-burns-over-7-million-inj-buyback/",
-          "date": "Oct 21"
-        },
-        {
-          "title": "INJ falls about 7% in the macro selloff after a hot US CPI print",
-          "url": "https://coinmarketcap.com/top-stories/6ad034d231381a2cec7994ec/",
-          "date": "Oct 15"
-        }
-      ]
-    },
-    "HBAR": {
-      "summary": "Minor news only (IBM catalog listing for Hedera's agent-ID tool, SEC comment letter); nothing that clearly threatens the short. No scheduled unlocks.",
-      "news": [
-        {
-          "title": "Hedera's IDTrust agent-identity tool listed in IBM's watsonx catalog",
-          "url": "https://coinmarketcap.com/community/articles/6ad79a901b448e06e2db3e85",
-          "date": "Oct 20"
-        },
-        {
-          "title": "Hedera and five other projects ask the SEC to codify digital-commodity status",
-          "url": "https://coinmarketcap.com/community/articles/6ad85ac11d7628424dc17414",
-          "date": "Oct 21"
-        }
-      ]
+    {
+     "title": "Hyperliquid Strategies buys about 130K HYPE this week; treasury now about 38.8M HYPE",
+     "url": "https://www.kucoin.com/news/flash/hyperliquid-strategies-buys-130-000-hype-tokens-worth-10-23m-this-week",
+     "date": "Oct 22"
     }
+   ],
+   "unlocks": [
+    {
+     "date": "Nov 6",
+     "date_iso": "2026-11-06",
+     "amount": "not disclosed",
+     "pct_supply": "",
+     "note": "Core contributors, monthly unlock on the 6th (Oct batch was 3.75M HYPE; some calendars list a larger figure)",
+     "source": "https://tokenomist.ai/hyperliquid"
+    }
+   ]
+  },
+  "REZ": {
+   "side": "short",
+   "stance": "neutral",
+   "summary": "No material news this week. About 91% of supply is already unlocked and major investor unlocks ended in September; a small insider tranche (about 0.8% of total supply) is listed for late October, but sources disagree on the date, so it is left off the calendar.",
+   "news": [],
+   "unlocks": []
+  },
+  "MORPHO": {
+   "side": "long",
+   "stance": "supports",
+   "summary": "New integrations support the long: Robinhood stock tokens as collateral and Ledger loans built on Morpho. A risk is about 973K MORPHO stolen from two institution-linked wallets and sent to Tornado Cash, which could be sold. No cliff unlocks in the next 14 days.",
+   "news": [
+    {
+     "title": "Robinhood stock tokens go live as collateral on Morpho for USDG loans",
+     "url": "https://cryptobriefing.com/robinhood-stock-tokens-morpho-collateral/",
+     "date": "Oct 22"
+    },
+    {
+     "title": "Ledger Wallet launches crypto-backed stablecoin loans running on Morpho markets",
+     "url": "https://en.cryptonomist.ch/2026/10/21/ledger-crypto-loans-stablecoin/",
+     "date": "Oct 21"
+    },
+    {
+     "title": "About 973K MORPHO stolen from two institution-linked addresses and routed to Tornado Cash; no protocol bug confirmed",
+     "url": "https://www.diariobitcoin.com/analisis/morpho-bajo-presion-el-21-de-octubre-de-2026-tras-un-robo-millonario/",
+     "date": "Oct 21"
+    }
+   ],
+   "unlocks": []
+  },
+  "DOT": {
+   "side": "short",
+   "stance": "supports",
+   "summary": "Negative headlines support the short: the Fearless Wallet extension leaked seed phrases, and the JAM migration still has no mainnet date. No vesting unlocks; issuance runs at about 55M DOT a year under the hard cap.",
+   "news": [
+    {
+     "title": "Fearless Wallet extension found leaking recovery phrases; users told to move funds after about 17K DOT taken",
+     "url": "https://www.cryptopolitan.com/fearless-wallet-leaked-polkadot-private-keys/",
+     "date": "Oct 21"
+    },
+    {
+     "title": "Polkadot publishes a JAM migration roadmap with no mainnet date",
+     "url": "https://tokenpost.com/news/technology/36995",
+     "date": "Oct 21"
+    },
+    {
+     "title": "Relay chain nearly emptied after the Asset Hub migration; a referendum to rename to JAM fails",
+     "url": "https://cryptoticker.io/en/polkadot-relay-chain-jam-rebuild/",
+     "date": "Oct 23"
+    }
+   ],
+   "unlocks": []
+  },
+  "WCT": {
+   "side": "short",
+   "stance": "neutral",
+   "summary": "Nothing material this week. Monthly unlocks fall on the 15th; the next (Nov 15) is outside the 14-day window and sources disagree on its size.",
+   "news": [],
+   "unlocks": []
+  },
+  "SKY": {
+   "side": "long",
+   "stance": "neutral",
+   "summary": "Only minor product news (the Basin liquidity launch). SKY is about 99.9% unlocked, so there is no vesting overhang, but nothing new drives the long either.",
+   "news": [
+    {
+     "title": "Sky's Prime Agent launches Basin, giving tokenized T-bill holders stablecoin liquidity while settlement is pending",
+     "url": "https://www.tokenpost.com/news/business/37537",
+     "date": "Oct 22"
+    }
+   ],
+   "unlocks": []
+  },
+  "WLFI": {
+   "side": "short",
+   "stance": "supports",
+   "summary": "USD1 supply shrank about 9% in two weeks, and a shareholder suit over the UAE deals adds legal pressure; both support the short. Insider tokens are locked until about 2028, so there are no unlocks. The pending OCC charter for USD1 is an upside risk.",
+   "news": [
+    {
+     "title": "Circle shareholder files derivative suit naming Trump, WLF and Witkoff over $2.5B UAE deals",
+     "url": "https://airdropalert.com/blogs/circle-shareholder-lawsuit-trump-wlfi/",
+     "date": "Oct 23"
+    },
+    {
+     "title": "USD1 supply drops about $401M (9%) in two weeks, mostly from one BNB Chain wallet",
+     "url": "https://coinpaper.com/37601/wlfi-price-falls-6-as-trump-linked-usd-1-stablecoin-sees-401-m-in-redemptions",
+     "date": "Oct 20"
+    }
+   ],
+   "unlocks": []
   }
+ }
 }
