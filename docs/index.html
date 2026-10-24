@@ -160,7 +160,7 @@ const ist=(iso,time)=>{const p=Object.fromEntries(new Intl.DateTimeFormat("en-GB
 function idea(r,w){
   const z=r.sizing, short=r.side==="short", cls=short?"down":"up";
   const risk1=Math.abs(r.stop-r.avg_entry);
-  const away=r.at_zone?"<b>in zone now</b>":`first order <b>${r.distance_pct}%</b> away`;
+  const away=r.past_zone?"<b>past the zone</b>, stop still holds":r.at_zone?"<b>in zone now</b>":`first order <b>${r.distance_pct}%</b> away`;
   const basis=r.ema_basis!=="25/50/100"?` <span class="muted">weekly ${r.ema_basis} EMA</span>`:"";
   const orders=z.orders.map(o=>{const now=o.price===r.price;
     return `<tr><td>${o.share}%</td><td>${now?"<b>now</b>":f(o.price)}</td><td>${fs(o.size)}</td><td>${usd(o.usd)}</td><td>${now?"–":pct(o.price,r.price).toFixed(1)+"%"}</td></tr>`;}).join("");

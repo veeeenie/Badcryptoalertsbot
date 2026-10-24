@@ -247,7 +247,14 @@ def plan(closed, price, trend, d):
     zs = zones(closed)
     short = trend == "down"
     kind, opp = ("supply", "demand") if short else ("demand", "supply")
-    side_ok = [z for z in zs if z["kind"] == kind and (z["top"] > price if short else z["bottom"] < price)]
+    level = rejection_level(closed, short, A)
+
+    def stop_of(z):   # where this zone's plan puts the stop
+        anchor = max(z["top"], level) if short else min(z["bottom"], level)
+        return anchor + STOP_BUFFER_ATR * A if short else anchor - STOP_BUFFER_ATR * A
+    # a zone stays in play until price passes its plan's stop (trader, 24 Oct 2026): price sitting inside the zone,
+    # or between the zone and the stop, still shows the plan, with the passed orders filling at today's price
+    side_ok = [z for z in zs if z["kind"] == kind and (stop_of(z) > price if short else stop_of(z) < price)]
     if not side_ok:
         return None, f"no {kind} zone"
     short_enough = [z for z in side_ok if z["top"] - z["bottom"] <= MAX_ZONE_ATR * A]
@@ -259,7 +266,6 @@ def plan(closed, price, trend, d):
     if not cands:
         return None, "nearest zone more than 2 weekly ATRs away"
     cands.sort(key=lambda z: z["bottom"] if short else -z["top"])
-    level = rejection_level(closed, short, A)
     best = None
     for z in cands:
         near, far = (z["bottom"], z["top"]) if short else (z["top"], z["bottom"])
@@ -315,7 +321,7 @@ def plan(closed, price, trend, d):
             "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"], "rejection_level": level if anchor == level else None,   # only when it sets the stop
             "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
             "entries": entries, "entry_split": [round(w * 100) for w in weights], "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2), "rr_first_only": round(rr_first, 2),
-            "risk_pct": round(risk / avg * 100, 1), "distance_pct": round(dist * 100, 1), "distance_best_pct": round(dist_best * 100, 1), "at_zone": dist == 0.0,
+            "risk_pct": round(risk / avg * 100, 1), "past_zone": (price > z["top"]) if short else (price < z["bottom"]), "distance_pct": round(dist * 100, 1), "distance_best_pct": round(dist_best * 100, 1), "at_zone": dist == 0.0,
         }, None
     return best if best else (None, "no trade")
 
