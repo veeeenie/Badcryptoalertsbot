@@ -1,4 +1,4 @@
-name: Dump daily candles (temporary)
+name: JIO market check (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -6,29 +6,39 @@ on:
 permissions:
   contents: write
 jobs:
-  dump:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
-        with: {python-version: "3.12"}
-      - run: pip install requests
       - run: |
-          git fetch -q origin main && git checkout origin/main -- scanner
-          cd scanner && python - <<'PY'
-          import json, gzip, time, scan
-          out = {}
-          for r in scan.universe():
+          python3 - <<'PY'
+          import json, time, urllib.request
+          def hl(p):
+              r = urllib.request.Request("https://api.hyperliquid.xyz/info", data=json.dumps(p).encode(), headers={"Content-Type": "application/json"})
+              return json.load(urllib.request.urlopen(r, timeout=30))
+          out = {"checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+          dexs = hl({"type": "perpDexs"}); out["perpDexs"] = dexs
+          for d in dexs:
+              if not d or not d.get("name"): continue
               try:
-                  out[r["coin"]] = {"price": r["price"], "max_lev": r["max_lev"], "daily": scan.daily_candles(r["coin"], days=1500)}
+                  meta, ctxs = hl({"type": "metaAndAssetCtxs", "dex": d["name"]})
               except Exception as e:
-                  print(r["coin"], e)
-              time.sleep(0.3)
-          with gzip.open("../daily_dump.json.gz", "wt") as f:
-              json.dump(out, f)
-          print(len(out), "coins")
+                  out["err_" + d["name"]] = str(e); continue
+              for a, c in zip(meta["universe"], ctxs):
+                  if "JIO" in a["name"].upper():
+                      key = a["name"]
+                      out[key] = {"dex": d["name"], "asset": a, "ctx": c}
+                      end = int(time.time() * 1000)
+                      for itv, days in (("1h", 7), ("1d", 60)):
+                          try:
+                              out[key]["candles_" + itv] = hl({"type": "candleSnapshot", "req": {"coin": key, "interval": itv, "startTime": end - days * 86400000, "endTime": end}})
+                          except Exception as e:
+                              out[key]["candles_err_" + itv] = str(e)
+                      try:
+                          out[key]["funding"] = hl({"type": "fundingHistory", "coin": key, "startTime": end - 7 * 86400000})
+                      except Exception as e:
+                          out[key]["funding_err"] = str(e)
+          json.dump(out, open("jio_check.json", "w"), indent=1)
           PY
-      - run: |
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git rm -rq --cached scanner 2>/dev/null || true
-          git add daily_dump.json.gz && git commit -qm "daily dump" && git push -q origin HEAD:debug-weekly
+          git add jio_check.json && git commit -qm "jio check" && git push -q origin HEAD:debug-weekly
