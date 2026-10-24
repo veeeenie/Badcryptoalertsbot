@@ -6,7 +6,7 @@ Groups fills into trades (a position going from flat to flat on one coin), then 
   - entries (distinct entry orders), average entry, exits, net P&L after fees
   - planned stop: the stop attached to the entry orders (same timestamp), else the first stop placed
   - planned risk = |average entry - stop| x position size, and realised R = net P&L / planned risk
-  - whether a take-profit was in place within an hour of the first fill
+  - whether a take-profit was placed while the trade was open (rule 6: stop with the entry, take-profit once in)
   - whether the stop was ever widened during the trade (rule 7)
   - rule checks: stop and TP placed with entry (6), at most 3 entries and each order >= $10 (4),
     planned reward:risk above 1.5 (8), dollar risk vs the $2 plan (9)
@@ -137,7 +137,8 @@ def summarise_trade(t, coin_orders, by_oid, closed):
             if o["order"]["timestamp"] > (planned[-1]["order"]["timestamp"]) and sign * (stop_px - px) > 1e-12:
                 widened = True                    # a later stop further from price than the planned one
     tps = [o for o in coin_orders if is_tp(o) and entry_placed - 3600_000 <= o["order"]["timestamp"] <= window_end]
-    tp_at_entry = any(o["order"]["timestamp"] <= first + 3600_000 for o in tps)
+    # rule 6 (trader, 24 Oct 2026): the stop goes in with the entry; the take-profit is placed once in the trade
+    tp_set = bool(tps)
     tp_px = None
     if tps:
         first_tp = min(tps, key=lambda o: o["order"]["timestamp"])
@@ -152,7 +153,7 @@ def summarise_trade(t, coin_orders, by_oid, closed):
     checks = {
         "stop": stop_px is not None,
         "stop_at_entry": bool(attached) or bool(stop_list and stop_list[0]["order"]["timestamp"] <= first + 3600_000),
-        "tp_at_entry": tp_at_entry,
+        "tp_set": tp_set,
         "max_3_entries": len(entry_oids) <= MAX_ENTRIES,
         "min_10_usd": all(v >= MIN_ORDER_USD - 0.01 for v in entry_oids.values()),
         "rr_1_5": planned_rr is not None and planned_rr > MIN_RR,
