@@ -1,4 +1,4 @@
-name: Dump weekly candles (temporary)
+name: Account check (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -6,22 +6,35 @@ on:
 permissions:
   contents: write
 jobs:
-  dump:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
-        with: {python-version: "3.12"}
-      - run: pip install -r scanner/requirements.txt
       - run: |
-          cd scanner && python - <<'PY'
-          import json, scan
+          python3 - <<'PY'
+          import json, urllib.request
+          U = "0xfb4e07C7BF05464e6206abc93873078f2fc53991"
+          def hl(p):
+              r = urllib.request.Request("https://api.hyperliquid.xyz/info", data=json.dumps(p).encode(), headers={"Content-Type": "application/json"})
+              return json.load(urllib.request.urlopen(r, timeout=30))
           out = {}
-          for r in scan.universe():
-              try: out[r["coin"]] = {"price": r["price"], "weekly": scan.weekly_from_daily(scan.daily_candles(r["coin"]))}
-              except Exception as e: print(r["coin"], e)
-          json.dump(out, open("../weekly_dump.json", "w"))
+          out["perpDexs"] = hl({"type": "perpDexs"})
+          out["main"] = hl({"type": "clearinghouseState", "user": U})
+          for d in out["perpDexs"]:
+              if d and d.get("name"):
+                  try:
+                      s = hl({"type": "clearinghouseState", "user": U, "dex": d["name"]})
+                      if float(s["marginSummary"]["accountValue"]) or s["assetPositions"]:
+                          out["dex_" + d["name"]] = s
+                  except Exception as e:
+                      out["dex_err_" + d["name"]] = str(e)
+          out["spot"] = hl({"type": "spotClearinghouseState", "user": U})
+          out["open_orders"] = hl({"type": "frontendOpenOrders", "user": U})
+          for t in ("userAbstraction", "userRole"):
+              try: out[t] = hl({"type": t, "user": U})
+              except Exception as e: out[t] = str(e)
+          out["mids"] = {k: v for k, v in hl({"type": "allMids"}).items() if k in ("BTC", "HYPE")}
+          json.dump(out, open("account_check.json", "w"), indent=1)
           PY
-      - run: |
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add weekly_dump.json && git commit -qm "weekly dump" && git push -q origin HEAD:debug-weekly
+          git add account_check.json && git commit -qm "account check" && git push -q origin HEAD:debug-weekly
