@@ -52,15 +52,6 @@
       "meaning_touch": "At the bottom of the 222–242M support zone.",
       "meaning_above": "Daily close back above the zone bottom: a bounce attempt; confirmation is a close back above 242M.",
       "meaning_below": "Daily close below the support zone: no long; the pump has fully unwound toward the base."
-    },
-    {
-      "id": "DOT-1.36",
-      "coin": "DOT",
-      "type": "level",
-      "price": 1.36,
-      "name": "test from Claude (will be removed)",
-      "touch_pct": 1.0,
-      "source": "added via the website, 2026-10-24"
     }
   ]
 }
