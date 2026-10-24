@@ -5,56 +5,78 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Setup Desk</title>
 <style>
-:root{--bg:#f6f7f8;--panel:#fff;--ink:#17202a;--muted:#5f6b76;--line:#dfe3e7;--up:#147a52;--down:#b3372b;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11161b;--panel:#182029;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#11161b;--panel:#182029;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;color-scheme:dark}
+:root{--bg:#f6f7f8;--panel:#fff;--soft:#f1f3f5;--ink:#17202a;--muted:#5f6b76;--line:#dfe3e7;--up:#147a52;--down:#b3372b;--accent:#2f5bd3;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11161b;--panel:#182029;--soft:#1f2832;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;--accent:#8aa8ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#11161b;--panel:#182029;--soft:#1f2832;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;--accent:#8aa8ff;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:0 16px}
-main{max-width:1180px;margin:0 auto;padding:28px 0 48px;display:grid;gap:16px}
+main{max-width:1040px;margin:0 auto;padding:28px 0 48px;display:grid;gap:14px;min-width:0}
 header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
 h1{font-size:26px;margin:0}
-h2{font-size:18px;margin:12px 0 -8px}
+h2{font-size:19px;margin:18px 0 0}
+h3{font-size:15px;margin:6px 0 0}
 a{color:inherit}
 .muted{color:var(--muted);font-size:13px}
-.box{overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:8px}
-table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:14px}
-th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-th:first-child,td:first-child{text-align:left}
-th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-tr:last-child td{border-bottom:0}
 .up{color:var(--up)} .down{color:var(--down)}
-.sub{font-size:15px;margin:4px 0 8px}
-.cards{margin-bottom:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,350px),1fr));gap:12px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:8px;min-width:0}
-.ch{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
-.ch .coin{font-size:17px;font-weight:700}
-.ch .rr{margin-left:auto;font-size:14px}
-.card table{table-layout:fixed;font-size:13px}
-.card th,.card td{padding:4px 4px;white-space:normal;overflow-wrap:anywhere}
-.card th:first-child,.card td:first-child{width:15%}
-.card th{font-size:11px;letter-spacing:.02em}
-.line{font-size:13.5px}
-.line b{font-weight:600}
-.warn{font-size:12.5px;color:var(--down)}
-@media (max-width:760px){
+.warn{color:var(--down)}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:14px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+tr:last-child td{border-bottom:0}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+
+/* trade ideas: one collapsible full-width card each */
+.ideas{display:grid;gap:10px}
+details.idea{background:var(--panel);border:1px solid var(--line);border-radius:8px;min-width:0}
+details.idea>summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;border-radius:8px}
+details.idea>summary::-webkit-details-marker{display:none}
+details.idea>summary::before{content:"›";display:inline-block;width:12px;color:var(--muted);transition:transform .15s}
+details.idea[open]>summary::before{transform:rotate(90deg)}
+details.idea>summary:hover{background:var(--soft)}
+.coin{font-weight:700;font-size:16px}
+.pill{font-size:12.5px;font-weight:600;padding:1px 8px;border-radius:99px;border:1px solid currentColor}
+.sumitem{font-size:13.5px}
+.sumitem b{font-weight:600}
+.body{padding:4px 14px 14px;display:grid;gap:6px;border-top:1px solid var(--line)}
+.block h4{margin:10px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.tile{background:var(--soft);border-radius:6px;padding:8px 10px;min-width:0}
+.tile .k{font-size:12px;color:var(--muted)}
+.tile .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.tile .s{font-size:12px;color:var(--muted)}
+.orders td,.orders th{white-space:nowrap}
+
+/* tables that stack on phones */
+@media (max-width:700px){
   .stack thead{display:none}
   .stack tr{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;padding:8px 10px;border-bottom:1px solid var(--line)}
   .stack tr:last-child{border-bottom:0}
-  .stack td{border:0;padding:0;text-align:left!important;white-space:normal}
+  .stack td{border:0;padding:0;text-align:left!important}
   .stack td:first-child{grid-column:1/-1}
   .stack td[data-label]::before{content:attr(data-label) " ";color:var(--muted);font-size:12px}
+  .orders th,.orders td{padding:6px 4px;font-size:13px}
 }
 </style>
 </head>
 <body>
 <main>
   <header><h1>Setup Desk</h1><a href="rules.html">Rule book</a></header>
+
   <h2>Trade ideas</h2>
-  <p class="muted" id="wmeta">Coins in a clear weekly trend with a plan at a weekly supply or demand zone. Orders wait at the zone; we don't chase.</p>
-  <div id="wrows"><p class="muted">Loading…</p></div>
+  <p class="muted" id="wmeta">Loading…</p>
+  <div id="wrows"></div>
   <p class="muted" id="wnone"></p>
+
   <h2>Journal</h2>
-  <p class="muted" id="meta">Journal of trade.xyz trades since 9 Oct 2026.</p>
+  <h3>Open positions <span class="muted">· live from Hyperliquid · <a href="#" id="lrefresh">refresh</a></span></h3>
+  <p class="muted" id="lmeta">Loading…</p>
+  <div class="box"><table class="stack">
+    <thead><tr><th>Position</th><th>Size</th><th>Entry</th><th>Price</th><th>P&amp;L</th><th>R</th><th>Stop</th><th>Take-profit</th><th>Liquidation</th></tr></thead>
+    <tbody id="lrows"><tr><td colspan="9" class="muted">Loading…</td></tr></tbody>
+  </table></div>
+  <h3>Closed trades</h3>
+  <p class="muted" id="meta">Loading…</p>
   <div class="box"><table class="stack">
     <thead><tr><th>Trade</th><th>Opened</th><th>Entry</th><th>Stop</th><th>Take-profit</th><th>Exit</th><th>Net $</th><th>R</th></tr></thead>
     <tbody id="rows"><tr><td colspan="8" class="muted">Loading…</td></tr></tbody>
@@ -62,43 +84,122 @@ tr:last-child td{border-bottom:0}
 </main>
 <script>
 const f=x=>x==null?"–":(Math.abs(x)>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):Math.abs(x)>=1?x.toFixed(3):x.toPrecision(4));
+const fs=x=>x>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):x>=10?x.toFixed(1):x>=1?x.toFixed(2):x.toPrecision(3);
+const usd=x=>"$"+x.toFixed(2);
+const pct=(a,b)=>Math.abs(a/b-1)*100;
+// dates in IST: 23-Oct-2026, and 23-Oct-2026 07:05 IST with a time
+const ist=(iso,time)=>{const p=Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Kolkata",day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).formatToParts(new Date(iso)).map(x=>[x.type,x.value]));
+  return `${p.day}-${p.month}-${p.year}`+(time?` ${p.hour}:${p.minute} IST`:"");};
+
+function idea(r,w){
+  const z=r.sizing, short=r.side==="short", cls=short?"down":"up";
+  const risk1=Math.abs(r.stop-r.avg_entry);
+  const away=r.at_zone?"<b>in zone now</b>":`first order <b>${r.distance_pct}%</b> away`;
+  const basis=r.ema_basis!=="25/50/100"?` <span class="muted">weekly ${r.ema_basis} EMA</span>`:"";
+  const orders=z.orders.map(o=>{const now=o.price===r.price;
+    return `<tr><td>${o.share}%</td><td>${now?"<b>now</b>":f(o.price)}</td><td>${fs(o.size)}</td><td>${usd(o.usd)}</td><td>${now?"–":pct(o.price,r.price).toFixed(1)+"%"}</td></tr>`;}).join("");
+  const tpTiles=r.tps.map((t,i)=>`<div class="tile"><div class="k">Take-profit ${r.tps.length>1?(i+1)+" · half":"· all"}</div><div class="v">${f(t)}</div><div class="s">${(Math.abs(r.avg_entry-t)/risk1).toFixed(1)}R · ${pct(t,r.price).toFixed(1)}% from price</div></div>`).join("");
+  const lvl=r.rejection_level!=null?`<br>${short?"above":"below"} the ${f(r.rejection_level)} rejection level`:"";
+  return `<details class="idea">
+    <summary>
+      <span class="coin">${r.coin}</span><span class="pill ${cls}">${short?"Short":"Long"}</span>${basis}
+      <span class="sumitem">${away}</span>
+      <span class="sumitem"><b>${r.rr.toFixed(1)} : 1</b> <span class="muted">(${r.rr_first_only.toFixed(1)} first only)</span></span>
+      <span class="sumitem">risk <b>${usd(z.risk_usd)}</b>${z.risk_raised?' <span class="warn">raised</span>':""}</span>
+      <span class="sumitem muted">price ${f(r.price)}</span>
+    </summary>
+    <div class="body">
+      <div class="block"><h4>Orders</h4>
+        <table class="orders"><thead><tr><th>Share</th><th>Price</th><th>Size</th><th>Value</th><th>From price</th></tr></thead><tbody>${orders}</tbody></table>
+        <div class="muted" style="margin-top:6px">Size in ${r.coin}. Average entry ${f(r.avg_entry)} if all fill.</div>
+      </div>
+      <div class="block"><h4>Exits</h4>
+        <div class="tiles">
+          <div class="tile"><div class="k">Stop</div><div class="v">${f(r.stop)}</div><div class="s">${pct(r.stop,r.avg_entry).toFixed(1)}% from average entry${lvl}</div></div>
+          ${tpTiles}
+        </div>
+      </div>
+      <div class="block"><h4>Size</h4>
+        <div class="tiles">
+          <div class="tile"><div class="k">Total</div><div class="v">${usd(z.notional_usd)}</div><div class="s">across ${z.orders.length} orders</div></div>
+          <div class="tile"><div class="k">Leverage</div><div class="v">${z.leverage}× isolated</div><div class="s">liquidation stays at least twice as far as the stop</div></div>
+          <div class="tile"><div class="k">Margin</div><div class="v">${usd(z.margin_usd)}</div><div class="s">if all orders fill</div></div>
+          <div class="tile"><div class="k">Risk</div><div class="v">${usd(z.risk_usd)}</div><div class="s">${usd(z.risk_first_only_usd)} if only the first fills${z.risk_raised?`<br><span class="warn">raised from $${w.risk_usd} so every order is at least $10</span>`:""}</div></div>
+        </div>
+      </div>
+      <div class="block intel" data-coin="${r.coin}"></div>
+    </div>
+  </details>`;
+}
+
 fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
-  const c=w.counts, when=new Date(w.generated_at).toLocaleString([], {day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
-  document.getElementById("wmeta").textContent=`${c.trades} trade ideas from the top ${w.scanned} coins. Each is at least ${w.gate_rr} : 1 with all orders filled and with only the first, at a weekly zone within 2 weekly ATRs of price. Sizes risk $${w.risk_usd} if every order fills and the stop is hit (a little more when needed so every order is at least $10), split 30 : 30 : 40 across the supply or demand zone, with the biggest order at its far edge; the stop sits a quarter of a weekly ATR beyond the level where rejections cluster (orders under $10 merge into the next). Leverage is the highest that keeps liquidation (isolated margin) at least twice as far as the stop. Updated ${when}.`;
-  const fs=x=>x>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):x>=10?x.toFixed(1):x>=1?x.toFixed(2):x.toPrecision(3);
-  const pct=(e,p)=>Math.abs(e/p-1)*100;
-  const card=r=>{
-    const z=r.sizing, cls=r.side==="short"?"down":"up", basis=r.ema_basis!=="25/50/100"?` <span class="muted">weekly ${r.ema_basis} EMA</span>`:"";
-    const orders=z.orders.map(o=>{const now=o.price===r.price, d=pct(o.price,r.price);
-      return `<tr><td>${o.share}%</td><td>${now?"<b>now</b>":f(o.price)}</td><td>${fs(o.size)}</td><td>$${o.usd.toFixed(2)}</td><td>${now?"–":d.toFixed(1)+"%"}</td></tr>`;}).join("");
-    const merged=r.entry_split.length<3?`<div class="muted">Orders under $10 were merged into the next one, so the split is ${r.entry_split.join(" : ")}.</div>`:"";
-    const warn=z.small_orders.length?`<div class="warn">At $${z.risk_usd} risk the whole position is under Hyperliquid's $10 minimum order.</div>`:"";
-    return `<article class="card">
-      <div class="ch"><span class="coin">${r.coin}</span><b class="${cls}">${r.side==="short"?"Short":"Long"}</b><span class="muted">price ${f(r.price)}</span>${basis}<span class="rr"><b>${r.rr.toFixed(1)}</b> : 1 <span class="muted">· ${r.rr_first_only.toFixed(1)} first only</span></span></div>
-      <table><thead><tr><th>Share</th><th>Price</th><th>Size (${r.coin})</th><th>Value</th><th>From price</th></tr></thead><tbody>${orders}</tbody></table>
-      <div class="line"><b>Stop</b> ${f(r.stop)}${r.rejection_level!=null?` <span class="muted">(${r.side==="short"?"above":"below"} the ${f(r.rejection_level)} rejection level)</span>`:""} · <b>Take-profit</b> ${r.tps.map(f).join(" then ")}${r.tps.length>1?" (half each)":""}</div>
-      <div class="line"><b>Total</b> $${z.notional_usd.toFixed(0)} · <b>Leverage</b> ${z.leverage}× isolated · <b>Margin</b> $${z.margin_usd.toFixed(2)} · <b>Risk</b> $${z.risk_usd.toFixed(2)}${z.risk_raised?` <span class="warn">(raised from $${w.risk_usd} so every order is at least $10)</span>`:""} <span class="muted">($${z.risk_first_only_usd.toFixed(2)} if only the first fills)</span></div>${merged}${warn}
-    </article>`;
-  };
+  const c=w.counts;
+  document.getElementById("wmeta").textContent=`${c.trades} ideas from the top ${w.scanned} coins, each at least ${w.gate_rr} : 1 with all orders filled and with only the first. Tap an idea to see its plan. Updated ${ist(w.generated_at,true)}.`;
   const top=w.rows.slice(0,4), rest=w.rows.slice(4);
   document.getElementById("wrows").innerHTML=w.rows.length?
-    `<h3 class="sub">Top picks · place 1–2 per wallet <span class="muted">(closest first order)</span></h3><div class="cards">${top.map(card).join("")}</div>`+
-    (rest.length?`<h3 class="sub">Further away</h3><div class="cards">${rest.map(card).join("")}</div>`:""):
+    `<h3>Top picks <span class="muted">· place 1–2 per wallet · closest first order</span></h3><div class="ideas" style="margin-top:8px">${top.map(r=>idea(r,w)).join("")}</div>`+
+    (rest.length?`<h3 style="margin-top:16px">Further away</h3><div class="ideas" style="margin-top:8px">${rest.map(r=>idea(r,w)).join("")}</div>`:""):
     '<p class="muted">No trade passes the rules right now. Stay in cash.</p>';
-  const nt=w.trend_no_trade||[];
   const g={};(w.trend_no_trade||[]).forEach(x=>{const k=x.why.startsWith("best zone")?"below the 1.4 : 1 gate":x.why;(g[k]=g[k]||[]).push(`${x.coin} ${x.trend==="down"?"↓":"↑"}`);});
   document.getElementById("wnone").innerHTML=`<b>In a weekly trend, but no trade:</b> `+(Object.keys(g).length?Object.entries(g).map(([k,v])=>`${k[0].toUpperCase()+k.slice(1)}: ${v.join(", ")}`).join(". "):"none")+`. ${c.no_trend} coins have no clear weekly trend; ${c.too_young} have under 25 weeks of history.`;
-}).catch(()=>{document.getElementById("wrows").innerHTML='<p class="muted">Trade ideas not built yet.</p>';});
+  document.dispatchEvent(new Event("ideas-ready"));
+}).catch(()=>{document.getElementById("wmeta").textContent="Trade ideas not built yet.";});
+
 fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   const s=j.summary;
   const sm=x=>`${x.trades} closed${x.open?`, ${x.open} open`:""}, ${x.wins} wins, net ${x.net_usd>=0?"+":"−"}$${Math.abs(x.net_usd).toFixed(2)}${x.total_r!=null?`, ${x.total_r>=0?"+":""}${x.total_r}R`:""}`;
-  const ws=(j.wallets||[]).map(x=>`wallet ${x.label} since ${x.since}: ${sm(x.summary)}`).join(" · ");
-  document.getElementById("meta").textContent=`trade.xyz trades, updated hourly. All wallets: ${sm(s)}.${ws?" "+ws+".":""}`;
-  document.getElementById("rows").innerHTML=[...j.trades].reverse().map(t=>{
+  const ws=(j.wallets||[]).map(x=>`wallet ${x.label} since ${ist(x.since)}: ${sm(x.summary)}`).join(" · ");
+  document.getElementById("meta").textContent=`trade.xyz trades. All wallets: ${sm(s)}.${ws?" "+ws+".":""} Updated ${ist(j.generated_at,true)}.`;
+  window.JOURNAL=j; document.dispatchEvent(new Event("journal-ready"));
+  document.getElementById("rows").innerHTML=[...j.trades].filter(t=>t.closed).reverse().map(t=>{
     const c=t.net>0?"up":t.net<0?"down":"";
-    return `<tr><td><b>${t.coin}</b> ${t.side}${t.closed?"":" (open)"}${t.wallet?` <span class="muted">${t.wallet}</span>`:""}</td><td data-label="Opened">${t.opened.slice(5,10)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Stop">${f(t.stop)}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Exit">${f(t.avg_exit)}</td><td data-label="Net $" class="${c}">${t.closed?(t.net>=0?"+":"")+t.net.toFixed(2):"–"}</td><td data-label="R" class="${c}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td></tr>`;
+    return `<tr><td><b>${t.coin}</b> ${t.side}${t.wallet?` <span class="muted">${t.wallet}</span>`:""}</td><td data-label="Opened">${ist(t.opened)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Stop">${f(t.stop)}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Exit">${f(t.avg_exit)}</td><td data-label="Net $" class="${c}">${t.closed?(t.net>=0?"+":"")+t.net.toFixed(2):"–"}</td><td data-label="R" class="${c}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td></tr>`;
   }).join("");
 }).catch(()=>{document.getElementById("rows").innerHTML='<tr><td colspan="8" class="muted">Journal not available.</td></tr>';});
+
+// ---- live open positions, read straight from Hyperliquid's public API (no keys)
+const HL=p=>fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();});
+const sgn=x=>(x>=0?"+":"−")+"$"+Math.abs(x).toFixed(2);
+async function live(){
+  const j=window.JOURNAL; if(!j) return;
+  const wallets=(j.wallets||[]).map(w=>({addr:w.address,label:w.label}));
+  try{
+    const [mids,...per]=await Promise.all([HL({type:"allMids"}),...wallets.map(w=>Promise.all([
+      HL({type:"clearinghouseState",user:w.addr}),HL({type:"frontendOpenOrders",user:w.addr}),HL({type:"spotClearinghouseState",user:w.addr})]))]);
+    let rows=[], metas=[], totPnl=0;
+    per.forEach(([ch,oo,sp],k)=>{
+      const w=wallets[k]; let wPnl=0;
+      ch.assetPositions.forEach(ap=>{
+        const q=ap.position, szi=+q.szi; if(!szi) return;
+        const long=szi>0, size=Math.abs(szi), entry=+q.entryPx, px=+(mids[q.coin]||q.entryPx), pnl=+q.unrealizedPnl;
+        const mine=oo.filter(o=>o.coin===q.coin&&o.reduceOnly);
+        const wavg=a=>{const t=a.reduce((s,o)=>s+(+o.sz||0),0);return a.length?a.reduce((s,o)=>s+(+o.triggerPx||+o.limitPx)*((+o.sz||0)||1),0)/(t||a.length):null;};
+        const stops=mine.filter(o=>/Stop/.test(o.orderType||"")), tps=mine.filter(o=>/Take Profit/.test(o.orderType||"")||(!o.isTrigger&&o.orderType==="Limit"));
+        const stop=wavg(stops), tp=wavg(tps);
+        const risk=stop?size*Math.abs(entry-stop):null, r=risk?pnl/risk:null;
+        wPnl+=pnl;
+        const c=pnl>0?"up":pnl<0?"down":"";
+        rows.push(`<tr><td><b>${q.coin}</b> ${long?"long":"short"} <span class="muted">${w.label} · ${q.leverage.value}× ${q.leverage.type}</span></td>
+          <td data-label="Size">${fs(size)} <span class="muted">(${usd(size*px)})</span></td><td data-label="Entry">${f(entry)}</td><td data-label="Price">${f(px)}</td>
+          <td data-label="P&amp;L" class="${c}"><b>${sgn(pnl)}</b></td><td data-label="R" class="${c}">${r==null?"–":(r>=0?"+":"−")+Math.abs(r).toFixed(2)}</td>
+          <td data-label="Stop">${stop?f(stop)+` <span class="muted">${pct(stop,px).toFixed(1)}% · risk ${usd(risk)}</span>`:'<span class="warn">none</span>'}</td>
+          <td data-label="Take-profit">${tp?f(tp)+` <span class="muted">${pct(tp,px).toFixed(1)}%</span>`:'<span class="warn">none</span>'}</td>
+          <td data-label="Liquidation">${q.liquidationPx?f(+q.liquidationPx):"–"}</td></tr>`);
+      });
+      const usdc=(sp.balances||[]).find(b=>b.coin==="USDC"), tot=usdc?+usdc.total:0, hold=usdc?+usdc.hold:0;
+      totPnl+=wPnl;
+      metas.push(`wallet ${w.label}: USDC ${usd(tot)}, ${usd(hold)} in use, <b>${usd(Math.max(0,tot-hold))} free</b>, open P&L ${sgn(wPnl)}`);
+    });
+    document.getElementById("lrows").innerHTML=rows.join("")||'<tr><td colspan="9" class="muted">No open positions.</td></tr>';
+    document.getElementById("lmeta").innerHTML=metas.join(" · ")+`. Total open P&L <b class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</b>. Checked ${ist(new Date().toISOString(),true)}.`;
+  }catch(e){
+    const open=(j.trades||[]).filter(t=>!t.closed);
+    document.getElementById("lmeta").textContent=`Couldn't reach Hyperliquid just now (${e.message}); showing open trades from the hourly journal instead, without live P&L.`;
+    document.getElementById("lrows").innerHTML=open.map(t=>`<tr><td><b>${t.coin}</b> ${t.side} <span class="muted">${t.wallet||""}</span></td><td data-label="Size">${fs(t.size)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Price">–</td><td data-label="P&amp;L">–</td><td data-label="R">–</td><td data-label="Stop">${f(t.stop)}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Liquidation">–</td></tr>`).join("")||'<tr><td colspan="9" class="muted">No open trades.</td></tr>';
+  }
+}
+document.addEventListener("journal-ready",()=>{live();setInterval(live,60000);});
+document.getElementById("lrefresh").addEventListener("click",e=>{e.preventDefault();live();});
 </script>
 </body>
 </html>
