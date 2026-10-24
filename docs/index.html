@@ -47,6 +47,8 @@ details.idea>summary:hover{background:var(--soft)}
 .tile .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .tile .s{font-size:12px;color:var(--muted)}
 .orders td,.orders th{white-space:nowrap}
+.il{margin:4px 0 0;padding-left:18px;font-size:13.5px}
+.il li{margin:2px 0}
 .formrow{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end}
 .formrow label{display:grid;gap:3px;font-size:12.5px;color:var(--muted)}
 input,select,button{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);max-width:100%}
@@ -254,6 +256,26 @@ document.getElementById("aform").addEventListener("submit",e=>{e.preventDefault(
   issue(cmd);
 });
 
+
+// ---- news and unlocks (written once a day by the news task) inside each trade idea card
+document.addEventListener("ideas-ready",()=>{
+  fetch("data/intel.json?t="+Date.now()).then(r=>r.json()).then(I=>{
+    const when=I.generated_at?ist(I.generated_at,true):"";
+    document.querySelectorAll(".intel").forEach(el=>{
+      const c=(I.coins||{})[el.dataset.coin];
+      if(!c){el.innerHTML=`<h4>News &amp; unlocks</h4><div class="muted">Not checked yet. The daily news check runs at 07:47 IST.</div>`;return;}
+      const st=c.stance||"neutral", stc=st==="supports"?"up":st==="against"?"down":"muted";
+      const unl=(c.unlocks||(c.unlock?[c.unlock]:[])).map(u=>`<li><b>${u.date}</b>: ${u.amount||""}${u.pct_supply?` (${u.pct_supply}% of supply)`:""}${u.note?` · ${u.note}`:""}${u.source?` · <a href="${u.source}" target="_blank" rel="noopener">source</a>`:""}</li>`).join("");
+      const news=(c.news||[]).map(n=>`<li>${n.date?`<span class="muted">${n.date}</span> `:""}<a href="${n.url}" target="_blank" rel="noopener">${n.title}</a></li>`).join("");
+      el.innerHTML=`<h4>News &amp; unlocks <span class="pill ${stc}" style="text-transform:none;letter-spacing:0">${st==="supports"?"supports the trade":st==="against"?"works against the trade":"neutral"}</span></h4>
+        <div style="font-size:14px">${c.summary||""}</div>
+        <div class="muted" style="margin-top:6px">Unlocks in the next 14 days:</div>${unl?`<ul class="il">${unl}</ul>`:'<div style="font-size:13.5px">none found</div>'}
+        ${news?`<div class="muted" style="margin-top:6px">News, last 7 days:</div><ul class="il">${news}</ul>`:""}
+        <div class="muted" style="margin-top:6px">Checked ${when}. From web searches; coverage of small coins can be thin.</div>`;
+      if(st==="against"){const sum=el.closest("details").querySelector("summary");sum.insertAdjacentHTML("beforeend",'<span class="sumitem warn">news against</span>');}
+    });
+  }).catch(()=>{document.querySelectorAll(".intel").forEach(el=>el.innerHTML='<h4>News &amp; unlocks</h4><div class="muted">Not available.</div>');});
+});
 </script>
 </body>
 </html>
