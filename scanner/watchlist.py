@@ -51,11 +51,12 @@ MAX_TESTS = 1          # zones visited more than once are dropped
 MAX_ZONE_ATR = 1.0     # zones taller than one weekly ATR are not traded (stop too far); trader, 23 Oct 2026
 MAX_DIST_ATR = 2.0     # zones whose near edge is more than 2 weekly ATRs from price are not shown; trader, 23 Oct 2026
 MIN_RR = 1.4           # the gate: reward-to-risk of the whole plan from the average entry; trader, 23 Oct 2026
-ENTRY_SPLIT = (0.2, 0.3, 0.5)         # size grows toward the best price: near edge 20%, middle 30%, far edge (by the stop) 50%; trader, 23 Oct 2026
+ENTRY_SPLIT = (0.3, 0.3, 0.4)         # size grows toward the best price, flat enough that every order reaches $10 with ~$33 of position; trader, 24 Oct 2026
 EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, then the one after (or the last swing)
 RISK_USD = 3.0         # dollars lost if every order fills and the stop is hit; trader, 23 Oct 2026
 MIN_ORDER_USD = 10.0   # Hyperliquid's smallest order value
 LIQ_BUFFER = 2.0       # liquidation at least 2x the stop distance away when suggesting leverage
+MAX_STOP_GAP_ATR = 0.5 # skip a trade whose stop sits more than half a weekly ATR beyond the last entry; trader, 24 Oct 2026
 STOP_BUFFER_ATR = 0.25 # stop sits a quarter of a weekly ATR beyond the rejection cluster (or the zone); trader, 23 Oct 2026
 REJECT_LOOK = 13       # weeks searched for the start of the current counter-move
 CLUSTER_WEEKS = 52     # weekly highs/lows of the past year count towards a rejection cluster
@@ -270,6 +271,9 @@ def plan(closed, price, trend, d):
         entries = [max(x, price) if short else min(x, price) for x in levels]
         stop = anchor + STOP_BUFFER_ATR * A if short else anchor - STOP_BUFFER_ATR * A
         entries, weights, avg = merge_small(entries, stop)
+        if abs(stop - entries[-1]) > MAX_STOP_GAP_ATR * A:   # thin zone far below the real rejection: not the supply
+            best = best or (None, "stop more than half a weekly ATR beyond the zone")
+            continue
         risk = abs(stop - avg)
         if short:
             raw = sorted((o["top"] for o in zs if o["kind"] == opp and o["top"] < near), reverse=True)

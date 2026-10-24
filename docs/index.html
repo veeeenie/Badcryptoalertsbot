@@ -23,7 +23,8 @@ th:first-child,td:first-child{text-align:left}
 th{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
 tr:last-child td{border-bottom:0}
 .up{color:var(--up)} .down{color:var(--down)}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,350px),1fr));gap:12px}
+.sub{font-size:15px;margin:4px 0 8px}
+.cards{margin-bottom:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,350px),1fr));gap:12px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:8px;min-width:0}
 .ch{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
 .ch .coin{font-size:17px;font-weight:700}
@@ -50,7 +51,7 @@ tr:last-child td{border-bottom:0}
   <header><h1>Setup Desk</h1><a href="rules.html">Rule book</a></header>
   <h2>Trade ideas</h2>
   <p class="muted" id="wmeta">Coins in a clear weekly trend with a plan at a weekly supply or demand zone. Orders wait at the zone; we don't chase.</p>
-  <div class="cards" id="wrows"><p class="muted">Loading…</p></div>
+  <div id="wrows"><p class="muted">Loading…</p></div>
   <p class="muted" id="wnone"></p>
   <h2>Journal</h2>
   <p class="muted" id="meta">Journal of trade.xyz trades since 9 Oct 2026.</p>
@@ -63,10 +64,10 @@ tr:last-child td{border-bottom:0}
 const f=x=>x==null?"–":(Math.abs(x)>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):Math.abs(x)>=1?x.toFixed(3):x.toPrecision(4));
 fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
   const c=w.counts, when=new Date(w.generated_at).toLocaleString([], {day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
-  document.getElementById("wmeta").textContent=`${c.trades} trade ideas from the top ${w.scanned} coins. Each is at least ${w.gate_rr} : 1 with all orders filled and with only the first, at a weekly zone within 2 weekly ATRs of price. Sizes risk $${w.risk_usd} if every order fills and the stop is hit (a little more when needed so every order is at least $10), split 20 : 30 : 50 across the supply or demand zone, with the biggest order at its far edge; the stop sits a quarter of a weekly ATR beyond the level where rejections cluster (orders under $10 merge into the next). Leverage is the highest that keeps liquidation (isolated margin) at least twice as far as the stop. Updated ${when}.`;
+  document.getElementById("wmeta").textContent=`${c.trades} trade ideas from the top ${w.scanned} coins. Each is at least ${w.gate_rr} : 1 with all orders filled and with only the first, at a weekly zone within 2 weekly ATRs of price. Sizes risk $${w.risk_usd} if every order fills and the stop is hit (a little more when needed so every order is at least $10), split 30 : 30 : 40 across the supply or demand zone, with the biggest order at its far edge; the stop sits a quarter of a weekly ATR beyond the level where rejections cluster (orders under $10 merge into the next). Leverage is the highest that keeps liquidation (isolated margin) at least twice as far as the stop. Updated ${when}.`;
   const fs=x=>x>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):x>=10?x.toFixed(1):x>=1?x.toFixed(2):x.toPrecision(3);
   const pct=(e,p)=>Math.abs(e/p-1)*100;
-  document.getElementById("wrows").innerHTML=w.rows.length?w.rows.map(r=>{
+  const card=r=>{
     const z=r.sizing, cls=r.side==="short"?"down":"up", basis=r.ema_basis!=="25/50/100"?` <span class="muted">weekly ${r.ema_basis} EMA</span>`:"";
     const orders=z.orders.map(o=>{const now=o.price===r.price, d=pct(o.price,r.price);
       return `<tr><td>${o.share}%</td><td>${now?"<b>now</b>":f(o.price)}</td><td>${fs(o.size)}</td><td>$${o.usd.toFixed(2)}</td><td>${now?"–":d.toFixed(1)+"%"}</td></tr>`;}).join("");
@@ -78,7 +79,12 @@ fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
       <div class="line"><b>Stop</b> ${f(r.stop)}${r.rejection_level!=null?` <span class="muted">(${r.side==="short"?"above":"below"} the ${f(r.rejection_level)} rejection level)</span>`:""} · <b>Take-profit</b> ${r.tps.map(f).join(" then ")}${r.tps.length>1?" (half each)":""}</div>
       <div class="line"><b>Total</b> $${z.notional_usd.toFixed(0)} · <b>Leverage</b> ${z.leverage}× isolated · <b>Margin</b> $${z.margin_usd.toFixed(2)} · <b>Risk</b> $${z.risk_usd.toFixed(2)}${z.risk_raised?` <span class="warn">(raised from $${w.risk_usd} so every order is at least $10)</span>`:""} <span class="muted">($${z.risk_first_only_usd.toFixed(2)} if only the first fills)</span></div>${merged}${warn}
     </article>`;
-  }).join(""):'<p class="muted">No trade passes the rules right now. Stay in cash.</p>';
+  };
+  const top=w.rows.slice(0,4), rest=w.rows.slice(4);
+  document.getElementById("wrows").innerHTML=w.rows.length?
+    `<h3 class="sub">Top picks · place 1–2 per wallet <span class="muted">(closest first order)</span></h3><div class="cards">${top.map(card).join("")}</div>`+
+    (rest.length?`<h3 class="sub">Further away</h3><div class="cards">${rest.map(card).join("")}</div>`:""):
+    '<p class="muted">No trade passes the rules right now. Stay in cash.</p>';
   const nt=w.trend_no_trade||[];
   const g={};(w.trend_no_trade||[]).forEach(x=>{const k=x.why.startsWith("best zone")?"below the 1.4 : 1 gate":x.why;(g[k]=g[k]||[]).push(`${x.coin} ${x.trend==="down"?"↓":"↑"}`);});
   document.getElementById("wnone").innerHTML=`<b>In a weekly trend, but no trade:</b> `+(Object.keys(g).length?Object.entries(g).map(([k,v])=>`${k[0].toUpperCase()+k.slice(1)}: ${v.join(", ")}`).join(". "):"none")+`. ${c.no_trend} coins have no clear weekly trend; ${c.too_young} have under 25 weeks of history.`;
