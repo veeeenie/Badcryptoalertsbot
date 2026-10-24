@@ -9,6 +9,7 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11161b;--panel:#182029;--soft:#1f2832;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;--accent:#8aa8ff;color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#11161b;--panel:#182029;--soft:#1f2832;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;--accent:#8aa8ff;color-scheme:dark}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;padding:0 16px}
 main{max-width:1040px;margin:0 auto;padding:28px 0 48px;display:grid;gap:14px;min-width:0}
 header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px}
@@ -46,6 +47,12 @@ details.idea>summary:hover{background:var(--soft)}
 .tile .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
 .tile .s{font-size:12px;color:var(--muted)}
 .orders td,.orders th{white-space:nowrap}
+.formrow{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end}
+.formrow label{display:grid;gap:3px;font-size:12.5px;color:var(--muted)}
+input,select,button{font:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);max-width:100%}
+button{cursor:pointer;background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
+button.link{background:none;color:var(--down);border:0;padding:0;font-weight:500;font-size:13px}
+code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
 
 /* tables that stack on phones */
 @media (max-width:700px){
@@ -61,7 +68,7 @@ details.idea>summary:hover{background:var(--soft)}
 </head>
 <body>
 <main>
-  <header><h1>Setup Desk</h1><a href="rules.html">Rule book</a></header>
+  <header><h1>Setup Desk</h1><span><a href="#alerts">Alerts</a> · <a href="rules.html">Rule book</a></span></header>
 
   <h2>Trade ideas</h2>
   <p class="muted" id="wmeta">Loading…</p>
@@ -81,6 +88,26 @@ details.idea>summary:hover{background:var(--soft)}
     <thead><tr><th>Trade</th><th>Opened</th><th>Entry</th><th>Stop</th><th>Take-profit</th><th>Exit</th><th>Net $</th><th>R</th></tr></thead>
     <tbody id="rows"><tr><td colspan="8" class="muted">Loading…</td></tr></tbody>
   </table></div>
+
+  <h2 id="alerts">Price alerts</h2>
+  <p class="muted">Telegram pings you when price reaches a level or line (checked hourly against the day's high and low). Adding or removing one opens a pre-filled GitHub issue: press <b>Create</b> and it's applied within a minute. You can also message the bot: <code>/alert DOT 1.30 note</code>, <code>/trendline COIN 2026-05-11 1.44 2026-09-21 1.307</code>, <code>/alerts</code>, <code>/remove ID</code> (answered at the next hourly check).</p>
+  <div class="box"><table class="stack">
+    <thead><tr><th>Alert</th><th>Level now</th><th>Price</th><th>Distance</th><th></th></tr></thead>
+    <tbody id="arows"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody>
+  </table></div>
+  <form id="aform" class="box" style="padding:12px 14px;display:grid;gap:10px">
+    <div class="formrow">
+      <label>Type <select id="atype"><option value="level">Price level</option><option value="trendline">Trendline (two points)</option></select></label>
+      <label>Coin <input id="acoin" required placeholder="DOT" size="8" autocapitalize="characters"></label>
+      <label class="lvl">Price <input id="aprice" inputmode="decimal" placeholder="1.30" size="10"></label>
+      <label class="tl" hidden>Point 1 date <input id="ad1" type="date"></label>
+      <label class="tl" hidden>Point 1 price <input id="ap1" inputmode="decimal" size="10"></label>
+      <label class="tl" hidden>Point 2 date <input id="ad2" type="date"></label>
+      <label class="tl" hidden>Point 2 price <input id="ap2" inputmode="decimal" size="10"></label>
+      <label style="flex:1 1 220px">Note <input id="anote" placeholder="e.g. rejection cluster" style="width:100%"></label>
+    </div>
+    <div><button type="submit">Add alert</button> <span class="muted" id="ahint"></span></div>
+  </form>
 </main>
 <script>
 const f=x=>x==null?"–":(Math.abs(x)>=1000?x.toLocaleString("en-US",{maximumFractionDigits:0}):Math.abs(x)>=1?x.toFixed(3):x.toPrecision(4));
@@ -200,6 +227,33 @@ async function live(){
 }
 document.addEventListener("journal-ready",()=>{live();setInterval(live,60000);});
 document.getElementById("lrefresh").addEventListener("click",e=>{e.preventDefault();live();});
+// ---- price alerts: list (with live distance), remove, add -> pre-filled GitHub issue
+const REPO="veeeenie/Badcryptoalertsbot";
+const issue=title=>window.open(`https://github.com/${REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent("Sent from the Setup Desk page. Press Create; the alert workflow applies it and closes this issue.")}`,"_blank","noopener");
+const lineNow=a=>{if(a.type==="level")return a.price;const t1=Date.parse(a.p1.date),t2=Date.parse(a.p2.date);return a.p1.price+(a.p2.price-a.p1.price)*(Date.now()-t1)/(t2-t1);};
+Promise.all([fetch("data/alerts.json?t="+Date.now()).then(r=>r.json()),HL({type:"allMids"}).catch(()=>({}))]).then(([cfg,mids])=>{
+  const al=cfg.alerts||[];
+  document.getElementById("arows").innerHTML=al.map(a=>{const lv=lineNow(a),px=mids[a.coin]?+mids[a.coin]:null;
+    return `<tr><td><b>${a.coin}</b> ${a.type==="level"?"level":"trendline"} <span class="muted">${a.name||""} · ID ${a.id}</span></td>
+      <td data-label="Level now">${f(lv)}</td><td data-label="Price">${px?f(px):"–"}</td>
+      <td data-label="Distance">${px?(lv>px?"+":"−")+pct(lv,px).toFixed(1)+"%":"–"}</td>
+      <td><button class="link" data-remove="${a.id}">remove</button></td></tr>`;}).join("")||'<tr><td colspan="5" class="muted">No alerts set.</td></tr>';
+  document.querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>issue(`/remove ${b.dataset.remove}`)));
+}).catch(()=>{document.getElementById("arows").innerHTML='<tr><td colspan="5" class="muted">Alerts not available.</td></tr>';});
+document.getElementById("atype").addEventListener("change",e=>{const tl=e.target.value==="trendline";
+  document.querySelectorAll(".tl").forEach(x=>x.hidden=!tl);document.querySelectorAll(".lvl").forEach(x=>x.hidden=tl);});
+document.getElementById("aform").addEventListener("submit",e=>{e.preventDefault();
+  const v=id=>document.getElementById(id).value.trim(), coin=v("acoin").toUpperCase(), note=v("anote"), hint=document.getElementById("ahint");
+  const n=x=>+String(x).replace(/[,$]/g,"");
+  let cmd;
+  if(v("atype")==="level"){ if(!coin||!(n(v("aprice"))>0)){hint.textContent="Enter a coin and a price.";return;} cmd=`/alert ${coin} ${n(v("aprice"))}`; }
+  else { if(!coin||!v("ad1")||!v("ad2")||!(n(v("ap1"))>0)||!(n(v("ap2"))>0)){hint.textContent="Enter the coin and both points.";return;}
+    cmd=`/trendline ${coin} ${v("ad1")} ${n(v("ap1"))} ${v("ad2")} ${n(v("ap2"))}`; }
+  if(note) cmd+=" "+note;
+  hint.textContent="Opened GitHub: press Create to apply. Refresh this page in a minute to see it.";
+  issue(cmd);
+});
+
 </script>
 </body>
 </html>

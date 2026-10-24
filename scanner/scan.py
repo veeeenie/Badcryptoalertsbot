@@ -1047,6 +1047,11 @@ def main():
                     "\n\n<b>Waiting for a daily close</b>\n" +
                     (", ".join(f"{x['coin']} {x['side']}" for x in waits) or "none") +
                     "\n\nYou'll get a ping when a new setup joins Act now, and when a wait turns into ENTER.")
+    try:                                            # /alert, /trendline, /alerts, /remove sent to the bot
+        import alerts_cmd
+        alerts_cmd.poll_telegram(state)
+    except Exception as e:
+        print("telegram commands error", e, file=sys.stderr)
     custom_msgs, custom_rows = check_custom_alerts(state)
     msgs.extend(custom_msgs)
     out["custom_alerts"] = custom_rows
@@ -1062,7 +1067,8 @@ def main():
             telegram(m)
             time.sleep(1)
     with open(STATE_PATH, "w") as f:
-        json.dump({"version": 3, "seen": new_seen, "alerted": alerted, "custom": state.get("custom", {}), "updated": now}, f)
+        json.dump({"version": 3, "seen": new_seen, "alerted": alerted, "custom": state.get("custom", {}),
+                   "tg_offset": state.get("tg_offset", 0), "updated": now}, f)
 
     print(f"setups: {len(all_setups)}, alerts: {len(msgs)}, errors: {len(errors)}, "
           f"time: {out['runtime_s']}s")

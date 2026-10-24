@@ -1,0 +1,48 @@
+name: Alert from the website
+
+# The dashboard's "Add alert" form opens a GitHub issue whose title is the command, e.g. "/alert DOT 1.30 short zone".
+# Only issues opened by the repo owner are acted on; anything else is ignored.
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: alerts
+  cancel-in-progress: false
+
+jobs:
+  alert:
+    if: github.event.issue.user.login == github.repository_owner && startsWith(github.event.issue.title, '/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - name: Run the command
+        id: run
+        env:
+          COMMAND: ${{ github.event.issue.title }}
+        run: |
+          python scanner/alerts_cmd.py --command "$COMMAND" > reply.txt
+          cat reply.txt
+      - name: Save alerts
+        if: steps.run.outputs.changed == '1'
+        run: |
+          git config user.name "setup-scanner"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs/data/alerts.json
+          git commit -q -m "Alert change from the website: issue #${{ github.event.issue.number }}"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
+      - name: Reply and close
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMBER: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$NUMBER" --repo "$GITHUB_REPOSITORY" --body-file reply.txt
+          gh issue close "$NUMBER" --repo "$GITHUB_REPOSITORY"
