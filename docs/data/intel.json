@@ -1,10 +1,10 @@
 {
- "generated_at": "2026-10-24T07:04:22Z",
+ "generated_at": "2026-10-25T02:24:09Z",
  "coins": {
   "HYPE": {
    "side": "long",
    "stance": "neutral",
-   "summary": "Treasury buying continues (Hyperliquid Strategies added about 130K HYPE and raised its buyback to $100M), but RWA perp share is slipping and the monthly core-contributor unlock lands Nov 6 (size not disclosed; the Oct batch was 3.75M HYPE). Mixed for the long.",
+   "summary": "Fundamentals lean positive for the long: Hyperliquid still earns about two-thirds of perp DEX fees and its treasury company keeps buying HYPE and expanded its buyback to $100M. Against that, its RWA perp share is slipping and the monthly core-contributor unlock lands Nov 6 (size not disclosed; October's was 3.75M HYPE). Mixed overall, with price sitting at the long's zone.",
    "news": [
     {
      "title": "Hyperliquid Strategies raises its share buyback from $30M to $100M, extended to Oct 2027",
@@ -12,14 +12,14 @@
      "date": "Oct 23"
     },
     {
-     "title": "Hyperliquid's share of RWA perp volume falls from about 80% to 26% as Binance and OKX compete",
-     "url": "https://fxstreet.com/cryptocurrencies/news/why-hyperliquid-is-losing-rwa-market-share-to-centralized-exchanges-202610230400",
+     "title": "Hyperliquid takes about 67.6% of all perp DEX fees over the past 30 days ($84.6M)",
+     "url": "https://tokenpost.com/news/investing/39061",
      "date": "Oct 23"
     },
     {
-     "title": "Hyperliquid Strategies buys about 130K HYPE this week; treasury now about 38.8M HYPE",
-     "url": "https://www.kucoin.com/news/flash/hyperliquid-strategies-buys-130-000-hype-tokens-worth-10-23m-this-week",
-     "date": "Oct 22"
+     "title": "Hyperliquid's share of RWA perp volume falls from about 80% to 26% as Binance and OKX compete",
+     "url": "https://fxstreet.com/cryptocurrencies/news/why-hyperliquid-is-losing-rwa-market-share-to-centralized-exchanges-202610230400",
+     "date": "Oct 23"
     }
    ],
    "unlocks": [
@@ -33,11 +33,22 @@
     }
    ]
   },
-  "REZ": {
+  "COMP": {
    "side": "short",
-   "stance": "neutral",
-   "summary": "No material news this week. About 91% of supply is already unlocked and major investor unlocks ended in September; a small insider tranche (about 0.8% of total supply) is listed for late October, but sources disagree on the date, so it is left off the calendar.",
-   "news": [],
+   "stance": "against",
+   "summary": "This week's news leans bullish, which works against the short: COMP jumped about 27% on Oct 20 with no clear catalyst, and Compound launched on Unichain with five new collateral assets. No vesting unlocks; nearly all COMP is already circulating.",
+   "news": [
+    {
+     "title": "COMP jumps about 27% in a day, outpacing BTC and ETH, while Compound TVL stays below September levels",
+     "url": "https://thedefiant.io/news/tokens/comp-jumps-27-outpacing-bitcoin-and-ether",
+     "date": "Oct 20"
+    },
+    {
+     "title": "Compound goes live on Unichain with wstETH, weETH, ezETH, BTC and UNI as collateral",
+     "url": "https://coinmarketcap.com/community/articles/6ad6c546c915691405ad05cf",
+     "date": "Oct 20"
+    }
+   ],
    "unlocks": []
   },
   "MORPHO": {
@@ -93,17 +104,11 @@
    "news": [],
    "unlocks": []
   },
-  "SKY": {
-   "side": "long",
+  "ANIME": {
+   "side": "short",
    "stance": "neutral",
-   "summary": "Only minor product news (the Basin liquidity launch). SKY is about 99.9% unlocked, so there is no vesting overhang, but nothing new drives the long either.",
-   "news": [
-    {
-     "title": "Sky's Prime Agent launches Basin, giving tokenized T-bill holders stablecoin liquidity while settlement is pending",
-     "url": "https://www.tokenpost.com/news/business/37537",
-     "date": "Oct 22"
-    }
-   ],
+   "summary": "No material news this week. About 55% of the 10B supply circulates; Tokenomist shows no unlocks in the next 14 days (the next listed, to Community Cultivation, is Nov 23, outside the window).",
+   "news": [],
    "unlocks": []
   },
   "WLFI": {
@@ -120,6 +125,11 @@
      "title": "USD1 supply drops about $401M (9%) in two weeks, mostly from one BNB Chain wallet",
      "url": "https://coinpaper.com/37601/wlfi-price-falls-6-as-trump-linked-usd-1-stablecoin-sees-401-m-in-redemptions",
      "date": "Oct 20"
+    },
+    {
+     "title": "WLFI's conditional OCC trust-bank charter draws fresh criticism from Sen. Warren",
+     "url": "https://www.tradingview.com/news/benzinga:6c13e094f094b:0-trump-family-linked-world-liberty-financial-wins-conditional-approval-to-launch-bank-elizabeth-warren-calls-it-brazen-self-dealing/",
+     "date": "Oct 23"
     }
    ],
    "unlocks": []
