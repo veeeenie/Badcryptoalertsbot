@@ -17,7 +17,7 @@ import os
 import sys
 import time
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 import requests
 
@@ -219,8 +219,76 @@ def main():
         json.dump(out, f, separators=(",", ":"))
 
 
+PORTFOLIO_OUT = os.path.join(ROOT, "docs", "data", "portfolio.json")
+PORTFOLIO_START = "2026-10-09"      # the chart starts with the journal (trader, 26 Oct 2026)
+IST = timezone(timedelta(hours=5, minutes=30))
+
+
+def week_ends(start, now):
+    """Fridays 23:59:59 IST from the first Friday on/after start, up to now (the review week is Sat-Fri IST)."""
+    d = datetime.fromisoformat(start).replace(tzinfo=IST)
+    while d.weekday() != 4:
+        d += timedelta(days=1)
+    out = []
+    while True:
+        end = d.replace(hour=23, minute=59, second=59)
+        if end > now:
+            break
+        out.append(end)
+        d += timedelta(days=7)
+    return out
+
+
+def portfolio():
+    """Weekly total account value per wallet (Hyperliquid's own account value: USDC including open P&L,
+    plus other tokens and lending), kept in docs/data/portfolio.json so the history outlives the API's 30-day window."""
+    try:
+        with open(PORTFOLIO_OUT) as f:
+            old = json.load(f)
+    except (OSError, ValueError):
+        old = {"weeks": []}
+    weeks = {w["week_end"]: w for w in old.get("weeks", [])}
+    now = datetime.now(timezone.utc)
+    current = {}
+    for address, _start in WALLETS:
+        label = "…" + address[-4:]
+        try:
+            pf = dict(hl({"type": "portfolio", "user": address}))
+        except Exception as e:
+            print("portfolio error", label, e, file=sys.stderr)
+            continue
+        pts = {}
+        for period in ("allTime", "month", "week", "day"):
+            for t, v in (pf.get(period) or {}).get("accountValueHistory", []):
+                pts[int(t)] = float(v)
+        series = sorted(pts.items())
+        if not series:
+            continue
+        current[label] = round(series[-1][1], 2)
+        for end in week_ends(PORTFOLIO_START, now):
+            key = end.date().isoformat()
+            before = [v for t, v in series if t <= end.timestamp() * 1000]
+            if before:
+                weeks.setdefault(key, {"week_end": key, "wallets": {}})["wallets"].setdefault(label, round(before[-1], 2))
+    rows = []
+    for key in sorted(weeks):
+        w = weeks[key]
+        w["total"] = round(sum(w["wallets"].values()), 2)
+        rows.append(w)
+    out = {"generated_at": now.isoformat(timespec="seconds"), "start": PORTFOLIO_START,
+           "note": "Week ends are Fridays 23:59 IST. Values include deposits and withdrawals.",
+           "weeks": rows, "current": current, "current_total": round(sum(current.values()), 2)}
+    with open(PORTFOLIO_OUT, "w") as f:
+        json.dump(out, f, indent=1)
+    print("portfolio:", out["current_total"], [(r["week_end"], r["total"]) for r in rows])
+
+
 if __name__ == "__main__":
     try:
         main()
     except Exception as e:             # never break the hourly scan because of the journal
         print("journal error:", e, file=sys.stderr)
+    try:
+        portfolio()
+    except Exception as e:
+        print("portfolio error:", e, file=sys.stderr)

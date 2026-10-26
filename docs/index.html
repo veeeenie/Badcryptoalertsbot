@@ -64,6 +64,13 @@ details.idea>summary:hover{background:var(--soft)}
 .tile .s{font-size:12px;color:var(--muted)}
 .orders td,.orders th{white-space:nowrap}
 .il{margin:4px 0 0;padding-left:18px;font-size:13.5px}
+.wcard{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.wrow{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.wrow:last-child{border-bottom:0}
+.wrow .n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrow.sub{padding-left:14px;font-size:13px;color:var(--muted)}
+.c5{fill:#2f5bd3} .c3{fill:#d08a1e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .c5{fill:#8aa8ff} :root:not([data-theme="light"]) .c3{fill:#f0b45a}}
 .il li{margin:2px 0}
 .formrow{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end}
 .formrow label{display:grid;gap:3px;font-size:12.5px;color:var(--muted)}
@@ -87,6 +94,7 @@ code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
 <body>
 <nav id="nav"><div class="navin">
   <span class="brand">Setup Desk</span>
+  <a href="#portfolio" data-sec="portfolio">Portfolio</a>
   <a href="#ideas" data-sec="ideas">Trade ideas</a>
   <a href="#journal" data-sec="journal">Journal</a>
   <a href="#closed" data-sec="closed">Closed trades</a>
@@ -94,6 +102,19 @@ code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
   <a href="rules.html" class="ext">Rule book</a>
 </div></nav>
 <main>
+  <details class="sec anchor" id="portfolio" open>
+  <summary><span class="st">Portfolio</span><span class="muted" id="pfhint">loading…</span></summary>
+  <div class="secbody">
+    <div class="tiles" id="pftiles"></div>
+    <div id="pfwallets" style="display:grid;gap:10px"></div>
+    <div class="box" style="padding:12px 14px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:baseline"><b>Total value, week on week</b><span class="muted" id="pfleg"></span></div>
+      <div id="pfchart" style="margin-top:8px"></div>
+      <div class="muted" id="pfnote" style="margin-top:6px"></div>
+    </div>
+  </div>
+  </details>
+
   <section id="ideas" class="anchor">
   <h2>Trade ideas</h2>
   <p class="muted" id="wmeta">Loading…</p>
@@ -323,7 +344,7 @@ document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("clic
   if(el.tagName==="DETAILS") el.open=true;
   el.scrollIntoView({behavior:"smooth",block:"start"}); history.replaceState(null,"","#"+a.dataset.sec); markActive();
 }));
-const secs=["ideas","journal","closed","alerts"].map(id=>document.getElementById(id));
+const secs=["portfolio","ideas","journal","closed","alerts"].map(id=>document.getElementById(id));
 let pinned=null;   // the section just tapped stays lit until you scroll yourself
 ["wheel","touchmove","keydown"].forEach(ev=>addEventListener(ev,()=>{pinned=null;},{passive:true}));
 function markActive(){
@@ -339,7 +360,78 @@ setNavH(); addEventListener("resize",setNavH);
 addEventListener("scroll",markActive,{passive:true}); addEventListener("resize",markActive);
 document.querySelectorAll("details.sec").forEach(d=>d.addEventListener("toggle",markActive));
 markActive();
+if(window.ResizeObserver) new ResizeObserver(()=>markActive()).observe(document.querySelector("main"));   // sections grow as data loads
 if(location.hash){const el=document.getElementById(location.hash.slice(1)); if(el&&el.tagName==="DETAILS") el.open=true;}
+
+// ---- portfolio: live totals per wallet (Hyperliquid account value), breakdown, and the weekly chart
+async function portfolioLive(){
+  const j=window.JOURNAL; if(!j) return;
+  const wallets=(j.wallets||[]).map(w=>({addr:w.address,label:w.label}));
+  try{
+    const dexs=(await HL({type:"perpDexs"})).filter(d=>d&&d.name).map(d=>d.name);
+    const mids=await HL({type:"allMids"});
+    const per=await Promise.all(wallets.map(async w=>{
+      const [pf,sp,fees,main,...dx]=await Promise.all([HL({type:"portfolio",user:w.addr}),HL({type:"spotClearinghouseState",user:w.addr}),HL({type:"userFees",user:w.addr}),
+        HL({type:"clearinghouseState",user:w.addr}),...dexs.map(d=>HL({type:"clearinghouseState",user:w.addr,dex:d}).catch(()=>null))]);
+      return {w,pf:Object.fromEntries(pf),sp,fees,states:[["",main],...dexs.map((d,i)=>[d,dx[i]])].filter(x=>x[1])};
+    }));
+    let tot=0,totFree=0,totTrades=0,totOther=0,totFees=0,totPnl=0;
+    const cards=per.map(({w,pf,sp,fees,states})=>{
+      const hist=(pf.day||pf.week||pf.allTime).accountValueHistory; const value=+hist[hist.length-1][1];
+      const usdc=(sp.balances||[]).find(b=>b.coin==="USDC")||{total:0,hold:0}, ut=+usdc.total, hold=+usdc.hold;
+      const rate=(+fees.userCrossRate||0.00045)*(1-(+fees.activeReferralDiscount||0));
+      const pos=[], idle=[]; let fee=0, pnl=0, inTrades=0;
+      states.forEach(([dex,st])=>{
+        const ps=(st.assetPositions||[]).filter(a=>+a.position.szi);
+        ps.forEach(a=>{const q=a.position, ntl=Math.abs(+q.positionValue), m=+q.marginUsed, u=+q.unrealizedPnl;
+          fee+=ntl*rate; pnl+=u; inTrades+=m;
+          pos.push(`<div class="wrow sub"><span>${q.coin.replace(/^\w+:/,"")} ${+q.szi>0?"long":"short"} · ${q.leverage.value}× ${q.leverage.type} · P&L <span class="${u>=0?"up":"down"}">${sgn(u)}</span></span><span class="n">${usd(m)}</span></div>`);});
+        if(!ps.length && dex && +st.marginSummary.accountValue>0) idle.push([dex,+st.marginSummary.accountValue]);
+      });
+      const idleSum=idle.reduce((a,b)=>a+b[1],0), free=ut-hold, other=value-ut;
+      tot+=value; totFree+=free; totTrades+=inTrades; totOther+=other+idleSum; totFees+=fee; totPnl+=pnl;
+      return `<div class="wcard"><div class="wrow"><b>Wallet ${w.label}</b><b class="n">${usd(value)}</b></div>
+        <div class="wrow"><span>In trades <span class="muted">(margin, open P&L included)</span></span><span class="n">${usd(inTrades)}</span></div>${pos.join("")||'<div class="wrow sub"><span>no open positions</span><span></span></div>'}
+        ${idle.map(([d,v])=>`<div class="wrow"><span>Parked on the ${d==="xyz"?"trade.xyz stock":d} market, not in a trade</span><span class="n">${usd(v)}</span></div>`).join("")}
+        <div class="wrow"><span>Free USDC</span><span class="n">${usd(free)}</span></div>
+        ${Math.abs(other)>=0.01?`<div class="wrow"><span>Other tokens and lending <span class="muted">(net)</span></span><span class="n">${usd(other)}</span></div>`:""}
+        <div class="wrow"><span>If you closed everything now <span class="muted">(after about ${usd(fee)} closing fees)</span></span><span class="n"><b>${usd(value-fee)}</b></span></div></div>`;
+    });
+    document.getElementById("pfwallets").innerHTML=cards.join("");
+    document.getElementById("pftiles").innerHTML=`
+      <div class="tile"><div class="k">Total, both wallets</div><div class="v">${usd(tot)}</div><div class="s">${usd(tot-totFees)} if you closed everything now</div></div>
+      <div class="tile"><div class="k">In trades</div><div class="v">${usd(totTrades)}</div><div class="s">open P&L <span class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</span></div></div>
+      <div class="tile"><div class="k">Free USDC</div><div class="v">${usd(totFree)}</div><div class="s">ready for new orders</div></div>
+      <div class="tile"><div class="k">Parked and other</div><div class="v">${usd(totOther)}</div><div class="s">idle on other markets, tokens, lending</div></div>`;
+    document.getElementById("pfhint").innerHTML=`<b>${usd(tot)}</b> · in trades ${usd(totTrades)} · free ${usd(totFree)} · checked ${ist(new Date().toISOString(),true)}`;
+    window.PF_NOW={total:tot, wallets:Object.fromEntries(per.map(({w,pf})=>{const h=(pf.day||pf.week||pf.allTime).accountValueHistory;return [w.label,+h[h.length-1][1]];}))};
+  }catch(e){
+    document.getElementById("pfhint").textContent=`couldn't reach Hyperliquid (${e.message}); the chart shows the last hourly snapshot`;
+  }
+  drawPortfolioChart();
+}
+function drawPortfolioChart(){
+  fetch("data/portfolio.json?t="+Date.now()).then(r=>r.json()).then(P=>{
+    const labels=Object.keys(P.current||{});
+    const rows=(P.weeks||[]).map(w=>({x:new Date(w.week_end+"T12:00:00Z"),name:ist(w.week_end+"T12:00:00Z").slice(0,6),wallets:w.wallets,total:w.total}));
+    const now=window.PF_NOW||{total:P.current_total,wallets:P.current};
+    rows.push({name:"Now",wallets:now.wallets,total:now.total});
+    const max=Math.max(...rows.map(r=>r.total))*1.12||1, W=Math.max(320,document.getElementById("pfchart").clientWidth||600), H=210, pad=34, bw=Math.min(70,(W-pad-10)/rows.length*0.6);
+    const step=(W-pad-10)/rows.length, y=v=>H-24-(v/max)*(H-44);
+    let svg=`<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="Total portfolio value by week">`;
+    [0,0.5,1].forEach(f=>{const v=max/1.12*f, yy=y(v);svg+=`<line x1="${pad}" x2="${W-6}" y1="${yy}" y2="${yy}" stroke="currentColor" stroke-opacity=".12"/><text x="${pad-4}" y="${yy+4}" text-anchor="end" font-size="10" fill="currentColor" opacity=".6">$${Math.round(v)}</text>`;});
+    rows.forEach((r,i)=>{const cx=pad+step*i+step/2; let base=0;
+      labels.forEach((l,k)=>{const v=(r.wallets||{})[l]||0; if(v<=0) return; const y1=y(base+v), y0=y(base);
+        svg+=`<rect class="${k===0?"c5":"c3"}" x="${cx-bw/2}" y="${y1}" width="${bw}" height="${Math.max(0,y0-y1)}" rx="2"><title>${l}: $${v.toFixed(2)}</title></rect>`; base+=v;});
+      svg+=`<text x="${cx}" y="${y(r.total)-5}" text-anchor="middle" font-size="11.5" font-weight="600" fill="currentColor">$${r.total.toFixed(0)}</text>`;
+      svg+=`<text x="${cx}" y="${H-8}" text-anchor="middle" font-size="11" fill="currentColor" opacity=".7">${r.name}</text>`;});
+    svg+="</svg>";
+    document.getElementById("pfchart").innerHTML=svg;
+    document.getElementById("pfleg").innerHTML=labels.map((l,k)=>`<svg width="10" height="10"><rect class="${k===0?"c5":"c3"}" width="10" height="10" rx="2"/></svg> ${l}`).join(" &nbsp; ");
+    document.getElementById("pfnote").textContent="Value at each Friday 23:59 IST (the review week), from Hyperliquid's account history, which is recorded about once a day. Deposits and withdrawals are included, so jumps can be money moved in or out, not trading. The 9-Oct value is from before that day's deposit.";
+  }).catch(()=>{document.getElementById("pfchart").innerHTML='<div class="muted">Weekly history not built yet; it appears after the next hourly check.</div>';});
+}
+document.addEventListener("journal-ready",()=>{portfolioLive();setInterval(portfolioLive,120000);});
 </script>
 </body>
 </html>
