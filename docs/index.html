@@ -347,15 +347,15 @@ document.addEventListener("ideas-ready",()=>{
     const when=I.generated_at?ist(I.generated_at,true):"";
     document.querySelectorAll(".intel").forEach(el=>{
       const c=(I.coins||{})[el.dataset.coin];
-      if(!c){el.innerHTML=`<h4>News &amp; unlocks</h4><div class="muted">Not checked yet. The daily news check runs at 07:47 IST.</div>`;return;}
+      if(!c){el.innerHTML=`<h4>News &amp; unlocks</h4><div class="muted">Not checked yet: this idea appeared after the last news check. The next check is at 07:47 or 19:47 IST, whichever comes first.</div>`;return;}
       const st=c.stance||"neutral", stc=st==="supports"?"up":st==="against"?"down":"muted";
-      const unl=(c.unlocks||(c.unlock?[c.unlock]:[])).map(u=>`<li><b>${u.date}</b>: ${u.amount||""}${u.pct_supply?` (${u.pct_supply}% of supply)`:""}${u.note?` · ${u.note}`:""}${u.source?` · <a href="${u.source}" target="_blank" rel="noopener">source</a>`:""}</li>`).join("");
-      const news=(c.news||[]).map(n=>`<li>${n.date?`<span class="muted">${n.date}</span> `:""}<a href="${n.url}" target="_blank" rel="noopener">${n.title}</a></li>`).join("");
+      const unl=(c.unlocks||(c.unlock?[c.unlock]:[])).map(u=>`<li><b>${u.date}</b>: ${u.amount||""}${u.pct_supply?` (${u.pct_supply}% of supply)`:""}${u.note?` · ${u.note}`:""}${u.source?` · <a href="${u.source}" target="_blank" rel="noopener">source</a>`:""}${u.new?' <b class="up">new</b>':""}</li>`).join("");
+      const news=(c.news||[]).map(n=>`<li>${n.date?`<span class="muted">${n.date}</span> `:""}<a href="${n.url}" target="_blank" rel="noopener">${n.title}</a>${n.new?' <b class="up">new</b>':""}</li>`).join("");
       el.innerHTML=`<h4>News &amp; unlocks <span class="pill ${stc}" style="text-transform:none;letter-spacing:0">${st==="supports"?"supports the trade":st==="against"?"works against the trade":"neutral"}</span></h4>
         <div style="font-size:14px">${c.summary||""}</div>
         <div class="muted" style="margin-top:6px">Unlocks in the next 14 days:</div>${unl?`<ul class="il">${unl}</ul>`:'<div style="font-size:13.5px">none found</div>'}
         ${news?`<div class="muted" style="margin-top:6px">News, last 7 days:</div><ul class="il">${news}</ul>`:""}
-        <div class="muted" style="margin-top:6px">Checked ${when}. From web searches; coverage of small coins can be thin.</div>`;
+        <div class="muted" style="margin-top:6px">Checked ${c.checked_at?ist(c.checked_at,true):when}. Checked at 07:47 IST for every idea, and at 19:47 IST for ideas added since. From web searches; coverage of small coins can be thin.</div>`;
       if(st==="against"){const sum=el.closest("details").querySelector("summary");sum.insertAdjacentHTML("beforeend",'<span class="sumitem warn">news against</span>');}
     });
   }).catch(()=>{document.querySelectorAll(".intel").forEach(el=>el.innerHTML='<h4>News &amp; unlocks</h4><div class="muted">Not available.</div>');});
