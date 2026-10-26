@@ -1,4 +1,4 @@
-name: Ticker lookup (temporary)
+name: STONK lookup (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,26 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          python3 - <<'PY'
-          import json, time, urllib.request
-          def hl(p):
-              r = urllib.request.Request("https://api.hyperliquid.xyz/info", data=json.dumps(p).encode(), headers={"Content-Type": "application/json"})
-              return json.load(urllib.request.urlopen(r, timeout=30))
-          want = ("CHIP", "STONK")
-          out = {"checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "perps": [], "spot": []}
-          dexs = [""] + [d["name"] for d in hl({"type": "perpDexs"}) if d and d.get("name")]
-          for d in dexs:
-              meta, ctxs = hl({"type": "metaAndAssetCtxs", "dex": d} if d else {"type": "metaAndAssetCtxs"})
-              for a, c in zip(meta["universe"], ctxs):
-                  if any(w in a["name"].upper() for w in want):
-                      out["perps"].append({"dex": d or "main", "asset": a, "ctx": c})
-          smeta, sctx = hl({"type": "spotMetaAndAssetCtxs"})
-          toks = {t["index"]: t for t in smeta["tokens"]}
-          for u, c in zip(smeta["universe"], sctx):
-              names = [toks[i]["name"] for i in u["tokens"]]
-              if any(any(w in n.upper() for w in want) for n in names):
-                  out["spot"].append({"pair": u, "tokens": names, "ctx": c, "token_info": [toks[i] for i in u["tokens"]]})
-          json.dump(out, open("ticker_check.json", "w"), indent=1)
-          PY
+          A=6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx
+          {
+          echo "== dexscreener token"; curl -s -i "https://api.dexscreener.com/latest/dex/tokens/$A" -H "Origin: https://veeeenie.github.io" | head -c 6000; echo
+          echo "== dexscreener search"; curl -s "https://api.dexscreener.com/latest/dex/search?q=STONK" | head -c 4000; echo
+          echo "== mexc ticker"; curl -s -i "https://api.mexc.com/api/v3/ticker/24hr?symbol=STONKUSDT" -H "Origin: https://veeeenie.github.io" | head -c 3000; echo
+          echo "== mexc exchangeInfo"; curl -s "https://api.mexc.com/api/v3/exchangeInfo?symbol=STONKUSDT" | head -c 2500; echo
+          } > stonk_check.txt 2>&1
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add ticker_check.json && git commit -qm "ticker check" && git push -q origin HEAD:debug-weekly
+          git add stonk_check.txt && git commit -qm "stonk check" && git push -q origin HEAD:debug-weekly
