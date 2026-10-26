@@ -44,6 +44,13 @@
       "address": "6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx",
       "added": "via chat, 2026-10-26",
       "also_on": "MEXC spot (STONK/USDT)"
+    },
+    {
+      "symbol": "BP",
+      "source": "dexscreener",
+      "chain": "solana",
+      "address": "BPxxfRCXkUVhig4HS1Lh7kZqV6SPJhzfEk4x6fVBjPCy",
+      "added": "via the website, 2026-10-26"
     }
   ]
 }
