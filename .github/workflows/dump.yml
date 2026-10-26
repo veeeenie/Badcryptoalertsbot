@@ -1,4 +1,4 @@
-name: Portfolio check (temporary)
+name: xyz balance check (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -16,24 +16,21 @@ jobs:
           def hl(p):
               r = urllib.request.Request("https://api.hyperliquid.xyz/info", data=json.dumps(p).encode(), headers={"Content-Type": "application/json"})
               return json.load(urllib.request.urlopen(r, timeout=30))
-          W = {"5EaE": "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE", "3991": "0xfb4e07C7BF05464e6206abc93873078f2fc53991"}
+          A = "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
           out = {"checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
-          dexs = [d["name"] for d in hl({"type": "perpDexs"}) if d and d.get("name")]
-          for k, a in W.items():
-              o = {}
-              for t in ("portfolio", "spotClearinghouseState", "userFees", "userAbstraction", "frontendOpenOrders"):
-                  try: o[t] = hl({"type": t, "user": a})
-                  except Exception as e: o[t] = "ERR " + str(e)
-              o["main"] = hl({"type": "clearinghouseState", "user": a})
-              for d in dexs:
-                  try:
-                      s = hl({"type": "clearinghouseState", "user": a, "dex": d})
-                      if s["assetPositions"] or float(s["marginSummary"]["accountValue"]): o["dex_" + d] = s
-                  except Exception as e: o["dexerr_" + d] = str(e)
-              try: o["ledger"] = hl({"type": "userNonFundingLedgerUpdates", "user": a, "startTime": 1759968000000})
-              except Exception as e: o["ledger"] = "ERR " + str(e)
-              out[k] = o
-          json.dump(out, open("portfolio_check.json", "w"), indent=1)
+          for name, p in {
+              "xyz_state": {"type": "clearinghouseState", "user": A, "dex": "xyz"},
+              "main_state": {"type": "clearinghouseState", "user": A},
+              "spot": {"type": "spotClearinghouseState", "user": A},
+              "orders_main": {"type": "frontendOpenOrders", "user": A},
+              "orders_xyz": {"type": "frontendOpenOrders", "user": A, "dex": "xyz"},
+              "fills": {"type": "userFillsByTime", "user": A, "startTime": 1759968000000},
+              "ledger": {"type": "userNonFundingLedgerUpdates", "user": A, "startTime": 1759968000000},
+              "abstraction": {"type": "userAbstraction", "user": A},
+          }.items():
+              try: out[name] = hl(p)
+              except Exception as e: out[name] = "ERR " + str(e)
+          json.dump(out, open("xyz_check.json", "w"), indent=1)
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add portfolio_check.json && git commit -qm "portfolio check" && git push -q origin HEAD:debug-weekly
+          git add xyz_check.json && git commit -qm "xyz check" && git push -q origin HEAD:debug-weekly
