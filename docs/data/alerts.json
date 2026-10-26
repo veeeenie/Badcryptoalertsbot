@@ -18,18 +18,6 @@
       "touch_pct": 1.0
     },
     {
-      "id": "PONS-321",
-      "coin": "PONS",
-      "type": "level",
-      "price": 0.321,
-      "name": "PONS daily 100 EMA area (~$321M market cap), first resistance",
-      "touch_pct": 1.0,
-      "source": "Trader's TradingView market-cap chart, 20 Oct 2026 (market cap ≈ price × 1B)",
-      "meaning_touch": "First hurdle of the 320–390M resistance band: a daily rejection here is the short idea; a daily close above opens 375–390M.",
-      "meaning_above": "Reclaimed the daily 100 EMA: next resistance 375–390M (daily 25/50 EMAs + 0.618 fib).",
-      "meaning_below": "Lost it again: resistance holds."
-    },
-    {
       "id": "PONS-242",
       "coin": "PONS",
       "type": "level",
