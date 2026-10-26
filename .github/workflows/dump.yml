@@ -1,4 +1,4 @@
-name: JIO market check (temporary)
+name: Portfolio check (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -16,29 +16,24 @@ jobs:
           def hl(p):
               r = urllib.request.Request("https://api.hyperliquid.xyz/info", data=json.dumps(p).encode(), headers={"Content-Type": "application/json"})
               return json.load(urllib.request.urlopen(r, timeout=30))
+          W = {"5EaE": "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE", "3991": "0xfb4e07C7BF05464e6206abc93873078f2fc53991"}
           out = {"checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
-          dexs = hl({"type": "perpDexs"}); out["perpDexs"] = dexs
-          for d in dexs:
-              if not d or not d.get("name"): continue
-              try:
-                  meta, ctxs = hl({"type": "metaAndAssetCtxs", "dex": d["name"]})
-              except Exception as e:
-                  out["err_" + d["name"]] = str(e); continue
-              for a, c in zip(meta["universe"], ctxs):
-                  if "JIO" in a["name"].upper():
-                      key = a["name"]
-                      out[key] = {"dex": d["name"], "asset": a, "ctx": c}
-                      end = int(time.time() * 1000)
-                      for itv, days in (("1h", 7), ("1d", 60)):
-                          try:
-                              out[key]["candles_" + itv] = hl({"type": "candleSnapshot", "req": {"coin": key, "interval": itv, "startTime": end - days * 86400000, "endTime": end}})
-                          except Exception as e:
-                              out[key]["candles_err_" + itv] = str(e)
-                      try:
-                          out[key]["funding"] = hl({"type": "fundingHistory", "coin": key, "startTime": end - 7 * 86400000})
-                      except Exception as e:
-                          out[key]["funding_err"] = str(e)
-          json.dump(out, open("jio_check.json", "w"), indent=1)
+          dexs = [d["name"] for d in hl({"type": "perpDexs"}) if d and d.get("name")]
+          for k, a in W.items():
+              o = {}
+              for t in ("portfolio", "spotClearinghouseState", "userFees", "userAbstraction", "frontendOpenOrders"):
+                  try: o[t] = hl({"type": t, "user": a})
+                  except Exception as e: o[t] = "ERR " + str(e)
+              o["main"] = hl({"type": "clearinghouseState", "user": a})
+              for d in dexs:
+                  try:
+                      s = hl({"type": "clearinghouseState", "user": a, "dex": d})
+                      if s["assetPositions"] or float(s["marginSummary"]["accountValue"]): o["dex_" + d] = s
+                  except Exception as e: o["dexerr_" + d] = str(e)
+              try: o["ledger"] = hl({"type": "userNonFundingLedgerUpdates", "user": a, "startTime": 1759968000000})
+              except Exception as e: o["ledger"] = "ERR " + str(e)
+              out[k] = o
+          json.dump(out, open("portfolio_check.json", "w"), indent=1)
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add jio_check.json && git commit -qm "jio check" && git push -q origin HEAD:debug-weekly
+          git add portfolio_check.json && git commit -qm "portfolio check" && git push -q origin HEAD:debug-weekly
