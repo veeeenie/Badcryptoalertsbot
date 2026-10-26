@@ -18,18 +18,6 @@
       "touch_pct": 1.0
     },
     {
-      "id": "PONS-242",
-      "coin": "PONS",
-      "type": "level",
-      "price": 0.242,
-      "name": "PONS weekly 25 EMA area (~$242M), top of the 222–242M support",
-      "touch_pct": 1.0,
-      "source": "Trader's TradingView market-cap chart, 20 Oct 2026 (market cap ≈ price × 1B)",
-      "meaning_touch": "Into the 222–242M support zone. No long until a daily candle closes back up (rule 6: strong move).",
-      "meaning_above": "Daily close back above the top of support after trading below it: the confirmation for a long idea (discretionary, $2 risk).",
-      "meaning_below": "Daily close inside the support zone; 222M (0.786 fib) is next."
-    },
-    {
       "id": "PONS-222",
       "coin": "PONS",
       "type": "level",
