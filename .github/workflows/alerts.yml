@@ -37,7 +37,7 @@ jobs:
           git config user.name "setup-scanner"
           git config user.email "actions@users.noreply.github.com"
           git add docs/data/alerts.json
-          git commit -q -m "Alert change from the website: issue #${{ github.event.issue.number }}"
+          git commit -q -m "Alert or watchlist change from the website: issue #${{ github.event.issue.number }}"
           for i in 1 2 3; do git pull -q --rebase origin main && git push -q origin HEAD:main && break; sleep 5; done
       - name: Reply and close
         env:

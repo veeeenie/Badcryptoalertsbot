@@ -104,6 +104,7 @@ code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
   <a href="#journal" data-sec="journal">Journal</a>
   <a href="#closed" data-sec="closed">Closed trades</a>
   <a href="#alerts" data-sec="alerts">Price alerts</a>
+  <a href="#watch" data-sec="watch">Watchlist</a>
   <a href="rules.html" class="ext">Rule book</a>
 </div></nav>
 <main>
@@ -172,6 +173,23 @@ code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
       <label style="flex:1 1 220px">Note <input id="anote" placeholder="e.g. rejection cluster" style="width:100%"></label>
     </div>
     <div><button type="submit">Add alert</button> <span class="muted" id="ahint"></span></div>
+  </form>
+  </div>
+  </details>
+
+  <details class="sec anchor" id="watch" open>
+  <summary><span class="st">Watchlist</span><span class="muted" id="wlhint"></span></summary>
+  <div class="secbody">
+  <p class="muted">Live prices, refreshed every minute. Hyperliquid perps come from Hyperliquid; on-chain tokens from DexScreener (deepest pool). Add or remove here (opens a pre-filled GitHub issue: press <b>Create</b>) or message the bot: <code>/watch CHIP</code>, <code>/watch TOKEN_ADDRESS</code>, <code>/unwatch CHIP</code>, <code>/watchlist</code>.</p>
+  <div class="box"><table class="stack">
+    <thead><tr><th>Ticker</th><th>Price</th><th>24h</th><th>24h volume</th><th>Market</th><th>Nearest alert</th><th></th></tr></thead>
+    <tbody id="wlrows"><tr><td colspan="7" class="muted">Loading…</td></tr></tbody>
+  </table></div>
+  <form id="wlform" class="box" style="padding:12px 14px;display:grid;gap:10px">
+    <div class="formrow">
+      <label style="flex:1 1 260px">Hyperliquid coin or token contract address <input id="wlcoin" required placeholder="CHIP, xyz:JIO, or 6GmAFSY…" style="width:100%"></label>
+    </div>
+    <div><button type="submit">Add to watchlist</button> <span class="muted" id="wlfhint"></span></div>
   </form>
   </div>
   </details>
@@ -340,6 +358,48 @@ document.getElementById("aform").addEventListener("submit",e=>{e.preventDefault(
   issue(cmd);
 });
 
+// ---- watchlist: Hyperliquid perps (any dex) and on-chain tokens via DexScreener, live
+const big$=x=>x==null||isNaN(x)?"–":"$"+(x>=1e9?(x/1e9).toFixed(2)+"B":x>=1e6?(x/1e6).toFixed(2)+"M":x>=1e3?(x/1e3).toFixed(1)+"k":x.toFixed(0));
+const chg=x=>x==null||isNaN(x)?"–":`<span class="${x>=0?"up":"down"}">${x>=0?"+":"−"}${Math.abs(x).toFixed(2)}%</span>`;
+async function watchRows(){
+  const cfg=await fetch("data/alerts.json?t="+Date.now()).then(r=>r.json());
+  const W=cfg.watch||[], al=cfg.alerts||[];
+  document.getElementById("wlhint").textContent=`${W.length} coin${W.length===1?"":"s"}`;
+  const dexes=[...new Set(W.filter(w=>w.source==="hyperliquid").map(w=>w.coin.includes(":")?w.coin.split(":")[0]:""))];
+  const ctx={};
+  await Promise.all(dexes.map(d=>HL({type:"metaAndAssetCtxs",...(d?{dex:d}:{})}).then(([m,c])=>m.universe.forEach((a,i)=>ctx[a.name]=c[i])).catch(()=>{})));
+  const rows=await Promise.all(W.map(async w=>{
+    let r={w};
+    try{
+      if(w.source==="hyperliquid"){const c=ctx[w.coin]; if(c){const px=+c.markPx,prev=+c.prevDayPx;
+        r={w,px,ch:prev?100*(px/prev-1):null,vol:+c.dayNtlVlm,
+           mkt:`Hyperliquid perp · funding ${(+c.funding*100).toFixed(4)}%/h · OI ${big$(+c.openInterest*px)}`};}}
+      else{const d=await fetch("https://api.dexscreener.com/latest/dex/tokens/"+w.address).then(r=>r.json());
+        const ps=(d.pairs||[]).filter(p=>p.baseToken.address.toLowerCase()===w.address.toLowerCase());
+        if(ps.length){const p=ps.reduce((a,b)=>((b.liquidity||{}).usd||0)>((a.liquidity||{}).usd||0)?b:a);
+          const vol=ps.reduce((a,q)=>a+((q.volume||{}).h24||0),0), liq=ps.reduce((a,q)=>a+((q.liquidity||{}).usd||0),0);
+          r={w,px:+p.priceUsd,ch:(p.priceChange||{}).h24,vol,url:p.url,
+             mkt:`${w.chain} DEX${p.marketCap||p.fdv?` · mcap ${big$(p.marketCap||p.fdv)}`:""} · liquidity ${big$(liq)}${w.also_on?` · also on ${w.also_on}`:""}`};}}
+    }catch(e){}
+    return r;}));
+  document.getElementById("wlrows").innerHTML=rows.map(({w,px,ch,vol,mkt,url})=>{
+    const near=px?al.filter(a=>a.coin===(w.coin||w.symbol)).map(a=>({a,lv:lineNow(a)})).sort((x,y)=>Math.abs(x.lv-px)-Math.abs(y.lv-px))[0]:null;
+    const name=w.source==="hyperliquid"?w.coin:w.symbol;
+    return `<tr><td><b>${url?`<a href="${url}" target="_blank" rel="noopener">${name}</a>`:name}</b></td>
+      <td data-label="Price">${px?"$"+f(px):'<span class="muted">not available</span>'}</td><td data-label="24h">${chg(ch)}</td>
+      <td data-label="24h volume">${big$(vol)}</td><td data-label="Market" class="muted" style="font-size:13px">${mkt||""}</td>
+      <td data-label="Nearest alert">${near?`${f(near.lv)} <span class="muted">(${near.lv>px?"+":"−"}${pct(near.lv,px).toFixed(1)}%)</span>`:'<span class="muted">none</span>'}</td>
+      <td><button class="link" data-unwatch="${w.symbol}">remove</button></td></tr>`;}).join("")||'<tr><td colspan="7" class="muted">Nothing on the watchlist.</td></tr>';
+  document.querySelectorAll("[data-unwatch]").forEach(b=>b.addEventListener("click",()=>issue(`/unwatch ${b.dataset.unwatch}`)));
+}
+const wl=()=>watchRows().catch(()=>{document.getElementById("wlrows").innerHTML='<tr><td colspan="7" class="muted">Watchlist not available.</td></tr>';});
+wl(); setInterval(wl,60000);
+document.getElementById("wlform").addEventListener("submit",e=>{e.preventDefault();
+  const v=document.getElementById("wlcoin").value.trim(), hint=document.getElementById("wlfhint");
+  if(!v){hint.textContent="Enter a coin or a token address.";return;}
+  hint.textContent="Opened GitHub: press Create to apply. Refresh this page in a minute to see it.";
+  issue(`/watch ${v.length>=30&&!v.includes(":")?v:v.toUpperCase().replace(/^([A-Z0-9]+):/,m=>m.toLowerCase())}`);
+});
 
 // ---- news and unlocks (written once a day by the news task) inside each trade idea card
 document.addEventListener("ideas-ready",()=>{
@@ -367,7 +427,7 @@ document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("clic
   if(el.tagName==="DETAILS") el.open=true;
   el.scrollIntoView({behavior:"smooth",block:"start"}); history.replaceState(null,"","#"+a.dataset.sec); markActive();
 }));
-const secs=["portfolio","ideas","journal","closed","alerts"].map(id=>document.getElementById(id));
+const secs=["portfolio","ideas","journal","closed","alerts","watch"].map(id=>document.getElementById(id));
 let pinned=null;   // the section just tapped stays lit until you scroll yourself
 ["wheel","touchmove","keydown"].forEach(ev=>addEventListener(ev,()=>{pinned=null;},{passive:true}));
 function markActive(){

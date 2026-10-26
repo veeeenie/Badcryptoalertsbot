@@ -53,5 +53,21 @@
       "meaning_above": "Daily close back above the zone bottom: a bounce attempt; confirmation is a close back above 242M.",
       "meaning_below": "Daily close below the support zone: no long; the pump has fully unwound toward the base."
     }
+  ],
+  "watch": [
+    {
+      "symbol": "CHIP",
+      "source": "hyperliquid",
+      "coin": "CHIP",
+      "added": "via chat, 2026-10-26"
+    },
+    {
+      "symbol": "STONK",
+      "source": "dexscreener",
+      "chain": "solana",
+      "address": "6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx",
+      "added": "via chat, 2026-10-26",
+      "also_on": "MEXC spot (STONK/USDT)"
+    }
   ]
 }

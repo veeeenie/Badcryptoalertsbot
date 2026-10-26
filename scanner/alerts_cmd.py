@@ -9,6 +9,11 @@ Commands (case doesn't matter for the coin):
   /trendline COIN YYYY-MM-DD PRICE YYYY-MM-DD PRICE [note]   straight line through two points
   /alerts                                                   list active alerts
   /remove ID                                                remove one alert (IDs are shown by /alerts)
+  /watch COIN                                               add a Hyperliquid perp to the watchlist (xyz:JIO for HIP-3)
+  /watch TOKEN_ADDRESS                                      add an on-chain token (price from DexScreener)
+  /unwatch SYMBOL                                           remove it from the watchlist
+  /watchlist                                                list it
+The watchlist lives in alerts.json under "watch"; the website shows live prices for it.
 Alerts are checked by the hourly scan (check_custom_alerts in scan.py) against the day's high and low.
 """
 import json
@@ -26,7 +31,11 @@ HELP = ("Commands:\n"
         "/alert COIN PRICE [note]\n"
         "/trendline COIN YYYY-MM-DD PRICE YYYY-MM-DD PRICE [note]\n"
         "/alerts  (list)\n"
-        "/remove ID")
+        "/remove ID\n"
+        "/watch COIN  or  /watch TOKEN_ADDRESS\n"
+        "/unwatch SYMBOL\n"
+        "/watchlist")
+DEX_URL = "https://api.dexscreener.com/latest/dex/tokens/"
 
 
 def load():
@@ -53,6 +62,71 @@ def markets():
     return out
 
 
+def hl_coin(name):
+    """Exact Hyperliquid coin name and mark for COIN or dex:COIN (HIP-3), or None."""
+    dex = name.split(":")[0].lower() if ":" in name else ""
+    body = {"type": "metaAndAssetCtxs", **({"dex": dex} if dex else {})}
+    meta, ctxs = requests.post(HL_URL, json=body, timeout=30).json()
+    for a, c in zip(meta["universe"], ctxs):
+        if a["name"].upper() == (f"{dex}:{name.split(':')[1]}" if dex else name).upper() and not a.get("isDelisted"):
+            return a["name"], float(c.get("markPx") or 0)
+    return None
+
+
+def dex_token(addr):
+    """(symbol, chain, price, liquidity) of the deepest DexScreener pair for a token address, or None."""
+    pairs = (requests.get(DEX_URL + addr, timeout=30).json() or {}).get("pairs") or []
+    pairs = [p for p in pairs if p.get("baseToken", {}).get("address", "").lower() == addr.lower()]
+    if not pairs:
+        return None
+    p = max(pairs, key=lambda p: (p.get("liquidity") or {}).get("usd") or 0)
+    return p["baseToken"]["symbol"].upper(), p["chainId"], float(p.get("priceUsd") or 0), (p.get("liquidity") or {}).get("usd") or 0
+
+
+def watch_cmd(cmd, parts, cfg, source):
+    watch = cfg.setdefault("watch", [])
+    if cmd == "/watchlist":
+        if not watch:
+            return "Watchlist is empty.", False
+        return "Watchlist:\n" + "\n".join(
+            f"• {w['symbol']}" + (f" (Hyperliquid {w['coin']})" if w["source"] == "hyperliquid" else f" ({w['chain']} token {w['address'][:6]}…)")
+            for w in watch), False
+    if len(parts) < 2:
+        return "Usage: /watch COIN  or  /watch TOKEN_ADDRESS   ·   /unwatch SYMBOL", False
+    arg = parts[1]
+    if cmd == "/unwatch":
+        keep = [w for w in watch if w["symbol"].upper() != arg.upper() and w.get("address", "").lower() != arg.lower()]
+        if len(keep) == len(watch):
+            return f"{arg} isn't on the watchlist.", False
+        cfg["watch"] = keep
+        save(cfg)
+        return f"Removed {arg.upper()} from the watchlist.", True
+    today = datetime.now(timezone.utc).date().isoformat()
+    try:
+        if len(arg) >= 30 and ":" not in arg:          # a token contract address
+            t = dex_token(arg)
+            if not t:
+                return f"DexScreener has no trading pair for {arg}.", False
+            sym, chain, px, liq = t
+            if any(w.get("address", "").lower() == arg.lower() for w in watch):
+                return f"{sym} is already on the watchlist.", False
+            watch.append({"symbol": sym, "source": "dexscreener", "chain": chain, "address": arg, "added": f"via {source}, {today}"})
+            save(cfg)
+            return f"👀 Watching {sym} ({chain}): ${fmt(px)}, deepest pool ${liq:,.0f} liquidity.", True
+        c = hl_coin(arg)
+        if not c:
+            return (f"{arg} isn't a Hyperliquid perp I can find. For an on-chain token, send its contract address: "
+                    "/watch TOKEN_ADDRESS"), False
+        name, mark = c
+        if any(w.get("coin") == name for w in watch):
+            return f"{name} is already on the watchlist.", False
+        watch.append({"symbol": name.split(":")[-1], "source": "hyperliquid", "coin": name, "added": f"via {source}, {today}"})
+        save(cfg)
+        return f"👀 Watching {name}: ${fmt(mark)} on Hyperliquid.", True
+    except Exception as e:
+        return f"Couldn't check {arg} right now ({e}). Try again later.", False
+
+
 def num(s):
     s = s.replace(",", "").replace("$", "")
     v = float(s)
@@ -77,6 +151,8 @@ def handle(text, source="telegram"):
     cmd = parts[0].lower().split("@")[0]          # "/alert@Badcryptoalertsbot" in groups
     cfg = load()
     alerts = cfg.setdefault("alerts", [])
+    if cmd in ("/watch", "/unwatch", "/watchlist"):
+        return watch_cmd(cmd, parts, cfg, source)
     if cmd in ("/alerts", "/list"):
         if not alerts:
             return "No alerts set.", False
