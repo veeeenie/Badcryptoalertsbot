@@ -1,0 +1,30 @@
+{
+ "checked_at": "2026-10-26T19:32:24Z",
+ "perps": [
+  {
+   "dex": "main",
+   "asset": {
+    "szDecimals": 0,
+    "name": "CHIP",
+    "maxLeverage": 3,
+    "marginTableId": 3
+   },
+   "ctx": {
+    "funding": "0.0000125",
+    "openInterest": "321790574.0",
+    "prevDayPx": "0.045318",
+    "dayNtlVlm": "16184007.8470559996",
+    "premium": "0.0",
+    "oraclePx": "0.054438",
+    "markPx": "0.054446",
+    "midPx": "0.054447",
+    "impactPxs": [
+     "0.054354",
+     "0.054507"
+    ],
+    "dayBaseVlm": "317305531.0"
+   }
+  }
+ ],
+ "spot": []
+}
