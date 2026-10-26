@@ -1,23 +1,32 @@
 {
- "generated_at": "2026-10-26T02:20:23Z",
+ "generated_at": "2026-10-26T14:22:59Z",
  "coins": {
   "ZEC": {
    "side": "long",
    "stance": "supports",
-   "summary": "The NU7 upgrade is set for about Nov 5 (block 3,543,405): 25-second blocks and a mechanism that takes 60% of block fees out of circulation until 2031, and ZEC rallied when the height was finalized. No vesting unlocks (proof-of-work issuance only). Supports the long, with some risk of an upgrade delay.",
+   "summary": "NU7 is about 10 days out (around Nov 5): 25-second blocks, Sprout pool disabled, and 60% of fees taken out of circulation, with node operators told to run Zebra 7.0.0. ZEC is up about 7% today; no vesting unlocks (PoW issuance only), so the main risk is an upgrade slip.",
    "news": [
     {
-     "title": "Zcash devs finalize NU7 mainnet activation height 3,543,405, targeting around Nov 5; ZEC up about 12%",
-     "url": "https://www.kucoin.com/news/flash/zcash-jumps-12-after-nu7-upgrade-activation-height-finalized",
-     "date": "Oct 21"
+     "title": "NU7 roughly 10 days away: Sprout pool to be disabled, operators must run Zebra 7.0.0 before block 3,543,405",
+     "url": "https://u.today/10-days-left-zcash-set-to-cut-block-times-to-25-seconds",
+     "date": "Oct 26",
+     "new": true
     },
     {
      "title": "Privacy coins ZEC and XMR outperform Bitcoin on the week ahead of NU7, which cuts block time to 25s and sets aside 60% of fees",
      "url": "https://247wallst.com/investing/cryptocurrency/2026/10/25/monero-xmr-and-zcash-zec-beat-bitcoin-this-week-can-the-privacy-coins-keep-it-up",
-     "date": "Oct 25"
+     "date": "Oct 25",
+     "new": false
+    },
+    {
+     "title": "Zcash devs finalize NU7 mainnet activation height 3,543,405, targeting around Nov 5; ZEC up about 12%",
+     "url": "https://www.kucoin.com/news/flash/zcash-jumps-12-after-nu7-upgrade-activation-height-finalized",
+     "date": "Oct 21",
+     "new": false
     }
    ],
-   "unlocks": []
+   "unlocks": [],
+   "checked_at": "2026-10-26T14:22:59Z"
   },
   "MORPHO": {
    "side": "long",
@@ -40,69 +49,86 @@
      "date": "Oct 21"
     }
    ],
-   "unlocks": []
+   "unlocks": [],
+   "checked_at": "2026-10-26T02:20:23Z"
   },
   "DOT": {
    "side": "short",
    "stance": "supports",
-   "summary": "Negative headlines support the short: the Fearless Wallet seed-phrase leak, a JAM migration with no mainnet date, and relay-chain fees reported as far above rivals. No vesting unlocks; issuance runs at about 55M DOT a year under the hard cap.",
+   "summary": "Headlines still lean against DOT: the Fearless Wallet key leak, a near-empty relay chain after the Asset Hub move, and CoinShares closing its Stockholm Polkadot staking ETP (last trading ~Nov 4, redemption Nov 9), which could mean some DOT sold. No vesting unlocks; only regular issuance under the hard cap.",
    "news": [
     {
-     "title": "Fearless Wallet extension found leaking recovery phrases; users told to move funds after about 17K DOT taken",
-     "url": "https://www.cryptopolitan.com/fearless-wallet-leaked-polkadot-private-keys/",
-     "date": "Oct 21"
-    },
-    {
-     "title": "Polkadot publishes a JAM migration roadmap with no mainnet date",
-     "url": "https://tokenpost.com/news/technology/36995",
-     "date": "Oct 21"
+     "title": "CoinShares to redeem seven Stockholm-listed ETPs including its Polkadot staking product; last trading around Nov 4, redemption Nov 9",
+     "url": "https://www.tokenpost.com/news/investing/39711",
+     "date": "Oct 24",
+     "new": true
     },
     {
      "title": "Relay chain nearly emptied after the Asset Hub migration; a referendum to rename to JAM fails",
      "url": "https://cryptoticker.io/en/polkadot-relay-chain-jam-rebuild/",
-     "date": "Oct 23"
+     "date": "Oct 23",
+     "new": false
+    },
+    {
+     "title": "Fearless Wallet extension found leaking recovery phrases; users told to move funds after about 17K DOT taken",
+     "url": "https://www.cryptopolitan.com/fearless-wallet-leaked-polkadot-private-keys/",
+     "date": "Oct 21",
+     "new": false
     }
    ],
-   "unlocks": []
+   "unlocks": [],
+   "checked_at": "2026-10-26T14:22:59Z"
   },
   "WCT": {
    "side": "short",
    "stance": "neutral",
    "summary": "Nothing material this week. Monthly unlocks fall on the 15th; the next (Nov 15) is outside the 14-day window.",
    "news": [],
-   "unlocks": []
+   "unlocks": [],
+   "checked_at": "2026-10-26T02:20:23Z"
   },
   "LIT": {
    "side": "long",
    "stance": "supports",
-   "summary": "News supports the long: Lighter plans to apply for CFTC licenses in November, Delphi called it the clearest second bet after Hyperliquid, and it added options and weETH collateral. No unlocks in the window; the big team/investor cliff (50% of supply) is Dec 27, which matters if the trade is still open then.",
+   "summary": "Still supportive for the long: a November CFTC license filing, new options and weETH collateral, and nearly all revenue (~$2.8M over 30 days) going to LIT buybacks; it gave back ~9% on Oct 23 with the market. No unlocks in the window; the big team/investor cliff is in late December.",
    "news": [
-    {
-     "title": "Lighter founder says it will apply for US CFTC derivatives licenses in November; LIT up about 23% on the week",
-     "url": "https://beincrypto.com/lighter-token-rally-cftc-license-november/",
-     "date": "Oct 22"
-    },
     {
      "title": "Lighter adds ether.fi's weETH as perp collateral after launching 15-minute BTC/ETH up/down options",
      "url": "https://coinmarketcap.com/cmc-ai/lighter/latest-updates/",
-     "date": "Oct 24"
+     "date": "Oct 24",
+     "new": false
+    },
+    {
+     "title": "Lighter routes almost all of ~$2.8M monthly revenue into LIT buybacks; LIT stalls below $4",
+     "url": "https://www.kucoin.com/news/flash/lighter-lit-struggles-to-sustain-rally-above-4-amid-buybacks-and-cftc-licensing-plans",
+     "date": "Oct 22",
+     "new": true
+    },
+    {
+     "title": "Lighter founder says it will apply for US CFTC derivatives licenses in November; LIT up about 23% on the week",
+     "url": "https://beincrypto.com/lighter-token-rally-cftc-license-november/",
+     "date": "Oct 22",
+     "new": false
     }
    ],
-   "unlocks": []
+   "unlocks": [],
+   "checked_at": "2026-10-26T14:22:59Z"
   },
   "ANIME": {
    "side": "short",
    "stance": "neutral",
-   "summary": "No material news this week. Tokenomist shows no unlocks in the next 14 days (the next listed, to Community Cultivation, is Nov 23, outside the window).",
+   "summary": "No material news this week. Tokenomist shows no unlocks in the next 14 days; the next (to Community Cultivation) is Nov 23, outside the window.",
    "news": [],
-   "unlocks": []
+   "unlocks": [],
+   "checked_at": "2026-10-26T14:22:59Z"
   },
   "BERA": {
    "side": "short",
    "stance": "neutral",
    "summary": "No material news this week. DefiLlama lists no BERA unlocks scheduled after Oct 25; only ongoing validator and reward-vault emissions, which add a little supply.",
    "news": [],
-   "unlocks": []
+   "unlocks": [],
+   "checked_at": "2026-10-26T02:20:23Z"
   }
  }
 }
