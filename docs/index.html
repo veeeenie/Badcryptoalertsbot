@@ -252,27 +252,43 @@ async function live(){
   const j=window.JOURNAL; if(!j) return;
   const wallets=(j.wallets||[]).map(w=>({addr:w.address,label:w.label}));
   try{
+    window.DEXS=window.DEXS||(await HL({type:"perpDexs"})).filter(d=>d&&d.name).map(d=>d.name);
+    const mkts=["",...window.DEXS];
     const [mids,...per]=await Promise.all([HL({type:"allMids"}),...wallets.map(w=>Promise.all([
-      HL({type:"clearinghouseState",user:w.addr}),HL({type:"frontendOpenOrders",user:w.addr}),HL({type:"spotClearinghouseState",user:w.addr})]))]);
+      Promise.all(mkts.map(d=>HL(d?{type:"clearinghouseState",user:w.addr,dex:d}:{type:"clearinghouseState",user:w.addr}).catch(()=>null))),
+      Promise.all(mkts.map(d=>HL(d?{type:"frontendOpenOrders",user:w.addr,dex:d}:{type:"frontendOpenOrders",user:w.addr}).catch(()=>[]))).then(a=>a.flat()),
+      HL({type:"spotClearinghouseState",user:w.addr})]))]);
     let rows=[], metas=[], totPnl=0;
-    per.forEach(([ch,oo,sp],k)=>{
+    per.forEach(([chs,oo,sp],k)=>{
       const w=wallets[k]; let wPnl=0;
-      ch.assetPositions.forEach(ap=>{
+      chs.filter(Boolean).flatMap(ch=>ch.assetPositions).forEach(ap=>{
         const q=ap.position, szi=+q.szi; if(!szi) return;
-        const long=szi>0, size=Math.abs(szi), entry=+q.entryPx, px=+(mids[q.coin]||q.entryPx), pnl=+q.unrealizedPnl;
+        const long=szi>0, size=Math.abs(szi), entry=+q.entryPx, px=+(mids[q.coin]||(+q.positionValue/size)||q.entryPx), pnl=+q.unrealizedPnl;
         const mine=oo.filter(o=>o.coin===q.coin&&o.reduceOnly);
         const wavg=a=>{const t=a.reduce((s,o)=>s+(+o.sz||0),0);return a.length?a.reduce((s,o)=>s+(+o.triggerPx||+o.limitPx)*((+o.sz||0)||1),0)/(t||a.length):null;};
         const stops=mine.filter(o=>/Stop/.test(o.orderType||"")), tps=mine.filter(o=>/Take Profit/.test(o.orderType||"")||(!o.isTrigger&&o.orderType==="Limit"));
         const stop=wavg(stops), tp=wavg(tps);
-        const risk=stop?size*Math.abs(entry-stop):null, r=risk?pnl/risk:null;
+        const risk=stop?size*Math.abs(entry-stop):null;
+        // R against the risk planned at entry (from the journal), so a stop moved to breakeven doesn't inflate it
+        const jt=(j.trades||[]).find(t=>!t.closed&&t.coin===q.coin&&t.wallet===w.label&&t.risk_usd);
+        const r=jt?pnl/jt.risk_usd:(risk?pnl/risk:null);
         wPnl+=pnl;
         const c=pnl>0?"up":pnl<0?"down":"";
-        rows.push(`<tr><td><b>${q.coin}</b> ${long?"long":"short"} <span class="muted">${w.label} · ${q.leverage.value}× ${q.leverage.type}</span></td>
+        const name=q.coin.includes(":")?`${q.coin.split(":")[1]} <span class="muted">(${q.coin.split(":")[0]==="xyz"?"trade.xyz stocks":q.coin.split(":")[0]})</span>`:q.coin;
+        rows.push(`<tr><td><b>${name}</b> ${long?"long":"short"} <span class="muted">${w.label} · ${q.leverage.value}× ${q.leverage.type}</span></td>
           <td data-label="Size">${fs(size)} <span class="muted">(${usd(size*px)})</span></td><td data-label="Entry">${f(entry)}</td><td data-label="Price">${f(px)}</td>
           <td data-label="P&amp;L" class="${c}"><b>${sgn(pnl)}</b></td><td data-label="R" class="${c}">${r==null?"–":(r>=0?"+":"−")+Math.abs(r).toFixed(2)}</td>
-          <td data-label="Stop">${stop?f(stop)+` <span class="muted">${pct(stop,px).toFixed(1)}% · risk ${usd(risk)}</span>`:'<span class="warn">none</span>'}</td>
+          <td data-label="Stop">${stop?f(stop)+` <span class="muted">${pct(stop,px).toFixed(1)}% · ${(long?stop>=entry:stop<=entry)?"locks in "+usd(Math.abs(risk)):(risk<0.5&&jt?"near breakeven":"risk "+usd(risk))}</span>`:'<span class="warn">none</span>'}</td>
           <td data-label="Take-profit">${tp?f(tp)+` <span class="muted">${pct(tp,px).toFixed(1)}%</span>`:'<span class="warn">none</span>'}</td>
           <td data-label="Liquidation">${q.liquidationPx?f(+q.liquidationPx):"–"}</td></tr>`);
+      });
+      // entry orders waiting to fill (not stops or take-profits)
+      oo.filter(o=>!o.reduceOnly).forEach(o=>{
+        const nm=o.coin.includes(":")?o.coin.split(":")[1]:o.coin;
+        const st=oo.find(x=>x.coin===o.coin&&x.reduceOnly&&/Stop/.test(x.orderType||""));
+        rows.push(`<tr><td><b>${nm}</b> ${o.side==="B"?"buy":"sell"} order <span class="muted">${w.label} · waiting to fill</span></td>
+          <td data-label="Size">${fs(+o.sz)} <span class="muted">(${usd(+o.sz*+o.limitPx)})</span></td><td data-label="Entry">${f(+o.limitPx)}</td><td data-label="Price">${mids[o.coin]?f(+mids[o.coin]):"–"}</td>
+          <td data-label="P&amp;L">–</td><td data-label="R">–</td><td data-label="Stop">${st?f(+st.triggerPx):'<span class="warn">none</span>'}</td><td data-label="Take-profit">–</td><td data-label="Liquidation">–</td></tr>`);
       });
       const usdc=(sp.balances||[]).find(b=>b.coin==="USDC"), tot=usdc?+usdc.total:0, hold=usdc?+usdc.hold:0;
       totPnl+=wPnl;
@@ -373,10 +389,13 @@ async function portfolioLive(){
     const per=await Promise.all(wallets.map(async w=>{
       const [pf,sp,fees,main,...dx]=await Promise.all([HL({type:"portfolio",user:w.addr}),HL({type:"spotClearinghouseState",user:w.addr}),HL({type:"userFees",user:w.addr}),
         HL({type:"clearinghouseState",user:w.addr}),...dexs.map(d=>HL({type:"clearinghouseState",user:w.addr,dex:d}).catch(()=>null))]);
-      return {w,pf:Object.fromEntries(pf),sp,fees,states:[["",main],...dexs.map((d,i)=>[d,dx[i]])].filter(x=>x[1])};
+      const states=[["",main],...dexs.map((d,i)=>[d,dx[i]])].filter(x=>x[1]);
+      const ordersByDex=Object.fromEntries(await Promise.all(states.filter(([d,st])=>d&&+st.marginSummary.accountValue>0&&!st.assetPositions.length)
+        .map(async([d])=>[d,await HL({type:"frontendOpenOrders",user:w.addr,dex:d}).catch(()=>[])])));
+      return {w,pf:Object.fromEntries(pf),sp,fees,states,ordersByDex};
     }));
     let tot=0,totFree=0,totTrades=0,totOther=0,totFees=0,totPnl=0;
-    const cards=per.map(({w,pf,sp,fees,states})=>{
+    const cards=per.map(({w,pf,sp,fees,states,ordersByDex})=>{
       const hist=(pf.day||pf.week||pf.allTime).accountValueHistory; const value=+hist[hist.length-1][1];
       const usdc=(sp.balances||[]).find(b=>b.coin==="USDC")||{total:0,hold:0}, ut=+usdc.total, hold=+usdc.hold;
       const rate=(+fees.userCrossRate||0.00045)*(1-(+fees.activeReferralDiscount||0));
@@ -392,7 +411,10 @@ async function portfolioLive(){
       tot+=value; totFree+=free; totTrades+=inTrades; totOther+=other+idleSum; totFees+=fee; totPnl+=pnl;
       return `<div class="wcard"><div class="wrow"><b>Wallet ${w.label}</b><b class="n">${usd(value)}</b></div>
         <div class="wrow"><span>In trades <span class="muted">(margin, open P&L included)</span></span><span class="n">${usd(inTrades)}</span></div>${pos.join("")||'<div class="wrow sub"><span>no open positions</span><span></span></div>'}
-        ${idle.map(([d,v])=>`<div class="wrow"><span>Parked on the ${d==="xyz"?"trade.xyz stock":d} market, not in a trade</span><span class="n">${usd(v)}</span></div>`).join("")}
+        ${idle.map(([d,v])=>{const os=(ordersByDex[d]||[]).filter(o=>!o.reduceOnly), mk=d==="xyz"?"trade.xyz stocks":d;
+          const what=os.length?os.map(o=>{const st=(ordersByDex[d]||[]).find(x=>x.coin===o.coin&&x.reduceOnly&&/Stop/.test(x.orderType||""));
+            return `${o.side==="B"?"buy":"sell"} ${fs(+o.sz)} ${o.coin.split(":").pop()} at ${f(+o.limitPx)}${st?`, stop ${f(+st.triggerPx)}`:""}`;}).join("; "):"no order or position: money left on that market";
+          return `<div class="wrow"><span>Held for open orders <span class="muted">(${mk}: ${what})</span></span><span class="n">${usd(v)}</span></div>`;}).join("")}
         <div class="wrow"><span>Free USDC</span><span class="n">${usd(free)}</span></div>
         ${Math.abs(other)>=0.01?`<div class="wrow"><span>Other tokens and lending <span class="muted">(net)</span></span><span class="n">${usd(other)}</span></div>`:""}
         <div class="wrow"><span>If you closed everything now <span class="muted">(after about ${usd(fee)} closing fees)</span></span><span class="n"><b>${usd(value-fee)}</b></span></div></div>`;
@@ -402,7 +424,7 @@ async function portfolioLive(){
       <div class="tile"><div class="k">Total, both wallets</div><div class="v">${usd(tot)}</div><div class="s">${usd(tot-totFees)} if you closed everything now</div></div>
       <div class="tile"><div class="k">In trades</div><div class="v">${usd(totTrades)}</div><div class="s">open P&L <span class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</span></div></div>
       <div class="tile"><div class="k">Free USDC</div><div class="v">${usd(totFree)}</div><div class="s">ready for new orders</div></div>
-      <div class="tile"><div class="k">Parked and other</div><div class="v">${usd(totOther)}</div><div class="s">idle on other markets, tokens, lending</div></div>`;
+      <div class="tile"><div class="k">Held for orders and other</div><div class="v">${usd(totOther)}</div><div class="s">margin set aside for orders waiting to fill, plus other tokens and lending</div></div>`;
     document.getElementById("pfhint").innerHTML=`<b>${usd(tot)}</b> · in trades ${usd(totTrades)} · free ${usd(totFree)} · checked ${ist(new Date().toISOString(),true)}`;
     window.PF_NOW={total:tot, wallets:Object.fromEntries(per.map(({w,pf})=>{const h=(pf.day||pf.week||pf.allTime).accountValueHistory;return [w.label,+h[h.length-1][1]];}))};
   }catch(e){
