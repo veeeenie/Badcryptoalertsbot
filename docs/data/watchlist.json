@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-26T05:09:23+00:00",
+ "generated_at": "2026-10-26T05:12:12+00:00",
  "scanned": 100,
  "gate_rr": 1.4,
  "risk_usd": 3.0,
@@ -20,8 +20,8 @@
    "base_from": "2026-09-07",
    "formed": "2026-09-14",
    "entries": [
-    1204.5,
-    1125.05,
+    1204.6,
+    1125.1,
     1045.6
    ],
    "entry_split": [
@@ -29,7 +29,7 @@
     30,
     40
    ],
-   "avg_entry": 1117.105,
+   "avg_entry": 1117.1499999999999,
    "stop": 991.5448997600439,
    "tps": [
     1511.0,
@@ -43,34 +43,34 @@
    "distance_best_pct": 13.2,
    "at_zone": true,
    "coin": "ZEC",
-   "price": 1204.5,
+   "price": 1204.6,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 199,
    "sizing": {
     "risk_usd": 3.76,
     "risk_raised": true,
-    "size_total": 0.029924595943883976,
+    "size_total": 0.029923266080052146,
     "notional_usd": 33.43,
     "orders": [
      {
-      "price": 1204.5,
+      "price": 1204.6,
       "share": 30,
-      "size": 0.008977378783165192,
+      "size": 0.008976979824015643,
       "usd": 10.81,
       "risk_usd": 1.91
      },
      {
-      "price": 1125.05,
+      "price": 1125.1,
       "share": 30,
-      "size": 0.008977378783165192,
+      "size": 0.008976979824015643,
       "usd": 10.1,
       "risk_usd": 1.2
      },
      {
       "price": 1045.6,
       "share": 40,
-      "size": 0.01196983837755359,
+      "size": 0.011969306432020859,
       "usd": 12.52,
       "risk_usd": 0.65
      }
@@ -92,8 +92,8 @@
    "base_from": "2026-09-28",
    "formed": "2026-10-12",
    "entries": [
-    0.004654,
-    0.0048035000000000005,
+    0.004652,
+    0.0048024999999999995,
     0.004953
    ],
    "entry_split": [
@@ -101,49 +101,49 @@
     30,
     40
    ],
-   "avg_entry": 0.00481845,
+   "avg_entry": 0.00481755,
    "stop": 0.005412845122153056,
    "tps": [
     0.003976,
     0.003117
    ],
    "rr": 2.14,
-   "rr_first_only": 1.46,
-   "risk_pct": 12.3,
+   "rr_first_only": 1.45,
+   "risk_pct": 12.4,
    "past_zone": false,
    "distance_pct": 0.0,
-   "distance_best_pct": 6.4,
+   "distance_best_pct": 6.5,
    "at_zone": true,
    "coin": "REZ",
-   "price": 0.004654,
+   "price": 0.004652,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 130,
    "sizing": {
-    "risk_usd": 4.3,
+    "risk_usd": 4.31,
     "risk_raised": true,
-    "size_total": 7233.920641741871,
-    "notional_usd": 34.85,
+    "size_total": 7237.030667813127,
+    "notional_usd": 34.87,
     "orders": [
      {
-      "price": 0.004654,
+      "price": 0.004652,
       "share": 30,
-      "size": 2170.176192522561,
+      "size": 2171.109200343938,
       "usd": 10.1,
       "risk_usd": 1.65
      },
      {
-      "price": 0.0048035000000000005,
+      "price": 0.0048024999999999995,
       "share": 30,
-      "size": 2170.176192522561,
-      "usd": 10.42,
-      "risk_usd": 1.32
+      "size": 2171.109200343938,
+      "usd": 10.43,
+      "risk_usd": 1.33
      },
      {
       "price": 0.004953,
       "share": 40,
-      "size": 2893.5682566967484,
-      "usd": 14.33,
+      "size": 2894.8122671252513,
+      "usd": 14.34,
       "risk_usd": 1.33
      }
     ],
@@ -182,11 +182,11 @@
    "rr_first_only": 1.56,
    "risk_pct": 10.3,
    "past_zone": false,
-   "distance_pct": 17.1,
-   "distance_best_pct": 26.6,
+   "distance_pct": 17.0,
+   "distance_best_pct": 26.4,
    "at_zone": false,
    "coin": "WCT",
-   "price": 0.035945,
+   "price": 0.036001,
    "trend": "down",
    "ema_basis": "25/50",
    "weeks": 80,
@@ -258,7 +258,7 @@
    "distance_best_pct": 27.1,
    "at_zone": false,
    "coin": "DOT",
-   "price": 1.0198,
+   "price": 1.0197,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 306,
@@ -330,7 +330,7 @@
    "distance_best_pct": 28.8,
    "at_zone": false,
    "coin": "LIT",
-   "price": 3.0899,
+   "price": 3.0914,
    "trend": "up",
    "ema_basis": "25",
    "weeks": 44,
@@ -399,10 +399,10 @@
    "risk_pct": 9.9,
    "past_zone": false,
    "distance_pct": 42.9,
-   "distance_best_pct": 60.5,
+   "distance_best_pct": 60.4,
    "at_zone": false,
    "coin": "ANIME",
-   "price": 0.002797,
+   "price": 0.002798,
    "trend": "down",
    "ema_basis": "25/50",
    "weeks": 92,
