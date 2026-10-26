@@ -1,4 +1,4 @@
-name: xyz balance check (temporary)
+name: Ticker lookup (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -16,21 +16,21 @@ jobs:
           def hl(p):
               r = urllib.request.Request("https://api.hyperliquid.xyz/info", data=json.dumps(p).encode(), headers={"Content-Type": "application/json"})
               return json.load(urllib.request.urlopen(r, timeout=30))
-          A = "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
-          out = {"checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
-          for name, p in {
-              "xyz_state": {"type": "clearinghouseState", "user": A, "dex": "xyz"},
-              "main_state": {"type": "clearinghouseState", "user": A},
-              "spot": {"type": "spotClearinghouseState", "user": A},
-              "orders_main": {"type": "frontendOpenOrders", "user": A},
-              "orders_xyz": {"type": "frontendOpenOrders", "user": A, "dex": "xyz"},
-              "fills": {"type": "userFillsByTime", "user": A, "startTime": 1759968000000},
-              "ledger": {"type": "userNonFundingLedgerUpdates", "user": A, "startTime": 1759968000000},
-              "abstraction": {"type": "userAbstraction", "user": A},
-          }.items():
-              try: out[name] = hl(p)
-              except Exception as e: out[name] = "ERR " + str(e)
-          json.dump(out, open("xyz_check.json", "w"), indent=1)
+          want = ("CHIP", "STONK")
+          out = {"checked_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "perps": [], "spot": []}
+          dexs = [""] + [d["name"] for d in hl({"type": "perpDexs"}) if d and d.get("name")]
+          for d in dexs:
+              meta, ctxs = hl({"type": "metaAndAssetCtxs", "dex": d} if d else {"type": "metaAndAssetCtxs"})
+              for a, c in zip(meta["universe"], ctxs):
+                  if any(w in a["name"].upper() for w in want):
+                      out["perps"].append({"dex": d or "main", "asset": a, "ctx": c})
+          smeta, sctx = hl({"type": "spotMetaAndAssetCtxs"})
+          toks = {t["index"]: t for t in smeta["tokens"]}
+          for u, c in zip(smeta["universe"], sctx):
+              names = [toks[i]["name"] for i in u["tokens"]]
+              if any(any(w in n.upper() for w in want) for n in names):
+                  out["spot"].append({"pair": u, "tokens": names, "ctx": c, "token_info": [toks[i] for i in u["tokens"]]})
+          json.dump(out, open("ticker_check.json", "w"), indent=1)
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add xyz_check.json && git commit -qm "xyz check" && git push -q origin HEAD:debug-weekly
+          git add ticker_check.json && git commit -qm "ticker check" && git push -q origin HEAD:debug-weekly
