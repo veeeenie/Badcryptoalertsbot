@@ -1,52 +1,20 @@
 {
- "generated_at": "2026-10-25T02:24:09Z",
+ "generated_at": "2026-10-26T02:20:23Z",
  "coins": {
-  "HYPE": {
+  "ZEC": {
    "side": "long",
-   "stance": "neutral",
-   "summary": "Fundamentals lean positive for the long: Hyperliquid still earns about two-thirds of perp DEX fees and its treasury company keeps buying HYPE and expanded its buyback to $100M. Against that, its RWA perp share is slipping and the monthly core-contributor unlock lands Nov 6 (size not disclosed; October's was 3.75M HYPE). Mixed overall, with price sitting at the long's zone.",
+   "stance": "supports",
+   "summary": "The NU7 upgrade is set for about Nov 5 (block 3,543,405): 25-second blocks and a mechanism that takes 60% of block fees out of circulation until 2031, and ZEC rallied when the height was finalized. No vesting unlocks (proof-of-work issuance only). Supports the long, with some risk of an upgrade delay.",
    "news": [
     {
-     "title": "Hyperliquid Strategies raises its share buyback from $30M to $100M, extended to Oct 2027",
-     "url": "https://www.fxstreet.com/cryptocurrencies/news/hyperliquid-strategies-lifts-buyback-to-100m-as-hype-trades-21-off-peak-202610240520",
-     "date": "Oct 23"
+     "title": "Zcash devs finalize NU7 mainnet activation height 3,543,405, targeting around Nov 5; ZEC up about 12%",
+     "url": "https://www.kucoin.com/news/flash/zcash-jumps-12-after-nu7-upgrade-activation-height-finalized",
+     "date": "Oct 21"
     },
     {
-     "title": "Hyperliquid takes about 67.6% of all perp DEX fees over the past 30 days ($84.6M)",
-     "url": "https://tokenpost.com/news/investing/39061",
-     "date": "Oct 23"
-    },
-    {
-     "title": "Hyperliquid's share of RWA perp volume falls from about 80% to 26% as Binance and OKX compete",
-     "url": "https://fxstreet.com/cryptocurrencies/news/why-hyperliquid-is-losing-rwa-market-share-to-centralized-exchanges-202610230400",
-     "date": "Oct 23"
-    }
-   ],
-   "unlocks": [
-    {
-     "date": "Nov 6",
-     "date_iso": "2026-11-06",
-     "amount": "not disclosed",
-     "pct_supply": "",
-     "note": "Core contributors, monthly unlock on the 6th (Oct batch was 3.75M HYPE; some calendars list a larger figure)",
-     "source": "https://tokenomist.ai/hyperliquid"
-    }
-   ]
-  },
-  "COMP": {
-   "side": "short",
-   "stance": "against",
-   "summary": "This week's news leans bullish, which works against the short: COMP jumped about 27% on Oct 20 with no clear catalyst, and Compound launched on Unichain with five new collateral assets. No vesting unlocks; nearly all COMP is already circulating.",
-   "news": [
-    {
-     "title": "COMP jumps about 27% in a day, outpacing BTC and ETH, while Compound TVL stays below September levels",
-     "url": "https://thedefiant.io/news/tokens/comp-jumps-27-outpacing-bitcoin-and-ether",
-     "date": "Oct 20"
-    },
-    {
-     "title": "Compound goes live on Unichain with wstETH, weETH, ezETH, BTC and UNI as collateral",
-     "url": "https://coinmarketcap.com/community/articles/6ad6c546c915691405ad05cf",
-     "date": "Oct 20"
+     "title": "Privacy coins ZEC and XMR outperform Bitcoin on the week ahead of NU7, which cuts block time to 25s and sets aside 60% of fees",
+     "url": "https://247wallst.com/investing/cryptocurrency/2026/10/25/monero-xmr-and-zcash-zec-beat-bitcoin-this-week-can-the-privacy-coins-keep-it-up",
+     "date": "Oct 25"
     }
    ],
    "unlocks": []
@@ -54,11 +22,11 @@
   "MORPHO": {
    "side": "long",
    "stance": "supports",
-   "summary": "New integrations support the long: Robinhood stock tokens as collateral and Ledger loans built on Morpho. A risk is about 973K MORPHO stolen from two institution-linked wallets and sent to Tornado Cash, which could be sold. No cliff unlocks in the next 14 days.",
+   "summary": "Integrations keep coming and support the long: Robinhood stock tokens as collateral and Ledger wallet loans built on Morpho, plus Morpho driving most recent DeFi stablecoin growth. The risk is about 973K MORPHO stolen from institution-linked wallets that could be sold. No unlocks in the next 14 days.",
    "news": [
     {
-     "title": "Robinhood stock tokens go live as collateral on Morpho for USDG loans",
-     "url": "https://cryptobriefing.com/robinhood-stock-tokens-morpho-collateral/",
+     "title": "Robinhood stock tokens go live as collateral for USDG loans on Morpho; Robinhood Chain TVL reaches $1.14B",
+     "url": "https://crypto.news/robinhood-chain-1-14b-tvl-morpho-stock-token-loans/",
      "date": "Oct 22"
     },
     {
@@ -77,7 +45,7 @@
   "DOT": {
    "side": "short",
    "stance": "supports",
-   "summary": "Negative headlines support the short: the Fearless Wallet extension leaked seed phrases, and the JAM migration still has no mainnet date. No vesting unlocks; issuance runs at about 55M DOT a year under the hard cap.",
+   "summary": "Negative headlines support the short: the Fearless Wallet seed-phrase leak, a JAM migration with no mainnet date, and relay-chain fees reported as far above rivals. No vesting unlocks; issuance runs at about 55M DOT a year under the hard cap.",
    "news": [
     {
      "title": "Fearless Wallet extension found leaking recovery phrases; users told to move funds after about 17K DOT taken",
@@ -100,38 +68,40 @@
   "WCT": {
    "side": "short",
    "stance": "neutral",
-   "summary": "Nothing material this week. Monthly unlocks fall on the 15th; the next (Nov 15) is outside the 14-day window and sources disagree on its size.",
+   "summary": "Nothing material this week. Monthly unlocks fall on the 15th; the next (Nov 15) is outside the 14-day window.",
    "news": [],
+   "unlocks": []
+  },
+  "LIT": {
+   "side": "long",
+   "stance": "supports",
+   "summary": "News supports the long: Lighter plans to apply for CFTC licenses in November, Delphi called it the clearest second bet after Hyperliquid, and it added options and weETH collateral. No unlocks in the window; the big team/investor cliff (50% of supply) is Dec 27, which matters if the trade is still open then.",
+   "news": [
+    {
+     "title": "Lighter founder says it will apply for US CFTC derivatives licenses in November; LIT up about 23% on the week",
+     "url": "https://beincrypto.com/lighter-token-rally-cftc-license-november/",
+     "date": "Oct 22"
+    },
+    {
+     "title": "Lighter adds ether.fi's weETH as perp collateral after launching 15-minute BTC/ETH up/down options",
+     "url": "https://coinmarketcap.com/cmc-ai/lighter/latest-updates/",
+     "date": "Oct 24"
+    }
+   ],
    "unlocks": []
   },
   "ANIME": {
    "side": "short",
    "stance": "neutral",
-   "summary": "No material news this week. About 55% of the 10B supply circulates; Tokenomist shows no unlocks in the next 14 days (the next listed, to Community Cultivation, is Nov 23, outside the window).",
+   "summary": "No material news this week. Tokenomist shows no unlocks in the next 14 days (the next listed, to Community Cultivation, is Nov 23, outside the window).",
    "news": [],
    "unlocks": []
   },
-  "WLFI": {
+  "BERA": {
    "side": "short",
-   "stance": "supports",
-   "summary": "USD1 supply shrank about 9% in two weeks, and a shareholder suit over the UAE deals adds legal pressure; both support the short. Insider tokens are locked until about 2028, so there are no unlocks. The pending OCC charter for USD1 is an upside risk.",
-   "news": [
-    {
-     "title": "Circle shareholder files derivative suit naming Trump, WLF and Witkoff over $2.5B UAE deals",
-     "url": "https://airdropalert.com/blogs/circle-shareholder-lawsuit-trump-wlfi/",
-     "date": "Oct 23"
-    },
-    {
-     "title": "USD1 supply drops about $401M (9%) in two weeks, mostly from one BNB Chain wallet",
-     "url": "https://coinpaper.com/37601/wlfi-price-falls-6-as-trump-linked-usd-1-stablecoin-sees-401-m-in-redemptions",
-     "date": "Oct 20"
-    },
-    {
-     "title": "WLFI's conditional OCC trust-bank charter draws fresh criticism from Sen. Warren",
-     "url": "https://www.tradingview.com/news/benzinga:6c13e094f094b:0-trump-family-linked-world-liberty-financial-wins-conditional-approval-to-launch-bank-elizabeth-warren-calls-it-brazen-self-dealing/",
-     "date": "Oct 23"
-    }
-   ],
+   "stance": "neutral",
+   "summary": "No material news this week. DefiLlama lists no BERA unlocks scheduled after Oct 25; only ongoing validator and reward-vault emissions, which add a little supply.",
+   "news": [],
    "unlocks": []
   }
  }
