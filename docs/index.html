@@ -107,6 +107,7 @@ code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
   <div class="secbody">
     <div class="tiles" id="pftiles"></div>
     <div id="pfwallets" style="display:grid;gap:10px"></div>
+    <div class="box" id="pfvol"></div>
     <div class="box" style="padding:12px 14px">
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:baseline"><b>Total value, week on week</b><span class="muted" id="pfleg"></span></div>
       <div id="pfchart" style="margin-top:8px"></div>
@@ -387,16 +388,19 @@ async function portfolioLive(){
     const dexs=(await HL({type:"perpDexs"})).filter(d=>d&&d.name).map(d=>d.name);
     const mids=await HL({type:"allMids"});
     const per=await Promise.all(wallets.map(async w=>{
-      const [pf,sp,fees,main,...dx]=await Promise.all([HL({type:"portfolio",user:w.addr}),HL({type:"spotClearinghouseState",user:w.addr}),HL({type:"userFees",user:w.addr}),
+      const [led,pf,sp,fees,main,...dx]=await Promise.all([HL({type:"userNonFundingLedgerUpdates",user:w.addr,startTime:0}).catch(()=>[]),HL({type:"portfolio",user:w.addr}),HL({type:"spotClearinghouseState",user:w.addr}),HL({type:"userFees",user:w.addr}),
         HL({type:"clearinghouseState",user:w.addr}),...dexs.map(d=>HL({type:"clearinghouseState",user:w.addr,dex:d}).catch(()=>null))]);
       const states=[["",main],...dexs.map((d,i)=>[d,dx[i]])].filter(x=>x[1]);
       const ordersByDex=Object.fromEntries(await Promise.all(states.filter(([d,st])=>d&&+st.marginSummary.accountValue>0&&!st.assetPositions.length)
         .map(async([d])=>[d,await HL({type:"frontendOpenOrders",user:w.addr,dex:d}).catch(()=>[])])));
-      return {w,pf:Object.fromEntries(pf),sp,fees,states,ordersByDex};
+      // USDC borrowed against lent tokens (from the ledger): not the trader's money, so it comes off the total
+      let borrowed=0; (led||[]).forEach(e=>{const d=e.delta||{}; if(d.type==="borrowLend"&&d.token==="USDC"){ if(d.operation==="borrow") borrowed+=+d.amount; if(d.operation==="repay") borrowed-=+d.amount; }});
+      return {w,pf:Object.fromEntries(pf),sp,fees,states,ordersByDex,borrowed:Math.max(0,borrowed)};
     }));
     let tot=0,totFree=0,totTrades=0,totOther=0,totFees=0,totPnl=0;
-    const cards=per.map(({w,pf,sp,fees,states,ordersByDex})=>{
-      const hist=(pf.day||pf.week||pf.allTime).accountValueHistory; const value=+hist[hist.length-1][1];
+    let totDust=0; const VOL=[];
+    const cards=per.map(({w,pf,sp,fees,states,ordersByDex,borrowed})=>{
+      const hist=(pf.day||pf.week||pf.allTime).accountValueHistory; const hlValue=+hist[hist.length-1][1];
       const usdc=(sp.balances||[]).find(b=>b.coin==="USDC")||{total:0,hold:0}, ut=+usdc.total, hold=+usdc.hold;
       const rate=(+fees.userCrossRate||0.00045)*(1-(+fees.activeReferralDiscount||0));
       const pos=[], idle=[]; let fee=0, pnl=0, inTrades=0;
@@ -407,8 +411,13 @@ async function portfolioLive(){
           pos.push(`<div class="wrow sub"><span>${q.coin.replace(/^\w+:/,"")} ${+q.szi>0?"long":"short"} · ${q.leverage.value}× ${q.leverage.type} · P&L <span class="${u>=0?"up":"down"}">${sgn(u)}</span></span><span class="n">${usd(m)}</span></div>`);});
         if(!ps.length && dex && +st.marginSummary.accountValue>0) idle.push([dex,+st.marginSummary.accountValue]);
       });
-      const idleSum=idle.reduce((a,b)=>a+b[1],0), free=ut-hold, other=value-ut;
-      tot+=value; totFree+=free; totTrades+=inTrades; totOther+=other+idleSum; totFees+=fee; totPnl+=pnl;
+      // counted: USDC only (positions, orders, free), minus borrowed USDC. Other tokens and lending are dust, not counted.
+      const value=ut-borrowed, dust=hlValue-value;
+      const idleSum=idle.reduce((a,b)=>a+b[1],0), free=ut-hold-borrowed;
+      tot+=value; totFree+=free; totTrades+=inTrades; totOther+=idleSum; totFees+=fee; totPnl+=pnl; totDust+=dust;
+      const day=(fees.dailyUserVlm||[]), mk=day.reduce((a,d)=>a+(+d.userAdd),0), tk=day.reduce((a,d)=>a+(+d.userCross),0);
+      VOL.push({label:w.label, d1:+(pf.day||{}).vlm||0, d7:+(pf.week||{}).vlm||0, d30:+(pf.month||{}).vlm||0, all:+(pf.allTime||{}).vlm||0, maker:mk, taker:tk,
+        rate:{taker:+fees.userCrossRate, maker:+fees.userAddRate, disc:+fees.activeReferralDiscount||0}});
       return `<div class="wcard"><div class="wrow"><b>Wallet ${w.label}</b><b class="n">${usd(value)}</b></div>
         <div class="wrow"><span>In trades <span class="muted">(margin, open P&L included)</span></span><span class="n">${usd(inTrades)}</span></div>${pos.join("")||'<div class="wrow sub"><span>no open positions</span><span></span></div>'}
         ${idle.map(([d,v])=>{const os=(ordersByDex[d]||[]).filter(o=>!o.reduceOnly), mk=d==="xyz"?"trade.xyz stocks":d;
@@ -416,7 +425,8 @@ async function portfolioLive(){
             return `${o.side==="B"?"buy":"sell"} ${fs(+o.sz)} ${o.coin.split(":").pop()} at ${f(+o.limitPx)}${st?`, stop ${f(+st.triggerPx)}`:""}`;}).join("; "):"no order or position: money left on that market";
           return `<div class="wrow"><span>Held for open orders <span class="muted">(${mk}: ${what})</span></span><span class="n">${usd(v)}</span></div>`;}).join("")}
         <div class="wrow"><span>Free USDC</span><span class="n">${usd(free)}</span></div>
-        ${Math.abs(other)>=0.01?`<div class="wrow"><span>Other tokens and lending <span class="muted">(net)</span></span><span class="n">${usd(other)}</span></div>`:""}
+        ${borrowed>0.004?`<div class="wrow sub"><span>free USDC is after paying back ${usd(borrowed)} borrowed</span><span></span></div>`:""}
+        ${Math.abs(dust)>=0.01?`<div class="wrow sub"><span>not counted: dust tokens and lent HYPE ≈ ${usd(dust)}</span><span></span></div>`:""}
         <div class="wrow"><span>If you closed everything now <span class="muted">(after about ${usd(fee)} closing fees)</span></span><span class="n"><b>${usd(value-fee)}</b></span></div></div>`;
     });
     document.getElementById("pfwallets").innerHTML=cards.join("");
@@ -424,9 +434,15 @@ async function portfolioLive(){
       <div class="tile"><div class="k">Total, both wallets</div><div class="v">${usd(tot)}</div><div class="s">${usd(tot-totFees)} if you closed everything now</div></div>
       <div class="tile"><div class="k">In trades</div><div class="v">${usd(totTrades)}</div><div class="s">open P&L <span class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</span></div></div>
       <div class="tile"><div class="k">Free USDC</div><div class="v">${usd(totFree)}</div><div class="s">ready for new orders</div></div>
-      <div class="tile"><div class="k">Held for orders and other</div><div class="v">${usd(totOther)}</div><div class="s">margin set aside for orders waiting to fill, plus other tokens and lending</div></div>`;
+      <div class="tile"><div class="k">Held for orders</div><div class="v">${usd(totOther)}</div><div class="s">margin set aside for orders waiting to fill</div></div>`;
+    const V=k=>VOL.reduce((a,v)=>a+v[k],0), big=x=>"$"+(x>=1e6?(x/1e6).toFixed(2)+"M":x>=1e4?(x/1e3).toFixed(1)+"k":x.toFixed(0));
+    document.getElementById("pfvol").innerHTML=`<table class="stack"><thead><tr><th>Trading volume</th><th>24 hours</th><th>7 days</th><th>30 days</th><th>All time</th><th>Maker share, 14 days</th><th>Fee rates</th></tr></thead><tbody>`+
+      VOL.map(v=>`<tr><td><b>Wallet ${v.label}</b></td><td data-label="24 hours">${big(v.d1)}</td><td data-label="7 days">${big(v.d7)}</td><td data-label="30 days">${big(v.d30)}</td><td data-label="All time">${big(v.all)}</td>
+        <td data-label="Maker share, 14 days">${v.maker+v.taker>0?Math.round(100*v.maker/(v.maker+v.taker))+"%":"–"} <span class="muted">(${big(v.maker+v.taker)})</span></td>
+        <td data-label="Fee rates">${(v.rate.taker*(1-v.rate.disc)*100).toFixed(3)}% taker · ${(v.rate.maker*(1-v.rate.disc)*100).toFixed(3)}% maker</td></tr>`).join("")+
+      `<tr><td><b>Both</b></td><td data-label="24 hours">${big(V("d1"))}</td><td data-label="7 days">${big(V("d7"))}</td><td data-label="30 days">${big(V("d30"))}</td><td data-label="All time"><b>${big(V("all"))}</b></td><td data-label="Maker share, 14 days">${V("maker")+V("taker")>0?Math.round(100*V("maker")/(V("maker")+V("taker")))+"%":"–"}</td><td></td></tr></tbody></table>`;
     document.getElementById("pfhint").innerHTML=`<b>${usd(tot)}</b> · in trades ${usd(totTrades)} · free ${usd(totFree)} · checked ${ist(new Date().toISOString(),true)}`;
-    window.PF_NOW={total:tot, wallets:Object.fromEntries(per.map(({w,pf})=>{const h=(pf.day||pf.week||pf.allTime).accountValueHistory;return [w.label,+h[h.length-1][1]];}))};
+    window.PF_NOW={total:tot, wallets:Object.fromEntries(per.map(({w,sp,borrowed})=>{const u=(sp.balances||[]).find(b=>b.coin==="USDC")||{total:0};return [w.label,+u.total-borrowed];}))};
   }catch(e){
     document.getElementById("pfhint").textContent=`couldn't reach Hyperliquid (${e.message}); the chart shows the last hourly snapshot`;
   }
@@ -450,7 +466,7 @@ function drawPortfolioChart(){
     svg+="</svg>";
     document.getElementById("pfchart").innerHTML=svg;
     document.getElementById("pfleg").innerHTML=labels.map((l,k)=>`<svg width="10" height="10"><rect class="${k===0?"c5":"c3"}" width="10" height="10" rx="2"/></svg> ${l}`).join(" &nbsp; ");
-    document.getElementById("pfnote").textContent="Value at each Friday 23:59 IST (the review week), from Hyperliquid's account history, which is recorded about once a day. Deposits and withdrawals are included, so jumps can be money moved in or out, not trading. The 9-Oct value is from before that day's deposit.";
+    document.getElementById("pfnote").textContent="Value at each Friday 23:59 IST (the review week), from Hyperliquid's account history, which is recorded about once a day. Deposits and withdrawals are included, so jumps can be money moved in or out, not trading. The 9-Oct value is from before that day's deposit. Past weeks include small dust balances (under $2); Now counts USDC only.";
   }).catch(()=>{document.getElementById("pfchart").innerHTML='<div class="muted">Weekly history not built yet; it appears after the next hourly check.</div>';});
 }
 document.addEventListener("journal-ready",()=>{portfolioLive();setInterval(portfolioLive,120000);});
