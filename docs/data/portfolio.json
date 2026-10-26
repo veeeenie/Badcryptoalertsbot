@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-26T21:08:15+00:00",
+ "generated_at": "2026-10-26T22:08:13+00:00",
  "start": "2026-10-09",
  "note": "Week ends are Fridays 23:59 IST. Values include deposits and withdrawals.",
  "weeks": [
@@ -29,8 +29,8 @@
   }
  ],
  "current": {
-  "\u20265EaE": 66.74,
-  "\u20263991": 52.62
+  "\u20265EaE": 66.88,
+  "\u20263991": 52.75
  },
- "current_total": 119.36
+ "current_total": 119.63
 }
