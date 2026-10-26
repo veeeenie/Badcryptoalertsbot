@@ -52,6 +52,7 @@ jobs:
             git add docs/data/setups.json docs/data/state.json
             [ -f docs/data/journal.json ] && git add docs/data/journal.json
             [ -f docs/data/portfolio.json ] && git add docs/data/portfolio.json
+            [ -f docs/data/activity.json ] && git add docs/data/activity.json
             [ -f docs/data/watchlist.json ] && git add docs/data/watchlist.json
             git add docs/data/alerts.json
             if ! git diff --cached --quiet; then

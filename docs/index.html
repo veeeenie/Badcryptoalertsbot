@@ -68,8 +68,13 @@ details.idea>summary:hover{background:var(--soft)}
 .wrow{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dashed var(--line);font-size:14px}
 .wrow:last-child{border-bottom:0}
 .wrow .n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.wrow .n.wrap{white-space:normal;text-align:right;min-width:0}
+.wrow>span:first-child{flex:0 1 auto}
 .wrow.sub{padding-left:14px;font-size:13px;color:var(--muted)}
 .c5{fill:#2f5bd3} .c3{fill:#d08a1e}
+.bar{height:8px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:4px}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:12px;margin-top:8px}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .c5{fill:#8aa8ff} :root:not([data-theme="light"]) .c3{fill:#f0b45a}}
 .il li{margin:2px 0}
 .formrow{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:end}
@@ -108,6 +113,7 @@ code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
     <div class="tiles" id="pftiles"></div>
     <div id="pfwallets" style="display:grid;gap:10px"></div>
     <div class="box" id="pfvol"></div>
+    <div class="box" style="padding:12px 14px" id="pfact"></div>
     <div class="box" style="padding:12px 14px">
       <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:baseline"><b>Total value, week on week</b><span class="muted" id="pfleg"></span></div>
       <div id="pfchart" style="margin-top:8px"></div>
@@ -470,6 +476,26 @@ function drawPortfolioChart(){
   }).catch(()=>{document.getElementById("pfchart").innerHTML='<div class="muted">Weekly history not built yet; it appears after the next hourly check.</div>';});
 }
 document.addEventListener("journal-ready",()=>{portfolioLive();setInterval(portfolioLive,120000);});
+
+// ---- airdrop activity: facts only, no score (no criteria have been announced)
+fetch("data/activity.json?t="+Date.now()).then(r=>r.json()).then(A=>{
+  const W=A.wallets||{}, labels=Object.keys(W);
+  const big=x=>"$"+(x>=1e6?(x/1e6).toFixed(2)+"M":x>=1e4?(x/1e3).toFixed(1)+"k":x.toFixed(0));
+  const life=labels.reduce((a,l)=>a+W[l].lifetime_volume,0), ref=labels.length?W[labels[0]].ref_volume:5e6;
+  const mk={crypto:"crypto perps",xyz:"trade.xyz stocks",spot:"spot",km:"km",cash:"cash",flx:"flx"};
+  const card=l=>{const a=W[l], vt=a.volume_in_fills||1;
+    return `<div class="wcard"><div class="wrow"><b>Wallet ${l}</b><span class="n">${big(a.lifetime_volume)} lifetime</span></div>
+      <div class="wrow"><span>Against the $5M bar</span><span class="n">${a.ref_progress_pct}%</span></div><div class="bar"><i style="width:${Math.min(100,a.ref_progress_pct)}%"></i></div>
+      <div class="wrow"><span style="white-space:nowrap">Days with a trade</span><span class="n wrap">${a.days_active} all time · ${a.days_active_30d} in the last 30</span></div>
+      <div class="wrow"><span style="white-space:nowrap">Months active</span><span class="n wrap">${a.months_active} (since ${a.first_fill?ist(a.first_fill+"T12:00:00Z"):"–"})</span></div>
+      <div class="wrow"><span style="white-space:nowrap">Markets traded</span><span class="n wrap">${Object.entries(a.markets).map(([m,n])=>`${n} ${mk[m]||m}`).join(" · ")}</span></div>
+      <div class="wrow"><span style="white-space:nowrap">Volume split</span><span class="n wrap">${Object.entries(a.volume_by_market).map(([m,v])=>`${mk[m]||m} ${Math.round(100*v/vt)}%`).join(" · ")}</span></div>
+      <div class="wrow"><span>Maker share (by volume)</span><span class="n">${a.maker_share_pct??"–"}%</span></div>
+      <div class="wrow"><span>Fees paid</span><span class="n">${usd(a.fees_paid)} <span class="muted">(${usd(a.builder_fees_paid)} to front-ends)</span></span></div></div>`;};
+  document.getElementById("pfact").innerHTML=`<div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;align-items:baseline"><b>Airdrop activity <span class="muted" style="font-weight:400">· facts, no score</span></b><span class="muted">both wallets ${big(life)} lifetime · ${(100*life/ref).toFixed(1)}% of $5M</span></div>
+    <div class="acts">${labels.map(card).join("")}</div>
+    <div class="muted" style="margin-top:8px">Neither trade.xyz nor Hyperliquid has announced airdrop criteria. The $5M line is the lifetime-volume bar trade.xyz used for its waitlist, which has ended; it's a reference, not a requirement. Lifetime volume is Hyperliquid's own figure; days, markets, split, maker share and fees come from the fills the API still returns (its most recent 10,000). Updated ${ist(A.generated_at,true)}.</div>`;
+}).catch(()=>{document.getElementById("pfact").innerHTML='<span class="muted">Activity appears after the next hourly check.</span>';});
 </script>
 </body>
 </html>

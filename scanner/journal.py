@@ -283,6 +283,89 @@ def portfolio():
     print("portfolio:", out["current_total"], [(r["week_end"], r["total"]) for r in rows])
 
 
+ACTIVITY_OUT = os.path.join(ROOT, "docs", "data", "activity.json")
+AIRDROP_REF_VOLUME = 5_000_000      # the only public bar so far: trade.xyz's (ended) waitlist wanted $5M lifetime Hyperliquid volume
+
+
+def all_fills(address):
+    """Every fill the API still returns for the wallet, oldest first (it pages 2000 at a time and keeps the most recent 10,000)."""
+    out, start, seen = [], 0, set()
+    for _ in range(10):
+        page = hl({"type": "userFillsByTime", "user": address, "startTime": start})
+        new = [f for f in page if f["tid"] not in seen]
+        if not new:
+            break
+        for f in new:
+            seen.add(f["tid"])
+        out += new
+        if len(page) < 2000:
+            break
+        start = max(f["time"] for f in page) + 1
+    return sorted(out, key=lambda f: f["time"])
+
+
+def market_of(coin):
+    if ":" in coin:
+        return coin.split(":")[0]                  # HIP-3 market, e.g. xyz = trade.xyz stocks
+    if coin.startswith("@") or "/" in coin:
+        return "spot"
+    return "crypto"
+
+
+def summarise_activity(fills, lifetime_volume, now_ms):
+    days = sorted({datetime.fromtimestamp(f["time"] / 1000, tz=IST).date() for f in fills})
+    recent = [d for d in days if (datetime.fromtimestamp(now_ms / 1000, tz=IST).date() - d).days < 30]
+    vol = defaultdict(float); maker = taker = fees = builder = 0.0; coins = defaultdict(set)
+    for f in fills:
+        v = float(f["px"]) * float(f["sz"])
+        m = market_of(f["coin"])
+        vol[m] += v
+        coins[m].add(f["coin"])
+        if f.get("crossed"):
+            taker += v
+        else:
+            maker += v
+        fees += float(f.get("fee") or 0)
+        builder += float(f.get("builderFee") or 0)
+    total = sum(vol.values())
+    return {
+        "lifetime_volume": round(lifetime_volume, 2),
+        "ref_volume": AIRDROP_REF_VOLUME,
+        "ref_progress_pct": round(100 * lifetime_volume / AIRDROP_REF_VOLUME, 1),
+        "fills_seen": len(fills),
+        "first_fill": days[0].isoformat() if days else None,
+        "last_fill": days[-1].isoformat() if days else None,
+        "days_active": len(days),
+        "days_active_30d": len(recent),
+        "months_active": len({(d.year, d.month) for d in days}),
+        "markets": {m: len(c) for m, c in coins.items()},
+        "volume_by_market": {m: round(v, 2) for m, v in sorted(vol.items(), key=lambda x: -x[1])},
+        "maker_share_pct": round(100 * maker / total, 1) if total else None,
+        "fees_paid": round(fees, 2),
+        "builder_fees_paid": round(builder, 2),
+        "volume_in_fills": round(total, 2),
+    }
+
+
+def activity():
+    now_ms = int(time.time() * 1000)
+    out = {"generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+           "note": "Activity only, no score. No trade.xyz or Hyperliquid airdrop criteria have been announced; "
+                   "$5M lifetime volume is the bar trade.xyz's ended waitlist used.",
+           "wallets": {}}
+    for address, _start in WALLETS:
+        label = "…" + address[-4:]
+        try:
+            pf = dict(hl({"type": "portfolio", "user": address}))
+            life = float((pf.get("allTime") or {}).get("vlm") or 0)
+            out["wallets"][label] = summarise_activity(all_fills(address), life, now_ms)
+        except Exception as e:
+            print("activity error", label, e, file=sys.stderr)
+    with open(ACTIVITY_OUT, "w") as f:
+        json.dump(out, f, indent=1)
+    print("activity:", {k: (v["days_active"], v["lifetime_volume"]) for k, v in out["wallets"].items()})
+
+
 if __name__ == "__main__":
     try:
         main()
@@ -292,3 +375,7 @@ if __name__ == "__main__":
         portfolio()
     except Exception as e:
         print("portfolio error:", e, file=sys.stderr)
+    try:
+        activity()
+    except Exception as e:
+        print("activity error:", e, file=sys.stderr)
