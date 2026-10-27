@@ -861,7 +861,9 @@ def check_custom_alerts(state):
         above = price > line
         weekly = weekly_from_daily(d)
         week_key = datetime.fromtimestamp(weekly[-1]["t"] / 1000, tz=timezone.utc).date().isoformat()
-        tol = al.get("touch_pct", 1.0) / 100
+        # levels are exact: the day's range must actually include the price (no "near enough" margin);
+        # hand-drawn trendlines keep their touch_pct margin since the line itself is approximate
+        tol = 0.0 if al.get("type") == "level" else al.get("touch_pct", 1.0) / 100
         today = d[-1]
         touched = today["h"] >= line * (1 - tol) and today["l"] <= line * (1 + tol)
         rows.append({"id": al["id"], "coin": al["coin"], "name": al["name"], "line": line, "price": price,

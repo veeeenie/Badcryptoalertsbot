@@ -191,7 +191,7 @@ def handle(text, source="telegram"):
                 if any(a["id"] == aid for a in alerts):
                     return f"An alert {aid} already exists.", False
                 alerts.append({"id": aid, "coin": name, "type": "level", "price": price,
-                               "name": note or f"{name} level {fmt(price)}", "touch_pct": 1.0,
+                               "name": note or f"{name} level {fmt(price)}", "touch_pct": 0.0,
                                "source": f"added via {source}, {datetime.now(timezone.utc).date().isoformat()}"})
                 save(cfg)
                 side = "above" if price > mark else "below"

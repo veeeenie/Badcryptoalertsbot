@@ -1,5 +1,5 @@
 {
-  "note": "Custom price alerts checked by the hourly scan. Trendlines: two points (date, price) extended in a straight line; Telegram once a week when price reaches the line and on a weekly close through it. Levels: a flat price; Telegram once a week when price reaches it and on a daily close through it.",
+  "note": "Custom price alerts checked by the hourly scan. Trendlines: two points (date, price) extended in a straight line; Telegram once a week when price reaches the line and on a weekly close through it. Levels: a flat price, exact (the day's high/low must reach it); Telegram once a week when price reaches it and on a daily close through it.",
   "alerts": [
     {
       "id": "JUP-trendline",
@@ -23,9 +23,9 @@
       "type": "level",
       "price": 0.2217,
       "name": "PONS 0.786 fib (~$222M), bottom of the support zone",
-      "touch_pct": 1.0,
-      "source": "Trader's TradingView market-cap chart, 20 Oct 2026 (market cap ≈ price × 1B)",
-      "meaning_touch": "At the bottom of the 222–242M support zone.",
+      "touch_pct": 0.0,
+      "source": "Trader's TradingView market-cap chart, 20 Oct 2026 (market cap \u2248 price \u00d7 1B)",
+      "meaning_touch": "At the bottom of the 222\u2013242M support zone.",
       "meaning_above": "Daily close back above the zone bottom: a bounce attempt; confirmation is a close back above 242M.",
       "meaning_below": "Daily close below the support zone: no long; the pump has fully unwound toward the base."
     },
@@ -35,7 +35,7 @@
       "type": "level",
       "price": 0.55,
       "name": "rejection cluster",
-      "touch_pct": 1.0,
+      "touch_pct": 0.0,
       "source": "added via the website, 2026-10-27"
     },
     {
@@ -60,7 +60,7 @@
       "type": "level",
       "price": 82230.0,
       "name": "area to reclaim",
-      "touch_pct": 1.0,
+      "touch_pct": 0.0,
       "source": "added via the website, 2026-10-27"
     },
     {
@@ -69,7 +69,7 @@
       "type": "level",
       "price": 80800.0,
       "name": "breakeven",
-      "touch_pct": 1.0,
+      "touch_pct": 0.0,
       "source": "added via the website, 2026-10-27"
     },
     {
@@ -78,7 +78,7 @@
       "type": "level",
       "price": 0.2026,
       "name": "breakeven",
-      "touch_pct": 1.0,
+      "touch_pct": 0.0,
       "source": "added via the website, 2026-10-27"
     },
     {
@@ -87,7 +87,7 @@
       "type": "level",
       "price": 0.005,
       "name": "area to reject",
-      "touch_pct": 1.0,
+      "touch_pct": 0.0,
       "source": "added via the website, 2026-10-27"
     }
   ],
