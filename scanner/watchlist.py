@@ -21,8 +21,10 @@ For the top Hyperliquid perps by volume:
   3. Trade plan for each trending coin: the nearest zone in the trend's direction (supply above price for a
      downtrend, demand below for an uptrend), at most one weekly ATR tall and within 2 weekly ATRs of price,
      that passes the gate.
-       entries:     three tranches at the zone's near edge (or today's price, if price is already inside), middle and far edge, sized 20 : 30 : 50 so the
-                    biggest order sits at the best price, next to the stop
+       entries:     fixed levels at the zone's near edge, middle and far edge (30 : 30 : 40). They never follow price: a level
+                    price has already passed is dropped, not filled at market (trader, 27 Oct 2026). If $3 can't fund every
+                    order at $10, the ladder shrinks to two orders (45 : 55, near and far edge), then one; risk never rises.
+       wait:        price beyond the zone's far edge (but short of the stop): no orders until a daily close back inside
        stop:        a tenth of a weekly ATR beyond the zone's far edge
        take-profit: two equal exits at the near edge of the next two opposite zones or the last weekly swing,
                     each at least 1R from the average entry (one exit if only one qualifies)
@@ -52,6 +54,8 @@ MAX_ZONE_ATR = 1.0     # zones taller than one weekly ATR are not traded (stop t
 MAX_DIST_ATR = 2.0     # zones whose near edge is more than 2 weekly ATRs from price are not shown; trader, 23 Oct 2026
 MIN_RR = 1.4           # the gate: reward-to-risk of the whole plan from the average entry; trader, 23 Oct 2026
 ENTRY_SPLIT = (0.3, 0.3, 0.4)         # size grows toward the best price, flat enough that every order reaches $10 with ~$33 of position; trader, 24 Oct 2026
+SPLIT_2 = (0.45, 0.55)                 # two orders when $3 can't fund three at $10 (trader, 27 Oct 2026: risk stays within $3)
+TP_FRONT = 0.005       # take-profits sit 0.5% in front of their level so the exit fills before the level's sellers/buyers; trader, 27 Oct 2026
 EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, then the one after (or the last swing)
 RISK_USD = 3.0         # dollars lost if every order fills and the stop is hit; trader, 23 Oct 2026
 MIN_ORDER_USD = 10.0   # Hyperliquid's smallest order value
@@ -232,12 +236,22 @@ def rejection_level(closed, short, A):
     return trough
 
 
-def merge_small(entries, stop):
-    """Keeps all three 20 : 30 : 50 orders (trader, 23 Oct 2026: no merging; the risk rises instead, see sizing).
-    Returns (entries, weights, average entry)."""
-    ws = list(ENTRY_SPLIT)
-    avg = sum(e * w for e, w in zip(entries, ws))
-    return list(entries), ws, avg
+def ladder(levels, stop):
+    """Orders that fit RISK_USD with every order at least MIN_ORDER_USD (trader, 27 Oct 2026: risk never rises).
+    Tries all levels, then two (near and far edge, 45 : 55), then one. Returns (entries, weights, avg) or None."""
+    L = list(levels)
+    if len(L) == 3:
+        tries = [(L, ENTRY_SPLIT), ([L[0], L[2]], SPLIT_2), ([L[1]], (1.0,))]
+    elif len(L) == 2:
+        tries = [(L, SPLIT_2), ([L[0]], (1.0,))]
+    else:
+        tries = [(L, (1.0,))]
+    for es, ws in tries:
+        avg = sum(e * w for e, w in zip(es, ws))
+        qty = RISK_USD / abs(avg - stop)
+        if all(qty * w * e >= MIN_ORDER_USD * 1.01 for e, w in zip(es, ws)):
+            return list(es), list(ws), avg
+    return None
 
 
 def plan(closed, price, trend, d):
@@ -272,16 +286,21 @@ def plan(closed, price, trend, d):
         # entries stay inside the zone, where price is likely to reach them; the stop sits a quarter of a weekly
         # ATR beyond the rejection cluster (or the zone, if that's further), so a sweep of the level doesn't take it
         anchor = max(far, level) if short else min(far, level)
-        # price already inside the zone: the ladder starts at today's price and runs to the far edge (no stacking)
-        start = min(far, max(near, price)) if short else max(far, min(near, price))
-        levels = (start, (start + far) / 2, far)
-        # levels price has already passed would fill straight away, at today's price
-        entries = [max(x, price) if short else min(x, price) for x in levels]
+        # fixed levels from the zone; they never follow price (trader, 27 Oct 2026)
+        levels = [near, (near + far) / 2, far]
         stop = anchor + STOP_BUFFER_ATR * A if short else anchor - STOP_BUFFER_ATR * A
-        entries, weights, avg = merge_small(entries, stop)
-        if abs(stop - entries[-1]) > MAX_STOP_GAP_ATR * A:   # thin zone far below the real rejection: not the supply
+        if abs(stop - far) > MAX_STOP_GAP_ATR * A:   # thin zone far below the real rejection: not the supply
             best = best or (None, "stop more than half a weekly ATR beyond the zone")
             continue
+        past = price > far if short else price < far
+        # price inside the zone: levels it has passed are dropped, not chased at market.
+        # price past the far edge: wait for a daily close back inside; the plan shows the full ladder for reference
+        open_levels = levels if past else [x for x in levels if (x >= price if short else x <= price)]
+        lad = ladder(open_levels, stop)
+        if lad is None:
+            best = best or (None, f"at ${RISK_USD:g} risk even one order is under the ${MIN_ORDER_USD:g} minimum")
+            continue
+        entries, weights, avg = lad
         risk = abs(stop - avg)
         if short:
             raw = sorted((o["top"] for o in zs if o["kind"] == opp and o["top"] < near), reverse=True)
@@ -301,6 +320,7 @@ def plan(closed, price, trend, d):
         if not tz:
             best = best or (None, "no zone or swing at least 1R away to take profit at")
             continue
+        tz = [t * (1 + TP_FRONT) if short else t * (1 - TP_FRONT) for t in tz]   # exit just in front of the level
         tp1 = tz[0]
         tp2 = tz[1] if len(tz) > 1 else None
         tps = [tp1, tp2] if tp2 is not None else [tp1]
@@ -321,7 +341,8 @@ def plan(closed, price, trend, d):
             "zone_atr": round((z["top"] - z["bottom"]) / A, 2), "tests": z["tests"], "rejection_level": level if anchor == level else None,   # only when it sets the stop
             "base_from": iso(z["base_start"]), "formed": iso(z["formed"]),
             "entries": entries, "entry_split": [round(w * 100) for w in weights], "avg_entry": avg, "stop": stop, "tps": tps, "rr": round(rr, 2), "rr_first_only": round(rr_first, 2),
-            "risk_pct": round(risk / avg * 100, 1), "past_zone": (price > z["top"]) if short else (price < z["bottom"]), "distance_pct": round(dist * 100, 1), "distance_best_pct": round(dist_best * 100, 1), "at_zone": dist == 0.0,
+            "risk_pct": round(risk / avg * 100, 1), "past_zone": past, "status": "wait" if past else "orders",
+            "levels": levels, "dropped_levels": [x for x in levels if x not in open_levels], "distance_pct": round(dist * 100, 1), "distance_best_pct": round(dist_best * 100, 1), "at_zone": dist == 0.0,
         }, None
     return best if best else (None, "no trade")
 
@@ -331,9 +352,7 @@ def sizing(p, max_lev):
     suggestion: the highest whole leverage that keeps (isolated) liquidation at least LIQ_BUFFER x the stop
     distance away, measured from the first entry (the one furthest from the stop)."""
     weights = [x / 100 for x in p["entry_split"]]
-    qty = RISK_USD / abs(p["avg_entry"] - p["stop"])
-    # if $3 can't fund every order at Hyperliquid's $10 minimum, the risk rises just enough that it can
-    qty = max([qty] + [MIN_ORDER_USD * 1.01 / (w * e) for e, w in zip(p["entries"], weights)])
+    qty = RISK_USD / abs(p["avg_entry"] - p["stop"])   # risk never rises above RISK_USD; the ladder already fits $10 orders
     risk = qty * abs(p["avg_entry"] - p["stop"])
     orders = []
     for e, w in zip(p["entries"], weights):
@@ -380,7 +399,7 @@ def main():
         rows.append(p)
         print(f"{coin:8} {p['side']:5} entries {[round(e, 6) for e in p['entries']]} stop {p['stop']:.6g} "
               f"tps {[round(t, 6) for t in p['tps']]} {p['rr']}:1 dist {p['distance_pct']}%")
-    rows.sort(key=lambda x: x["distance_pct"])
+    rows.sort(key=lambda x: (x["status"] == "wait", x["distance_pct"]))
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "scanned": len(coins),
