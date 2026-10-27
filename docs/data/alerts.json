@@ -37,6 +37,22 @@
       "name": "rejection cluster",
       "touch_pct": 1.0,
       "source": "added via the website, 2026-10-27"
+    },
+    {
+      "id": "ENA-line-2026-10-21",
+      "coin": "ENA",
+      "type": "trendline",
+      "name": "trendline rejection",
+      "p1": {
+        "date": "2026-09-27",
+        "price": 0.29437
+      },
+      "p2": {
+        "date": "2026-10-21",
+        "price": 0.22549
+      },
+      "touch_pct": 1.0,
+      "source": "added via the website, 2026-10-27"
     }
   ],
   "watch": [
