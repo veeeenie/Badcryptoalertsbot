@@ -53,6 +53,15 @@
       },
       "touch_pct": 1.0,
       "source": "added via the website, 2026-10-27"
+    },
+    {
+      "id": "BTC-82,230",
+      "coin": "BTC",
+      "type": "level",
+      "price": 82230.0,
+      "name": "area to reclaim",
+      "touch_pct": 1.0,
+      "source": "added via the website, 2026-10-27"
     }
   ],
   "watch": [
