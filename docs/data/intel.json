@@ -1,16 +1,16 @@
 {
- "generated_at": "2026-10-26T14:22:59Z",
+ "generated_at": "2026-10-27T02:20:02Z",
  "coins": {
   "ZEC": {
    "side": "long",
    "stance": "supports",
-   "summary": "NU7 is about 10 days out (around Nov 5): 25-second blocks, Sprout pool disabled, and 60% of fees taken out of circulation, with node operators told to run Zebra 7.0.0. ZEC is up about 7% today; no vesting unlocks (PoW issuance only), so the main risk is an upgrade slip.",
+   "summary": "NU7 mainnet is about 9 days out (block 3,543,405, around Nov 5): 25-second blocks, Sprout pool disabled and 60% of fees taken out of circulation. No vesting unlocks (PoW issuance only), so the main risk to the long is an upgrade slip.",
    "news": [
     {
      "title": "NU7 roughly 10 days away: Sprout pool to be disabled, operators must run Zebra 7.0.0 before block 3,543,405",
      "url": "https://u.today/10-days-left-zcash-set-to-cut-block-times-to-25-seconds",
      "date": "Oct 26",
-     "new": true
+     "new": false
     },
     {
      "title": "Privacy coins ZEC and XMR outperform Bitcoin on the week ahead of NU7, which cuts block time to 25s and sets aside 60% of fees",
@@ -26,42 +26,45 @@
     }
    ],
    "unlocks": [],
-   "checked_at": "2026-10-26T14:22:59Z"
+   "checked_at": "2026-10-27T02:20:02Z"
   },
   "MORPHO": {
    "side": "long",
+   "checked_at": "2026-10-27T02:20:02Z",
    "stance": "supports",
-   "summary": "Integrations keep coming and support the long: Robinhood stock tokens as collateral and Ledger wallet loans built on Morpho, plus Morpho driving most recent DeFi stablecoin growth. The risk is about 973K MORPHO stolen from institution-linked wallets that could be sold. No unlocks in the next 14 days.",
+   "summary": "Adoption keeps growing, which supports the long: Bitso's new Bóvedas vaults run on Morpho and USDG lending on Morpho passed $115M in 18 days, on top of last week's Robinhood and Ledger integrations. The risk is the ~973K MORPHO stolen from institution-linked wallets that could be sold. No unlocks in the next 14 days.",
    "news": [
     {
-     "title": "Robinhood stock tokens go live as collateral for USDG loans on Morpho; Robinhood Chain TVL reaches $1.14B",
-     "url": "https://crypto.news/robinhood-chain-1-14b-tvl-morpho-stock-token-loans/",
-     "date": "Oct 22"
+     "title": "Mexican exchange Bitso launches Bóvedas, non-custodial USDC and MXNB yield vaults built on Morpho",
+     "url": "https://kucoin.com/news/flash/bitso-launches-b-vedas-to-integrate-morpho-lending-features",
+     "date": "Oct 26",
+     "new": true
     },
     {
-     "title": "Ledger Wallet launches crypto-backed stablecoin loans running on Morpho markets",
-     "url": "https://en.cryptonomist.ch/2026/10/21/ledger-crypto-loans-stablecoin/",
-     "date": "Oct 21"
+     "title": "USDG lending on Morpho (Arbitrum) passes $115M TVL within 18 days of launch",
+     "url": "https://en.cryptonomist.ch/2026/10/26/usdglendinggrowth-morpho-115m",
+     "date": "Oct 26",
+     "new": true
     },
     {
      "title": "About 973K MORPHO stolen from two institution-linked addresses and routed to Tornado Cash; no protocol bug confirmed",
      "url": "https://www.diariobitcoin.com/analisis/morpho-bajo-presion-el-21-de-octubre-de-2026-tras-un-robo-millonario/",
-     "date": "Oct 21"
+     "date": "Oct 21",
+     "new": false
     }
    ],
-   "unlocks": [],
-   "checked_at": "2026-10-26T02:20:23Z"
+   "unlocks": []
   },
   "DOT": {
    "side": "short",
    "stance": "supports",
-   "summary": "Headlines still lean against DOT: the Fearless Wallet key leak, a near-empty relay chain after the Asset Hub move, and CoinShares closing its Stockholm Polkadot staking ETP (last trading ~Nov 4, redemption Nov 9), which could mean some DOT sold. No vesting unlocks; only regular issuance under the hard cap.",
+   "summary": "Headlines still lean against DOT, now trading near $1: the Fearless Wallet key leak, a near-empty relay chain after the Asset Hub move, and CoinShares redeeming its Stockholm Polkadot staking ETP on Nov 9, which could mean some DOT sold. No vesting unlocks; only regular issuance under the 2.1B cap.",
    "news": [
     {
      "title": "CoinShares to redeem seven Stockholm-listed ETPs including its Polkadot staking product; last trading around Nov 4, redemption Nov 9",
      "url": "https://www.tokenpost.com/news/investing/39711",
      "date": "Oct 24",
-     "new": true
+     "new": false
     },
     {
      "title": "Relay chain nearly emptied after the Asset Hub migration; a referendum to rename to JAM fails",
@@ -77,7 +80,7 @@
     }
    ],
    "unlocks": [],
-   "checked_at": "2026-10-26T14:22:59Z"
+   "checked_at": "2026-10-27T02:20:02Z"
   },
   "WCT": {
    "side": "short",
@@ -90,7 +93,7 @@
   "LIT": {
    "side": "long",
    "stance": "supports",
-   "summary": "Still supportive for the long: a November CFTC license filing, new options and weETH collateral, and nearly all revenue (~$2.8M over 30 days) going to LIT buybacks; it gave back ~9% on Oct 23 with the market. No unlocks in the window; the big team/investor cliff is in late December.",
+   "summary": "Still supportive for the long: a November CFTC license filing, new options and weETH collateral, and most fees going to LIT buybacks and burns. No unlocks in the next 14 days; the big team/investor cliff is later (late December per Tokenomist research).",
    "news": [
     {
      "title": "Lighter adds ether.fi's weETH as perp collateral after launching 15-minute BTC/ETH up/down options",
@@ -102,7 +105,7 @@
      "title": "Lighter routes almost all of ~$2.8M monthly revenue into LIT buybacks; LIT stalls below $4",
      "url": "https://www.kucoin.com/news/flash/lighter-lit-struggles-to-sustain-rally-above-4-amid-buybacks-and-cftc-licensing-plans",
      "date": "Oct 22",
-     "new": true
+     "new": false
     },
     {
      "title": "Lighter founder says it will apply for US CFTC derivatives licenses in November; LIT up about 23% on the week",
@@ -112,15 +115,15 @@
     }
    ],
    "unlocks": [],
-   "checked_at": "2026-10-26T14:22:59Z"
+   "checked_at": "2026-10-27T02:20:02Z"
   },
   "ANIME": {
    "side": "short",
+   "checked_at": "2026-10-27T02:20:02Z",
    "stance": "neutral",
-   "summary": "No material news this week. Tokenomist shows no unlocks in the next 14 days; the next (to Community Cultivation) is Nov 23, outside the window.",
+   "summary": "No material news this week (up about 5% on the week). No unlocks in the next 14 days; the next is Nov 23 (about 130M ANIME, ~1.3% of supply, to Community Cultivation), outside the window.",
    "news": [],
-   "unlocks": [],
-   "checked_at": "2026-10-26T14:22:59Z"
+   "unlocks": []
   },
   "BERA": {
    "side": "short",
