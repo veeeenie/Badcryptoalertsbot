@@ -254,7 +254,7 @@ def ladder(levels, stop):
     return None
 
 
-def plan(closed, price, trend, d):
+def plan(closed, price, trend, d, last_close=None):
     """The nearest zone in the trend's direction that gives a trade passing the gate.
     Returns (plan, None) or (None, reason)."""
     A = atr_series(closed)[-1]
@@ -292,7 +292,10 @@ def plan(closed, price, trend, d):
         if abs(stop - far) > MAX_STOP_GAP_ATR * A:   # thin zone far below the real rejection: not the supply
             best = best or (None, "stop more than half a weekly ATR beyond the zone")
             continue
-        past = price > far if short else price < far
+        # wait while price, or the last closed daily candle, is beyond the far edge: only a daily close back
+        # inside the zone re-opens the orders (an intraday dip back in is not enough)
+        lc = price if last_close is None else last_close
+        past = (price > far or lc > far) if short else (price < far or lc < far)
         # price inside the zone: levels it has passed are dropped, not chased at market.
         # price past the far edge: wait for a daily close back inside; the plan shows the full ladder for reference
         open_levels = levels if past else [x for x in levels if (x >= price if short else x <= price)]
@@ -376,7 +379,8 @@ def main():
     for r in coins:
         coin, price = r["coin"], r["price"]
         try:
-            weekly = weekly_from_daily(daily_candles(coin))
+            daily = daily_candles(coin)
+            weekly = weekly_from_daily(daily)
         except Exception as e:
             print(f"{coin}: candles failed ({e})")
             continue
@@ -389,7 +393,8 @@ def main():
                 skipped["no_trend"] += 1
                 skipped.setdefault("detail", []).append({"coin": coin, "ema": d.get("ema"), "structure": d.get("structure")})
             continue
-        p, why = plan(closed, price, trend, d)
+        last_close = daily[-2]["c"] if len(daily) >= 2 else None   # last closed daily candle
+        p, why = plan(closed, price, trend, d, last_close)
         if p is None:
             notrade.append({"coin": coin, "trend": trend, "ema_basis": d["ema_basis"], "why": why})
             print(f"{coin:8} {trend:4} no trade: {why}")
