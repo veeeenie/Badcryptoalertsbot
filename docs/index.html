@@ -262,14 +262,18 @@ async function ideasLive(){
     el.querySelectorAll("tr[data-px]").forEach(tr=>{const o=+tr.dataset.px, passed=st==="orders"&&(short?p>o:p<o);
       tr.querySelector(".from").innerHTML=passed?'<span class="warn">passed: skip</span>':pct(o,p).toFixed(1)+"%";});
   });
-  document.getElementById("wmeta").textContent=`${W.rows.length} ideas from the top ${W.scanned} coins. Plans from the hourly scan at ${ist(W.generated_at,true)}; ${live?"prices live from Hyperliquid, refreshed every minute":"live prices unavailable, showing scan prices"}. Risk is capped at $${W.risk_usd}.`;
+  document.getElementById("wmeta").textContent=`${W.rows.filter(r=>r.ready??r.distance_pct<=(W.ready_pct??10)).length} ready of ${W.rows.length} ideas from the top ${W.scanned} coins. Plans from the hourly scan at ${ist(W.generated_at,true)}; ${live?"prices live from Hyperliquid, refreshed every minute":"live prices unavailable, showing scan prices"}. Risk is capped at $${W.risk_usd}.`;
 }
 
 fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
   const c=w.counts; window.IDEAS=w;
   document.getElementById("wmeta").textContent=`${c.trades} ideas from the top ${w.scanned} coins. Updated ${ist(w.generated_at,true)}.`;
-  document.getElementById("wrows").innerHTML=w.rows.length?`<div class="ideas">${w.rows.map(r=>idea(r,w)).join("")}</div>`:
-    '<p class="muted">No trade passes the rules right now. Stay in cash.</p>';
+  // ready: first order within ready_pct of price; the rest wait in a collapsed list (trader, 28 Oct 2026)
+  const RP=w.ready_pct??10, isReady=r=>r.ready??(r.distance_pct<=RP);
+  const ready=w.rows.filter(isReady), later=w.rows.filter(r=>!isReady(r));
+  document.getElementById("wrows").innerHTML=(ready.length?`<div class="ideas">${ready.map(r=>idea(r,w)).join("")}</div>`:
+    `<p class="muted">No idea has its first order within ${RP}% of price. Nothing to place now.</p>`)+
+    (later.length?`<details class="more waitlist"><summary class="muted">Waiting: ${later.length} idea${later.length>1?"s":""} more than ${RP}% from price (${later.map(r=>`${r.coin} ${r.distance_pct.toFixed(0)}%`).join(", ")}). They move up when price comes within ${RP}%.</summary><div class="ideas">${later.map(r=>idea(r,w)).join("")}</div></details>`:"");
   const g={};(w.trend_no_trade||[]).forEach(x=>{const k=x.why.startsWith("best zone")?"below the 1.4 : 1 gate":x.why;(g[k]=g[k]||[]).push(`${x.coin} ${x.trend==="down"?"↓":"↑"}`);});
   document.getElementById("wnone").innerHTML=(Object.keys(g).length?Object.entries(g).map(([k,v])=>`<b>${k[0].toUpperCase()+k.slice(1)}:</b> ${v.join(", ")}`).join(". "):"None")+`. ${c.no_trend} coins have no clear weekly trend; ${c.too_young} have under 25 weeks of history.`;
   ideasLive(); setInterval(ideasLive,60000);

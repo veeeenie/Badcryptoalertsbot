@@ -51,6 +51,7 @@ BASE_BODY_RANGE = 0.5  # base candle: body <= 50% of its range
 BASE_MAX = 3
 MAX_TESTS = 1          # zones visited more than once are dropped
 MAX_ZONE_ATR = 1.0     # zones taller than one weekly ATR are not traded (stop too far); trader, 23 Oct 2026
+READY_PCT = 10.0       # ideas whose first order is within 10% of price are "ready"; the rest wait in a separate list (trader, 28 Oct 2026)
 MAX_DIST_ATR = 2.0     # zones whose near edge is more than 2 weekly ATRs from price are not shown; trader, 23 Oct 2026
 MIN_RR = 1.4           # the gate: reward-to-risk of the whole plan from the average entry; trader, 23 Oct 2026
 ENTRY_SPLIT = (0.3, 0.3, 0.4)         # size grows toward the best price, flat enough that every order reaches $10 with ~$33 of position; trader, 24 Oct 2026
@@ -404,11 +405,13 @@ def main():
         rows.append(p)
         print(f"{coin:8} {p['side']:5} entries {[round(e, 6) for e in p['entries']]} stop {p['stop']:.6g} "
               f"tps {[round(t, 6) for t in p['tps']]} {p['rr']}:1 dist {p['distance_pct']}%")
-    rows.sort(key=lambda x: (x["status"] == "wait", x["distance_pct"]))
+    for p in rows:
+        p["ready"] = p["distance_pct"] <= READY_PCT
+    rows.sort(key=lambda x: (not x["ready"], x["status"] == "wait", x["distance_pct"]))
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "scanned": len(coins),
-        "gate_rr": MIN_RR, "risk_usd": RISK_USD,
+        "gate_rr": MIN_RR, "risk_usd": RISK_USD, "ready_pct": READY_PCT,
         "counts": {"trades": len(rows), "trend_no_trade": len(notrade), "no_trend": skipped["no_trend"],
                    "too_young": len(skipped["young"])},
         "rows": rows,
