@@ -1,178 +1,178 @@
 {
- "generated_at": "2026-10-28T02:30:00Z",
- "coins": {
-  "ZEC": {
-   "side": "long",
-   "stance": "supports",
-   "summary": "NU7 mainnet is about 9 days out (block 3,543,405, around Nov 5): 25-second blocks and part of fees set aside; ZEC bounced about 7% today after a choppy month with heavy long liquidations. No vesting unlocks (PoW issuance only), so the main risk to the long is an upgrade slip.",
-   "news": [
-    {
-     "title": "NU7 roughly 10 days away: Sprout pool to be disabled, operators must run Zebra 7.0.0 before block 3,543,405",
-     "url": "https://u.today/10-days-left-zcash-set-to-cut-block-times-to-25-seconds",
-     "date": "Oct 26",
-     "new": false
+  "generated_at": "2026-10-28T14:35:00Z",
+  "coins": {
+    "ZEC": {
+      "side": "long",
+      "stance": "supports",
+      "summary": "NU7 mainnet is about 9 days out (block 3,543,405, around Nov 5): 25-second blocks and part of fees set aside; ZEC bounced about 7% today after a choppy month with heavy long liquidations. No vesting unlocks (PoW issuance only), so the main risk to the long is an upgrade slip.",
+      "news": [
+        {
+          "title": "NU7 roughly 10 days away: Sprout pool to be disabled, operators must run Zebra 7.0.0 before block 3,543,405",
+          "url": "https://u.today/10-days-left-zcash-set-to-cut-block-times-to-25-seconds",
+          "date": "Oct 26",
+          "new": false
+        },
+        {
+          "title": "Privacy coins ZEC and XMR outperform Bitcoin on the week ahead of NU7, which cuts block time to 25s and sets aside 60% of fees",
+          "url": "https://247wallst.com/investing/cryptocurrency/2026/10/25/monero-xmr-and-zcash-zec-beat-bitcoin-this-week-can-the-privacy-coins-keep-it-up",
+          "date": "Oct 25",
+          "new": false
+        },
+        {
+          "title": "Zcash devs finalize NU7 mainnet activation height 3,543,405, targeting around Nov 5; ZEC up about 12%",
+          "url": "https://www.kucoin.com/news/flash/zcash-jumps-12-after-nu7-upgrade-activation-height-finalized",
+          "date": "Oct 21",
+          "new": false
+        }
+      ],
+      "unlocks": [],
+      "checked_at": "2026-10-28T02:30:00Z"
     },
-    {
-     "title": "Privacy coins ZEC and XMR outperform Bitcoin on the week ahead of NU7, which cuts block time to 25s and sets aside 60% of fees",
-     "url": "https://247wallst.com/investing/cryptocurrency/2026/10/25/monero-xmr-and-zcash-zec-beat-bitcoin-this-week-can-the-privacy-coins-keep-it-up",
-     "date": "Oct 25",
-     "new": false
+    "MORPHO": {
+      "side": "long",
+      "checked_at": "2026-10-28T02:30:00Z",
+      "stance": "supports",
+      "summary": "Adoption keeps growing, which supports the long: Bitso's new B\u00f3vedas vaults run on Morpho and USDG lending on Morpho passed $115M in 18 days, on top of last week's Robinhood and Ledger integrations. The risk is the ~973K MORPHO stolen from institution-linked wallets that could be sold. No unlocks in the next 14 days.",
+      "news": [
+        {
+          "title": "Mexican exchange Bitso launches B\u00f3vedas, non-custodial USDC and MXNB yield vaults built on Morpho",
+          "url": "https://kucoin.com/news/flash/bitso-launches-b-vedas-to-integrate-morpho-lending-features",
+          "date": "Oct 26",
+          "new": false
+        },
+        {
+          "title": "USDG lending on Morpho (Arbitrum) passes $115M TVL within 18 days of launch",
+          "url": "https://en.cryptonomist.ch/2026/10/26/usdglendinggrowth-morpho-115m",
+          "date": "Oct 26",
+          "new": false
+        },
+        {
+          "title": "About 973K MORPHO stolen from two institution-linked addresses and routed to Tornado Cash; no protocol bug confirmed",
+          "url": "https://www.diariobitcoin.com/analisis/morpho-bajo-presion-el-21-de-octubre-de-2026-tras-un-robo-millonario/",
+          "date": "Oct 21",
+          "new": false
+        }
+      ],
+      "unlocks": []
     },
-    {
-     "title": "Zcash devs finalize NU7 mainnet activation height 3,543,405, targeting around Nov 5; ZEC up about 12%",
-     "url": "https://www.kucoin.com/news/flash/zcash-jumps-12-after-nu7-upgrade-activation-height-finalized",
-     "date": "Oct 21",
-     "new": false
+    "DOT": {
+      "side": "short",
+      "stance": "supports",
+      "summary": "DOT has slipped below $1 and headlines still lean against it: the Fearless Wallet key leak, a near-empty relay chain after the Asset Hub move, and CoinShares redeeming its Stockholm Polkadot staking ETP on Nov 9. No vesting unlocks; only regular issuance under the 2.1B cap.",
+      "news": [
+        {
+          "title": "CoinShares to redeem seven Stockholm-listed ETPs including its Polkadot staking product; last trading around Nov 4, redemption Nov 9",
+          "url": "https://www.tokenpost.com/news/investing/39711",
+          "date": "Oct 24",
+          "new": false
+        },
+        {
+          "title": "Relay chain nearly emptied after the Asset Hub migration; a referendum to rename to JAM fails",
+          "url": "https://cryptoticker.io/en/polkadot-relay-chain-jam-rebuild/",
+          "date": "Oct 23",
+          "new": false
+        },
+        {
+          "title": "Fearless Wallet extension found leaking recovery phrases; users told to move funds after about 17K DOT taken",
+          "url": "https://www.cryptopolitan.com/fearless-wallet-leaked-polkadot-private-keys/",
+          "date": "Oct 21",
+          "new": false
+        }
+      ],
+      "unlocks": [],
+      "checked_at": "2026-10-28T02:30:00Z"
+    },
+    "LIT": {
+      "side": "long",
+      "stance": "supports",
+      "summary": "Still supportive for the long: a November CFTC license filing, new options and weETH collateral, and most fees going to LIT buybacks and burns. No unlocks in the next 14 days; the big team/investor cliff is later (late December per Tokenomist research).",
+      "news": [
+        {
+          "title": "Lighter adds ether.fi's weETH as perp collateral after launching 15-minute BTC/ETH up/down options",
+          "url": "https://coinmarketcap.com/cmc-ai/lighter/latest-updates/",
+          "date": "Oct 24",
+          "new": false
+        },
+        {
+          "title": "Lighter routes almost all of ~$2.8M monthly revenue into LIT buybacks; LIT stalls below $4",
+          "url": "https://www.kucoin.com/news/flash/lighter-lit-struggles-to-sustain-rally-above-4-amid-buybacks-and-cftc-licensing-plans",
+          "date": "Oct 22",
+          "new": false
+        },
+        {
+          "title": "Lighter founder says it will apply for US CFTC derivatives licenses in November; LIT up about 23% on the week",
+          "url": "https://beincrypto.com/lighter-token-rally-cftc-license-november/",
+          "date": "Oct 22",
+          "new": false
+        }
+      ],
+      "unlocks": [],
+      "checked_at": "2026-10-28T02:30:00Z"
+    },
+    "AVNT": {
+      "side": "short",
+      "checked_at": "2026-10-27T14:40:00Z",
+      "stance": "neutral",
+      "summary": "Avantis has rebranded to Veranta (same AVNT ticker and contract), pitching itself toward RWA and cross-asset leverage; exchanges are just updating display names. No large dated unlock in the next 14 days; DropsTab shows only small ongoing releases (about 0.8M AVNT, roughly 0.2% of circulating supply), which add a little supply for the short.",
+      "news": [
+        {
+          "title": "Avantis rebrands to Veranta; INDODAX updates the display name, AVNT ticker and contract unchanged",
+          "url": "https://blog.indodax.com/en_US/rebranding-avantis-to-veranta",
+          "date": "Oct 22",
+          "new": true
+        }
+      ],
+      "unlocks": []
+    },
+    "ANIME": {
+      "side": "short",
+      "checked_at": "2026-10-28T02:30:00Z",
+      "stance": "neutral",
+      "summary": "No material news this week (up about 5% on the week). No unlocks in the next 14 days; the next is Nov 23 (about 130M ANIME, ~1.3% of supply, to Community Cultivation), outside the window.",
+      "news": [],
+      "unlocks": []
+    },
+    "kBONK": {
+      "side": "short",
+      "checked_at": "2026-10-28T02:30:00Z",
+      "stance": "neutral",
+      "summary": "No material BONK news this week; it is still near multi-year lows after the Upbit delisting and the treasury governance attack earlier this year. Tokenomist lists BONK as fully unlocked, so there is no unlock supply in the next 14 days.",
+      "news": [],
+      "unlocks": []
+    },
+    "WCT": {
+      "side": "short",
+      "stance": "neutral",
+      "summary": "Nothing material this week. Monthly unlocks fall on the 15th; the next (Nov 15) is outside the 14-day window.",
+      "news": [],
+      "unlocks": [],
+      "checked_at": "2026-10-26T02:20:23Z"
+    },
+    "BERA": {
+      "side": "short",
+      "checked_at": "2026-10-28T14:35:00Z",
+      "stance": "neutral",
+      "summary": "No price-moving BERA news found in the last week. Neither Tokenomist nor DropsTab lists a dated unlock in the next 14 days; only small ongoing linear vesting and validator emissions, which add a little supply.",
+      "news": [],
+      "unlocks": []
+    },
+    "REZ": {
+      "side": "short",
+      "checked_at": "2026-10-28T02:30:00Z",
+      "stance": "supports",
+      "summary": "No material Renzo news this week; investor vesting is finished, so the only remaining supply is the monthly Core Contributor release, with the next one on Oct 30 per Tokenomist. That adds supply into the short, though the exact amount isn't public (trackers put it around 80M REZ, under 1% of total).",
+      "news": [],
+      "unlocks": [
+        {
+          "date": "Oct 30",
+          "date_iso": "2026-10-30",
+          "amount": "REZ (amount not shown publicly; app.tokenomics.com lists 80M REZ for this cycle)",
+          "pct_supply": "",
+          "note": "Core Contributors (monthly linear release)",
+          "source": "https://tokenomist.ai/renzo/unlock-events",
+          "new": true
+        }
+      ]
     }
-   ],
-   "unlocks": [],
-   "checked_at": "2026-10-28T02:30:00Z"
-  },
-  "MORPHO": {
-   "side": "long",
-   "checked_at": "2026-10-28T02:30:00Z",
-   "stance": "supports",
-   "summary": "Adoption keeps growing, which supports the long: Bitso's new Bóvedas vaults run on Morpho and USDG lending on Morpho passed $115M in 18 days, on top of last week's Robinhood and Ledger integrations. The risk is the ~973K MORPHO stolen from institution-linked wallets that could be sold. No unlocks in the next 14 days.",
-   "news": [
-    {
-     "title": "Mexican exchange Bitso launches Bóvedas, non-custodial USDC and MXNB yield vaults built on Morpho",
-     "url": "https://kucoin.com/news/flash/bitso-launches-b-vedas-to-integrate-morpho-lending-features",
-     "date": "Oct 26",
-     "new": false
-    },
-    {
-     "title": "USDG lending on Morpho (Arbitrum) passes $115M TVL within 18 days of launch",
-     "url": "https://en.cryptonomist.ch/2026/10/26/usdglendinggrowth-morpho-115m",
-     "date": "Oct 26",
-     "new": false
-    },
-    {
-     "title": "About 973K MORPHO stolen from two institution-linked addresses and routed to Tornado Cash; no protocol bug confirmed",
-     "url": "https://www.diariobitcoin.com/analisis/morpho-bajo-presion-el-21-de-octubre-de-2026-tras-un-robo-millonario/",
-     "date": "Oct 21",
-     "new": false
-    }
-   ],
-   "unlocks": []
-  },
-  "DOT": {
-   "side": "short",
-   "stance": "supports",
-   "summary": "DOT has slipped below $1 and headlines still lean against it: the Fearless Wallet key leak, a near-empty relay chain after the Asset Hub move, and CoinShares redeeming its Stockholm Polkadot staking ETP on Nov 9. No vesting unlocks; only regular issuance under the 2.1B cap.",
-   "news": [
-    {
-     "title": "CoinShares to redeem seven Stockholm-listed ETPs including its Polkadot staking product; last trading around Nov 4, redemption Nov 9",
-     "url": "https://www.tokenpost.com/news/investing/39711",
-     "date": "Oct 24",
-     "new": false
-    },
-    {
-     "title": "Relay chain nearly emptied after the Asset Hub migration; a referendum to rename to JAM fails",
-     "url": "https://cryptoticker.io/en/polkadot-relay-chain-jam-rebuild/",
-     "date": "Oct 23",
-     "new": false
-    },
-    {
-     "title": "Fearless Wallet extension found leaking recovery phrases; users told to move funds after about 17K DOT taken",
-     "url": "https://www.cryptopolitan.com/fearless-wallet-leaked-polkadot-private-keys/",
-     "date": "Oct 21",
-     "new": false
-    }
-   ],
-   "unlocks": [],
-   "checked_at": "2026-10-28T02:30:00Z"
-  },
-  "LIT": {
-   "side": "long",
-   "stance": "supports",
-   "summary": "Still supportive for the long: a November CFTC license filing, new options and weETH collateral, and most fees going to LIT buybacks and burns. No unlocks in the next 14 days; the big team/investor cliff is later (late December per Tokenomist research).",
-   "news": [
-    {
-     "title": "Lighter adds ether.fi's weETH as perp collateral after launching 15-minute BTC/ETH up/down options",
-     "url": "https://coinmarketcap.com/cmc-ai/lighter/latest-updates/",
-     "date": "Oct 24",
-     "new": false
-    },
-    {
-     "title": "Lighter routes almost all of ~$2.8M monthly revenue into LIT buybacks; LIT stalls below $4",
-     "url": "https://www.kucoin.com/news/flash/lighter-lit-struggles-to-sustain-rally-above-4-amid-buybacks-and-cftc-licensing-plans",
-     "date": "Oct 22",
-     "new": false
-    },
-    {
-     "title": "Lighter founder says it will apply for US CFTC derivatives licenses in November; LIT up about 23% on the week",
-     "url": "https://beincrypto.com/lighter-token-rally-cftc-license-november/",
-     "date": "Oct 22",
-     "new": false
-    }
-   ],
-   "unlocks": [],
-   "checked_at": "2026-10-28T02:30:00Z"
-  },
-  "AVNT": {
-   "side": "short",
-   "checked_at": "2026-10-27T14:40:00Z",
-   "stance": "neutral",
-   "summary": "Avantis has rebranded to Veranta (same AVNT ticker and contract), pitching itself toward RWA and cross-asset leverage; exchanges are just updating display names. No large dated unlock in the next 14 days; DropsTab shows only small ongoing releases (about 0.8M AVNT, roughly 0.2% of circulating supply), which add a little supply for the short.",
-   "news": [
-    {
-     "title": "Avantis rebrands to Veranta; INDODAX updates the display name, AVNT ticker and contract unchanged",
-     "url": "https://blog.indodax.com/en_US/rebranding-avantis-to-veranta",
-     "date": "Oct 22",
-     "new": true
-    }
-   ],
-   "unlocks": []
-  },
-  "ANIME": {
-   "side": "short",
-   "checked_at": "2026-10-28T02:30:00Z",
-   "stance": "neutral",
-   "summary": "No material news this week (up about 5% on the week). No unlocks in the next 14 days; the next is Nov 23 (about 130M ANIME, ~1.3% of supply, to Community Cultivation), outside the window.",
-   "news": [],
-   "unlocks": []
-  },
-  "kBONK": {
-   "side": "short",
-   "checked_at": "2026-10-28T02:30:00Z",
-   "stance": "neutral",
-   "summary": "No material BONK news this week; it is still near multi-year lows after the Upbit delisting and the treasury governance attack earlier this year. Tokenomist lists BONK as fully unlocked, so there is no unlock supply in the next 14 days.",
-   "news": [],
-   "unlocks": []
-  },
-  "WCT": {
-   "side": "short",
-   "stance": "neutral",
-   "summary": "Nothing material this week. Monthly unlocks fall on the 15th; the next (Nov 15) is outside the 14-day window.",
-   "news": [],
-   "unlocks": [],
-   "checked_at": "2026-10-26T02:20:23Z"
-  },
-  "BERA": {
-   "side": "short",
-   "stance": "neutral",
-   "summary": "No material news this week. DefiLlama lists no BERA unlocks scheduled after Oct 25; only ongoing validator and reward-vault emissions, which add a little supply.",
-   "news": [],
-   "unlocks": [],
-   "checked_at": "2026-10-26T02:20:23Z"
-  },
-  "REZ": {
-   "side": "short",
-   "checked_at": "2026-10-28T02:30:00Z",
-   "stance": "supports",
-   "summary": "No material Renzo news this week; investor vesting is finished, so the only remaining supply is the monthly Core Contributor release, with the next one on Oct 30 per Tokenomist. That adds supply into the short, though the exact amount isn't public (trackers put it around 80M REZ, under 1% of total).",
-   "news": [],
-   "unlocks": [
-    {
-     "date": "Oct 30",
-     "date_iso": "2026-10-30",
-     "amount": "REZ (amount not shown publicly; app.tokenomics.com lists 80M REZ for this cycle)",
-     "pct_supply": "",
-     "note": "Core Contributors (monthly linear release)",
-     "source": "https://tokenomist.ai/renzo/unlock-events",
-     "new": true
-    }
-   ]
   }
- }
 }
