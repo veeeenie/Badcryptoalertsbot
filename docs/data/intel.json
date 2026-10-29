@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-29T02:34:41Z",
+  "generated_at": "2026-10-29T14:26:18Z",
   "coins": {
     "ZEC": {
       "side": "long",
@@ -84,19 +84,20 @@
     },
     "LIT": {
       "side": "long",
+      "checked_at": "2026-10-29T14:26:18Z",
       "stance": "supports",
-      "summary": "Still supportive for the long: a November CFTC license filing, new options and weETH collateral, and most fees going to LIT buybacks and burns. No unlocks in the next 14 days; the big team/investor cliff is later (late December per Tokenomist research).",
+      "summary": "Fundamentals still lean toward the long: fee revenue goes into LIT buybacks, a CFTC license filing is planned for November, and no unlocks are due until late January 2027. Against it, price has been weak since Oct 24, with long liquidations and outflows from perps.",
       "news": [
+        {
+          "title": "LIT falls about 11% as $2.4M leaves its perp markets and longs are liquidated; Lighter bought back ~$2.2M of LIT",
+          "url": "https://www.kucoin.com/news/flash/lit-drops-11-amid-2-4m-perpetual-market-outflows-2-2m-buybacks-may-aid-recovery",
+          "date": "Oct 24",
+          "new": true
+        },
         {
           "title": "Lighter adds ether.fi's weETH as perp collateral after launching 15-minute BTC/ETH up/down options",
           "url": "https://coinmarketcap.com/cmc-ai/lighter/latest-updates/",
           "date": "Oct 24",
-          "new": false
-        },
-        {
-          "title": "Lighter routes almost all of ~$2.8M monthly revenue into LIT buybacks; LIT stalls below $4",
-          "url": "https://www.kucoin.com/news/flash/lighter-lit-struggles-to-sustain-rally-above-4-amid-buybacks-and-cftc-licensing-plans",
-          "date": "Oct 22",
           "new": false
         },
         {
@@ -106,23 +107,32 @@
           "new": false
         }
       ],
-      "unlocks": [],
-      "checked_at": "2026-10-28T02:30:00Z"
+      "unlocks": []
     },
     "AVNT": {
       "side": "short",
-      "checked_at": "2026-10-27T14:40:00Z",
-      "stance": "neutral",
-      "summary": "Avantis has rebranded to Veranta (same AVNT ticker and contract), pitching itself toward RWA and cross-asset leverage; exchanges are just updating display names. No large dated unlock in the next 14 days; DropsTab shows only small ongoing releases (about 0.8M AVNT, roughly 0.2% of circulating supply), which add a little supply for the short.",
+      "checked_at": "2026-10-29T14:26:18Z",
+      "stance": "supports",
+      "summary": "A monthly unlock of about 24.7M AVNT (2.5% of total supply) is due Nov 9, split across community, private investors and insiders. That adds supply and helps the short. The Veranta rebrand changes only the name.",
       "news": [
         {
           "title": "Avantis rebrands to Veranta; INDODAX updates the display name, AVNT ticker and contract unchanged",
           "url": "https://blog.indodax.com/en_US/rebranding-avantis-to-veranta",
           "date": "Oct 22",
-          "new": true
+          "new": false
         }
       ],
-      "unlocks": []
+      "unlocks": [
+        {
+          "date": "Nov 9",
+          "date_iso": "2026-11-09",
+          "amount": "24.69M AVNT",
+          "pct_supply": "",
+          "note": "Monthly unlock, 2.5% of total supply: community 43%, private investors 36%, insiders 18%, foundation 3%",
+          "source": "https://app.tokenomics.com/tokenomics/avantis/unlocks",
+          "new": true
+        }
+      ]
     },
     "ANIME": {
       "side": "short",
@@ -163,6 +173,14 @@
       "news": [],
       "unlocks": [],
       "checked_at": "2026-10-29T02:34:41Z"
+    },
+    "MERL": {
+      "side": "short",
+      "checked_at": "2026-10-29T14:26:18Z",
+      "stance": "neutral",
+      "summary": "No price-moving Merlin Chain news found in the last 7 days. DropsTab shows the next monthly release (~37.7M MERL, mostly ecosystem and private-sale B) about three weeks out, outside the 14-day window, so nothing near-term for the short.",
+      "news": [],
+      "unlocks": []
     }
   }
 }
