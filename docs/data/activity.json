@@ -1,16 +1,16 @@
 {
- "generated_at": "2026-10-29T20:08:27+00:00",
+ "generated_at": "2026-10-29T21:08:35+00:00",
  "note": "Activity only, no score. No trade.xyz or Hyperliquid airdrop criteria have been announced; $5M lifetime volume is the bar trade.xyz's ended waitlist used.",
  "wallets": {
   "\u20265EaE": {
-   "lifetime_volume": 255578.26,
+   "lifetime_volume": 255590.54,
    "ref_volume": 5000000,
    "ref_progress_pct": 5.1,
-   "fills_seen": 686,
+   "fills_seen": 687,
    "first_fill": "2025-09-02",
-   "last_fill": "2026-10-28",
-   "days_active": 132,
-   "days_active_30d": 15,
+   "last_fill": "2026-10-30",
+   "days_active": 133,
+   "days_active_30d": 16,
    "months_active": 11,
    "markets": {
     "crypto": 45,
@@ -20,7 +20,7 @@
     "cash": 1
    },
    "volume_by_market": {
-    "crypto": 224124.22,
+    "crypto": 224136.5,
     "xyz": 27589.11,
     "km": 1856.89,
     "spot": 1014.83,
@@ -29,30 +29,30 @@
    "maker_share_pct": 28.9,
    "fees_paid": 192.89,
    "builder_fees_paid": 98.61,
-   "volume_in_fills": 255527.8
+   "volume_in_fills": 255540.08
   },
   "\u20263991": {
-   "lifetime_volume": 148496.76,
+   "lifetime_volume": 148675.3,
    "ref_volume": 5000000,
    "ref_progress_pct": 3.0,
-   "fills_seen": 335,
+   "fills_seen": 336,
    "first_fill": "2024-02-25",
-   "last_fill": "2026-10-28",
-   "days_active": 60,
-   "days_active_30d": 8,
+   "last_fill": "2026-10-30",
+   "days_active": 61,
+   "days_active_30d": 9,
    "months_active": 9,
    "markets": {
     "crypto": 22,
     "spot": 7
    },
    "volume_by_market": {
-    "crypto": 147788.33,
+    "crypto": 147966.87,
     "spot": 710.86
    },
-   "maker_share_pct": 26.5,
-   "fees_paid": 57.99,
+   "maker_share_pct": 26.6,
+   "fees_paid": 58.01,
    "builder_fees_paid": 0.03,
-   "volume_in_fills": 148499.18
+   "volume_in_fills": 148677.72
   }
  }
 }
