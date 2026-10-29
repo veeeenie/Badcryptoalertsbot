@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-29T06:09:26+00:00",
+ "generated_at": "2026-10-29T06:12:10+00:00",
  "scanned": 100,
  "gate_rr": 1.4,
  "risk_usd": 3.0,
@@ -45,11 +45,11 @@
    "dropped_levels": [
     0.003978
    ],
-   "distance_pct": 1.1,
-   "distance_best_pct": 1.1,
+   "distance_pct": 1.5,
+   "distance_best_pct": 1.5,
    "at_zone": false,
    "coin": "REZ",
-   "price": 0.004418,
+   "price": 0.004398,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 130,
@@ -109,11 +109,11 @@
     1045.6
    ],
    "dropped_levels": [],
-   "distance_pct": 2.0,
-   "distance_best_pct": 16.5,
+   "distance_pct": 1.6,
+   "distance_best_pct": 16.3,
    "at_zone": false,
    "coin": "ZEC",
-   "price": 1252.6,
+   "price": 1248.5,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 199,
@@ -184,7 +184,7 @@
    "distance_best_pct": 18.8,
    "at_zone": false,
    "coin": "MORPHO",
-   "price": 2.1974,
+   "price": 2.1969,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 100,
@@ -253,11 +253,11 @@
     1.296
    ],
    "dropped_levels": [],
-   "distance_pct": 22.6,
-   "distance_best_pct": 32.0,
+   "distance_pct": 23.0,
+   "distance_best_pct": 32.3,
    "at_zone": false,
    "coin": "DOT",
-   "price": 0.98185,
+   "price": 0.97925,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 306,
@@ -329,11 +329,11 @@
     0.005169
    ],
    "dropped_levels": [],
-   "distance_pct": 51.2,
-   "distance_best_pct": 51.2,
+   "distance_pct": 51.5,
+   "distance_best_pct": 51.5,
    "at_zone": false,
    "coin": "kBONK",
-   "price": 0.003077,
+   "price": 0.003071,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 154,
@@ -390,11 +390,11 @@
     0.26693
    ],
    "dropped_levels": [],
-   "distance_pct": 66.5,
-   "distance_best_pct": 66.5,
+   "distance_pct": 66.9,
+   "distance_best_pct": 66.9,
    "at_zone": false,
    "coin": "BERA",
-   "price": 0.1484,
+   "price": 0.14805,
    "trend": "down",
    "ema_basis": "25/50",
    "weeks": 90,
@@ -617,7 +617,7 @@
   },
   {
    "coin": "LINK",
-   "ema": "mixed",
+   "ema": "down",
    "structure": "higher high, lower low"
   },
   {
@@ -741,6 +741,11 @@
    "structure": "lower high, higher low"
   },
   {
+   "coin": "DASH",
+   "ema": "up",
+   "structure": "higher high, lower low"
+  },
+  {
    "coin": "PYTH",
    "ema": "down",
    "structure": "lower high, higher low"
@@ -748,11 +753,6 @@
   {
    "coin": "APT",
    "ema": "down",
-   "structure": "higher high, lower low"
-  },
-  {
-   "coin": "DASH",
-   "ema": "up",
    "structure": "higher high, lower low"
   },
   {
