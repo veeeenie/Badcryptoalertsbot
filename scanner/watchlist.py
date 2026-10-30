@@ -58,7 +58,8 @@ ENTRY_SPLIT = (0.3, 0.3, 0.4)         # size grows toward the best price, flat e
 SPLIT_2 = (0.45, 0.55)                 # two orders when $3 can't fund three at $10 (trader, 27 Oct 2026: risk stays within $3)
 TP_FRONT = 0.005       # take-profits sit 0.5% in front of their level so the exit fills before the level's sellers/buyers; trader, 27 Oct 2026
 EXIT_SPLIT = (0.5, 0.5)                # two equal exits: next opposite zone, then the one after (or the last swing)
-RISK_USD = 3.0         # dollars lost if every order fills and the stop is hit; trader, 23 Oct 2026
+from risk import risk_usd, RISK_PCT
+RISK_USD = risk_usd()  # dollars lost if every order fills and the stop is hit: 3% of the portfolio (trader, 30 Oct 2026)
 MIN_ORDER_USD = 10.0   # Hyperliquid's smallest order value
 LIQ_BUFFER = 2.0       # liquidation at least 2x the stop distance away when suggesting leverage
 MAX_STOP_GAP_ATR = 0.5 # skip a trade whose stop sits more than half a weekly ATR beyond the last entry; trader, 24 Oct 2026
@@ -411,7 +412,7 @@ def main():
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "scanned": len(coins),
-        "gate_rr": MIN_RR, "risk_usd": RISK_USD, "ready_pct": READY_PCT,
+        "gate_rr": MIN_RR, "risk_usd": RISK_USD, "risk_pct": RISK_PCT, "ready_pct": READY_PCT,
         "counts": {"trades": len(rows), "trend_no_trade": len(notrade), "no_trend": skipped["no_trend"],
                    "too_young": len(skipped["young"])},
         "rows": rows,

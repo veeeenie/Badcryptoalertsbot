@@ -27,7 +27,8 @@ START = os.getenv("JOURNAL_START", "2026-10-09")        # journal starts the wee
 # several wallets: "address:start-date,address:start-date"
 WALLETS = [tuple(x.split(":")) for x in os.getenv("JOURNAL_WALLETS", "").split(",") if ":" in x] or \
           ([(WALLET, START)] if WALLET else [])
-PLAN_RISK_USD = float(os.getenv("JOURNAL_RISK_USD", "3"))   # trader's rule, 23 Oct 2026
+from risk import plan_risk, risk_usd
+PLAN_RISK_USD = risk_usd()   # 3% of the portfolio from 30 Oct 2026 ($3 flat before)
 MIN_ORDER_USD = 10.0
 MAX_ENTRIES = 3
 MIN_RR = 1.4                                                # trader's gate, 23 Oct 2026
@@ -158,7 +159,7 @@ def summarise_trade(t, coin_orders, by_oid, closed):
         "min_10_usd": all(v >= MIN_ORDER_USD - 0.01 for v in entry_oids.values()),
         "rr_1_5": planned_rr is not None and planned_rr > MIN_RR,
         "stop_not_widened": not widened,
-        "risk_within_plan": risk_usd is not None and risk_usd <= PLAN_RISK_USD * 1.25,
+        "risk_within_plan": risk_usd is not None and risk_usd <= plan_risk(iso(first)) * 1.25,
     }
     return {
         "coin": t["coin"], "side": side, "closed": closed,

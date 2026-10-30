@@ -47,7 +47,8 @@ YOUNG_TREND = int(os.getenv("YOUNG_TREND", "0"))
 # EMAs agree, also plan an entry at the nearest daily support/resistance (daily swing + daily EMA) instead of
 # waiting for a weekly level far away. Always computed (tagged "pullback"); only shown live if PULLBACKS_LIVE=1.
 PULLBACKS_LIVE = int(os.getenv("PULLBACKS_LIVE", "0"))
-RISK_USD = float(os.getenv("RISK_USD", "2"))  # dollar risk per trade used for the position-size hint
+from risk import risk_usd
+RISK_USD = risk_usd()  # dollar risk per trade for the position-size hint: 3% of the portfolio (trader, 30 Oct 2026)
 SKIP = {"PURR"}       # spot-like / illiquid names to ignore
 
 session = requests.Session()
