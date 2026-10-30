@@ -1,4 +1,4 @@
-name: STONK lookup (temporary)
+name: NEAR TP check (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,12 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          A=6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx
+          U=0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE
+          H=https://api.hyperliquid.xyz/info
+          p(){ curl -s -X POST $H -H 'Content-Type: application/json' -d "$1"; }
+          S=$(( ($(date +%s) - 10*86400) * 1000 ))
           {
-          echo "== dexscreener token"; curl -s -i "https://api.dexscreener.com/latest/dex/tokens/$A" -H "Origin: https://veeeenie.github.io" | head -c 6000; echo
-          echo "== dexscreener search"; curl -s "https://api.dexscreener.com/latest/dex/search?q=STONK" | head -c 4000; echo
-          echo "== mexc ticker"; curl -s -i "https://api.mexc.com/api/v3/ticker/24hr?symbol=STONKUSDT" -H "Origin: https://veeeenie.github.io" | head -c 3000; echo
-          echo "== mexc exchangeInfo"; curl -s "https://api.mexc.com/api/v3/exchangeInfo?symbol=STONKUSDT" | head -c 2500; echo
-          } > stonk_check.txt 2>&1
+          echo "== open"; p "{\"type\":\"frontendOpenOrders\",\"user\":\"$U\"}"; echo
+          echo "== hist"; p "{\"type\":\"historicalOrders\",\"user\":\"$U\"}"; echo
+          echo "== candles"; p "{\"type\":\"candleSnapshot\",\"req\":{\"coin\":\"NEAR\",\"interval\":\"1h\",\"startTime\":$S}}"; echo
+          echo "== fills"; p "{\"type\":\"userFillsByTime\",\"user\":\"$U\",\"startTime\":$S}"; echo
+          echo "== ctx"; p '{"type":"metaAndAssetCtxs"}' | python3 -c "import json,sys;m,c=json.load(sys.stdin);print([ (a['name'],x['markPx'],x['oraclePx']) for a,x in zip(m['universe'],c) if a['name']=='NEAR'])"
+          } > near_check.txt 2>&1
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add stonk_check.txt && git commit -qm "stonk check" && git push -q origin HEAD:debug-weekly
+          git add near_check.txt && git commit -qm "near check" && git push -q origin HEAD:debug-weekly
