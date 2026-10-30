@@ -57,8 +57,15 @@ jobs:
             git add docs/data/alerts.json
             if ! git diff --cached --quiet; then
               git commit -q -m "Scan $(date -u +'%Y-%m-%d %H:%M') UTC"
+              # keep this run's generated files whole: a line-by-line rebase merge of two scans' JSON can
+              # duplicate rows (seen 30 Oct 2026), so after rebasing they are put back exactly as written
+              GEN="setups.json state.json journal.json portfolio.json activity.json watchlist.json"
+              mkdir -p "$RUNNER_TEMP/gen"; for f in $GEN; do [ -f docs/data/$f ] && cp docs/data/$f "$RUNNER_TEMP/gen/"; done
               for i in 1 2 3; do
-                git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main && break
+                git pull -q --rebase -X theirs origin main || { git rebase --abort 2>/dev/null; git reset -q --soft origin/main; git commit -q -m "Scan $(date -u +'%Y-%m-%d %H:%M') UTC"; }
+                for f in $GEN; do [ -f "$RUNNER_TEMP/gen/$f" ] && cp "$RUNNER_TEMP/gen/$f" docs/data/$f && git add docs/data/$f; done
+                git diff --cached --quiet || git commit -q --amend --no-edit
+                git push -q origin HEAD:main && break
                 sleep 5
               done
             fi
