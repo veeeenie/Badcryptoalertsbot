@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-30T21:09:34+00:00",
+ "generated_at": "2026-10-30T21:12:11+00:00",
  "scanned": 100,
  "gate_rr": 1.4,
  "risk_usd": 3.78,
@@ -46,11 +46,11 @@
     1045.6
    ],
    "dropped_levels": [],
-   "distance_pct": 0.5,
+   "distance_pct": 0.6,
    "distance_best_pct": 15.3,
    "at_zone": false,
    "coin": "ZEC",
-   "price": 1234.0,
+   "price": 1235.0,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 199,
@@ -119,11 +119,11 @@
     1.7842
    ],
    "dropped_levels": [],
-   "distance_pct": 3.2,
-   "distance_best_pct": 13.6,
+   "distance_pct": 3.1,
+   "distance_best_pct": 13.5,
    "at_zone": false,
    "coin": "MORPHO",
-   "price": 2.065,
+   "price": 2.0635,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 100,
@@ -200,10 +200,10 @@
    ],
    "dropped_levels": [],
    "distance_pct": 23.9,
-   "distance_best_pct": 33.3,
+   "distance_best_pct": 33.4,
    "at_zone": false,
    "coin": "DOT",
-   "price": 0.97196,
+   "price": 0.97175,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 306,
@@ -275,11 +275,11 @@
     0.005169
    ],
    "dropped_levels": [],
-   "distance_pct": 57.7,
-   "distance_best_pct": 57.7,
+   "distance_pct": 57.6,
+   "distance_best_pct": 57.6,
    "at_zone": false,
    "coin": "kBONK",
-   "price": 0.00295,
+   "price": 0.002952,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 154,
@@ -584,6 +584,11 @@
    "structure": "LH+LL but price back above last swing high"
   },
   {
+   "coin": "BCH",
+   "ema": "down",
+   "structure": "up"
+  },
+  {
    "coin": "POL",
    "ema": "down",
    "structure": "higher high, lower low"
@@ -597,11 +602,6 @@
    "coin": "MON",
    "ema": "down",
    "structure": "HH+HL but price back below last swing low"
-  },
-  {
-   "coin": "BCH",
-   "ema": "down",
-   "structure": "up"
   },
   {
    "coin": "PENGU",
@@ -639,12 +639,12 @@
    "structure": "up"
   },
   {
-   "coin": "FET",
+   "coin": "NIL",
    "ema": "down",
    "structure": "higher high, lower low"
   },
   {
-   "coin": "NIL",
+   "coin": "FET",
    "ema": "down",
    "structure": "higher high, lower low"
   },
