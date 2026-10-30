@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-30T09:10:08+00:00",
+ "generated_at": "2026-10-30T09:13:07+00:00",
  "scanned": 100,
  "gate_rr": 1.4,
  "risk_usd": 3.0,
@@ -45,11 +45,11 @@
     1045.6
    ],
    "dropped_levels": [],
-   "distance_pct": 1.4,
-   "distance_best_pct": 16.0,
+   "distance_pct": 1.5,
+   "distance_best_pct": 16.1,
    "at_zone": false,
    "coin": "ZEC",
-   "price": 1245.5,
+   "price": 1246.4778,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 199,
@@ -116,11 +116,11 @@
     1.7842
    ],
    "dropped_levels": [],
-   "distance_pct": 3.0,
-   "distance_best_pct": 13.4,
+   "distance_pct": 3.1,
+   "distance_best_pct": 13.5,
    "at_zone": false,
    "coin": "MORPHO",
-   "price": 2.0605,
+   "price": 2.0637,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 100,
@@ -185,11 +185,11 @@
     0.033875
    ],
    "dropped_levels": [],
-   "distance_pct": 18.4,
-   "distance_best_pct": 18.4,
+   "distance_pct": 18.0,
+   "distance_best_pct": 18.0,
    "at_zone": false,
    "coin": "MERL",
-   "price": 0.027464,
+   "price": 0.027574,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 131,
@@ -255,7 +255,7 @@
    "distance_best_pct": 38.6,
    "at_zone": false,
    "coin": "DOT",
-   "price": 0.93498,
+   "price": 0.93517,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 306,
@@ -759,14 +759,14 @@
    "structure": "higher high, lower low"
   },
   {
-   "coin": "SOPH",
-   "ema": "down",
-   "structure": "higher high, lower low"
-  },
-  {
    "coin": "MET",
    "ema": "down",
    "structure": "LH+LL but price back above last swing high"
+  },
+  {
+   "coin": "SOPH",
+   "ema": "down",
+   "structure": "higher high, lower low"
   },
   {
    "coin": "kSHIB",
