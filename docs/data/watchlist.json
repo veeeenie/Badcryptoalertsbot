@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-30T04:09:35+00:00",
+ "generated_at": "2026-10-30T04:12:19+00:00",
  "scanned": 100,
  "gate_rr": 1.4,
  "risk_usd": 3.0,
@@ -45,11 +45,11 @@
     1045.6
    ],
    "dropped_levels": [],
-   "distance_pct": 3.1,
-   "distance_best_pct": 17.5,
+   "distance_pct": 3.6,
+   "distance_best_pct": 17.9,
    "at_zone": false,
    "coin": "ZEC",
-   "price": 1267.4,
+   "price": 1273.9,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 199,
@@ -118,11 +118,11 @@
     1.296
    ],
    "dropped_levels": [],
-   "distance_pct": 29.9,
-   "distance_best_pct": 39.8,
+   "distance_pct": 29.5,
+   "distance_best_pct": 39.4,
    "at_zone": false,
    "coin": "DOT",
-   "price": 0.92723,
+   "price": 0.92975,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 306,
@@ -194,11 +194,11 @@
     0.005169
    ],
    "dropped_levels": [],
-   "distance_pct": 64.1,
-   "distance_best_pct": 64.1,
+   "distance_pct": 63.5,
+   "distance_best_pct": 63.5,
    "at_zone": false,
    "coin": "kBONK",
-   "price": 0.002835,
+   "price": 0.002846,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 154,
@@ -443,7 +443,7 @@
   },
   {
    "coin": "AERO",
-   "ema": "down",
+   "ema": "mixed",
    "structure": "up"
   },
   {
@@ -572,14 +572,14 @@
    "structure": "lower high, higher low"
   },
   {
-   "coin": "LDO",
-   "ema": "down",
-   "structure": "higher high, lower low"
-  },
-  {
    "coin": "RUNE",
    "ema": "down",
    "structure": "up"
+  },
+  {
+   "coin": "LDO",
+   "ema": "down",
+   "structure": "higher high, lower low"
   },
   {
    "coin": "ICP",
