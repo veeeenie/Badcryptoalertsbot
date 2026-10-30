@@ -1,32 +1,32 @@
 {
-  "generated_at": "2026-10-29T14:26:18Z",
+  "generated_at": "2026-10-30T02:24:28Z",
   "coins": {
     "ZEC": {
       "side": "long",
+      "checked_at": "2026-10-30T02:24:28Z",
       "stance": "supports",
-      "summary": "NU7 is still set for about Nov 5 (25-second blocks, part of fees set aside), and Grayscale's Zcash ETF keeps taking in money ($41M net over Oct 19-23). A co-founder's proposal to end the 8% dev-fund cut adds governance noise; no vesting unlocks (PoW issuance only).",
+      "summary": "NU7 is still expected around Nov 5 at block 3,543,405 (25-second blocks, 60% of fees to a reserve), and Grayscale's Zcash ETF took in about $41M over Oct 19-23. The proposal to end the 8% dev-fund cut adds governance noise; no vesting unlocks (PoW issuance only).",
       "news": [
+        {
+          "title": "NU7 upgrade set for block 3,543,405 (around Nov 5); legacy Sprout funds become unspendable, ZEC near $1,360",
+          "url": "https://ad-hoc-news.de/boerse/news/marktberichte/zcash-price-in-focus-as-nu7-upgrade-nears-block-3-543-405/70429925",
+          "date": "Oct 29",
+          "new": true
+        },
         {
           "title": "Grayscale Zcash ETF (ZCSH) takes in $20.5M on Oct 23, the largest altcoin-ETF inflow that day; about $204M net since launch",
           "url": "https://ad-hoc-news.de/boerse/news/marktberichte/zcash-etf-drew-20-52-million-usd-on-october-23-what-it-means-for-the-zcash-price/70425418",
           "date": "Oct 28",
-          "new": true
+          "new": false
         },
         {
           "title": "Co-founder Sean Bowe proposes ending the automatic 8% block-reward cut to Zcash Community Grants; debate over the $125M treasury widens",
           "url": "https://cryptoslate.com/zcashs-125-million-funding-fight-widens-as-tyler-winklevoss-calls-to-end-its-usaid/",
           "date": "Oct 27",
-          "new": true
-        },
-        {
-          "title": "NU7 roughly 10 days away: Sprout pool to be disabled, operators must run Zebra 7.0.0 before block 3,543,405",
-          "url": "https://u.today/10-days-left-zcash-set-to-cut-block-times-to-25-seconds",
-          "date": "Oct 26",
           "new": false
         }
       ],
-      "unlocks": [],
-      "checked_at": "2026-10-29T02:34:41Z"
+      "unlocks": []
     },
     "MORPHO": {
       "side": "long",
@@ -57,14 +57,15 @@
     },
     "DOT": {
       "side": "short",
+      "checked_at": "2026-10-30T02:24:28Z",
       "stance": "supports",
-      "summary": "DOT closed below $1 (about 13% down on the week) after an XCM bug in dotUSD accounting let arbitrageurs drain about $1.3M from the Treasury's liquidity position; a fix referendum is in voting. CoinShares' Polkadot ETP redemption on Nov 9 is still ahead. No vesting unlocks.",
+      "summary": "DOT closed below $1 after an XCM bug in dotUSD accounting cost the Treasury about $1.3M; the fix referendum (1961) was still in voting as of Oct 28. CoinShares' Polkadot ETP redemption on Nov 9 is still ahead. No vesting unlocks.",
       "news": [
         {
           "title": "XCM bug undercounted dotUSD supply; arbitrage cost the Treasury about $1.3M and DOT closed below $1 while a fix referendum is voted",
           "url": "https://www.tokenpost.com/news/technology/42499",
           "date": "Oct 28",
-          "new": true
+          "new": false
         },
         {
           "title": "CoinShares to redeem seven Stockholm-listed ETPs including its Polkadot staking product; last trading around Nov 4, redemption Nov 9",
@@ -79,8 +80,7 @@
           "new": false
         }
       ],
-      "unlocks": [],
-      "checked_at": "2026-10-29T02:34:41Z"
+      "unlocks": []
     },
     "LIT": {
       "side": "long",
@@ -111,9 +111,9 @@
     },
     "AVNT": {
       "side": "short",
-      "checked_at": "2026-10-29T14:26:18Z",
+      "checked_at": "2026-10-30T02:24:28Z",
       "stance": "supports",
-      "summary": "A monthly unlock of about 24.7M AVNT (2.5% of total supply) is due Nov 9, split across community, private investors and insiders. That adds supply and helps the short. The Veranta rebrand changes only the name.",
+      "summary": "A monthly unlock of about 24.7M AVNT (2.5% of total supply, roughly 9% of circulating) is listed for Nov 9, split across community, private investors and insiders, plus small daily emissions. That adds supply and helps the short. No other material news; the Veranta rebrand changes only the name.",
       "news": [
         {
           "title": "Avantis rebrands to Veranta; INDODAX updates the display name, AVNT ticker and contract unchanged",
@@ -130,7 +130,7 @@
           "pct_supply": "",
           "note": "Monthly unlock, 2.5% of total supply: community 43%, private investors 36%, insiders 18%, foundation 3%",
           "source": "https://app.tokenomics.com/tokenomics/avantis/unlocks",
-          "new": true
+          "new": false
         }
       ]
     },
@@ -144,11 +144,11 @@
     },
     "kBONK": {
       "side": "short",
+      "checked_at": "2026-10-30T02:24:28Z",
       "stance": "neutral",
-      "summary": "No price-moving BONK news this week beyond chart commentary; it sits around sixth among meme coins by market cap, with BonkBot and BONK.fun fees still funding buybacks and burns. Fully unlocked, so no unlock supply.",
+      "summary": "No price-moving BONK news this week beyond chart commentary; it sits around sixth among meme coins by market cap (~$277M) and trades in a falling channel. Fully unlocked, so no unlock supply.",
       "news": [],
-      "unlocks": [],
-      "checked_at": "2026-10-29T02:34:41Z"
+      "unlocks": []
     },
     "WCT": {
       "side": "short",
@@ -168,11 +168,11 @@
     },
     "REZ": {
       "side": "short",
+      "checked_at": "2026-10-30T02:24:28Z",
       "stance": "neutral",
-      "summary": "No material Renzo news this week. The monthly 80M REZ insider release that was expected around Oct 30 is now dated Oct 28 (already passed) by app.tokenomics.com, with the next around Nov 28, so no confirmed unlock falls in the next 14 days.",
+      "summary": "No material Renzo news in the last week; buybacks remain paused and over 95% of supply is already circulating. The next insider release (80M REZ) is listed for Nov 28, outside the 14-day window.",
       "news": [],
-      "unlocks": [],
-      "checked_at": "2026-10-29T02:34:41Z"
+      "unlocks": []
     },
     "MERL": {
       "side": "short",
