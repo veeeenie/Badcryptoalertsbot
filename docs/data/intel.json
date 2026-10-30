@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T02:24:28Z",
+  "generated_at": "2026-10-30T14:24:20Z",
   "coins": {
     "ZEC": {
       "side": "long",
@@ -30,30 +30,30 @@
     },
     "MORPHO": {
       "side": "long",
+      "checked_at": "2026-10-30T14:24:20Z",
       "stance": "supports",
-      "summary": "Distribution keeps widening, which supports the long: Coinbase now offers fixed-rate BTC-backed loans through Morpho Midnight, and Robinhood opened its USDG Earn (a Morpho vault) to all eligible users. The risk is still the ~973K stolen MORPHO that could be sold; the next unlock (1M to market makers, ~0.15% of circulating) is Nov 20, outside the window.",
+      "summary": "Fundamentals keep improving for the long: RWA deposits topped $2B and Morpho grew fees while sector lending fees halved, on top of the Coinbase and Robinhood integrations. No unlocks in the next 14 days (next is 1M MORPHO to market makers, ~0.15% of circulating, on Nov 20); the ~973K stolen MORPHO remains an overhang.",
       "news": [
+        {
+          "title": "Morpho's real-world-asset markets pass $2B in deposits with about $894M in loans outstanding",
+          "url": "https://crypto.news/morpho-rwa-deposits-2-billion-loans",
+          "date": "Oct 28",
+          "new": true
+        },
+        {
+          "title": "1kx report: onchain lending fees fell ~50% year over year while Morpho's Q3 fees edged up to ~$62M",
+          "url": "https://news.bitcoin.com/finance/onchain-lending-fees-plunge-50-as-morpho-bucks-the-trend",
+          "date": "Oct 29",
+          "new": true
+        },
         {
           "title": "Coinbase launches fixed-rate, fixed-term BTC-backed loans powered by Morpho Midnight on Base",
           "url": "https://finance.yahoo.com/markets/crypto/articles/coinbase-now-offers-fixed-rate-180300756.html",
           "date": "Oct 27",
-          "new": true
-        },
-        {
-          "title": "Robinhood opens Earn to all eligible users, letting them deposit USDG into a Morpho vault",
-          "url": "https://www.tradingview.com/news/binance_news:c3ae4a769094b:0-robinhood-opens-earn-to-all-eligible-users-for-onchain-usdg-lending/",
-          "date": "Oct 27",
-          "new": true
-        },
-        {
-          "title": "Mexican exchange Bitso launches Bóvedas, non-custodial USDC and MXNB yield vaults built on Morpho",
-          "url": "https://kucoin.com/news/flash/bitso-launches-b-vedas-to-integrate-morpho-lending-features",
-          "date": "Oct 26",
           "new": false
         }
       ],
-      "unlocks": [],
-      "checked_at": "2026-10-29T02:34:41Z"
+      "unlocks": []
     },
     "DOT": {
       "side": "short",
@@ -180,6 +180,27 @@
       "stance": "neutral",
       "summary": "No price-moving Merlin Chain news found in the last 7 days. DropsTab shows the next monthly release (~37.7M MERL, mostly ecosystem and private-sale B) about three weeks out, outside the 14-day window, so nothing near-term for the short.",
       "news": [],
+      "unlocks": []
+    },
+    "SKY": {
+      "side": "long",
+      "checked_at": "2026-10-30T14:24:20Z",
+      "stance": "supports",
+      "summary": "Supports the long: revenue keeps growing and the protocol is now buying back and burning SKY every month. Tokenomist lists SKY as essentially fully unlocked, so no supply unlocks in the next 14 days.",
+      "news": [
+        {
+          "title": "Sky Q3 report: net revenue $37.2M (sixth straight positive quarter), $5.6M of buybacks for 87.5M SKY, 7.37M SKY burned Oct 12",
+          "url": "https://securities.io/sky-protocol-posts-37-19m-q3-net-revenue-sixth-straight-positive-quarter",
+          "date": "Oct 29",
+          "new": true
+        },
+        {
+          "title": "Sky's September update: gross revenue up ~50% YoY and first run of the Stage 2 framework that sends 5% of monthly surplus to SKY buy-and-burn",
+          "url": "https://crypto.news/sky-september-revenue-galaxy-susds-first-burn/",
+          "date": "Oct 23",
+          "new": true
+        }
+      ],
       "unlocks": []
     }
   }
