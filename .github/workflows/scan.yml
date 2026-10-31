@@ -7,7 +7,7 @@ name: Setup scan
 on:
   push:
     branches: [main]
-    paths: ["scanner/journal.py", "scanner/scan.py", "scanner/watchlist.py", "scanner/alerts_cmd.py", ".github/workflows/scan.yml"]
+    paths: ["scanner/journal.py", "scanner/scan.py", "scanner/watchlist.py", "scanner/alerts_cmd.py", "scanner/fills.py", "scanner/risk.py", ".github/workflows/scan.yml"]
   schedule:
     - cron: "7,37 * * * *"   # two chances an hour for GitHub to start the loop
   workflow_dispatch: {}      # "Run workflow" button for a manual scan
@@ -72,5 +72,13 @@ jobs:
             next=$(( ( $(date +%s) / 3600 + 1 ) * 3600 + 420 ))   # next hour at :07 UTC
             [ "$next" -gt "$end" ] && break
             echo "next scan at $(date -u -d @$next +%H:%M) UTC"
-            sleep $(( next - $(date +%s) ))
+            # between scans: check the trading wallet for filled and rejected orders every 2 minutes (Telegram alert)
+            while [ "$(date +%s)" -lt "$next" ]; do
+              python scanner/fills.py
+              if [ -n "$(git status --porcelain docs/data/fills_state.json)" ]; then
+                git add docs/data/fills_state.json && git commit -q -m "Fill alerts $(date -u +'%H:%M') UTC"
+                for i in 1 2 3; do git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main && break; sleep 5; done
+              fi
+              left=$(( next - $(date +%s) )); [ "$left" -gt 120 ] && left=120; [ "$left" -gt 0 ] && sleep $left
+            done
           done
