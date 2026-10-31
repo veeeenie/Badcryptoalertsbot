@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-31T02:18:53Z",
+  "generated_at": "2026-10-31T14:24:00Z",
   "coins": {
     "ZEC": {
       "side": "long",
@@ -170,29 +170,29 @@
     },
     "MERL": {
       "side": "short",
-      "checked_at": "2026-10-29T14:26:18Z",
+      "checked_at": "2026-10-31T14:24:00Z",
       "stance": "neutral",
-      "summary": "No price-moving Merlin Chain news found in the last 7 days. DropsTab shows the next monthly release (~37.7M MERL, mostly ecosystem and private-sale B) about three weeks out, outside the 14-day window, so nothing near-term for the short.",
+      "summary": "No price-moving Merlin Chain news in the last 7 days. Tokenomics.com lists a ~38.6M MERL monthly release (foundation, investors, community, insiders) on Nov 1, but DropsTab placed the next tranche about three weeks out, so the date is unconfirmed and not listed here.",
       "news": [],
       "unlocks": []
     },
     "SKY": {
       "side": "long",
-      "checked_at": "2026-10-30T14:24:20Z",
+      "checked_at": "2026-10-31T14:24:00Z",
       "stance": "supports",
-      "summary": "Supports the long: revenue keeps growing and the protocol is now buying back and burning SKY every month. Tokenomist lists SKY as essentially fully unlocked, so no supply unlocks in the next 14 days.",
+      "summary": "Still supports the long: no new Sky news since the Q3 report, which showed rising revenue plus monthly SKY buybacks and burns. SKY is essentially fully unlocked, so no supply unlocks in the next 14 days.",
       "news": [
         {
           "title": "Sky Q3 report: net revenue $37.2M (sixth straight positive quarter), $5.6M of buybacks for 87.5M SKY, 7.37M SKY burned Oct 12",
           "url": "https://securities.io/sky-protocol-posts-37-19m-q3-net-revenue-sixth-straight-positive-quarter",
           "date": "Oct 29",
-          "new": true
+          "new": false
         },
         {
           "title": "Sky's September update: gross revenue up ~50% YoY and first run of the Stage 2 framework that sends 5% of monthly surplus to SKY buy-and-burn",
           "url": "https://crypto.news/sky-september-revenue-galaxy-susds-first-burn/",
           "date": "Oct 23",
-          "new": true
+          "new": false
         }
       ],
       "unlocks": []
