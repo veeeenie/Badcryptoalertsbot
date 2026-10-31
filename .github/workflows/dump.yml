@@ -1,4 +1,4 @@
-name: NEAR TP check (temporary)
+name: VVV zones (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -10,17 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with: {ref: main, path: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+      - run: pip install -r main/scanner/requirements.txt
       - run: |
-          U=0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE
-          H=https://api.hyperliquid.xyz/info
-          p(){ curl -s -X POST $H -H 'Content-Type: application/json' -d "$1"; }
-          S=$(( ($(date +%s) - 10*86400) * 1000 ))
-          {
-          echo "== open"; p "{\"type\":\"frontendOpenOrders\",\"user\":\"$U\"}"; echo
-          echo "== hist"; p "{\"type\":\"historicalOrders\",\"user\":\"$U\"}"; echo
-          echo "== candles"; p "{\"type\":\"candleSnapshot\",\"req\":{\"coin\":\"NEAR\",\"interval\":\"1h\",\"startTime\":$S}}"; echo
-          echo "== fills"; p "{\"type\":\"userFillsByTime\",\"user\":\"$U\",\"startTime\":$S}"; echo
-          echo "== ctx"; p '{"type":"metaAndAssetCtxs"}' | python3 -c "import json,sys;m,c=json.load(sys.stdin);print([ (a['name'],x['markPx'],x['oraclePx']) for a,x in zip(m['universe'],c) if a['name']=='NEAR'])"
-          } > near_check.txt 2>&1
-          git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add near_check.txt && git commit -qm "near check" && git push -q origin HEAD:debug-weekly
+          cd main/scanner && python - > ../../vvv_check.txt 2>&1 <<'PY'
+          import time, json, watchlist as W
+          from scan import daily_candles, weekly_from_daily
+          now=int(time.time()*1000)
+          d=daily_candles("VVV"); wk=weekly_from_daily(d)
+          closed=[w for w in wk if w["t"]+7*86400000<=now]
+          price=d[-1]["c"]
+          trend,info=W.weekly_trend(closed,price)
+          A=W.atr_series(closed)[-1]
+          print("price",price,"trend",trend,"ATR",round(A,3),"weeks",len(closed))
+          print("info",json.dumps(info,default=str)[:800])
+          for z in W.zones(closed): print("zone",z["kind"],round(z["bottom"],3),round(z["top"],3),"tests",z["tests"],"formed",W.iso(z["formed"]))
+          print("rejection(long)",W.rejection_level(closed,False,A))
+          print("last 12 weeks:",[(W.iso(w["t"]),round(w["o"],2),round(w["h"],2),round(w["l"],2),round(w["c"],2)) for w in wk[-12:]])
+          print("daily last 10:",[(W.iso(x["t"]),round(x["l"],2),round(x["c"],2)) for x in d[-10:]])
+          PY
+          cd ../.. && git config user.name "setup-scanner" && git config user.email "actions@users.noreply.github.com"
+          git add vvv_check.txt && git commit -qm "vvv check" && git push -q origin HEAD:debug-weekly
