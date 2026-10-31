@@ -71,15 +71,6 @@
       "name": "breakeven",
       "touch_pct": 0.0,
       "source": "added via the website, 2026-10-27"
-    },
-    {
-      "id": "REZ-0.005",
-      "coin": "REZ",
-      "type": "level",
-      "price": 0.005,
-      "name": "area to reject",
-      "touch_pct": 0.0,
-      "source": "added via the website, 2026-10-27"
     }
   ],
   "watch": [
