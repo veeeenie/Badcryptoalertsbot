@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-10-30T14:24:20Z",
+  "generated_at": "2026-10-31T02:18:53Z",
   "coins": {
     "ZEC": {
       "side": "long",
-      "checked_at": "2026-10-30T02:24:28Z",
+      "checked_at": "2026-10-31T02:18:53Z",
       "stance": "supports",
-      "summary": "NU7 is still expected around Nov 5 at block 3,543,405 (25-second blocks, 60% of fees to a reserve), and Grayscale's Zcash ETF took in about $41M over Oct 19-23. The proposal to end the 8% dev-fund cut adds governance noise; no vesting unlocks (PoW issuance only).",
+      "summary": "NU7 is on track for block 3,543,405 (around Nov 5): 25-second blocks, same daily issuance, 60% of fees to a reserve; ZEC rebounded to about $1,360 on Oct 30. ETF inflows resumed (~$41M week of Oct 19); no vesting unlocks (PoW issuance only).",
       "news": [
         {
           "title": "NU7 upgrade set for block 3,543,405 (around Nov 5); legacy Sprout funds become unspendable, ZEC near $1,360",
           "url": "https://ad-hoc-news.de/boerse/news/marktberichte/zcash-price-in-focus-as-nu7-upgrade-nears-block-3-543-405/70429925",
           "date": "Oct 29",
-          "new": true
+          "new": false
         },
         {
           "title": "Grayscale Zcash ETF (ZCSH) takes in $20.5M on Oct 23, the largest altcoin-ETF inflow that day; about $204M net since launch",
@@ -30,36 +30,36 @@
     },
     "MORPHO": {
       "side": "long",
-      "checked_at": "2026-10-30T14:24:20Z",
+      "checked_at": "2026-10-31T02:18:53Z",
       "stance": "supports",
-      "summary": "Fundamentals keep improving for the long: RWA deposits topped $2B and Morpho grew fees while sector lending fees halved, on top of the Coinbase and Robinhood integrations. No unlocks in the next 14 days (next is 1M MORPHO to market makers, ~0.15% of circulating, on Nov 20); the ~973K stolen MORPHO remains an overhang.",
+      "summary": "Adoption keeps building for the long: RWA deposits above $2B, fee growth while sector lending fees fell, and a new Bitso vault integration in Latin America. No unlocks in the next 14 days (next is a small market-maker tranche on Nov 20); the stolen-MORPHO overhang remains.",
       "news": [
         {
           "title": "Morpho's real-world-asset markets pass $2B in deposits with about $894M in loans outstanding",
           "url": "https://crypto.news/morpho-rwa-deposits-2-billion-loans",
           "date": "Oct 28",
-          "new": true
+          "new": false
         },
         {
           "title": "1kx report: onchain lending fees fell ~50% year over year while Morpho's Q3 fees edged up to ~$62M",
           "url": "https://news.bitcoin.com/finance/onchain-lending-fees-plunge-50-as-morpho-bucks-the-trend",
           "date": "Oct 29",
-          "new": true
+          "new": false
         },
         {
-          "title": "Coinbase launches fixed-rate, fixed-term BTC-backed loans powered by Morpho Midnight on Base",
-          "url": "https://finance.yahoo.com/markets/crypto/articles/coinbase-now-offers-fixed-rate-180300756.html",
+          "title": "Bitso launches yield vaults routing deposits into Gauntlet-curated Morpho vaults on Base; Morpho TVL up ~2.7% on the week to ~$11.4B",
+          "url": "https://coinmarketcap.com/top-stories/6ae03f667c88fa03ebf4fc15/",
           "date": "Oct 27",
-          "new": false
+          "new": true
         }
       ],
       "unlocks": []
     },
     "DOT": {
       "side": "short",
-      "checked_at": "2026-10-30T02:24:28Z",
+      "checked_at": "2026-10-31T02:18:53Z",
       "stance": "supports",
-      "summary": "DOT closed below $1 after an XCM bug in dotUSD accounting cost the Treasury about $1.3M; the fix referendum (1961) was still in voting as of Oct 28. CoinShares' Polkadot ETP redemption on Nov 9 is still ahead. No vesting unlocks.",
+      "summary": "DOT slid further to about $0.91 on Oct 29 after the dotUSD XCM accounting bug cost the Treasury about $1.3M (fix referendum 1961 in voting). CoinShares' Polkadot ETP redemption (Nov 9) is still ahead. No vesting unlocks.",
       "news": [
         {
           "title": "XCM bug undercounted dotUSD supply; arbitrage cost the Treasury about $1.3M and DOT closed below $1 while a fix referendum is voted",
@@ -71,12 +71,6 @@
           "title": "CoinShares to redeem seven Stockholm-listed ETPs including its Polkadot staking product; last trading around Nov 4, redemption Nov 9",
           "url": "https://www.tokenpost.com/news/investing/39711",
           "date": "Oct 24",
-          "new": false
-        },
-        {
-          "title": "Relay chain nearly emptied after the Asset Hub migration; a referendum to rename to JAM fails",
-          "url": "https://cryptoticker.io/en/polkadot-relay-chain-jam-rebuild/",
-          "date": "Oct 23",
           "new": false
         }
       ],
@@ -144,9 +138,9 @@
     },
     "kBONK": {
       "side": "short",
-      "checked_at": "2026-10-30T02:24:28Z",
+      "checked_at": "2026-10-31T02:18:53Z",
       "stance": "neutral",
-      "summary": "No price-moving BONK news this week beyond chart commentary; it sits around sixth among meme coins by market cap (~$277M) and trades in a falling channel. Fully unlocked, so no unlock supply.",
+      "summary": "Still no price-moving BONK news this week; it trades in a falling channel and the 1T-token burn tied to 1M holders has no confirmed date. Fully unlocked, so no unlock supply.",
       "news": [],
       "unlocks": []
     },
