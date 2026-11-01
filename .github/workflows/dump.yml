@@ -1,4 +1,4 @@
-name: Fills check (temporary)
+name: BTC weekly (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,17 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          U=0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE
-          H=https://api.hyperliquid.xyz/info
-          p(){ curl -s -X POST $H -H 'Content-Type: application/json' -d "$1"; }
-          S=$(( ($(date +%s) - 40*3600) * 1000 ))
           {
-          echo "== fills"; p "{\"type\":\"userFillsByTime\",\"user\":\"$U\",\"startTime\":$S}"; echo
-          echo "== hist"; p "{\"type\":\"historicalOrders\",\"user\":\"$U\"}"; echo
-          echo "== open"; p "{\"type\":\"frontendOpenOrders\",\"user\":\"$U\"}"; echo
-          echo "== ch"; p "{\"type\":\"clearinghouseState\",\"user\":\"$U\"}"; echo
-          echo "== rez"; p "{\"type\":\"candleSnapshot\",\"req\":{\"coin\":\"REZ\",\"interval\":\"1h\",\"startTime\":$S}}"; echo
-          echo "== mids"; p '{"type":"allMids"}'; echo
-          } > fills_check.txt 2>&1
+          echo "== binance"; curl -s "https://data-api.binance.vision/api/v3/klines?symbol=BTCUSDT&interval=1w&startTime=1577836800000&limit=1000"; echo
+          for s in 1577836800 1664236800 1750636800; do echo "== bitstamp $s"; curl -s "https://www.bitstamp.net/api/v2/ohlc/btcusd/?step=86400&limit=1000&start=$s"; echo; done
+          } > btc_weekly.txt 2>&1
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add fills_check.txt && git commit -qm "fills check" && git push -q origin HEAD:debug-weekly
+          git add btc_weekly.txt && git commit -qm "btc weekly" && git push -q origin HEAD:debug-weekly
