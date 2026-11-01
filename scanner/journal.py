@@ -187,6 +187,8 @@ def summarise(trades):
         "wins": sum(1 for t in closed if t["net"] > 0),
         "net_usd": round(sum(t["net"] for t in closed), 2),
         "fees_usd": round(sum(t["fees"] for t in closed), 2),
+        # profit already booked by partial exits (e.g. a take-profit half) on trades that are still open
+        "booked_open_usd": round(sum(t["net"] for t in trades if not t["closed"] and t.get("exits")), 2),
         "avg_r": round(sum(rs) / len(rs), 2) if rs else None,
         "total_r": round(sum(rs), 2) if rs else None,
         "rules_ok_pct": round(100 * sum(1 for t in closed if t["rules_ok"]) / len(closed)) if closed else None,

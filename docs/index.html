@@ -292,7 +292,9 @@ fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
 fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   const s=j.summary;
   const sm=x=>`${x.trades} closed${x.open?`, ${x.open} open`:""}, ${x.wins} wins, net ${x.net_usd>=0?"+":"−"}$${Math.abs(x.net_usd).toFixed(2)}${x.total_r!=null?`, ${x.total_r>=0?"+":""}${x.total_r}R`:""}`;
-  document.getElementById("chint").innerHTML=`${s.trades} closed · ${s.wins} wins · net <b class="${s.net_usd>=0?"up":"down"}">${s.net_usd>=0?"+":"−"}$${Math.abs(s.net_usd).toFixed(2)}</b>`;
+  // net = closed trades + profit already booked by partial exits on open trades
+  const bk=s.booked_open_usd||0, nt=s.net_usd+bk, sg=x=>`${x>=0?"+":"−"}$${Math.abs(x).toFixed(2)}`;
+  document.getElementById("chint").innerHTML=`${s.trades} closed · ${s.wins} wins · net <b class="${nt>=0?"up":"down"}">${sg(nt)}</b>${bk?` <span class="muted">(incl. ${sg(bk)} booked on open trades)</span>`:""}`;
   document.getElementById("meta").textContent=`${sm(s)}. Updated ${ist(j.generated_at,true)}.`;
   window.JOURNAL=j; document.dispatchEvent(new Event("journal-ready"));
   document.getElementById("rows").innerHTML=[...j.trades].filter(t=>t.closed).reverse().map(t=>{
