@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02T02:30:08Z",
+  "generated_at": "2026-11-02T14:35:33Z",
   "coins": {
     "AVNT": {
       "side": "short",
@@ -52,9 +52,9 @@
     },
     "REZ": {
       "side": "short",
-      "checked_at": "2026-10-30T02:24:28Z",
+      "checked_at": "2026-11-02T14:35:33Z",
       "stance": "neutral",
-      "summary": "No material Renzo news in the last week; buybacks remain paused and over 95% of supply is already circulating. The next insider release (80M REZ) is listed for Nov 28, outside the 14-day window.",
+      "summary": "No material Renzo news in the last week; buybacks remain paused and over 95% of supply already circulates. Next listed insider release (80M REZ) is Nov 28, outside the 14-day window.",
       "news": [],
       "unlocks": []
     },
@@ -76,26 +76,26 @@
     },
     "ZEC": {
       "side": "long",
-      "checked_at": "2026-11-02T02:30:08Z",
+      "checked_at": "2026-11-02T14:35:33Z",
       "stance": "neutral",
-      "summary": "NU7 is still due around Nov 5 (faster blocks, unchanged issuance), but large holders are selling and arguing over Zcash Community Grants funding; ZEC is holding near $1,220 below $1,390 resistance. No vesting unlocks (PoW issuance only).",
+      "summary": "NU7 activates around Nov 5 and ETF inflows have returned, but a whale is selling and the dev-fund dispute continues; ZEC is ranging below ~$1,385-1,390 resistance. No vesting unlocks (PoW issuance only).",
       "news": [
+        {
+          "title": "ETF inflows return as ZEC eyes $1,385 resistance ahead of the Nov 5 NU7 upgrade",
+          "url": "https://invezz.com/sg/news/2026/11/02/zcash-eyes-dollar1385-as-etf-inflows-return-ahead-of-nu7-upgrade/",
+          "date": "Nov 2",
+          "new": true
+        },
         {
           "title": "Whale 'big z' plans to sell his whole ZEC position as a fight over Zcash Community Grants spending deepens; ZEC near $1,220",
           "url": "https://en.coin-turk.com/zcash-price-consolidates-at-1220-amid-whale-sell-off-and-community-rift/",
           "date": "Nov 1",
-          "new": true
+          "new": false
         },
         {
           "title": "Two proposals to end Zcash's $300M+ dev fund early (fully or just the 8% ZCG share); Grayscale ZCSH saw a $4.6M outflow Oct 30",
           "url": "https://247wallst.com/investing/cryptocurrency/2026/10/31/zcash-developers-want-to-end-a-300-million-dev-fund-early-does-that-make-zec-more-valuable",
           "date": "Oct 31",
-          "new": false
-        },
-        {
-          "title": "NU7 nears mainnet at block 3,543,405 (around Nov 5); Sprout-pool funds may become unspendable, ZEC near $1,360",
-          "url": "https://www.ad-hoc-news.de/boerse/news/marktberichte/zcash-nu7-upgrade-nears-mainnet-as-zcash-price-remains-volatile/70434670",
-          "date": "Oct 30",
           "new": false
         }
       ],
@@ -103,7 +103,7 @@
     },
     "MORPHO": {
       "side": "long",
-      "checked_at": "2026-11-02T02:30:08Z",
+      "checked_at": "2026-11-02T14:35:33Z",
       "stance": "supports",
       "summary": "Fundamentals still support the long: RWA deposits above $2B and a Q4 Midnight adapter that lets ~$5B of vault deposits reach fixed-rate markets. Borrow rates spiked after the Binance hack before easing. Only small daily linear vesting, no dated unlock in the next 14 days.",
       "news": [
@@ -123,22 +123,28 @@
           "title": "Morpho plans a Q4 Midnight adapter so its ~$5B of vaults can allocate to fixed-rate, fixed-term lending",
           "url": "https://crypto-economy.com/morpho-to-launch-midnight-adapter-enabling-fixed-rate-vault-allocation-options/",
           "date": "Oct 27",
-          "new": true
+          "new": false
         }
       ],
       "unlocks": []
     },
     "HYPE": {
       "side": "long",
-      "checked_at": "2026-11-02T02:30:08Z",
+      "checked_at": "2026-11-02T14:35:33Z",
       "stance": "neutral",
-      "summary": "Strong news for the long (ICE plans US Hyperliquid-based perps, HYPE near its $98 high), but the monthly core-contributor unlock of up to 9.92M HYPE lands Nov 6; recent actual team claims have been far smaller than the scheduled amount.",
+      "summary": "ICE's planned US Hyperliquid perps keep the long thesis intact, but top traders have swung heavily short and HYPE has eased to ~$88. The monthly core-contributor unlock of up to 9.92M HYPE lands Nov 6 (recent actual claims have been far smaller).",
       "news": [
+        {
+          "title": "Top perp traders flip heavily short; HYPE (~$88) carries the largest unrealized loss among their positions",
+          "url": "https://tokenpost.com/news/investing/46010",
+          "date": "Nov 1",
+          "new": true
+        },
         {
           "title": "NYSE owner ICE and Trade[XYZ] plan Hyperliquid-based perpetual futures for US traders, pending approval; HYPE up ~20% to above $96",
           "url": "https://cointelegraph.com/news/hype-price-all-time-high-ice-us-hyperliquid-perps",
           "date": "Oct 29",
-          "new": true
+          "new": false
         }
       ],
       "unlocks": [
@@ -149,7 +155,7 @@
           "pct_supply": "",
           "note": "Core contributors (team) monthly vesting; scheduled ceiling, recent actual claims much lower",
           "source": "https://www.buildix.trade/blog/hype-unlock-november-6-team-claim-otc-2026",
-          "new": true
+          "new": false
         }
       ]
     },
@@ -170,7 +176,7 @@
     },
     "POL": {
       "side": "short",
-      "checked_at": "2026-11-02T02:30:08Z",
+      "checked_at": "2026-11-02T14:35:33Z",
       "stance": "against",
       "summary": "News works against the short: POL jumped ~12% on Oct 31 on a fee-funded 100M POL burn (with 22M more queued) and growing payments revenue. The Polymarket script hack did not touch Polygon's core protocol. No vesting unlocks; staking rewards come from regular emissions.",
       "news": [
@@ -178,20 +184,20 @@
           "title": "POL rises ~12% to about $0.095 on a 100M POL burn (~1% of supply), 22M more queued, and Open Money Stack revenue growth",
           "url": "https://www.kucoin.com/news/flash/pol-price-surges-11-63-amid-protocol-burn-and-product-upgrades",
           "date": "Oct 31",
-          "new": true
+          "new": false
         },
         {
           "title": "Polymarket, built on Polygon, halts trading for an hour after a third-party script hack (~$2.7-3.5M); refund plan set, Polygon core unaffected",
           "url": "https://newsbtc.com/news/polymarket-sets-3-9m-refund-plan-after-third-party-script-compromise",
           "date": "Oct 30",
-          "new": true
+          "new": false
         }
       ],
       "unlocks": []
     },
     "DOT": {
       "side": "short",
-      "checked_at": "2026-11-02T02:30:08Z",
+      "checked_at": "2026-11-02T14:35:33Z",
       "stance": "supports",
       "summary": "DOT keeps sliding, dropping to about $0.91 on Oct 29 after the dotUSD XCM accounting bug (fix referendum 1961 in voting). CoinShares' Polkadot staking ETP is still set for redemption around Nov 9. No vesting unlocks.",
       "news": [
@@ -199,7 +205,7 @@
           "title": "DOT falls ~10% in a day to about $0.91 on Oct 29, with no single cause reported",
           "url": "https://www.tokenpost.com/news/investing/44053",
           "date": "Oct 30",
-          "new": true
+          "new": false
         },
         {
           "title": "XCM bug undercounted dotUSD supply; arbitrage cost the Treasury about $1.3M while a fix referendum is voted",
@@ -218,7 +224,7 @@
     },
     "LIT": {
       "side": "long",
-      "checked_at": "2026-11-02T02:30:08Z",
+      "checked_at": "2026-11-02T14:35:33Z",
       "stance": "neutral",
       "summary": "Mixed for the long: fee-funded LIT buybacks continue and a CFTC license filing is planned for November, but Robinhood is routing US perps through Bitstamp rather than Lighter. No unlocks until late January 2027.",
       "news": [
@@ -229,6 +235,14 @@
           "new": false
         }
       ],
+      "unlocks": []
+    },
+    "ZK": {
+      "side": "short",
+      "checked_at": "2026-11-02T14:35:33Z",
+      "stance": "neutral",
+      "summary": "No price-moving ZKsync news in the last week (recent items are Prividium enterprise updates and GenLayer leaving for Arbitrum on Oct 23). Tokenomist lists the next investor unlock for Nov 17, just outside the 14-day window, with no amount shown.",
+      "news": [],
       "unlocks": []
     }
   }
