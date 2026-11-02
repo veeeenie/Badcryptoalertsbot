@@ -1,191 +1,235 @@
 {
- "generated_at": "2026-11-01T02:25:56Z",
- "coins": {
-  "ZEC": {
-   "side": "long",
-   "checked_at": "2026-11-01T02:25:56Z",
-   "stance": "supports",
-   "summary": "NU7 still targets block 3,543,405 (about Nov 5): 25-second blocks, unchanged issuance and 60% of fees set aside. Founders are debating ending the dev fund early, and the Grayscale ETF had a small $4.6M outflow on Oct 30. No vesting unlocks (PoW issuance only).",
-   "news": [
-    {
-     "title": "NU7 nears mainnet at block 3,543,405 (around Nov 5); Sprout-pool funds may become unspendable, ZEC near $1,360",
-     "url": "https://www.ad-hoc-news.de/boerse/news/marktberichte/zcash-nu7-upgrade-nears-mainnet-as-zcash-price-remains-volatile/70434670",
-     "date": "Oct 30",
-     "new": true
+  "generated_at": "2026-11-02T02:30:08Z",
+  "coins": {
+    "AVNT": {
+      "side": "short",
+      "checked_at": "2026-10-30T02:24:28Z",
+      "stance": "supports",
+      "summary": "A monthly unlock of about 24.7M AVNT (2.5% of total supply, roughly 9% of circulating) is listed for Nov 9, split across community, private investors and insiders, plus small daily emissions. That adds supply and helps the short. No other material news; the Veranta rebrand changes only the name.",
+      "news": [
+        {
+          "title": "Avantis rebrands to Veranta; INDODAX updates the display name, AVNT ticker and contract unchanged",
+          "url": "https://blog.indodax.com/en_US/rebranding-avantis-to-veranta",
+          "date": "Oct 22",
+          "new": false
+        }
+      ],
+      "unlocks": [
+        {
+          "date": "Nov 9",
+          "date_iso": "2026-11-09",
+          "amount": "24.69M AVNT",
+          "pct_supply": "",
+          "note": "Monthly unlock, 2.5% of total supply: community 43%, private investors 36%, insiders 18%, foundation 3%",
+          "source": "https://app.tokenomics.com/tokenomics/avantis/unlocks",
+          "new": false
+        }
+      ]
     },
-    {
-     "title": "Two proposals to end Zcash's $300M+ dev fund early (fully or just the 8% ZCG share); Grayscale ZCSH saw a $4.6M outflow Oct 30",
-     "url": "https://247wallst.com/investing/cryptocurrency/2026/10/31/zcash-developers-want-to-end-a-300-million-dev-fund-early-does-that-make-zec-more-valuable",
-     "date": "Oct 31",
-     "new": true
+    "ANIME": {
+      "side": "short",
+      "stance": "neutral",
+      "summary": "No material Animecoin news this week. No dated unlock in the next 14 days; the previously noted Nov 23 release (about 130M ANIME, ~1.3% of supply) falls outside the window.",
+      "news": [],
+      "unlocks": [],
+      "checked_at": "2026-10-29T02:34:41Z"
     },
-    {
-     "title": "Grayscale Zcash ETF (ZCSH) takes in $20.5M on Oct 23, the largest altcoin-ETF inflow that day",
-     "url": "https://ad-hoc-news.de/boerse/news/marktberichte/zcash-etf-drew-20-52-million-usd-on-october-23-what-it-means-for-the-zcash-price/70425418",
-     "date": "Oct 28",
-     "new": false
-    }
-   ],
-   "unlocks": []
-  },
-  "MORPHO": {
-   "side": "long",
-   "checked_at": "2026-11-01T02:25:56Z",
-   "stance": "supports",
-   "summary": "Fundamentals still support the long: RWA deposits above $2B and fee growth. After the Oct 29 Binance hack, lenders pulled liquidity and some Morpho borrow rates briefly hit ~40% before easing to 9-13%; MORPHO bounced ~15% on Oct 31. No unlocks in the next 14 days.",
-   "news": [
-    {
-     "title": "Lenders pull liquidity after the Binance hack; Morpho borrow rates spike to ~40% and squeeze leveraged Pendle PT trades, then ease to 9-13%",
-     "url": "https://thedefiant.io/news/defi/morpho-borrow-rates-hit-roughly-40-as-pt-market-liquidity-dries-up",
-     "date": "Oct 31",
-     "new": true
+    "kBONK": {
+      "side": "short",
+      "checked_at": "2026-11-01T02:25:56Z",
+      "stance": "neutral",
+      "summary": "No price-moving BONK news this week; the long-promised burn milestone has no confirmed date. Fully unlocked, so no unlock supply.",
+      "news": [],
+      "unlocks": []
     },
-    {
-     "title": "Morpho's real-world-asset markets pass $2B in deposits with about $894M in loans outstanding",
-     "url": "https://crypto.news/morpho-rwa-deposits-2-billion-loans",
-     "date": "Oct 28",
-     "new": false
+    "BERA": {
+      "side": "short",
+      "stance": "neutral",
+      "summary": "No price-moving BERA news found in the last week. Neither Tokenomist nor DropsTab lists a dated unlock in the next 14 days; only small ongoing linear vesting and validator emissions, which add a little supply.",
+      "news": [],
+      "unlocks": [],
+      "checked_at": "2026-10-29T02:34:41Z"
     },
-    {
-     "title": "1kx report: onchain lending fees fell ~50% year over year while Morpho's Q3 fees edged up to ~$62M",
-     "url": "https://news.bitcoin.com/finance/onchain-lending-fees-plunge-50-as-morpho-bucks-the-trend",
-     "date": "Oct 29",
-     "new": false
-    }
-   ],
-   "unlocks": []
-  },
-  "DOT": {
-   "side": "short",
-   "checked_at": "2026-11-01T02:25:56Z",
-   "stance": "supports",
-   "summary": "DOT stays below $1 after the dotUSD XCM accounting bug (fix referendum 1961 in voting); CoinShares' Polkadot staking ETP is still set for redemption around Nov 9. No vesting unlocks.",
-   "news": [
-    {
-     "title": "XCM bug undercounted dotUSD supply; arbitrage cost the Treasury about $1.3M while a fix referendum is voted",
-     "url": "https://www.tokenpost.com/news/technology/42499",
-     "date": "Oct 28",
-     "new": false
+    "REZ": {
+      "side": "short",
+      "checked_at": "2026-10-30T02:24:28Z",
+      "stance": "neutral",
+      "summary": "No material Renzo news in the last week; buybacks remain paused and over 95% of supply is already circulating. The next insider release (80M REZ) is listed for Nov 28, outside the 14-day window.",
+      "news": [],
+      "unlocks": []
     },
-    {
-     "title": "DOT slips to about $0.98, roughly 98% below its 2021 peak, despite the supply cap and dotUSD launch",
-     "url": "https://coinmarketcap.com/cmc-ai/polkadot-new/latest-updates/",
-     "date": "Oct 29",
-     "new": true
+    "MERL": {
+      "side": "short",
+      "checked_at": "2026-11-01T02:25:56Z",
+      "stance": "neutral",
+      "summary": "No price-moving Merlin Chain news in the last 7 days. Tokenomics.com lists a ~38.6M MERL release (foundation, investors, community, insiders) on Nov 1, but other trackers disagree or don't show it, so the date is unconfirmed and not listed here.",
+      "news": [],
+      "unlocks": []
+    },
+    "HYPER": {
+      "side": "short",
+      "checked_at": "2026-11-01T02:25:56Z",
+      "stance": "neutral",
+      "summary": "No HYPER-specific news in the last 7 days; moves (down 9% Oct 30, up 13% Oct 31) tracked the wider market. No unlocks in the next 14 days; the next listed tranche is ~22.3M HYPER (2.2% of total supply, mostly insiders and investors) on Nov 22, just outside the window.",
+      "news": [],
+      "unlocks": []
+    },
+    "ZEC": {
+      "side": "long",
+      "checked_at": "2026-11-02T02:30:08Z",
+      "stance": "neutral",
+      "summary": "NU7 is still due around Nov 5 (faster blocks, unchanged issuance), but large holders are selling and arguing over Zcash Community Grants funding; ZEC is holding near $1,220 below $1,390 resistance. No vesting unlocks (PoW issuance only).",
+      "news": [
+        {
+          "title": "Whale 'big z' plans to sell his whole ZEC position as a fight over Zcash Community Grants spending deepens; ZEC near $1,220",
+          "url": "https://en.coin-turk.com/zcash-price-consolidates-at-1220-amid-whale-sell-off-and-community-rift/",
+          "date": "Nov 1",
+          "new": true
+        },
+        {
+          "title": "Two proposals to end Zcash's $300M+ dev fund early (fully or just the 8% ZCG share); Grayscale ZCSH saw a $4.6M outflow Oct 30",
+          "url": "https://247wallst.com/investing/cryptocurrency/2026/10/31/zcash-developers-want-to-end-a-300-million-dev-fund-early-does-that-make-zec-more-valuable",
+          "date": "Oct 31",
+          "new": false
+        },
+        {
+          "title": "NU7 nears mainnet at block 3,543,405 (around Nov 5); Sprout-pool funds may become unspendable, ZEC near $1,360",
+          "url": "https://www.ad-hoc-news.de/boerse/news/marktberichte/zcash-nu7-upgrade-nears-mainnet-as-zcash-price-remains-volatile/70434670",
+          "date": "Oct 30",
+          "new": false
+        }
+      ],
+      "unlocks": []
+    },
+    "MORPHO": {
+      "side": "long",
+      "checked_at": "2026-11-02T02:30:08Z",
+      "stance": "supports",
+      "summary": "Fundamentals still support the long: RWA deposits above $2B and a Q4 Midnight adapter that lets ~$5B of vault deposits reach fixed-rate markets. Borrow rates spiked after the Binance hack before easing. Only small daily linear vesting, no dated unlock in the next 14 days.",
+      "news": [
+        {
+          "title": "Lenders pull liquidity after the Binance hack; Morpho borrow rates spike to ~40% and squeeze leveraged Pendle PT trades, then ease to 9-13%",
+          "url": "https://thedefiant.io/news/defi/morpho-borrow-rates-hit-roughly-40-as-pt-market-liquidity-dries-up",
+          "date": "Oct 31",
+          "new": false
+        },
+        {
+          "title": "Morpho's real-world-asset markets pass $2B in deposits with about $894M in loans outstanding",
+          "url": "https://crypto.news/morpho-rwa-deposits-2-billion-loans",
+          "date": "Oct 28",
+          "new": false
+        },
+        {
+          "title": "Morpho plans a Q4 Midnight adapter so its ~$5B of vaults can allocate to fixed-rate, fixed-term lending",
+          "url": "https://crypto-economy.com/morpho-to-launch-midnight-adapter-enabling-fixed-rate-vault-allocation-options/",
+          "date": "Oct 27",
+          "new": true
+        }
+      ],
+      "unlocks": []
+    },
+    "HYPE": {
+      "side": "long",
+      "checked_at": "2026-11-02T02:30:08Z",
+      "stance": "neutral",
+      "summary": "Strong news for the long (ICE plans US Hyperliquid-based perps, HYPE near its $98 high), but the monthly core-contributor unlock of up to 9.92M HYPE lands Nov 6; recent actual team claims have been far smaller than the scheduled amount.",
+      "news": [
+        {
+          "title": "NYSE owner ICE and Trade[XYZ] plan Hyperliquid-based perpetual futures for US traders, pending approval; HYPE up ~20% to above $96",
+          "url": "https://cointelegraph.com/news/hype-price-all-time-high-ice-us-hyperliquid-perps",
+          "date": "Oct 29",
+          "new": true
+        }
+      ],
+      "unlocks": [
+        {
+          "date": "Nov 6",
+          "date_iso": "2026-11-06",
+          "amount": "9.92M HYPE",
+          "pct_supply": "",
+          "note": "Core contributors (team) monthly vesting; scheduled ceiling, recent actual claims much lower",
+          "source": "https://www.buildix.trade/blog/hype-unlock-november-6-team-claim-otc-2026",
+          "new": true
+        }
+      ]
+    },
+    "SKY": {
+      "side": "long",
+      "checked_at": "2026-11-02T02:30:08Z",
+      "stance": "supports",
+      "summary": "No new Sky news since the Q3 report (rising revenue, monthly SKY buybacks and burns). SKY is essentially fully unlocked, so no unlocks in the next 14 days.",
+      "news": [
+        {
+          "title": "Sky Q3 report: net revenue $37.2M (sixth straight positive quarter), $5.6M of buybacks for 87.5M SKY, 7.37M SKY burned Oct 12",
+          "url": "https://securities.io/sky-protocol-posts-37-19m-q3-net-revenue-sixth-straight-positive-quarter",
+          "date": "Oct 29",
+          "new": false
+        }
+      ],
+      "unlocks": []
+    },
+    "POL": {
+      "side": "short",
+      "checked_at": "2026-11-02T02:30:08Z",
+      "stance": "against",
+      "summary": "News works against the short: POL jumped ~12% on Oct 31 on a fee-funded 100M POL burn (with 22M more queued) and growing payments revenue. The Polymarket script hack did not touch Polygon's core protocol. No vesting unlocks; staking rewards come from regular emissions.",
+      "news": [
+        {
+          "title": "POL rises ~12% to about $0.095 on a 100M POL burn (~1% of supply), 22M more queued, and Open Money Stack revenue growth",
+          "url": "https://www.kucoin.com/news/flash/pol-price-surges-11-63-amid-protocol-burn-and-product-upgrades",
+          "date": "Oct 31",
+          "new": true
+        },
+        {
+          "title": "Polymarket, built on Polygon, halts trading for an hour after a third-party script hack (~$2.7-3.5M); refund plan set, Polygon core unaffected",
+          "url": "https://newsbtc.com/news/polymarket-sets-3-9m-refund-plan-after-third-party-script-compromise",
+          "date": "Oct 30",
+          "new": true
+        }
+      ],
+      "unlocks": []
+    },
+    "DOT": {
+      "side": "short",
+      "checked_at": "2026-11-02T02:30:08Z",
+      "stance": "supports",
+      "summary": "DOT keeps sliding, dropping to about $0.91 on Oct 29 after the dotUSD XCM accounting bug (fix referendum 1961 in voting). CoinShares' Polkadot staking ETP is still set for redemption around Nov 9. No vesting unlocks.",
+      "news": [
+        {
+          "title": "DOT falls ~10% in a day to about $0.91 on Oct 29, with no single cause reported",
+          "url": "https://www.tokenpost.com/news/investing/44053",
+          "date": "Oct 30",
+          "new": true
+        },
+        {
+          "title": "XCM bug undercounted dotUSD supply; arbitrage cost the Treasury about $1.3M while a fix referendum is voted",
+          "url": "https://www.tokenpost.com/news/technology/42499",
+          "date": "Oct 28",
+          "new": false
+        },
+        {
+          "title": "DOT slips to about $0.98, roughly 98% below its 2021 peak, despite the supply cap and dotUSD launch",
+          "url": "https://coinmarketcap.com/cmc-ai/polkadot-new/latest-updates/",
+          "date": "Oct 29",
+          "new": false
+        }
+      ],
+      "unlocks": []
+    },
+    "LIT": {
+      "side": "long",
+      "checked_at": "2026-11-02T02:30:08Z",
+      "stance": "neutral",
+      "summary": "Mixed for the long: fee-funded LIT buybacks continue and a CFTC license filing is planned for November, but Robinhood is routing US perps through Bitstamp rather than Lighter. No unlocks until late January 2027.",
+      "news": [
+        {
+          "title": "Robinhood picks Bitstamp over Lighter for US perps; Lighter says onchain perps will follow once the CFTC allows them",
+          "url": "https://coinmarketcap.com/cmc-ai/lighter/latest-updates/",
+          "date": "Oct 30",
+          "new": false
+        }
+      ],
+      "unlocks": []
     }
-   ],
-   "unlocks": []
-  },
-  "LIT": {
-   "side": "long",
-   "checked_at": "2026-11-01T02:25:56Z",
-   "stance": "neutral",
-   "summary": "Mixed for the long: fee-funded LIT buybacks continue, but Robinhood is routing US perps through its own Bitstamp rather than Lighter until CFTC rules allow onchain perps. No unlocks until late January 2027.",
-   "news": [
-    {
-     "title": "Robinhood picks Bitstamp over Lighter for US perps; Lighter says onchain perps will follow once the CFTC allows them",
-     "url": "https://coinmarketcap.com/cmc-ai/lighter/latest-updates/",
-     "date": "Oct 30",
-     "new": false
-    }
-   ],
-   "unlocks": []
-  },
-  "AVNT": {
-   "side": "short",
-   "checked_at": "2026-10-30T02:24:28Z",
-   "stance": "supports",
-   "summary": "A monthly unlock of about 24.7M AVNT (2.5% of total supply, roughly 9% of circulating) is listed for Nov 9, split across community, private investors and insiders, plus small daily emissions. That adds supply and helps the short. No other material news; the Veranta rebrand changes only the name.",
-   "news": [
-    {
-     "title": "Avantis rebrands to Veranta; INDODAX updates the display name, AVNT ticker and contract unchanged",
-     "url": "https://blog.indodax.com/en_US/rebranding-avantis-to-veranta",
-     "date": "Oct 22",
-     "new": false
-    }
-   ],
-   "unlocks": [
-    {
-     "date": "Nov 9",
-     "date_iso": "2026-11-09",
-     "amount": "24.69M AVNT",
-     "pct_supply": "",
-     "note": "Monthly unlock, 2.5% of total supply: community 43%, private investors 36%, insiders 18%, foundation 3%",
-     "source": "https://app.tokenomics.com/tokenomics/avantis/unlocks",
-     "new": false
-    }
-   ]
-  },
-  "ANIME": {
-   "side": "short",
-   "stance": "neutral",
-   "summary": "No material Animecoin news this week. No dated unlock in the next 14 days; the previously noted Nov 23 release (about 130M ANIME, ~1.3% of supply) falls outside the window.",
-   "news": [],
-   "unlocks": [],
-   "checked_at": "2026-10-29T02:34:41Z"
-  },
-  "kBONK": {
-   "side": "short",
-   "checked_at": "2026-11-01T02:25:56Z",
-   "stance": "neutral",
-   "summary": "No price-moving BONK news this week; the long-promised burn milestone has no confirmed date. Fully unlocked, so no unlock supply.",
-   "news": [],
-   "unlocks": []
-  },
-  "WCT": {
-   "side": "short",
-   "stance": "neutral",
-   "summary": "Nothing material this week. Monthly unlocks fall on the 15th; the next (Nov 15) is outside the 14-day window.",
-   "news": [],
-   "unlocks": [],
-   "checked_at": "2026-10-26T02:20:23Z"
-  },
-  "BERA": {
-   "side": "short",
-   "stance": "neutral",
-   "summary": "No price-moving BERA news found in the last week. Neither Tokenomist nor DropsTab lists a dated unlock in the next 14 days; only small ongoing linear vesting and validator emissions, which add a little supply.",
-   "news": [],
-   "unlocks": [],
-   "checked_at": "2026-10-29T02:34:41Z"
-  },
-  "REZ": {
-   "side": "short",
-   "checked_at": "2026-10-30T02:24:28Z",
-   "stance": "neutral",
-   "summary": "No material Renzo news in the last week; buybacks remain paused and over 95% of supply is already circulating. The next insider release (80M REZ) is listed for Nov 28, outside the 14-day window.",
-   "news": [],
-   "unlocks": []
-  },
-  "MERL": {
-   "side": "short",
-   "checked_at": "2026-11-01T02:25:56Z",
-   "stance": "neutral",
-   "summary": "No price-moving Merlin Chain news in the last 7 days. Tokenomics.com lists a ~38.6M MERL release (foundation, investors, community, insiders) on Nov 1, but other trackers disagree or don't show it, so the date is unconfirmed and not listed here.",
-   "news": [],
-   "unlocks": []
-  },
-  "SKY": {
-   "side": "long",
-   "checked_at": "2026-11-01T02:25:56Z",
-   "stance": "supports",
-   "summary": "No new Sky news this week; the Q3 report (rising revenue, monthly SKY buybacks and burns) is still the latest. SKY is essentially fully unlocked, so no unlocks in the next 14 days.",
-   "news": [
-    {
-     "title": "Sky Q3 report: net revenue $37.2M (sixth straight positive quarter), $5.6M of buybacks for 87.5M SKY, 7.37M SKY burned Oct 12",
-     "url": "https://securities.io/sky-protocol-posts-37-19m-q3-net-revenue-sixth-straight-positive-quarter",
-     "date": "Oct 29",
-     "new": false
-    }
-   ],
-   "unlocks": []
-  },
-  "HYPER": {
-   "side": "short",
-   "checked_at": "2026-11-01T02:25:56Z",
-   "stance": "neutral",
-   "summary": "No HYPER-specific news in the last 7 days; moves (down 9% Oct 30, up 13% Oct 31) tracked the wider market. No unlocks in the next 14 days; the next listed tranche is ~22.3M HYPER (2.2% of total supply, mostly insiders and investors) on Nov 22, just outside the window.",
-   "news": [],
-   "unlocks": []
   }
- }
 }
