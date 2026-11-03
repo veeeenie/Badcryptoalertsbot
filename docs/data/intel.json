@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T02:24:16Z",
+  "generated_at": "2026-11-03T14:21:20Z",
   "coins": {
     "AVNT": {
       "side": "short",
@@ -251,11 +251,28 @@
     },
     "ZK": {
       "side": "short",
-      "checked_at": "2026-11-02T14:35:33Z",
-      "stance": "neutral",
-      "summary": "No price-moving ZKsync news in the last week (recent items are Prividium enterprise updates and GenLayer leaving for Arbitrum on Oct 23). Tokenomist lists the next investor unlock for Nov 17, just outside the 14-day window, with no amount shown.",
-      "news": [],
-      "unlocks": []
+      "checked_at": "2026-11-03T14:21:20Z",
+      "stance": "supports",
+      "summary": "An investor and team unlock of about 173M ZK (roughly 1.5% of circulating supply) lands Nov 17, adding supply that favours the short. Risk to the short: ZKsync teased upcoming ZK token news on Oct 28 with no details yet.",
+      "news": [
+        {
+          "title": "ZKsync teases upcoming ZK token announcement after Prividium Commander launch",
+          "url": "https://cryptonews.net/news/blockchain/33661604",
+          "date": "Oct 28",
+          "new": true
+        }
+      ],
+      "unlocks": [
+        {
+          "date": "Nov 17",
+          "date_iso": "2026-11-17",
+          "amount": "173.4M ZK",
+          "pct_supply": "1.5",
+          "note": "private investors (~59%) and team/insiders (~41%)",
+          "source": "https://app.tokenomics.com/tokenomics/zksync/unlocks",
+          "new": true
+        }
+      ]
     }
   }
 }
