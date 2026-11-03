@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02T14:35:33Z",
+  "generated_at": "2026-11-03T02:24:16Z",
   "coins": {
     "AVNT": {
       "side": "short",
@@ -76,15 +76,15 @@
     },
     "ZEC": {
       "side": "long",
-      "checked_at": "2026-11-02T14:35:33Z",
+      "checked_at": "2026-11-03T02:24:16Z",
       "stance": "neutral",
-      "summary": "NU7 activates around Nov 5 and ETF inflows have returned, but a whale is selling and the dev-fund dispute continues; ZEC is ranging below ~$1,385-1,390 resistance. No vesting unlocks (PoW issuance only).",
+      "summary": "NU7 is due to activate Nov 5 at block 3,543,405 (25-second blocks, supply cap unchanged) and ETF inflows have returned, but a large holder is selling and the dev-fund dispute continues. No vesting unlocks (PoW issuance only).",
       "news": [
         {
           "title": "ETF inflows return as ZEC eyes $1,385 resistance ahead of the Nov 5 NU7 upgrade",
           "url": "https://invezz.com/sg/news/2026/11/02/zcash-eyes-dollar1385-as-etf-inflows-return-ahead-of-nu7-upgrade/",
           "date": "Nov 2",
-          "new": true
+          "new": false
         },
         {
           "title": "Whale 'big z' plans to sell his whole ZEC position as a fight over Zcash Community Grants spending deepens; ZEC near $1,220",
@@ -103,7 +103,7 @@
     },
     "MORPHO": {
       "side": "long",
-      "checked_at": "2026-11-02T14:35:33Z",
+      "checked_at": "2026-11-03T02:24:16Z",
       "stance": "supports",
       "summary": "Fundamentals still support the long: RWA deposits above $2B and a Q4 Midnight adapter that lets ~$5B of vault deposits reach fixed-rate markets. Borrow rates spiked after the Binance hack before easing. Only small daily linear vesting, no dated unlock in the next 14 days.",
       "news": [
@@ -130,15 +130,21 @@
     },
     "HYPE": {
       "side": "long",
-      "checked_at": "2026-11-02T14:35:33Z",
+      "checked_at": "2026-11-03T02:24:16Z",
       "stance": "neutral",
-      "summary": "ICE's planned US Hyperliquid perps keep the long thesis intact, but top traders have swung heavily short and HYPE has eased to ~$88. The monthly core-contributor unlock of up to 9.92M HYPE lands Nov 6 (recent actual claims have been far smaller).",
+      "summary": "ICE's planned US Hyperliquid perps keep the long thesis intact, but top traders are heavily short and HYPE has slipped to ~$84. The Nov 6 team unlock is now confirmed at just 180K HYPE (~0.08% of supply), a minor supply event.",
       "news": [
+        {
+          "title": "CoinDesk week ahead: HYPE's Nov 6 unlock is only ~0.08% of circulating supply (~$17M); HYPE near $84",
+          "url": "https://coindesk.com/markets/2026/11/02/binance-hack-fallout-u-s-midterms-and-jobs-report-crypto-week-ahead",
+          "date": "Nov 2",
+          "new": true
+        },
         {
           "title": "Top perp traders flip heavily short; HYPE (~$88) carries the largest unrealized loss among their positions",
           "url": "https://tokenpost.com/news/investing/46010",
           "date": "Nov 1",
-          "new": true
+          "new": false
         },
         {
           "title": "NYSE owner ICE and Trade[XYZ] plan Hyperliquid-based perpetual futures for US traders, pending approval; HYPE up ~20% to above $96",
@@ -151,11 +157,11 @@
         {
           "date": "Nov 6",
           "date_iso": "2026-11-06",
-          "amount": "9.92M HYPE",
-          "pct_supply": "",
-          "note": "Core contributors (team) monthly vesting; scheduled ceiling, recent actual claims much lower",
-          "source": "https://www.buildix.trade/blog/hype-unlock-november-6-team-claim-otc-2026",
-          "new": false
+          "amount": "180K HYPE",
+          "pct_supply": "0.08",
+          "note": "Team: Hyperliquid Labs distribution to team members (far below the 9.92M scheduled ceiling)",
+          "source": "https://www.kucoin.com/news/flash/hyperliquid-labs-to-unlock-180-000-hype-for-team-distribution-on-november-6",
+          "new": true
         }
       ]
     },
@@ -176,10 +182,16 @@
     },
     "POL": {
       "side": "short",
-      "checked_at": "2026-11-02T14:35:33Z",
+      "checked_at": "2026-11-03T02:24:16Z",
       "stance": "against",
-      "summary": "News works against the short: POL jumped ~12% on Oct 31 on a fee-funded 100M POL burn (with 22M more queued) and growing payments revenue. The Polymarket script hack did not touch Polygon's core protocol. No vesting unlocks; staking rewards come from regular emissions.",
+      "summary": "News works against the short: the 100M POL burn (~1% of supply, 22M more queued) lifted POL ~12% on Oct 31, and Polygon keeps expanding its payments stack, now to Solana. No vesting unlocks; staking rewards come from regular emissions.",
       "news": [
+        {
+          "title": "Polygon extends its Open Money Stack to Solana, giving overseas stablecoin firms access to US bank rails (early access)",
+          "url": "https://cryptoslate.com/polygon-brings-us-banking-access-to-solanas-15-billion-stablecoin-market/",
+          "date": "Nov 2",
+          "new": true
+        },
         {
           "title": "POL rises ~12% to about $0.095 on a 100M POL burn (~1% of supply), 22M more queued, and Open Money Stack revenue growth",
           "url": "https://www.kucoin.com/news/flash/pol-price-surges-11-63-amid-protocol-burn-and-product-upgrades",
@@ -197,10 +209,16 @@
     },
     "DOT": {
       "side": "short",
-      "checked_at": "2026-11-02T14:35:33Z",
+      "checked_at": "2026-11-03T02:24:16Z",
       "stance": "supports",
-      "summary": "DOT keeps sliding, dropping to about $0.91 on Oct 29 after the dotUSD XCM accounting bug (fix referendum 1961 in voting). CoinShares' Polkadot staking ETP is still set for redemption around Nov 9. No vesting unlocks.",
+      "summary": "DOT keeps grinding lower (~$0.94, -21% in 30 days) after the dotUSD XCM accounting bug, with crowded retail longs on OKX. CoinShares' Polkadot staking ETP is still set for redemption around Nov 9. No vesting unlocks.",
       "news": [
+        {
+          "title": "DOT near $0.94, down ~21% in 30 days; ~70% of OKX accounts are long while funding has turned negative",
+          "url": "https://cryptoticker.io/en/polkadot-long-accounts-negative-funding/",
+          "date": "Nov 3",
+          "new": true
+        },
         {
           "title": "DOT falls ~10% in a day to about $0.91 on Oct 29, with no single cause reported",
           "url": "https://www.tokenpost.com/news/investing/44053",
@@ -212,19 +230,13 @@
           "url": "https://www.tokenpost.com/news/technology/42499",
           "date": "Oct 28",
           "new": false
-        },
-        {
-          "title": "DOT slips to about $0.98, roughly 98% below its 2021 peak, despite the supply cap and dotUSD launch",
-          "url": "https://coinmarketcap.com/cmc-ai/polkadot-new/latest-updates/",
-          "date": "Oct 29",
-          "new": false
         }
       ],
       "unlocks": []
     },
     "LIT": {
       "side": "long",
-      "checked_at": "2026-11-02T14:35:33Z",
+      "checked_at": "2026-11-03T02:24:16Z",
       "stance": "neutral",
       "summary": "Mixed for the long: fee-funded LIT buybacks continue and a CFTC license filing is planned for November, but Robinhood is routing US perps through Bitstamp rather than Lighter. No unlocks until late January 2027.",
       "news": [
