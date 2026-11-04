@@ -1,4 +1,4 @@
-name: Positions check (temporary)
+name: Market read (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -10,17 +10,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with: {ref: main, path: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+      - run: pip install -r main/scanner/requirements.txt
       - run: |
-          U=0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE
-          H=https://api.hyperliquid.xyz/info
-          p(){ curl -s -X POST $H -H 'Content-Type: application/json' -d "$1"; }
-          S=$(( ($(date +%s) - 6*86400) * 1000 ))
-          {
-          echo "== time"; date -u; echo
-          echo "== ch"; p "{\"type\":\"clearinghouseState\",\"user\":\"$U\"}"; echo
-          echo "== open"; p "{\"type\":\"frontendOpenOrders\",\"user\":\"$U\"}"; echo
-          echo "== fills"; p "{\"type\":\"userFillsByTime\",\"user\":\"$U\",\"startTime\":$S}"; echo
-          echo "== mids"; p '{"type":"allMids"}'; echo
-          } > pos_check.txt 2>&1
-          git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add pos_check.txt && git commit -qm "pos check" && git push -q origin HEAD:debug-weekly
+          cd main/scanner && python - > ../../read_check.txt 2>&1 <<'PY'
+          import time, json, requests, watchlist as W
+          from scan import daily_candles, weekly_from_daily
+          now=int(time.time()*1000)
+          H="https://api.hyperliquid.xyz/info"
+          mids=requests.post(H,json={"type":"allMids"}).json()
+          meta,ctx=requests.post(H,json={"type":"metaAndAssetCtxs"}).json()
+          C={a["name"]:c for a,c in zip(meta["universe"],ctx)}
+          def ema(v,n):
+              a=2/(n+1);e=v[0]
+              for x in v: e=a*x+(1-a)*e
+              return e
+          print("time",time.strftime("%Y-%m-%d %H:%M UTC",time.gmtime()))
+          for coin in ["BTC","VVV","ZEC"]:
+              d=daily_candles(coin); wk=weekly_from_daily(d)
+              closed=[w for w in wk if w["t"]+7*86400000<=now]
+              price=float(mids[coin]); trend,info=W.weekly_trend(closed,price); A=W.atr_series(closed)[-1]
+              c=C[coin]
+              print(f"\n#### {coin} price {price} trend {trend} wATR {A:.4g} funding {float(c['funding'])*100:.4f}%/h OI ${float(c['openInterest'])*price/1e6:.1f}M 24h {100*(price/float(c['prevDayPx'])-1):+.1f}%")
+              print("info",{k:(round(v,4) if isinstance(v,float) else v) for k,v in info.items() if k in('ema25','ema50','ema100','last_swing_high','last_swing_low','swing_highs','swing_lows','ema','structure')})
+              dc=[x["c"] for x in d[:-1]]
+              print("daily ema 25/50/100/200",[round(ema(dc,n),4) for n in (25,50,100,200)])
+              print("zones near:",[(z["kind"],round(z["bottom"],4),round(z["top"],4),z["tests"]) for z in W.zones(closed) if abs(z["top"]/price-1)<0.5 or abs(z["bottom"]/price-1)<0.5])
+              print("weeks:",[(W.iso(w["t"]),round(w["o"],4),round(w["h"],4),round(w["l"],4),round(w["c"],4)) for w in wk[-8:]])
+              print("days:",[(W.iso(x["t"]),round(x["o"],4),round(x["h"],4),round(x["l"],4),round(x["c"],4),round(x.get("v",0))) for x in d[-12:]])
+          PY
+          cd ../.. && git config user.name "setup-scanner" && git config user.email "actions@users.noreply.github.com"
+          git add read_check.txt && git commit -qm "read check" && git push -q origin HEAD:debug-weekly
