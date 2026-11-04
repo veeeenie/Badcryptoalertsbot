@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-04T02:25:40Z",
+  "generated_at": "2026-11-04T14:24:30Z",
   "coins": {
     "AVNT": {
       "side": "short",
@@ -289,6 +289,48 @@
           "new": true
         }
       ]
+    },
+    "XMR": {
+      "side": "long",
+      "checked_at": "2026-11-04T14:24:30Z",
+      "stance": "supports",
+      "summary": "No token unlocks (proof-of-work coin). Recent flows from hack proceeds being swapped into XMR and a near-record hashrate point to firm demand, though laundering headlines can revive delisting pressure.",
+      "news": [
+        {
+          "title": "ZachXBT: ~$106M stolen from an EU entity, part laundered into XMR",
+          "url": "https://coinmarketcap.com/cmc-ai/monero/latest-updates/",
+          "date": "Nov 2",
+          "new": true
+        },
+        {
+          "title": "Monero hashrate near its 2026 record as price holds above resistance",
+          "url": "https://ad-hoc-news.de/boerse/news/marktberichte/monero-price-holds-above-resistance-as-hashrate-nears-record/70456327",
+          "date": "Nov 4",
+          "new": true
+        }
+      ],
+      "unlocks": []
+    },
+    "JTO": {
+      "side": "short",
+      "checked_at": "2026-11-04T14:24:30Z",
+      "stance": "neutral",
+      "summary": "No dated JTO unlock found in the next 14 days (CryptoRank shows the next on Dec 7); investor and contributor tokens still vest linearly in the background. News is mixed: a treasury tie-up with ORE versus a validator-credential theft that touched JitoSOL.",
+      "news": [
+        {
+          "title": "ORE and Jito Foundation agree reciprocal treasury holdings; ORE moves part of its SOL into JitoSOL",
+          "url": "https://coinfomania.com/ore-announces-reciprocal-treasury-holdings-with-jito",
+          "date": "Nov 3",
+          "new": true
+        },
+        {
+          "title": "Solana validator credential attack stole ~$135K and 637 JitoSOL; user stake not directly hit",
+          "url": "https://coinmarketcap.com/cmc-ai/jito/latest-updates/",
+          "date": "Nov 2",
+          "new": true
+        }
+      ],
+      "unlocks": []
     }
   }
 }
