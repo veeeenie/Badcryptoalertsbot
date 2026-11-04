@@ -43,6 +43,15 @@
       "meaning_above": "Daily close above 23: the sweep of 21 is holding; next is 23.7–24.0.",
       "meaning_below": "Daily close back below 23.",
       "source": "trader via chat, 4 Nov 2026"
+    },
+    {
+      "id": "XMR-570",
+      "coin": "XMR",
+      "type": "level",
+      "price": 570.0,
+      "name": "Entry1",
+      "touch_pct": 0.0,
+      "source": "added via the website, 2026-11-04"
     }
   ],
   "watch": [
