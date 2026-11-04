@@ -71,6 +71,28 @@
       "name": "breakeven",
       "touch_pct": 0.0,
       "source": "added via the website, 2026-10-27"
+    },
+    {
+      "id": "ZEC-wclose-1046",
+      "coin": "ZEC",
+      "type": "close",
+      "timeframe": "weekly",
+      "side": "below",
+      "price": 1046.0,
+      "name": "ZEC weekly close below the demand zone (1,046)",
+      "meaning": "The ZEC long's demand zone has failed: the weekly uptrend case for the long is broken.",
+      "source": "trader via chat, 4 Nov 2026"
+    },
+    {
+      "id": "VVV-dclose-20.46",
+      "coin": "VVV",
+      "type": "close",
+      "timeframe": "daily",
+      "side": "below",
+      "price": 20.46,
+      "name": "VVV daily close below the 3 Nov sweep low (20.46)",
+      "meaning": "The sweep-and-reclaim of 21 has failed; the 19.80 stop is next.",
+      "source": "trader via chat, 4 Nov 2026"
     }
   ],
   "watch": [

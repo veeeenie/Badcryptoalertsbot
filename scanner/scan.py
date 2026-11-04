@@ -835,6 +835,30 @@ def line_value(al, ts_ms):
     return p1 + (p2 - p1) * (ts_ms - t1) / (t2 - t1)
 
 
+def check_close_alert(al, sent):
+    """Close-only alert (trader, 4 Nov 2026): Telegram once when a daily or weekly candle closes below
+    (or above) the price, having closed on the other side the time before. No alert on a mere touch."""
+    try:
+        d = daily_candles(al["coin"], days=30)
+    except Exception as e:
+        print("close alert error", al["id"], e, file=sys.stderr)
+        return None
+    weekly = al.get("timeframe") == "weekly"
+    bars = weekly_from_daily(d) if weekly else d
+    if len(bars) < 3:
+        return None
+    last, prev = bars[-2], bars[-3]          # last closed candle and the one before (the newest is still open)
+    lv, below = float(al["price"]), al.get("side", "below") == "below"
+    crossed = (last["c"] < lv <= prev["c"]) if below else (last["c"] > lv >= prev["c"])
+    key = f"{al['id']}:close:{last['t']}"
+    if not crossed or key in sent:
+        return None
+    sent[key] = time.time()
+    tf = "weekly" if weekly else "daily"
+    return (f"🔔 <b>{al['coin']}</b> {tf} close {'BELOW' if below else 'ABOVE'} {fmt(lv)}: {al.get('name', '')}\n"
+            f"Close {fmt(last['c'])} (previous {tf} close {fmt(prev['c'])}). {al.get('meaning', '')}").strip()
+
+
 def check_custom_alerts(state):
     """Trendline alerts: once a week when price reaches the line, and once when a weekly candle
     closes above it (for lines price is under) or below it (for lines price is above).
@@ -848,6 +872,11 @@ def check_custom_alerts(state):
     msgs, rows = [], []
     now_ms = time.time() * 1000
     for al in cfg:
+        if al.get("type") == "close":
+            m = check_close_alert(al, sent)
+            if m:
+                msgs.append(m)
+            continue
         if al.get("type") not in ("trendline", "level"):
             continue
         try:

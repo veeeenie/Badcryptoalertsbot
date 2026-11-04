@@ -159,6 +159,7 @@ def handle(text, source="telegram"):
         lines = []
         for a in alerts:
             what = fmt(a["price"]) if a.get("type") == "level" else \
+                f"{a.get('timeframe', 'daily')} close {a.get('side', 'below')} {fmt(a['price'])}" if a.get("type") == "close" else \
                 f"line {a['p1']['date']} {fmt(a['p1']['price'])} → {a['p2']['date']} {fmt(a['p2']['price'])}"
             lines.append(f"• {a['id']}: {a['coin']} {what}" + (f" · {a['name']}" if a.get("name") else ""))
         return "Active alerts:\n" + "\n".join(lines), False

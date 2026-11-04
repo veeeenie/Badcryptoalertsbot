@@ -365,12 +365,12 @@ document.getElementById("lrefresh").addEventListener("click",e=>{e.preventDefaul
 // ---- price alerts: list (with live distance), remove, add -> pre-filled GitHub issue
 const REPO="veeeenie/Badcryptoalertsbot";
 const issue=title=>window.open(`https://github.com/${REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent("Sent from the Setup Desk page. Press Create; the alert workflow applies it and closes this issue.")}`,"_blank","noopener");
-const lineNow=a=>{if(a.type==="level")return a.price;const t1=Date.parse(a.p1.date),t2=Date.parse(a.p2.date);return a.p1.price+(a.p2.price-a.p1.price)*(Date.now()-t1)/(t2-t1);};
+const lineNow=a=>{if(a.type!=="trendline")return a.price;const t1=Date.parse(a.p1.date),t2=Date.parse(a.p2.date);return a.p1.price+(a.p2.price-a.p1.price)*(Date.now()-t1)/(t2-t1);};
 Promise.all([fetch("data/alerts.json?t="+Date.now()).then(r=>r.json()),HL({type:"allMids"}).catch(()=>({}))]).then(([cfg,mids])=>{
   const al=cfg.alerts||[];
   document.getElementById("alhint").textContent=`${al.length} active`;
   document.getElementById("arows").innerHTML=al.map(a=>{const lv=lineNow(a),px=mids[a.coin]?+mids[a.coin]:null;
-    return `<tr><td><b>${a.coin}</b> ${a.type==="level"?"level":"trendline"} <span class="muted">${a.name||""} · ID ${a.id}</span></td>
+    return `<tr><td><b>${a.coin}</b> ${a.type==="level"?"level":a.type==="close"?`${a.timeframe||"daily"} close ${a.side||"below"}`:"trendline"} <span class="muted">${a.name||""} · ID ${a.id}</span></td>
       <td data-label="Level now">${f(lv)}</td><td data-label="Price">${px?f(px):"–"}</td>
       <td data-label="Distance">${px?(lv>px?"+":"−")+pct(lv,px).toFixed(1)+"%":"–"}</td>
       <td><button class="link" data-remove="${a.id}">remove</button></td></tr>`;}).join("")||'<tr><td colspan="5" class="muted">No alerts set.</td></tr>';
