@@ -1,4 +1,4 @@
-name: XMR check (temporary)
+name: XMR check 2 (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -16,7 +16,7 @@ jobs:
         with: {python-version: "3.12"}
       - run: pip install -r main/scanner/requirements.txt
       - run: |
-          cd main/scanner && python - > ../../xmr_check.txt 2>&1 <<'PY'
+          cd main/scanner && (python - > ../../xmr_check.txt 2>&1 || true) <<'PY'
           import time, json, requests, watchlist as W
           from scan import daily_candles, weekly_from_daily
           now=int(time.time()*1000)
@@ -31,8 +31,8 @@ jobs:
           print("trend",trend,"ATR",round(A,2),"weeks",len(closed),"first",W.iso(wk[0]["t"]))
           print("info",json.dumps(info,default=str))
           hs,ls=W.swings(closed)
-          print("swing highs",[(W.iso(closed[i]["t"]),round(closed[i]["h"],2)) for i in hs][-6:])
-          print("swing lows",[(W.iso(closed[i]["t"]),round(closed[i]["l"],2)) for i in ls][-6:])
+          print("swing highs",[(W.iso(closed[i]["t"]),round(closed[i]["h"],2)) for i,_ in hs][-6:])
+          print("swing lows",[(W.iso(closed[i]["t"]),round(closed[i]["l"],2)) for i,_ in ls][-6:])
           for z in W.zones(closed): print("zone",z["kind"],round(z["bottom"],2),round(z["top"],2),"h_atr",round((z["top"]-z["bottom"])/A,2),"tests",z["tests"],"formed",W.iso(z["formed"]))
           print("rejection long",W.rejection_level(closed,False,A))
           p,why=W.plan(closed,price,"up",info,d[-2]["c"])
