@@ -31,6 +31,18 @@
       "name": "VVV daily close below the 3 Nov sweep low (20.46)",
       "meaning": "The sweep-and-reclaim of 21 has failed; the 19.80 stop is next.",
       "source": "trader via chat, 4 Nov 2026"
+    },
+    {
+      "id": "VVV-23",
+      "coin": "VVV",
+      "type": "level",
+      "price": 23.0,
+      "name": "VVV crossing 23",
+      "touch_pct": 1.0,
+      "meaning_touch": "Back above this week's open (22.92) toward the 23.7–24.0 daily EMAs and your 24.0 take-profit.",
+      "meaning_above": "Daily close above 23: the sweep of 21 is holding; next is 23.7–24.0.",
+      "meaning_below": "Daily close back below 23.",
+      "source": "trader via chat, 4 Nov 2026"
     }
   ],
   "watch": [
