@@ -256,7 +256,7 @@ def ladder(levels, stop):
     return None
 
 
-def plan(closed, price, trend, d, last_close=None):
+def plan(closed, price, trend, d, last_close=None, targets=None):
     """The nearest zone in the trend's direction that gives a trade passing the gate.
     Returns (plan, None) or (None, reason)."""
     A = atr_series(closed)[-1]
@@ -315,6 +315,8 @@ def plan(closed, price, trend, d, last_close=None):
             swing = d["last_swing_high"] if d["last_swing_high"] > near else None
         if swing is not None:
             raw = sorted(raw + [swing], reverse=short)
+        if targets:   # testing ideas only: earlier swing highs (lows) beyond price as take-profit candidates
+            raw = sorted(set(raw + [t for t in targets if (t < near if short else t > near)]), reverse=short)
         tz = []   # each take-profit at least 1R from the average entry; skip one within a quarter ATR of the last
         for t in raw:
             if (avg - t if short else t - avg) < risk:
@@ -374,9 +376,23 @@ def sizing(p, max_lev):
             "small_orders": [o["share"] for o in orders if o["usd"] < MIN_ORDER_USD]}
 
 
+def strong_side(closed, price, trend, d):
+    """Testing category (trader, 4 Nov 2026): strongly directional coins, where you buy support or sell
+    rejection again and again. Long: weekly EMAs stacked up with price above the 25, and either the normal
+    uptrend or a breakout above the last confirmed swing high (a straight run leaves no new swings for
+    the swing rule to see). Short is the mirror. Returns "up", "down" or None."""
+    e25 = d.get("ema25")
+    if e25 is None:
+        return None
+    up = (trend == "up" or (d.get("ema") == "up" and price > d.get("last_swing_high", float("inf")))) and price > e25
+    down = (trend == "down" or (d.get("ema") == "down" and price < d.get("last_swing_low", 0))) and price < e25
+    return "up" if up else "down" if down else None
+
+
 def main():
     now_ms = int(time.time() * 1000)
     rows, notrade, skipped = [], [], {"young": [], "no_trend": 0}
+    testing, testing_no = [], []
     coins = universe()
     for r in coins:
         coin, price = r["coin"], r["price"]
@@ -388,6 +404,23 @@ def main():
             continue
         closed = [w for w in weekly if w["t"] + 7 * 86_400_000 <= now_ms]
         trend, d = weekly_trend(closed, price)
+        # testing category: built alongside, never changes the main ideas
+        try:
+            side = strong_side(closed, price, trend, d)
+            if side:
+                hs, ls = swings(closed)
+                tg = [h for _, h in hs] if side == "up" else [l for _, l in ls]
+                lc = daily[-2]["c"] if len(daily) >= 2 else None
+                tp_, twhy = plan(closed, price, side, d, lc, targets=tg)
+                if tp_ is None:
+                    testing_no.append({"coin": coin, "trend": side, "why": twhy})
+                else:
+                    tp_.update({"coin": coin, "price": price, "trend": side, "ema_basis": d.get("ema_basis"), "weeks": len(closed),
+                                "breakout": trend is None})
+                    tp_["sizing"] = sizing(tp_, r.get("max_lev"))
+                    testing.append(tp_)
+        except Exception as e:
+            print(f"{coin}: testing plan failed ({e})")
         if trend is None:
             if "history" in d.get("why", ""):
                 skipped["young"].append(coin)
@@ -406,9 +439,12 @@ def main():
         rows.append(p)
         print(f"{coin:8} {p['side']:5} entries {[round(e, 6) for e in p['entries']]} stop {p['stop']:.6g} "
               f"tps {[round(t, 6) for t in p['tps']]} {p['rr']}:1 dist {p['distance_pct']}%")
-    for p in rows:
+    for p in rows + testing:
         p["ready"] = p["distance_pct"] <= READY_PCT
     rows.sort(key=lambda x: (not x["ready"], x["status"] == "wait", x["distance_pct"]))
+    main_ids = {(p["coin"], p["side"]) for p in rows}
+    testing = [p for p in testing if (p["coin"], p["side"]) not in main_ids]   # already a main idea: shown there
+    testing.sort(key=lambda x: (not x["ready"], x["status"] == "wait", x["distance_pct"]))
     out = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "scanned": len(coins),
@@ -419,6 +455,8 @@ def main():
         "trend_no_trade": notrade,
         "no_trend_detail": skipped.get("detail", []),
         "too_young": skipped["young"],
+        "testing": testing,
+        "testing_no_trade": testing_no,
     }
     with open(OUT_PATH, "w") as f:
         json.dump(out, f, indent=1)

@@ -123,6 +123,7 @@ details.more>summary{cursor:pointer;margin-top:10px}
 <nav id="nav"><div class="navin">
   <span class="brand">Setup Desk</span>
   <a href="#ideas" data-sec="ideas">Ideas</a>
+  <a href="#testing" data-sec="testing">Testing</a>
   <a href="#trades" data-sec="trades">Trades</a>
   <a href="#alerts" data-sec="alerts">Alerts</a>
   <a href="#portfolio" data-sec="portfolio">Portfolio</a>
@@ -134,6 +135,12 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <p class="muted" id="wmeta">Loading…</p>
   <div id="wrows"></div>
   <details class="more" id="wnonebox"><summary class="muted">Coins in a trend with no trade</summary><p class="muted" id="wnone"></p></details>
+  </section>
+
+  <section id="testing" class="anchor">
+  <h2>Testing · directional</h2>
+  <p class="muted" id="tmeta">Strongly bullish or bearish coins: buy support, sell rejection, again and again. A trial category, kept apart from the main rules; nothing here changes the ideas above.</p>
+  <div id="trows"></div>
   </section>
 
   <details class="sec anchor" id="trades">
@@ -232,7 +239,7 @@ function idea(r,w){
   const tps=r.tps.map(f).join(" / ");
   const basis=r.ema_basis!=="25/50/100"?` <span class="muted">weekly ${r.ema_basis} EMA</span>`:"";
   const orders=z.orders.map((o,k)=>`<tr data-px="${o.price}"><td>${o.share}%</td><td>${f(o.price)}</td><td>${fs(o.size)}</td><td>${usd(o.usd)}</td><td class="from">${pct(o.price,r.price).toFixed(1)}%</td></tr>`).join("");
-  const dropped=(r.dropped_levels||[]).length?`<div class="muted">Not placed: ${r.dropped_levels.map(f).join(", ")} (price already passed ${r.dropped_levels.length>1?"them":"it"}; never chased at market).</div>`:"";
+  const dropped=(r.dropped_levels||[]).length?`<div class="muted dropped" data-lv="${r.dropped_levels.join(",")}">Not placed: ${r.dropped_levels.map(f).join(", ")} (price already passed ${r.dropped_levels.length>1?"them":"it"}; never chased at market).</div>`:"";
   const lvl=r.rejection_level!=null?`, ${short?"above":"below"} the ${f(r.rejection_level)} rejection level`:"";
   const exits=r.tps.map((t,i)=>`take-profit ${r.tps.length>1?(i+1)+" (half)":"(all)"} <b>${f(t)}</b> · ${(Math.abs(r.avg_entry-t)/risk1).toFixed(1)}R`).join(" · ");
   return `<details class="idea" data-coin="${r.coin}">
@@ -269,13 +276,19 @@ async function ideasLive(){
     oo=o||[]; (ch.assetPositions||[]).forEach(a=>{const q=a.position; if(+q.szi) pos[q.coin]=q;});}catch(e){}
   const near=(a,b)=>Math.abs(a/b-1)<0.006;
   let live=0;
-  W.rows.forEach(r=>{
+  W.rows.concat(W.testing||[]).forEach(r=>{
     const el=document.querySelector(`details.idea[data-coin="${r.coin}"]`); if(!el) return;
     const px=mids[r.coin]!=null?+mids[r.coin]:null; if(px!=null) live++;
     const short=r.side==="short", p=px??r.price;
     const mine=oo.filter(o=>o.coin===r.coin&&!o.reduceOnly&&o.side===(short?"A":"B")), q=pos[r.coin], held=q&&((+q.szi>0)!==short);
     let st=ideaStatus(r,px); if(st!=="skip"&&(mine.length||held)) st="in";
-    const [txt,c]=STATUS[st];
+    let [txt,c]=STATUS[st];
+    if(st==="in") txt=held&&mine.length?"Filled · orders in":held?"Filled":"Orders in";
+    const ep=held?+q.entryPx:null, isFilled=lv=>ep!=null&&near(lv,ep);
+    const dl=el.querySelector(".dropped");
+    if(dl){const lv=dl.dataset.lv.split(",").map(Number), fl=lv.filter(isFilled), rest=lv.filter(x=>!isFilled(x));
+      dl.innerHTML=(fl.length?`<b style="color:var(--accent)">Filled:</b> ${fl.map(f).join(", ")} (your position). `:"")+
+        (rest.length?`Not placed: ${rest.map(f).join(", ")} (price already passed ${rest.length>1?"them":"it"}; never chased at market).`:"");}
     const inn=el.querySelector(".innote"); inn.hidden=st!=="in";
     if(st==="in"){const off=mine.filter(m=>!r.sizing.orders.some(o=>near(+m.limitPx,o.price))).length;
       inn.innerHTML=`Already in: ${held?`position <b>${fs(Math.abs(+q.szi))} ${r.coin}</b> from ${f(+q.entryPx)}`:""}${held&&mine.length?" · ":""}${mine.length?`<b>${mine.length}</b> order${mine.length>1?"s":""} waiting at ${mine.map(m=>f(+m.limitPx)).join(", ")}`:""}${off?` (${off} not at this plan's levels)`:""}. The plan below is for reference: nothing new to place.`;}
@@ -283,7 +296,7 @@ async function ideasLive(){
     el.querySelector(".pxl").innerHTML=`price ${f(p)}${px!=null?' <span class="live">live</span>':" at scan"}`;
     el.querySelector(".waitnote").hidden=st!=="wait";
     el.querySelectorAll("tr[data-px]").forEach(tr=>{const o=+tr.dataset.px, passed=st==="orders"&&(short?p>o:p<o), placed=mine.some(m=>near(+m.limitPx,o));
-      tr.querySelector(".from").innerHTML=placed?'<b style="color:var(--accent);font-size:12.5px">placed</b>':passed?'<span class="warn">passed: skip</span>':pct(o,p).toFixed(1)+"%";});
+      tr.querySelector(".from").innerHTML=isFilled(o)?'<b style="color:var(--accent);font-size:12.5px">filled</b>':placed?'<b style="color:var(--accent);font-size:12.5px">placed</b>':passed?'<span class="warn">passed: skip</span>':pct(o,p).toFixed(1)+"%";});
   });
   document.getElementById("wmeta").textContent=`${W.rows.filter(r=>r.ready??r.distance_pct<=(W.ready_pct??10)).length} ready of ${W.rows.length} ideas from the top ${W.scanned} coins. Plans from the hourly scan at ${ist(W.generated_at,true)}; ${live?"prices live from Hyperliquid, refreshed every minute":"live prices unavailable, showing scan prices"}. Risk ${W.risk_pct??3}% of the portfolio: ${usd(W.risk_usd)}.`;
 }
@@ -299,6 +312,11 @@ fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
     (later.length?`<details class="more waitlist"><summary class="muted">Waiting: ${later.length} idea${later.length>1?"s":""} more than ${RP}% from price (${later.map(r=>`${r.coin} ${r.distance_pct.toFixed(0)}%`).join(", ")}). They move up when price comes within ${RP}%.</summary><div class="ideas">${later.map(r=>idea(r,w)).join("")}</div></details>`:"");
   const g={};(w.trend_no_trade||[]).forEach(x=>{const k=x.why.startsWith("best zone")?"below the 1.4 : 1 gate":x.why;(g[k]=g[k]||[]).push(`${x.coin} ${x.trend==="down"?"↓":"↑"}`);});
   document.getElementById("wnone").innerHTML=(Object.keys(g).length?Object.entries(g).map(([k,v])=>`<b>${k[0].toUpperCase()+k.slice(1)}:</b> ${v.join(", ")}`).join(". "):"None")+`. ${c.no_trend} coins have no clear weekly trend; ${c.too_young} have under 25 weeks of history.`;
+  // testing: directional coins (weekly EMAs stacked, price beyond the 25, trend or fresh breakout)
+  const T=w.testing||[], tr=T.filter(isReady), tl=T.filter(r=>!isReady(r));
+  document.getElementById("trows").innerHTML=(tr.length?`<div class="ideas">${tr.map(r=>idea(r,w)).join("")}</div>`:`<p class="muted">No directional idea within ${RP}% of price.</p>`)+
+    (tl.length?`<details class="more waitlist"><summary class="muted">Waiting: ${tl.length} idea${tl.length>1?"s":""} more than ${RP}% from price (${tl.map(r=>`${r.coin} ${r.distance_pct.toFixed(0)}%`).join(", ")}).</summary><div class="ideas">${tl.map(r=>idea(r,w)).join("")}</div></details>`:"");
+  document.querySelectorAll("#trows details.idea").forEach(d=>{const r=T.find(x=>x.coin===d.dataset.coin); if(r&&r.breakout) d.querySelector("summary").insertAdjacentHTML("beforeend",'<span class="sumitem muted">breakout</span>');});
   ideasLive(); setInterval(ideasLive,60000);
   document.dispatchEvent(new Event("ideas-ready"));
 }).catch(()=>{document.getElementById("wmeta").textContent="Trade ideas not built yet.";});
@@ -473,7 +491,7 @@ document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("clic
   if(el.tagName==="DETAILS") el.open=true;
   el.scrollIntoView({behavior:"smooth",block:"start"}); history.replaceState(null,"","#"+a.dataset.sec); markActive();
 }));
-const secs=["ideas","trades","alerts","portfolio"].map(id=>document.getElementById(id));
+const secs=["ideas","testing","trades","alerts","portfolio"].map(id=>document.getElementById(id));
 let pinned=null;   // the section just tapped stays lit until you scroll yourself
 ["wheel","touchmove","keydown"].forEach(ev=>addEventListener(ev,()=>{pinned=null;},{passive:true}));
 function markActive(){
