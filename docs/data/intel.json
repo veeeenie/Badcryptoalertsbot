@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T14:21:20Z",
+  "generated_at": "2026-11-04T02:25:40Z",
   "coins": {
     "AVNT": {
       "side": "short",
@@ -44,11 +44,21 @@
     },
     "BERA": {
       "side": "short",
-      "stance": "neutral",
-      "summary": "No price-moving BERA news found in the last week. Neither Tokenomist nor DropsTab lists a dated unlock in the next 14 days; only small ongoing linear vesting and validator emissions, which add a little supply.",
+      "checked_at": "2026-11-04T02:25:40Z",
+      "stance": "supports",
+      "summary": "A monthly unlock of about 13.4M BERA (2.7% of total supply, ~4.7% of market cap) lands Nov 6, mostly to private investors and insiders, adding supply that helps the short. No price-moving BERA news in the last week.",
       "news": [],
-      "unlocks": [],
-      "checked_at": "2026-10-29T02:34:41Z"
+      "unlocks": [
+        {
+          "date": "Nov 6",
+          "date_iso": "2026-11-06",
+          "amount": "13.36M BERA",
+          "pct_supply": "4.7",
+          "note": "Monthly unlock (2.7% of total supply; 4.7% is of market cap): private investors 45%, insiders 22%, community 20%, foundation 14%",
+          "source": "https://app.tokenomics.com/tokenomics/berachain/unlocks",
+          "new": true
+        }
+      ]
     },
     "REZ": {
       "side": "short",
@@ -76,26 +86,26 @@
     },
     "ZEC": {
       "side": "long",
-      "checked_at": "2026-11-03T02:24:16Z",
+      "checked_at": "2026-11-04T02:25:40Z",
       "stance": "neutral",
-      "summary": "NU7 is due to activate Nov 5 at block 3,543,405 (25-second blocks, supply cap unchanged) and ETF inflows have returned, but a large holder is selling and the dev-fund dispute continues. No vesting unlocks (PoW issuance only).",
+      "summary": "NU7 activates at block 3,543,405, expected late Nov 5 to early Nov 6 UTC (25-second blocks), but ZEC fell about 11% on Nov 3 to ~$1,135 as the community-grants dispute flared and a leveraged whale was stopped out; sell-the-news risk around the upgrade. No vesting unlocks (PoW issuance only).",
       "news": [
+        {
+          "title": "ZEC drops ~11% as the ZCG grants fight escalates; a whale's Hyperliquid long is stopped out below $1,200 for a ~$5.8M loss",
+          "url": "https://cryptoticker.io/en/zcash-zcg-grants-dispute-price-drop/",
+          "date": "Nov 3",
+          "new": true
+        },
+        {
+          "title": "ZEC slips out of the top 10; NU7 still set for block 3,543,405 while dev-fund proposals have not reached a vote",
+          "url": "https://247wallst.com/investing/cryptocurrency/2026/11/03/zcash-price-prediction-zec-fell-nearly-6-and-slipped-out-of-the-top-10-how-low-could-it-go/",
+          "date": "Nov 3",
+          "new": true
+        },
         {
           "title": "ETF inflows return as ZEC eyes $1,385 resistance ahead of the Nov 5 NU7 upgrade",
           "url": "https://invezz.com/sg/news/2026/11/02/zcash-eyes-dollar1385-as-etf-inflows-return-ahead-of-nu7-upgrade/",
           "date": "Nov 2",
-          "new": false
-        },
-        {
-          "title": "Whale 'big z' plans to sell his whole ZEC position as a fight over Zcash Community Grants spending deepens; ZEC near $1,220",
-          "url": "https://en.coin-turk.com/zcash-price-consolidates-at-1220-amid-whale-sell-off-and-community-rift/",
-          "date": "Nov 1",
-          "new": false
-        },
-        {
-          "title": "Two proposals to end Zcash's $300M+ dev fund early (fully or just the 8% ZCG share); Grayscale ZCSH saw a $4.6M outflow Oct 30",
-          "url": "https://247wallst.com/investing/cryptocurrency/2026/10/31/zcash-developers-want-to-end-a-300-million-dev-fund-early-does-that-make-zec-more-valuable",
-          "date": "Oct 31",
           "new": false
         }
       ],
@@ -103,9 +113,9 @@
     },
     "MORPHO": {
       "side": "long",
-      "checked_at": "2026-11-03T02:24:16Z",
+      "checked_at": "2026-11-04T02:25:40Z",
       "stance": "supports",
-      "summary": "Fundamentals still support the long: RWA deposits above $2B and a Q4 Midnight adapter that lets ~$5B of vault deposits reach fixed-rate markets. Borrow rates spiked after the Binance hack before easing. Only small daily linear vesting, no dated unlock in the next 14 days.",
+      "summary": "No major new Morpho news; RWA deposits above $2B and the fixed-rate Midnight rollout still back the long, after borrow rates spiked and eased following the Binance hack. No dated unlock in the next 14 days; the next insider and investor tranche (~11.6M MORPHO, 1.2% of total supply) is Nov 21.",
       "news": [
         {
           "title": "Lenders pull liquidity after the Binance hack; Morpho borrow rates spike to ~40% and squeeze leveraged Pendle PT trades, then ease to 9-13%",
@@ -118,36 +128,30 @@
           "url": "https://crypto.news/morpho-rwa-deposits-2-billion-loans",
           "date": "Oct 28",
           "new": false
-        },
-        {
-          "title": "Morpho plans a Q4 Midnight adapter so its ~$5B of vaults can allocate to fixed-rate, fixed-term lending",
-          "url": "https://crypto-economy.com/morpho-to-launch-midnight-adapter-enabling-fixed-rate-vault-allocation-options/",
-          "date": "Oct 27",
-          "new": false
         }
       ],
       "unlocks": []
     },
     "HYPE": {
       "side": "long",
-      "checked_at": "2026-11-03T02:24:16Z",
+      "checked_at": "2026-11-04T02:25:40Z",
       "stance": "neutral",
-      "summary": "ICE's planned US Hyperliquid perps keep the long thesis intact, but top traders are heavily short and HYPE has slipped to ~$84. The Nov 6 team unlock is now confirmed at just 180K HYPE (~0.08% of supply), a minor supply event.",
+      "summary": "The CFTC's approval of US equity perpetuals on Nov 3 gave HYPE a small lift and backs the US-expansion story, but ICE walked back its promo post and the US platform has no approval or launch date; HYPE slipped below $85 support. The Nov 6 team unlock is small (180K HYPE, ~0.08% of supply).",
       "news": [
         {
-          "title": "CoinDesk week ahead: HYPE's Nov 6 unlock is only ~0.08% of circulating supply (~$17M); HYPE near $84",
-          "url": "https://coindesk.com/markets/2026/11/02/binance-hack-fallout-u-s-midterms-and-jobs-report-crypto-week-ahead",
-          "date": "Nov 2",
+          "title": "CFTC clears the first US equity perpetuals; HYPE ticks up ~2% as Hyperliquid already runs the largest onchain stock-perp market",
+          "url": "https://cryptonews.net/news/market/33696796/",
+          "date": "Nov 3",
           "new": true
         },
         {
-          "title": "Top perp traders flip heavily short; HYPE (~$88) carries the largest unrealized loss among their positions",
-          "url": "https://tokenpost.com/news/investing/46010",
-          "date": "Nov 1",
-          "new": false
+          "title": "HYPE loses $85 support; ICE revises its Hyperliquid platform announcement, which still lacks approval or a launch date",
+          "url": "https://crypto.news/why-is-hyperliquid-price-down-today-hype-november-3",
+          "date": "Nov 3",
+          "new": true
         },
         {
-          "title": "NYSE owner ICE and Trade[XYZ] plan Hyperliquid-based perpetual futures for US traders, pending approval; HYPE up ~20% to above $96",
+          "title": "NYSE owner ICE signs with Trade[XYZ] to build US Hyperliquid perps; HYPE runs to near its all-time high",
           "url": "https://cointelegraph.com/news/hype-price-all-time-high-ice-us-hyperliquid-perps",
           "date": "Oct 29",
           "new": false
@@ -161,7 +165,7 @@
           "pct_supply": "0.08",
           "note": "Team: Hyperliquid Labs distribution to team members (far below the 9.92M scheduled ceiling)",
           "source": "https://www.kucoin.com/news/flash/hyperliquid-labs-to-unlock-180-000-hype-for-team-distribution-on-november-6",
-          "new": true
+          "new": false
         }
       ]
     },
@@ -182,24 +186,24 @@
     },
     "POL": {
       "side": "short",
-      "checked_at": "2026-11-03T02:24:16Z",
+      "checked_at": "2026-11-04T02:25:40Z",
       "stance": "against",
-      "summary": "News works against the short: the 100M POL burn (~1% of supply, 22M more queued) lifted POL ~12% on Oct 31, and Polygon keeps expanding its payments stack, now to Solana. No vesting unlocks; staking rewards come from regular emissions.",
+      "summary": "No new POL catalyst since the 100M POL fee burn (~1% of supply) lifted the price ~12% on Oct 31; Polygon's payments push keeps working against the short. POL sits near $0.09, below its 200-day average. No vesting unlocks; only the regular 2% yearly emission.",
       "news": [
         {
-          "title": "Polygon extends its Open Money Stack to Solana, giving overseas stablecoin firms access to US bank rails (early access)",
+          "title": "Polygon brings US banking access to Solana's stablecoin market",
           "url": "https://cryptoslate.com/polygon-brings-us-banking-access-to-solanas-15-billion-stablecoin-market/",
           "date": "Nov 2",
-          "new": true
+          "new": false
         },
         {
-          "title": "POL rises ~12% to about $0.095 on a 100M POL burn (~1% of supply), 22M more queued, and Open Money Stack revenue growth",
+          "title": "POL jumps ~12% after a 100M POL fee burn and product upgrades",
           "url": "https://www.kucoin.com/news/flash/pol-price-surges-11-63-amid-protocol-burn-and-product-upgrades",
           "date": "Oct 31",
           "new": false
         },
         {
-          "title": "Polymarket, built on Polygon, halts trading for an hour after a third-party script hack (~$2.7-3.5M); refund plan set, Polygon core unaffected",
+          "title": "Polymarket sets a $3.9M refund plan after a third-party script compromise; stolen funds were swapped into POL",
           "url": "https://newsbtc.com/news/polymarket-sets-3-9m-refund-plan-after-third-party-script-compromise",
           "date": "Oct 30",
           "new": false
@@ -209,15 +213,15 @@
     },
     "DOT": {
       "side": "short",
-      "checked_at": "2026-11-03T02:24:16Z",
+      "checked_at": "2026-11-04T02:25:40Z",
       "stance": "supports",
-      "summary": "DOT keeps grinding lower (~$0.94, -21% in 30 days) after the dotUSD XCM accounting bug, with crowded retail longs on OKX. CoinShares' Polkadot staking ETP is still set for redemption around Nov 9. No vesting unlocks.",
+      "summary": "No new Polkadot catalyst: DOT keeps grinding near $0.94 below all key averages after the dotUSD XCM accounting bug, with crowded retail longs and negative funding. CoinShares' Polkadot staking ETP is still set for redemption around Nov 9. No vesting unlocks.",
       "news": [
         {
           "title": "DOT near $0.94, down ~21% in 30 days; ~70% of OKX accounts are long while funding has turned negative",
           "url": "https://cryptoticker.io/en/polkadot-long-accounts-negative-funding/",
           "date": "Nov 3",
-          "new": true
+          "new": false
         },
         {
           "title": "DOT falls ~10% in a day to about $0.91 on Oct 29, with no single cause reported",
@@ -236,12 +240,24 @@
     },
     "LIT": {
       "side": "long",
-      "checked_at": "2026-11-03T02:24:16Z",
+      "checked_at": "2026-11-04T02:25:40Z",
       "stance": "neutral",
-      "summary": "Mixed for the long: fee-funded LIT buybacks continue and a CFTC license filing is planned for November, but Robinhood is routing US perps through Bitstamp rather than Lighter. No unlocks until late January 2027.",
+      "summary": "Mixed for the long: Lighter added Turkish stock perps and plans its CFTC DCM/DCO filings this month (approval could take until mid-2027), but one address unstaked 3.9M LIT (~$12M) and sent it to exchanges. No unlocks until the Dec 27 insider cliff.",
       "news": [
         {
-          "title": "Robinhood picks Bitstamp over Lighter for US perps; Lighter says onchain perps will follow once the CFTC allows them",
+          "title": "Lighter opens perps on Turkey's 30 largest stocks; a wallet unstakes 3.9M LIT and moves it to OKX and other exchanges",
+          "url": "https://247wallst.com/investing/cryptocurrency/2026/11/02/lighter-just-opened-trading-on-turkeys-30-biggest-stocks-can-it-challenge-hyperliquid",
+          "date": "Nov 2",
+          "new": true
+        },
+        {
+          "title": "LIT rises ~16% as Lighter confirms it will file for CFTC DCM and DCO licences in November",
+          "url": "https://kucoin.com/news/flash/lighter-gains-16-as-cftc-licensing-plans-approach",
+          "date": "Nov 1",
+          "new": true
+        },
+        {
+          "title": "Robinhood routes US perps through Bitstamp rather than Lighter; LIT buybacks continue",
           "url": "https://coinmarketcap.com/cmc-ai/lighter/latest-updates/",
           "date": "Oct 30",
           "new": false
