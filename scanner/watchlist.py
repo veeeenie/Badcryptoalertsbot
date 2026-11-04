@@ -315,15 +315,18 @@ def plan(closed, price, trend, d, last_close=None, targets=None):
             swing = d["last_swing_high"] if d["last_swing_high"] > near else None
         if swing is not None:
             raw = sorted(raw + [swing], reverse=short)
-        if targets:   # testing ideas only: earlier swing highs (lows) beyond price as take-profit candidates
-            raw = sorted(set(raw + [t for t in targets if (t < near if short else t > near)]), reverse=short)
-        tz = []   # each take-profit at least 1R from the average entry; skip one within a quarter ATR of the last
-        for t in raw:
-            if (avg - t if short else t - avg) < risk:
-                continue
-            if tz and abs(t - tz[-1]) < 0.25 * A:
-                continue
-            tz.append(t)
+        def pick(levels):   # each take-profit at least 1R from the average entry; skip one within a quarter ATR of the last
+            out = []
+            for t in levels:
+                if (avg - t if short else t - avg) < risk:
+                    continue
+                if out and abs(t - out[-1]) < 0.25 * A:
+                    continue
+                out.append(t)
+            return out
+        tz = pick(raw)
+        if not tz and targets:   # testing ideas only: when no zone or recent swing works, earlier swing highs (lows)
+            tz = pick(sorted({t for t in targets if (t < near if short else t > near)}, reverse=short))
         if not tz:
             best = best or (None, "no zone or swing at least 1R away to take profit at")
             continue
