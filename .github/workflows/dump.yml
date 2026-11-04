@@ -1,4 +1,4 @@
-name: Market read (temporary)
+name: XMR check (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -16,31 +16,35 @@ jobs:
         with: {python-version: "3.12"}
       - run: pip install -r main/scanner/requirements.txt
       - run: |
-          cd main/scanner && python - > ../../read_check.txt 2>&1 <<'PY'
+          cd main/scanner && python - > ../../xmr_check.txt 2>&1 <<'PY'
           import time, json, requests, watchlist as W
           from scan import daily_candles, weekly_from_daily
           now=int(time.time()*1000)
           H="https://api.hyperliquid.xyz/info"
-          mids=requests.post(H,json={"type":"allMids"}).json()
           meta,ctx=requests.post(H,json={"type":"metaAndAssetCtxs"}).json()
-          C={a["name"]:c for a,c in zip(meta["universe"],ctx)}
+          C={a["name"]:(a,c) for a,c in zip(meta["universe"],ctx)}
+          a,c=C["XMR"]; price=float(c["markPx"])
+          print("time",time.strftime("%Y-%m-%d %H:%M UTC",time.gmtime()),"price",price,"maxLev",a.get("maxLeverage"),"vol24h",round(float(c["dayNtlVlm"])/1e6,1),"M","funding",float(c["funding"])*100,"OI",round(float(c["openInterest"])*price/1e6,1),"M")
+          d=daily_candles("XMR"); wk=weekly_from_daily(d)
+          closed=[w for w in wk if w["t"]+7*86400000<=now]
+          trend,info=W.weekly_trend(closed,price); A=W.atr_series(closed)[-1]
+          print("trend",trend,"ATR",round(A,2),"weeks",len(closed),"first",W.iso(wk[0]["t"]))
+          print("info",json.dumps(info,default=str))
+          hs,ls=W.swings(closed)
+          print("swing highs",[(W.iso(closed[i]["t"]),round(closed[i]["h"],2)) for i in hs][-6:])
+          print("swing lows",[(W.iso(closed[i]["t"]),round(closed[i]["l"],2)) for i in ls][-6:])
+          for z in W.zones(closed): print("zone",z["kind"],round(z["bottom"],2),round(z["top"],2),"h_atr",round((z["top"]-z["bottom"])/A,2),"tests",z["tests"],"formed",W.iso(z["formed"]))
+          print("rejection long",W.rejection_level(closed,False,A))
+          p,why=W.plan(closed,price,"up",info,d[-2]["c"])
+          print("plan as up:",why if p is None else json.dumps({k:p[k] for k in ["zone_low","zone_high","entries","stop","tps","rr","rr_first_only","distance_pct","status"]}))
+          print("weeks:",[(W.iso(w["t"]),round(w["o"],1),round(w["h"],1),round(w["l"],1),round(w["c"],1)) for w in wk[-20:]])
           def ema(v,n):
               a=2/(n+1);e=v[0]
               for x in v: e=a*x+(1-a)*e
               return e
-          print("time",time.strftime("%Y-%m-%d %H:%M UTC",time.gmtime()))
-          for coin in ["BTC","VVV","ZEC"]:
-              d=daily_candles(coin); wk=weekly_from_daily(d)
-              closed=[w for w in wk if w["t"]+7*86400000<=now]
-              price=float(mids[coin]); trend,info=W.weekly_trend(closed,price); A=W.atr_series(closed)[-1]
-              c=C[coin]
-              print(f"\n#### {coin} price {price} trend {trend} wATR {A:.4g} funding {float(c['funding'])*100:.4f}%/h OI ${float(c['openInterest'])*price/1e6:.1f}M 24h {100*(price/float(c['prevDayPx'])-1):+.1f}%")
-              print("info",{k:(round(v,4) if isinstance(v,float) else v) for k,v in info.items() if k in('ema25','ema50','ema100','last_swing_high','last_swing_low','swing_highs','swing_lows','ema','structure')})
-              dc=[x["c"] for x in d[:-1]]
-              print("daily ema 25/50/100/200",[round(ema(dc,n),4) for n in (25,50,100,200)])
-              print("zones near:",[(z["kind"],round(z["bottom"],4),round(z["top"],4),z["tests"]) for z in W.zones(closed) if abs(z["top"]/price-1)<0.5 or abs(z["bottom"]/price-1)<0.5])
-              print("weeks:",[(W.iso(w["t"]),round(w["o"],4),round(w["h"],4),round(w["l"],4),round(w["c"],4)) for w in wk[-8:]])
-              print("days:",[(W.iso(x["t"]),round(x["o"],4),round(x["h"],4),round(x["l"],4),round(x["c"],4),round(x.get("v",0))) for x in d[-12:]])
+          dc=[x["c"] for x in d[:-1]]
+          print("daily ema 25/50/100/200",[round(ema(dc,n),1) for n in (25,50,100,200)])
+          print("days:",[(W.iso(x["t"]),round(x["h"],1),round(x["l"],1),round(x["c"],1)) for x in d[-10:]])
           PY
           cd ../.. && git config user.name "setup-scanner" && git config user.email "actions@users.noreply.github.com"
-          git add read_check.txt && git commit -qm "read check" && git push -q origin HEAD:debug-weekly
+          git add xmr_check.txt && git commit -qm "xmr check" && git push -q origin HEAD:debug-weekly
