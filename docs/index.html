@@ -99,7 +99,8 @@ button.link{background:none;color:var(--down);border:0;padding:0;font-weight:500
 code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
 
 .badge{font-size:12.5px;font-weight:700;padding:1px 8px;border-radius:5px;background:var(--soft)}
-.badge.up{color:var(--up)} .badge.down{color:var(--down)} .badge.amber{color:var(--amber)}
+.badge.up{color:var(--up)} .badge.down{color:var(--down)} .badge.amber{color:var(--amber)} .badge.accent{color:var(--accent)}
+.innote{font-size:14px;padding:8px 10px;border-radius:6px;background:var(--soft);margin:10px 0 6px;border-left:3px solid var(--accent)}
 .live{font-size:11px;color:var(--up);font-weight:600}
 .facts{display:grid;gap:4px;font-size:14px;margin-top:6px}
 .waitnote{font-size:14px;padding:8px 10px;border-radius:6px;background:var(--soft);margin:10px 0 6px;border-left:3px solid var(--amber)}
@@ -112,7 +113,9 @@ details.more>summary{cursor:pointer;margin-top:10px}
   .stack td{border:0;padding:0;text-align:left!important}
   .stack td:first-child{grid-column:1/-1}
   .stack td[data-label]::before{content:attr(data-label) " ";color:var(--muted);font-size:12px}
-  .orders th,.orders td{padding:6px 4px;font-size:13px}
+  .orders th,.orders td{padding:6px 3px;font-size:12.5px}
+  .orders th{white-space:normal;vertical-align:bottom}
+  .body{padding:4px 10px 12px}
 }
 </style>
 </head>
@@ -221,7 +224,7 @@ function ideaStatus(r,px){const short=r.side==="short";
   if(short?px>far:px<far) return "wait";
   return r.status==="wait"?"wait":"orders";   // back inside intraday still needs the daily close
 }
-const STATUS={orders:["Place orders","up"],wait:["Wait","amber"],skip:["Skip · stop passed","down"]};
+const STATUS={orders:["Place orders","up"],wait:["Wait","amber"],skip:["Skip · stop passed","down"],in:["Orders in","accent"]};
 function idea(r,w){
   const z=r.sizing, short=r.side==="short", cls=short?"down":"up";
   const risk1=Math.abs(r.stop-r.avg_entry), far=short?r.zone_high:r.zone_low;
@@ -243,7 +246,7 @@ function idea(r,w){
       <span class="sumitem muted pxl">price ${f(r.price)}</span>
     </summary>
     <div class="body">
-      <div class="block"><div class="waitnote" hidden>No orders yet. Price is beyond the zone: wait for a daily close back ${short?"below":"above"} <b>${f(far)}</b>, then place the orders below.</div>
+      <div class="block"><div class="innote" hidden></div><div class="waitnote" hidden>No orders yet. Price is beyond the zone: wait for a daily close back ${short?"below":"above"} <b>${f(far)}</b>, then place the orders below.</div>
         <table class="orders"><thead><tr><th>Share</th><th>Price</th><th>Size (${r.coin})</th><th>Value</th><th>From price</th></tr></thead><tbody>${orders}</tbody></table>
         ${dropped}
       </div>
@@ -260,16 +263,27 @@ function idea(r,w){
 async function ideasLive(){
   const W=window.IDEAS; if(!W) return;
   let mids={}; try{mids=await HL({type:"allMids"});}catch(e){}
+  // what's already on the account: waiting entry orders and open positions (trader, 4 Nov 2026)
+  let oo=[], pos={};
+  try{const [o,ch]=await Promise.all([HL({type:"frontendOpenOrders",user:MAIN_ADDR}),HL({type:"clearinghouseState",user:MAIN_ADDR})]);
+    oo=o||[]; (ch.assetPositions||[]).forEach(a=>{const q=a.position; if(+q.szi) pos[q.coin]=q;});}catch(e){}
+  const near=(a,b)=>Math.abs(a/b-1)<0.006;
   let live=0;
   W.rows.forEach(r=>{
     const el=document.querySelector(`details.idea[data-coin="${r.coin}"]`); if(!el) return;
     const px=mids[r.coin]!=null?+mids[r.coin]:null; if(px!=null) live++;
-    const p=px??r.price, st=ideaStatus(r,px), [txt,c]=STATUS[st], short=r.side==="short";
+    const short=r.side==="short", p=px??r.price;
+    const mine=oo.filter(o=>o.coin===r.coin&&!o.reduceOnly&&o.side===(short?"A":"B")), q=pos[r.coin], held=q&&((+q.szi>0)!==short);
+    let st=ideaStatus(r,px); if(st!=="skip"&&(mine.length||held)) st="in";
+    const [txt,c]=STATUS[st];
+    const inn=el.querySelector(".innote"); inn.hidden=st!=="in";
+    if(st==="in"){const off=mine.filter(m=>!r.sizing.orders.some(o=>near(+m.limitPx,o.price))).length;
+      inn.innerHTML=`Already in: ${held?`position <b>${fs(Math.abs(+q.szi))} ${r.coin}</b> from ${f(+q.entryPx)}`:""}${held&&mine.length?" · ":""}${mine.length?`<b>${mine.length}</b> order${mine.length>1?"s":""} waiting at ${mine.map(m=>f(+m.limitPx)).join(", ")}`:""}${off?` (${off} not at this plan's levels)`:""}. The plan below is for reference: nothing new to place.`;}
     el.querySelector(".badge").outerHTML=`<span class="badge ${c}">${txt}</span>`;
     el.querySelector(".pxl").innerHTML=`price ${f(p)}${px!=null?' <span class="live">live</span>':" at scan"}`;
     el.querySelector(".waitnote").hidden=st!=="wait";
-    el.querySelectorAll("tr[data-px]").forEach(tr=>{const o=+tr.dataset.px, passed=st==="orders"&&(short?p>o:p<o);
-      tr.querySelector(".from").innerHTML=passed?'<span class="warn">passed: skip</span>':pct(o,p).toFixed(1)+"%";});
+    el.querySelectorAll("tr[data-px]").forEach(tr=>{const o=+tr.dataset.px, passed=st==="orders"&&(short?p>o:p<o), placed=mine.some(m=>near(+m.limitPx,o));
+      tr.querySelector(".from").innerHTML=placed?'<b style="color:var(--accent);font-size:12.5px">placed</b>':passed?'<span class="warn">passed: skip</span>':pct(o,p).toFixed(1)+"%";});
   });
   document.getElementById("wmeta").textContent=`${W.rows.filter(r=>r.ready??r.distance_pct<=(W.ready_pct??10)).length} ready of ${W.rows.length} ideas from the top ${W.scanned} coins. Plans from the hourly scan at ${ist(W.generated_at,true)}; ${live?"prices live from Hyperliquid, refreshed every minute":"live prices unavailable, showing scan prices"}. Risk ${W.risk_pct??3}% of the portfolio: ${usd(W.risk_usd)}.`;
 }
