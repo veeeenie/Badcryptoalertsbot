@@ -1,0 +1,9 @@
+coingecko rows 500
+rank 100 usd0 Usual USD 540884445
+rank 150 dcr Decred 235901923
+rank 200 crvusd crvUSD 155383214
+rank 250 pc0000023 Tradable Singapore Fintech SSL 114500000
+rank 300 gala GALA 86278541
+HL active perps 179
+HL perps found in CoinGecko top 500: 133 not found: 46 ['YGG', 'BANANA', 'BIGTIME', 'BLUR', 'GMT', 'ACE', 'PEOPLE', 'XAI', 'MANTA', 'UMA', 'ALT', 'DYM', 'TNSR', 'SAGA', 'MERL', 'POPCAT', 'REZ', 'NOT', 'BRETT', 'HMSTR', 'kNEIRO', 'GOAT', 'MOODENG', 'PNUT', 'ME', 'MOVE', 'USUAL', 'AIXBT', 'GRIFFAIN', 'ANIME', 'LAYER', 'NIL', 'WCT', 'HYPER', 'ZORA', 'INIT', 'SOPH', 'RESOLV', 'PROVE', 'AVNT', 'STBL', 'HEMI', 'APEX', 'FOGO', 'AZTEC', 'XTEN']
+HL perps by CG rank buckets: <=100 56 101-200 34 201-500 43
