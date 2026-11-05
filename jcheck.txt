@@ -1,0 +1,206 @@
+WALLET 5EaE fills 69 net closedPnl-fees 16.64
+   #175360 pnl 0.712 fees 0.002 net 0.709 fills 6
+   #175361 pnl 0.04 fees 0.0 net 0.04 fills 2
+   #179100 pnl 0.147 fees 0.005 net 0.142 fills 3
+   #182010 pnl 0.15 fees 0.001 net 0.149 fills 2
+   #232020 pnl -2.0 fees 0.0 net -2.0 fills 3
+   @107 pnl 0.207 fees 0.185 net 0.022 fills 2
+   BTC pnl 0.008 fees 0.075 net -0.067 fills 2
+   ETH pnl -0.757 fees 0.016 net -0.773 fills 3
+   HBAR pnl -0.293 fees 0.011 net -0.304 fills 2
+   HYPE pnl 0.0 fees 0.011 net -0.011 fills 1
+   JUP pnl 10.278 fees 0.03 net 10.249 fills 5
+   LIT pnl 3.457 fees 0.039 net 3.418 fills 6
+   NEAR pnl 2.623 fees 0.006 net 2.616 fills 2
+   OP pnl -0.909 fees 0.005 net -0.915 fills 2
+   REZ pnl 10.157 fees 0.016 net 10.141 fills 5
+   STRK pnl -1.756 fees 0.023 net -1.779 fills 6
+   VVV pnl -3.831 fees 0.04 net -3.871 fills 9
+   ZEC pnl 0.25 fees 0.004 net 0.246 fills 2
+   ZRO pnl -2.24 fees 0.011 net -2.251 fills 3
+   xyz:JIO pnl 0.885 fees 0.002 net 0.883 fills 3
+  sample# {"coin": "#175361", "px": "0.59", "sz": "2.0", "side": "B", "time": 1793043372164, "startPosition": "0.0", "dir": "Buy", "closedPnl": "0.0", "hash": "0x018785589bb1e9a0030104476c5fd70214d8003e36b50872a55030ab5ab5c38a", "oid": 586606139683, "crossed": false, "fee": "0.0", "tid": 30370169279714, "feeToken": "USDC", "twapId": null}
+  sample# {"coin": "#175361", "px": "0.61", "sz": "2.0", "side": "A", "time": 1793043593564, "startPosition": "2.0", "dir": "Sell", "closedPnl": "0.04", "hash": "0xa61225a937357dfea78b04476c6bfd0112003d8ed2389cd049dad0fbf63957e9", "oid": 586613581724, "crossed": false, "fee": "0.00046848", "tid": 941079964047833, "feeToken": "USDC", "twapId": null}
+  sample# {"coin": "#175360", "px": "0.38", "sz": "5.0", "side": "B", "time": 1793043795939, "startPosition": "0.0", "dir": "Buy", "closedPnl": "0.0", "hash": "0x4bd2ed617fdb7a304d4c04476c76f20207a300471ade9902ef9b98b43edf541a", "oid": 586616580810, "crossed": false, "fee": "0.0", "tid": 1000854813467344, "feeToken": "USDC", "twapId": null}
+  sample# {"coin": "#175360", "px": "0.4", "sz": "5.0", "side": "A", "time": 1793043953821, "startPosition": "5.0", "dir": "Sell", "closedPnl": "0.1", "hash": "0xf5b2e8d3c0cdefb8f72c04476c7f9f02016900b95bc10e8b997b94267fc1c9a3", "oid": 586618581917, "crossed": false, "fee": "0.000768", "tid": 6802287938172, "feeToken": "USDC", "twapId": null}
+  sample# {"coin": "#175360", "px": "0.35", "sz": "5.0", "side": "B", "time": 1793044869033, "startPosition": "0.0", "dir": "Buy", "closedPnl": "0.0", "hash": "0xf8478cc0c31229c1f9c104476cb1c702030e00a65e1548949c103813821603ac", "oid": 586624600108, "crossed": false, "fee": "0.0", "tid": 440555445342476, "feeToken": "USDC", "twapId": null}
+  sample# {"coin": "#175360", "px": "0.3923", "sz": "5.0", "side": "A", "time": 1793058304793, "startPosition": "5.0", "dir": "Sell", "closedPnl": "0.2115", "hash": "0xee0ac4ad1cf0a524ef8404476f89080206570092b7f3c3f691d36fffdbf47f0f", "oid": 586744131273, "crossed": false, "fee": "0.00075321", "tid": 206497351512770, "feeToken": "USDC", "twapId": null}
+  VVV 12-Oct 12:04 Open Short 0.46 24.95 0.0 571730102378
+  VVV 12-Oct 20:08 Close Short 0.46 23.5 0.667 572084682579
+  VVV 02-Nov 21:44 Open Long 1.21 21.4 0.0 591291452048
+  VVV 03-Nov 13:33 Open Long 1.21 21.05 0.0 591291530776
+  VVV 05-Nov 05:38 Close Long 1.13 21.3 0.08475 594758662991
+  VVV 05-Nov 05:38 Close Long 1.29 21.3 0.09675 594758662991
+  VVV 05-Nov 12:30 Open Long 1.55 22.0 0.0 595297663308
+  VVV 05-Nov 14:33 Open Long 2.0 21.5 0.0 595299357048
+  VVV 05-Nov 20:58 Close Long 3.55 20.4 -4.679965 595396066241
+WALLET 3991 fills 14 net closedPnl-fees -8.99
+   #182011 pnl -1.0 fees 0.0 net -1.0 fills 2
+   #182061 pnl -1.05 fees 0.0 net -1.05 fills 2
+   @107 pnl -0.782 fees 0.038 net -0.82 fills 1
+   BTC pnl -4.511 fees 0.052 net -4.563 fills 3
+   ENA pnl 0.153 fees 0.008 net 0.145 fills 2
+   HYPE pnl -2.159 fees 0.031 net -2.189 fills 2
+   MORPHO pnl 0.499 fees 0.012 net 0.487 fills 2
+  sample# {"coin": "#182061", "px": "0.007", "sz": "150.0", "side": "B", "time": 1793140037123, "startPosition": "0.0", "dir": "Buy", "closedPnl": "0.0", "hash": "0x42b04942a008254a442a044780e9a00203b800283b0b441ce678f4955f0bff34", "oid": 587656047380, "crossed": false, "fee": "0.0", "tid": 255932725831821, "feeToken": "USDC", "twapId": null}
+  sample# {"coin": "#182011", "px": "0.02", "sz": "50.0", "side": "B", "time": 1793153428198, "startPosition": "0.0", "dir": "Buy", "closedPnl": "0.0", "hash": "0xc39fc95eb592f210c519044783c13c02026d0044509610e2676874b17496cbfb", "oid": 587655708300, "crossed": false, "fee": "0.0", "tid": 591261427745338, "feeToken": "USDC", "twapId": null}
+  sample# {"coin": "#182011", "px": "0.0", "sz": "50.0", "side": "A", "time": 1793167210595, "startPosition": "50.0", "dir": "Settlement", "closedPnl": "-1.0", "hash": "0x92baff3a7cf0b4969434044786ae9a01fd00172017f3d3683683aa8d3bf48e81", "oid": 587951854924, "crossed": true, "fee": "0.0", "tid": 663670195293218, "feeToken": "USDC", "twapId": null}
+  sample# {"coin": "#182061", "px": "0.0", "sz": "150.0", "side": "A", "time": 1793167214064, "startPosition": "150.0", "dir": "Settlement", "closedPnl": "-1.05", "hash": "0x1f0c8b502c7d72a32086044786aecb000047a335c7709175c2d536a2eb714c8d", "oid": 587951885296, "crossed": true, "fee": "0.0", "tid": 134085579676147, "feeToken": "USDC", "twapId": null}
+  VVVord 05-Nov 20:58 filled Stop Limit A 3.55 0.0 20.4
+  VVVord 05-Nov 20:58 siblingFilledCanceled Take Profit Limit A 0.0 24.0 24.0
+  VVVord 05-Nov 20:57 triggered Stop Limit A 0.0 20.4 20.4
+  VVVord 05-Nov 14:48 open Stop Limit A 0.0 20.4 20.4
+  VVVord 05-Nov 14:48 open Take Profit Limit A 0.0 24.0 24.0
+  VVVord 05-Nov 14:47 canceled Stop Market A 2.0 20.9 19.228
+  VVVord 05-Nov 14:47 canceled Stop Market A 1.55 20.9 19.228
+  VVVord 05-Nov 14:33 filled Limit B 2.0 0.0 21.5
+  VVVord 05-Nov 12:30 open Stop Market A 2.0 20.9 19.228
+  VVVord 05-Nov 12:30 open Limit B 2.0 0.0 21.5
+  VVVord 05-Nov 12:30 filled Limit B 1.55 0.0 22.0
+  VVVord 05-Nov 12:28 open Stop Market A 1.55 20.9 19.228
+  VVVord 05-Nov 12:28 open Limit B 1.55 0.0 22.0
+  VVVord 05-Nov 10:25 canceled Limit B 1.46 0.0 21.35
+  VVVord 05-Nov 10:25 canceled Stop Market A 1.46 19.8 18.216
+  VVVord 05-Nov 10:25 canceled Take Profit Market A 1.46 23.8 21.896
+  VVVord 05-Nov 10:25 canceled Limit B 1.71 0.0 20.65
+  VVVord 05-Nov 10:25 canceled Stop Market A 1.71 19.8 18.216
+  VVVord 05-Nov 10:25 canceled Take Profit Market A 1.71 23.8 21.896
+  VVVord 05-Nov 08:21 open Take Profit Market A 1.71 23.8 21.896
+  VVVord 05-Nov 08:21 open Stop Market A 1.71 19.8 18.216
+  VVVord 05-Nov 08:21 open Limit B 1.71 0.0 20.65
+  VVVord 05-Nov 08:21 canceled Limit B 1.46 0.0 20.65
+  VVVord 05-Nov 08:21 canceled Take Profit Market A 1.46 23.8 21.896
+  VVVord 05-Nov 08:21 canceled Stop Market A 1.46 19.8 18.216
+  VVVord 05-Nov 08:20 open Take Profit Market A 1.46 23.8 21.896
+  VVVord 05-Nov 08:20 open Stop Market A 1.46 19.8 18.216
+  VVVord 05-Nov 08:20 open Limit B 1.46 0.0 20.65
+  VVVord 05-Nov 08:20 open Take Profit Market A 1.46 23.8 21.896
+  VVVord 05-Nov 08:20 open Stop Market A 1.46 19.8 18.216
+  VVVord 05-Nov 08:20 open Limit B 1.46 0.0 21.35
+  VVVord 05-Nov 05:38 filled Stop Limit A 2.42 0.0 21.3
+  VVVord 05-Nov 05:38 triggered Stop Limit A 0.0 21.3 21.3
+  VVVord 04-Nov 23:46 open Stop Limit A 0.0 21.3 21.3
+  VVVord 04-Nov 23:45 canceled Stop Limit A 0.0 19.8 19.8
+  VVVord 04-Nov 07:45 open Stop Limit A 0.0 19.8 19.8
+  VVVord 04-Nov 07:31 canceled Stop Market A 1.21 19.8 18.216
+  VVVord 04-Nov 07:31 canceled Stop Market A 1.21 19.8 18.216
+  VVVord 04-Nov 07:31 canceled Take Profit Market A 1.21 24.0 22.08
+  VVVord 04-Nov 07:31 canceled Take Profit Market A 1.21 24.0 22.08
+  VVVord 03-Nov 13:33 filled Limit B 1.21 0.0 21.05
+  VVVord 02-Nov 21:44 filled Limit B 1.21 0.0 21.4
+  VVVord 31-Oct 12:13 open Take Profit Market A 1.21 24.0 22.08
+  VVVord 31-Oct 12:13 open Stop Market A 1.21 19.8 18.216
+  VVVord 31-Oct 12:13 open Limit B 1.21 0.0 21.05
+  VVVord 31-Oct 12:13 open Take Profit Market A 1.21 24.0 22.08
+  VVVord 31-Oct 12:13 open Stop Market A 1.21 19.8 18.216
+  VVVord 31-Oct 12:13 open Limit B 1.21 0.0 21.4
+  VVVord 28-Oct 10:37 canceled Limit B 0.46 0.0 24.003
+  VVVord 28-Oct 10:37 canceled Stop Market A 0.46 20.4 18.768
+  VVVord 27-Oct 05:40 perpMarginRejected Limit B 0.55 0.0 22.24
+  VVVord 27-Oct 05:39 open Stop Market A 0.46 20.4 18.768
+  VVVord 27-Oct 05:39 open Limit B 0.46 0.0 24.003
+  VVVord 14-Oct 21:06 canceled Limit A 0.91 0.0 25.5
+  VVVord 14-Oct 21:06 canceled Stop Market B 0.91 26.5 28.62
+  VVVord 12-Oct 20:08 filled Take Profit Limit B 0.46 0.0 23.5
+  VVVord 12-Oct 20:08 triggered Take Profit Limit B 0.0 23.5 23.5
+  VVVord 12-Oct 19:36 open Stop Market B 0.91 26.5 28.62
+  VVVord 12-Oct 19:36 open Limit A 0.91 0.0 25.5
+  VVVord 12-Oct 19:34 open Take Profit Limit B 0.0 23.5 23.5
+  VVVord 12-Oct 19:33 canceled Stop Market B 0.46 26.5 28.62
+  VVVord 12-Oct 19:33 canceled Limit A 0.9 0.0 25.5
+  VVVord 12-Oct 19:33 canceled Stop Market B 0.9 26.5 28.62
+  VVVord 12-Oct 12:04 filled Limit A 0.46 0.0 24.95
+  VVVord 12-Oct 11:04 open Stop Market B 0.9 26.5 28.62
+  VVVord 12-Oct 11:04 open Limit A 0.9 0.0 25.5
+  VVVord 12-Oct 11:04 open Stop Market B 0.46 26.5 28.62
+  VVVord 12-Oct 11:04 open Limit A 0.46 0.0 24.95
+  VVVord 16-Jun 23:32 filled Take Profit Market A 8.85 0.0 13.771
+  VVVord 16-Jun 23:32 siblingFilledCanceled Stop Market A 8.85 14.8 14.8
+  VVVord 16-Jun 23:32 triggered Take Profit Market A 8.85 15.3 15.3
+  VVVord 16-Jun 22:35 filled Limit B 8.85 0.0 14.9
+  VVVord 16-Jun 22:29 open Stop Market A 8.85 14.8 14.8
+  VVVord 16-Jun 22:29 open Take Profit Market A 8.85 15.3 15.3
+  VVVord 16-Jun 22:29 open Limit B 8.85 0.0 14.9
+  VVVord 03-Jun 21:32 filled Market A 9.25 0.0 18.658
+  VVVord 03-Jun 21:32 open Market A 9.25 0.0 18.658
+  VVVord 03-Jun 20:00 filled Market B 9.25 0.0 22.398
+  VVVord 03-Jun 20:00 open Market B 9.25 0.0 22.398
+  VVVord 30-May 18:10 reduceOnlyCanceled Stop Market B 9.03 16.5 16.5
+  VVVord 30-May 18:10 reduceOnlyCanceled Take Profit Market B 9.03 12.8 12.8
+  VVVord 30-May 18:10 filled Market B 9.03 0.0 17.123
+  VVVord 30-May 18:10 open Market B 9.03 0.0 17.123
+  VVVord 29-May 23:32 filled Limit A 9.03 0.0 15.95
+  VVVord 29-May 23:25 open Stop Market B 9.03 16.5 16.5
+  VVVord 29-May 23:25 open Take Profit Market B 9.03 12.8 12.8
+  VVVord 29-May 23:25 open Limit A 9.03 0.0 15.95
+  VVVord 29-May 20:08 filled Take Profit Market B 16.58 0.0 16.5
+  VVVord 29-May 20:08 triggered Take Profit Market B 16.58 15.0 15.0
+  VVVord 29-May 18:18 open Take Profit Market B 16.58 15.0 15.0
+  VVVord 29-May 18:18 filled Market A 16.58 0.0 14.15
+  VVVord 29-May 18:18 open Market A 16.58 0.0 14.15
+  VVVord 29-May 12:26 filled Take Profit Market A 14.26 0.0 14.581
+  VVVord 29-May 12:26 triggered Take Profit Market A 14.26 16.2 16.2
+  VVVord 29-May 09:04 open Take Profit Market A 14.26 16.2 16.2
+  VVVord 29-May 09:04 filled Market B 14.26 0.0 17.043
+  VVVord 29-May 09:04 open Market B 14.26 0.0 17.043
+  VVVord 29-May 02:11 filled Stop Market B 7.7 0.0 18.15
+  VVVord 29-May 02:11 siblingFilledCanceled Take Profit Market B 7.7 14.3 14.3
+  VVVord 29-May 02:11 triggered Stop Market B 7.7 16.5 16.5
+  VVVord 28-May 23:03 filled Limit A 7.7 0.0 15.58
+  VVVord 28-May 22:56 open Stop Market B 7.7 16.5 16.5
+  VVVord 28-May 22:56 open Take Profit Market B 7.7 14.3 14.3
+  VVVord 28-May 22:56 open Limit A 7.7 0.0 15.58
+  VVVord 28-May 20:09 reduceOnlyCanceled Stop Market B 7.67 17.0 17.0
+  VVVord 28-May 20:09 reduceOnlyCanceled Take Profit Market B 7.67 14.2 14.2
+  VVVord 28-May 20:09 filled Market B 7.67 0.0 15.857
+  VVVord 28-May 20:09 open Market B 7.67 0.0 15.857
+  VVVord 28-May 18:20 open Stop Market B 7.67 17.0 17.0
+  VVVord 28-May 18:20 open Take Profit Market B 7.67 14.2 14.2
+  VVVord 28-May 18:20 filled Limit A 7.67 0.0 15.65
+  VVVord 28-May 18:20 open Limit A 7.67 0.0 15.65
+  VVVord 27-May 05:53 canceled Limit A 1.99 0.0 19.65
+  VVVord 27-May 05:53 canceled Stop Market B 1.99 19.9 21.492
+  VVVord 26-May 22:35 reduceOnlyCanceled Stop Market B 2.86 19.9 21.492
+  VVVord 26-May 22:35 reduceOnlyCanceled Stop Market B 5.53 19.9 21.492
+  VVVord 26-May 22:35 filled Market B 8.39 0.0 19.398
+  VVVord 26-May 22:35 open Market B 8.39 0.0 19.398
+  VVVord 25-May 09:07 filled Limit A 2.86 0.0 19.4
+  VVVord 25-May 08:48 open Stop Market B 2.86 19.9 21.492
+  VVVord 25-May 08:48 open Limit A 2.86 0.0 19.4
+  VVVord 25-May 07:05 open Stop Market B 1.99 19.9 21.492
+  VVVord 25-May 07:05 open Limit A 1.99 0.0 19.65
+  VVVord 25-May 06:35 filled Limit A 5.53 0.0 19.25
+  VVVord 25-May 06:32 open Stop Market B 5.53 19.9 21.492
+  VVVord 25-May 06:32 open Limit A 5.53 0.0 19.25
+  VVVord 25-May 00:42 reduceOnlyCanceled Stop Market B 11.89 21.0 21.0
+  VVVord 25-May 00:42 reduceOnlyCanceled Take Profit Market B 11.89 12.0 12.0
+  VVVord 25-May 00:42 filled Market B 11.89 0.0 21.703
+  VVVord 25-May 00:42 open Market B 11.89 0.0 21.703
+  VVVord 24-May 22:56 filled Limit A 11.89 0.0 20.18
+  VVVord 24-May 22:55 open Stop Market B 11.89 21.0 21.0
+  VVVord 24-May 22:55 open Take Profit Market B 11.89 12.0 12.0
+  VVVord 24-May 22:55 open Limit A 11.89 0.0 20.18
+  VVVord 14-Apr 19:18 canceled Limit B 3.53 0.0 8.5
+  VVVord 14-Apr 19:18 canceled Limit B 2.25 0.0 8.9
+  VVVord 14-Apr 14:23 open Limit B 3.53 0.0 8.5
+  VVVord 14-Apr 14:23 open Limit B 2.25 0.0 8.9
+  VVVord 12-Apr 07:57 filled Market A 4.5 0.0 7.3958
+  VVVord 12-Apr 07:57 open Market A 4.5 0.0 7.3958
+  VVVord 11-Apr 10:08 filled Market B 4.5 0.0 8.6372
+  VVVord 11-Apr 10:08 open Market B 4.5 0.0 8.6372
+  VVVord 01-Apr 09:14 filled Stop Market B 14.52 0.0 7.7
+  VVVord 01-Apr 09:14 siblingFilledCanceled Take Profit Market B 14.52 3.5 3.5
+  VVVord 01-Apr 09:14 triggered Stop Market B 14.52 7.0 7.0
+  VVVord 30-Mar 05:51 filled Limit A 14.52 0.0 6.2
+  VVVord 29-Mar 13:42 open Stop Market B 14.52 7.0 7.0
+  VVVord 29-Mar 13:42 open Take Profit Market B 14.52 3.5 3.5
+  VVVord 29-Mar 13:42 open Limit A 14.52 0.0 6.2
+  VVVord 29-Mar 13:42 perpMarginRejected Limit A 16.94 0.0 6.2
+  VVVord 29-Mar 04:50 filled Stop Market A 14.75 0.0 5.2201
+  VVVord 29-Mar 04:50 siblingFilledCanceled Take Profit Market A 14.75 6.5 6.5
+  VVVord 29-Mar 04:50 triggered Stop Market A 14.75 5.8 5.8
+  VVVord 28-Mar 15:49 filled Limit B 14.75 0.0 6.1
+  VVVord 28-Mar 14:40 open Stop Market A 14.75 5.8 5.8
+  VVVord 28-Mar 14:40 open Take Profit Market A 14.75 6.5 6.5
+  VVVord 28-Mar 14:40 open Limit B 14.75 0.0 6.1
+spot tokens with #? []
