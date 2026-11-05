@@ -176,6 +176,8 @@ def play(p, daily, i, max_hold):
                         q = pos if tp_done == len(tps) - 1 else pos * split[tp_done] / sum(split[tp_done:])
                         pnl += sgn * (t - avg) * q; cost += FEE_TAKER * t * q; pos -= q
                         tp_done += 1
+                        if p.get("be_after_tp1"):     # variant: stop to the average entry after take-profit 1
+                            stop = avg
                     else:
                         break
                 if tp_done == len(tps) or pos <= 1e-12:

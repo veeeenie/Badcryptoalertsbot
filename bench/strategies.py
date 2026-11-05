@@ -71,3 +71,63 @@ def live_testing(ctx):
 
 def live_both(ctx):
     return live_main(ctx) or live_testing(ctx)
+
+
+# ---- engine v2 (bench/engine.py): one trend score + one level map
+import engine as E  # noqa: E402
+
+
+def v2_factory(long_min=E.SCORE_MIN, short_max=-E.SCORE_MIN, tag="v2"):
+    def strat(ctx):
+        if len(ctx.weeks) < 27:
+            return None
+        sc, _ = E.trend_score(ctx.weeks, ctx.price)
+        if sc is None or not (sc >= long_min or sc <= short_max):
+            return None
+        p = E.plan(ctx.weeks, ctx.daily, ctx.price, ctx.day, W.ladder)
+        if p and ((p["side"] == "long" and sc >= long_min) or (p["side"] == "short" and sc <= short_max)):
+            p["tag"] = tag
+            return p
+        return None
+    return strat
+
+
+v2 = v2_factory()
+
+
+# ---- variants for the bench (market regime from BTC, exit handling)
+_btc = {}
+
+
+def btc_score(ctx, coins):
+    """BTC's trend score at the start of ctx.day (cached per week)."""
+    import bench as B
+    wk_key = ctx.weeks[-1]["t"] if ctx.weeks else 0
+    if wk_key not in _btc:
+        bw = [w for w in B.weekly(coins["BTC"]["candles"]) if w["t"] + B.WEEK <= ctx.day]
+        sc, _ = E.trend_score(bw, bw[-1]["c"]) if len(bw) > 30 else (None, None)
+        _btc[wk_key] = sc
+    return _btc[wk_key]
+
+
+def v2x(coins, long_min=0.3, short_max=-0.3, regime=False, tp1_1r=False, be=False, tag="v2x"):
+    base = v2_factory(long_min, short_max, tag)
+
+    def strat(ctx):
+        p = base(ctx)
+        if not p:
+            return None
+        if regime:
+            b = btc_score(ctx, coins)
+            if b is None or (p["side"] == "long" and b <= 0) or (p["side"] == "short" and b >= 0):
+                return None
+        if tp1_1r:
+            avg = sum(e * w for e, w in zip(p["entries"], p["weights"]))
+            r = abs(avg - p["stop"]); sg = 1 if p["side"] == "long" else -1
+            one = avg + sg * r
+            later = [t for t in p["tps"] if sg * (t - one) > 0]
+            p["tps"] = [one, (later[0] if later else avg + sg * 3 * r)]
+        if be:
+            p["be_after_tp1"] = True
+        return p
+    return strat
