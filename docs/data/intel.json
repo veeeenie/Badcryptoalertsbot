@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-05T02:22:39Z",
+ "generated_at": "2026-11-05T14:40:28Z",
  "coins": {
   "AVNT": {
    "side": "short",
@@ -26,14 +26,6 @@
     }
    ]
   },
-  "ANIME": {
-   "side": "short",
-   "stance": "neutral",
-   "summary": "No material Animecoin news this week. No dated unlock in the next 14 days; the previously noted Nov 23 release (about 130M ANIME, ~1.3% of supply) falls outside the window.",
-   "news": [],
-   "unlocks": [],
-   "checked_at": "2026-10-29T02:34:41Z"
-  },
   "kBONK": {
    "side": "short",
    "checked_at": "2026-11-01T02:25:56Z",
@@ -44,19 +36,28 @@
   },
   "BERA": {
    "side": "short",
-   "checked_at": "2026-11-04T02:25:40Z",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Berachain is an EVM-compatible Layer-1 using Proof-of-Liquidity, where validators direct rewards to liquidity providers. BERA is the gas and staking token, while BGT handles governance and reward emissions.",
+   "competitors": [
+    "Monad",
+    "Sei",
+    "Sonic",
+    "Avalanche"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "supports",
-   "summary": "A monthly unlock of about 13.4M BERA (2.7% of total supply, ~4.7% of market cap) lands Nov 6, mostly to private investors and insiders, adding supply that helps the short. No price-moving BERA news in the last week.",
+   "summary": "The Nov 6 unlock of ~13.4M BERA, mostly to investors and insiders, adds supply that helps the short. No new BERA news in the last week.",
    "news": [],
    "unlocks": [
     {
      "date": "Nov 6",
      "date_iso": "2026-11-06",
      "amount": "13.36M BERA",
-     "pct_supply": "4.7",
-     "note": "Monthly unlock (2.7% of total supply; 4.7% is of market cap): private investors 45%, insiders 22%, community 20%, foundation 14%",
+     "pct_supply": null,
+     "note": "Monthly unlock: ~45% private investors, 22% insiders, 20% community, 14% foundation (2.7% of total supply, ~4.7% of market cap)",
      "source": "https://app.tokenomics.com/tokenomics/berachain/unlocks",
-     "new": true
+     "new": false
     }
    ]
   },
@@ -88,7 +89,7 @@
    "side": "long",
    "checked_at": "2026-11-05T02:22:39Z",
    "stance": "neutral",
-   "summary": "NU7 (25-second blocks, 60% of fees to a reserve) is set to activate at block 3,543,405 around Nov 5\u20136 UTC; ZEC has been weak into it on the grants dispute and a ZK-proving headline, so sell-the-news risk remains. No vesting unlocks (PoW issuance only).",
+   "summary": "NU7 (25-second blocks, 60% of fees to a reserve) is set to activate at block 3,543,405 around Nov 5–6 UTC; ZEC has been weak into it on the grants dispute and a ZK-proving headline, so sell-the-news risk remains. No vesting unlocks (PoW issuance only).",
    "news": [
     {
      "title": "NU7 details confirmed: block time cut from 75s to 25s and 60% of fees routed to a reserve, activating ~Nov 5",
@@ -370,6 +371,375 @@
      "new": true
     }
    ]
+  },
+  "HMSTR": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Hamster Kombat is a tap-to-earn Telegram game on TON that grew from a viral clicker into a wider gaming ecosystem. HMSTR is its token, distributed through player airdrops and used for rewards and in-game activity.",
+   "competitors": [
+    "Notcoin (NOT)",
+    "Catizen (CATI)",
+    "DOGS",
+    "PAWS"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "neutral",
+   "summary": "No price-moving news in the last week and no discrete unlock in the next 14 days (only tiny continuous vesting). Price is likely to track Telegram-game and memecoin sentiment.",
+   "news": [],
+   "unlocks": []
+  },
+  "NXPC": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "NEXPACE is Nexon's Web3 arm behind MapleStory Universe, running on the Henesys chain (an Avalanche L1). NXPC is used for item minting and enhancement, marketplace fees and rewards, with 20% of user-activity revenue burned quarterly.",
+   "competitors": [
+    "Ronin (RON)",
+    "Immutable (IMX)",
+    "Beam (BEAM)",
+    "Gala (GALA)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "supports",
+   "summary": "No fresh catalyst this week; a Contribution Reward unlock of unknown size on Nov 15 adds supply, which leans toward the short.",
+   "news": [],
+   "unlocks": [
+    {
+     "date": "Nov 15",
+     "date_iso": "2026-11-15",
+     "amount": "undisclosed",
+     "pct_supply": null,
+     "note": "Contribution Reward allocation (size not public on Tokenomist)",
+     "source": "https://tokenomist.ai/nexpace/unlock-events",
+     "new": true
+    }
+   ]
+  },
+  "BOME": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "BOOK OF MEME is a Solana memecoin themed around permanently storing meme culture on decentralized storage. BOME has no real utility and trades on speculation and community attention.",
+   "competitors": [
+    "dogwifhat (WIF)",
+    "BONK",
+    "Popcat (POPCAT)",
+    "Pepe (PEPE)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "neutral",
+   "summary": "No news in the last week and supply is fully circulating, so price depends on memecoin sentiment and liquidations.",
+   "news": [],
+   "unlocks": []
+  },
+  "MEME": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Memecoin (MEME) is the token of Memeland, the Web3 group behind 9GAG's Captainz and Potatoz NFTs. It openly has no utility or roadmap and is used for community and ecosystem rewards.",
+   "competitors": [
+    "Pepe (PEPE)",
+    "Shiba Inu (SHIB)",
+    "Dogecoin (DOGE)",
+    "Floki (FLOKI)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "neutral",
+   "summary": "No project-specific news or dated unlocks found; the trade rides broader meme-sector flows.",
+   "news": [],
+   "unlocks": []
+  },
+  "ME": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Magic Eden is an NFT and token trading platform that in 2026 closed its Bitcoin and EVM marketplaces to focus on Solana and 'crypto entertainment'. ME is its governance and rewards token, with 15% of platform revenue going to buybacks and staker rewards.",
+   "competitors": [
+    "Tensor (TNSR)",
+    "OpenSea (SEA)",
+    "Blur (BLUR)",
+    "LooksRare (LOOKS)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "supports",
+   "summary": "The OKX delisting takes effect today and a community/ecosystem unlock of unknown size lands Nov 10, both leaning toward the short; revenue buybacks are the main offset.",
+   "news": [
+    {
+     "title": "OKX delists ME spot pairs and suspends deposits, effective Nov 5",
+     "url": "https://www.okx.com/en-us/help/okx-will-delist-me-spot-trading-pairs-on-5-november-2026-sg",
+     "date": "Nov 5",
+     "new": true
+    }
+   ],
+   "unlocks": [
+    {
+     "date": "Nov 10",
+     "date_iso": "2026-11-10",
+     "amount": "undisclosed",
+     "pct_supply": null,
+     "note": "Community & ecosystem allocation (size not public on Tokenomist)",
+     "source": "https://tokenomist.ai/magic-eden/unlock-events",
+     "new": true
+    }
+   ]
+  },
+  "HEMI": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Hemi is a modular Layer-2 that joins Bitcoin and Ethereum, anchoring state to Bitcoin so developers can build BTC DeFi with EVM tools. HEMI pays network fees and is staked as veHEMI for governance and yield.",
+   "competitors": [
+    "Stacks (STX)",
+    "Botanix",
+    "Bitlayer",
+    "Merlin Chain"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "neutral",
+   "summary": "No fresh news this week; the last monthly unlock was Oct 29 and the next is Nov 29, outside the 14-day window. Older overhangs (September exploit, Upbit listing cancelled) remain in the background.",
+   "news": [],
+   "unlocks": []
+  },
+  "AIXBT": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "aixbt is an autonomous AI agent launched on Virtuals Protocol that tracks crypto social chatter and market data and posts market intelligence. Holding AIXBT gives access to its premium analytics terminal.",
+   "competitors": [
+    "Virtuals Protocol (VIRTUAL)",
+    "ai16z / ElizaOS",
+    "Griffain",
+    "Cookie DAO"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "neutral",
+   "summary": "No news this week and supply is fully unlocked. The backdrop is thinner liquidity after Binance removed margin and a spot pair in September.",
+   "news": [],
+   "unlocks": []
+  },
+  "TRUMP": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Official Trump is a Solana memecoin tied to Donald Trump; Trump-linked entities hold about 80% of supply under multi-year vesting. It has no utility beyond speculation and holder perks such as dinner events.",
+   "competitors": [
+    "MELANIA",
+    "Dogecoin (DOGE)",
+    "Bonk (BONK)",
+    "dogwifhat (WIF)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "supports",
+   "summary": "The post-midterm drop and an insider unlock listed for Nov 18 lean toward the short; a holder-dinner snapshot on Nov 12 could support holding demand until then.",
+   "news": [
+    {
+     "title": "TRUMP falls about 17% after the Democratic midterm sweep hits Trump-linked assets",
+     "url": "https://www.kucoin.com/news/flash/trump-linked-tokens-and-ai-data-center-shares-drop-after-democratic-midterm-sweep",
+     "date": "Nov 4",
+     "new": true
+    }
+   ],
+   "unlocks": [
+    {
+     "date": "Nov 18",
+     "date_iso": "2026-11-18",
+     "amount": "28.7M TRUMP",
+     "pct_supply": null,
+     "note": "Monthly insider unlock (2.9% of total supply, ~3.7% of market cap); one source only, DropsTab models it as daily linear vesting",
+     "source": "https://app.tokenomics.com/tokenomics/official-trump/unlocks",
+     "new": true
+    }
+   ]
+  },
+  "KAITO": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Kaito is an AI-driven crypto research and InfoFi platform that ranks social attention and links brands with creators. KAITO is used for staking, governance and access to platform rewards.",
+   "competitors": [
+    "Cookie DAO (COOKIE)",
+    "Arkham (ARKM)",
+    "Galxe (G)",
+    "Wallchain"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "neutral",
+   "summary": "No price-moving news this week; the next monthly unlock is listed for Nov 20, just past the window, with size not public.",
+   "news": [],
+   "unlocks": []
+  },
+  "SOPH": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Sophon was a consumer-focused Ethereum L2 built on ZKsync tech that is shutting its chain to focus on apps on Base. SOPH was its gas, staking and governance token and is migrating to an Ethereum ERC-20.",
+   "competitors": [
+    "Abstract",
+    "Immutable (IMX)",
+    "Ronin (RON)",
+    "ApeChain (APE)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "supports",
+   "summary": "The chain wind-down (Upbit delisting Nov 16, mainnet closing Nov 30) and reduce-only futures on CoinDCX keep pressure on SOPH, in line with the short. Supply is described as fully unlocked.",
+   "news": [
+    {
+     "title": "CoinDCX resumes futures but keeps SOPH contracts reduce-only",
+     "url": "https://www.coingabbar.com/en/coindcx-futures-trading-resumes-binance-four-tokens-reduce-only",
+     "date": "Oct 30",
+     "new": true
+    }
+   ],
+   "unlocks": []
+  },
+  "2Z": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "DoubleZero is a high-performance fiber network for Solana and other chains' validators, aimed at cutting latency and bandwidth costs. 2Z pays for network access and rewards bandwidth contributors.",
+   "competitors": [
+    "Jito (JTO)",
+    "bloXroute",
+    "Solana infra relays",
+    "Fluence (FLT)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "neutral",
+   "summary": "No catalyst news this week, though 2Z set a fresh low on Nov 3; no dated unlock found in the next 14 days.",
+   "news": [],
+   "unlocks": []
+  },
+  "BLUR": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Blur is a pro-trader NFT marketplace and aggregator on Ethereum that also ran Blend, a peer-to-peer NFT lending product. BLUR is its governance token and controls the fee switch.",
+   "competitors": [
+    "OpenSea",
+    "Magic Eden (ME)",
+    "LooksRare (LOOKS)",
+    "X2Y2"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "supports",
+   "summary": "Two Korean delistings on Nov 30 and the blur.io/Blend shutdown on Nov 12 leave the token with little use, which supports the short. No dated unlocks found.",
+   "news": [
+    {
+     "title": "Upbit ends BLUR KRW and BTC trading on Nov 30",
+     "url": "https://en.bloomingbit.io/feed/news/123278",
+     "date": "Oct 30",
+     "new": true
+    },
+    {
+     "title": "Bithumb to delist BLUR on Nov 30",
+     "url": "https://www.tokenpost.com/news/business/44368",
+     "date": "Oct 30",
+     "new": true
+    }
+   ],
+   "unlocks": []
+  },
+  "VVV": {
+   "side": "long",
+   "label": "bullish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Venice is a privacy-first AI platform offering private, uncensored access to text, image and code models via app and API. Staking VVV gives a share of free API inference capacity, and part of supply is burned.",
+   "competitors": [
+    "Bittensor (TAO)",
+    "Akash Network (AKT)",
+    "Near AI",
+    "Morpheus (MOR)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "neutral",
+   "summary": "No VVV-specific news this week and no cliff unlock ahead, only small emissions; price is following the wider AI and altcoin market.",
+   "news": [],
+   "unlocks": []
+  },
+  "PUMP": {
+   "side": "long",
+   "label": "bullish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Pump.fun is a Solana launchpad and trading platform for memecoins. PUMP is its native token, and the protocol uses part of its revenue to buy back and burn PUMP.",
+   "competitors": [
+    "LetsBonk (BONK launchpad)",
+    "Moonshot",
+    "Believe App",
+    "Zora"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "against",
+   "summary": "Recent news leans negative for a long (sell-off, collateral rule change, legal dispute), offset by the ongoing revenue buyback; no cliff unlock in the next 14 days.",
+   "news": [
+    {
+     "title": "Pump.fun's parent sends legal warning to Eliza Labs founder over reverse-engineered contract code",
+     "url": "https://tokenpost.com/news/regulation/44182",
+     "date": "Oct 29",
+     "new": true
+    },
+    {
+     "title": "PUMP slides about 16% amid market sell-off and a planned Binance collateral change",
+     "url": "https://coinmarketcap.com/community/articles/6ae3eae77db81d4898422468",
+     "date": "Oct 30",
+     "new": true
+    }
+   ],
+   "unlocks": []
+  },
+  "DASH": {
+   "side": "long",
+   "label": "bullish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Dash is a proof-of-work digital cash coin with masternodes, instant transactions and optional mixing, plus the Evolution app platform. DASH is used for payments, fees and masternode collateral.",
+   "competitors": [
+    "Zcash (ZEC)",
+    "Monero (XMR)",
+    "Litecoin (LTC)",
+    "Bitcoin Cash (BCH)"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "against",
+   "summary": "The privacy-coin sell-off and EU regulatory worry weigh on the long; the v5 upgrade is a modest positive with no activation date yet. Mined coin, no unlocks.",
+   "news": [
+    {
+     "title": "Privacy coins sell off and DASH dips toward $46 as EU anonymity-coin ban looms",
+     "url": "https://news.bitcoin.com/altcoins/privacy-coins-tumble-as-zcash-plunges-monero-defies-sell-off/",
+     "date": "Nov 3",
+     "new": true
+    },
+    {
+     "title": "Dash ships Evolution Platform v5 with shielded tokens, activation date pending",
+     "url": "https://coinmarketcap.com/community/articles/6ae32f65e2069a2b25b56707",
+     "date": "Oct 29",
+     "new": true
+    }
+   ],
+   "unlocks": []
+  },
+  "FOGO": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-05T14:40:28Z",
+   "about": "Fogo is a Solana-VM-compatible Layer-1 built for low-latency on-chain trading. FOGO pays gas, is staked to secure the network and funds ecosystem incentives.",
+   "competitors": [
+    "Solana (SOL)",
+    "Sei (SEI)",
+    "Monad (MON)",
+    "MegaETH"
+   ],
+   "about_checked_at": "2026-11-05T14:40:28Z",
+   "stance": "supports",
+   "summary": "The Bitget spot delisting on Nov 6 reduces liquidity and access, in line with the short; the next vesting tranche appears to fall after the 14-day window.",
+   "news": [
+    {
+     "title": "Bitget delists FOGO/USDT spot on Nov 6",
+     "url": "https://www.bitget.com/en-CA/support/articles/12560603899149",
+     "date": "Oct 30",
+     "new": true
+    }
+   ],
+   "unlocks": []
   }
  }
 }
