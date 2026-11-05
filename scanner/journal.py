@@ -137,13 +137,16 @@ def summarise_trade(t, coin_orders, by_oid, closed):
             px = float(o["order"]["triggerPx"])
             if o["order"]["timestamp"] > (planned[-1]["order"]["timestamp"]) and sign * (stop_px - px) > 1e-12:
                 widened = True                    # a later stop further from price than the planned one
+    # the stop that was in place last (it can differ from the planned one if it was moved)
+    stop_last = float(stop_list[-1]["order"]["triggerPx"]) if stop_list else None
     tps = [o for o in coin_orders if is_tp(o) and entry_placed - 3600_000 <= o["order"]["timestamp"] <= window_end]
     # rule 6 (trader, 24 Oct 2026): the stop goes in with the entry; the take-profit is placed once in the trade
     tp_set = bool(tps)
     tp_px = None
     if tps:
-        first_tp = min(tps, key=lambda o: o["order"]["timestamp"])
-        tp_px = float(first_tp["order"].get("triggerPx") or 0) or float(first_tp["order"].get("limitPx") or 0)
+        # the take-profit placed last (an earlier one may have been cancelled and replaced)
+        last_tp = max(tps, key=lambda o: o["order"]["timestamp"])
+        tp_px = float(last_tp["order"].get("triggerPx") or 0) or float(last_tp["order"].get("limitPx") or 0)
 
     risk_usd = abs(avg_in - stop_px) * qty_in if (stop_px and avg_in) else None
     r = round(net / risk_usd, 2) if (risk_usd and closed) else None
@@ -168,7 +171,8 @@ def summarise_trade(t, coin_orders, by_oid, closed):
         "entries": len(entry_oids), "avg_entry": avg_in, "size": qty_in,
         "notional": round(avg_in * qty_in, 2) if avg_in else None,
         "exits": len({f["oid"] for f in ext}), "avg_exit": avg_out,
-        "stop": stop_px, "tp": tp_px, "planned_rr": planned_rr,
+        "stop": stop_px, "stop_last": stop_last, "tp": tp_px, "planned_rr": planned_rr,
+        "kind": "prediction" if t["coin"].startswith("#") else "perp",
         "risk_usd": round(risk_usd, 2) if risk_usd else None,
         "pnl": round(pnl, 2), "fees": round(fees, 3), "net": round(net, 2), "r": r,
         "maker_entries": sum(1 for f in ent if not f["crossed"]), "taker_entries": sum(1 for f in ent if f["crossed"]),
@@ -179,6 +183,9 @@ def summarise_trade(t, coin_orders, by_oid, closed):
 
 
 def summarise(trades):
+    """Perp trades only; prediction-market bets (coins named #...) are summed separately."""
+    bets = [t for t in trades if t.get("kind") == "prediction"]
+    trades = [t for t in trades if t.get("kind") != "prediction"]
     closed = [t for t in trades if t["closed"]]
     rs = [t["r"] for t in closed if t["r"] is not None]
     return {
@@ -189,6 +196,7 @@ def summarise(trades):
         "fees_usd": round(sum(t["fees"] for t in closed), 2),
         # profit already booked by partial exits (e.g. a take-profit half) on trades that are still open
         "booked_open_usd": round(sum(t["net"] for t in trades if not t["closed"] and t.get("exits")), 2),
+        "predictions": {"bets": len(bets), "won": sum(1 for t in bets if t["net"] > 0), "net_usd": round(sum(t["net"] for t in bets), 2)},
         "avg_r": round(sum(rs) / len(rs), 2) if rs else None,
         "total_r": round(sum(rs), 2) if rs else None,
         "rules_ok_pct": round(100 * sum(1 for t in closed if t["rules_ok"]) / len(closed)) if closed else None,

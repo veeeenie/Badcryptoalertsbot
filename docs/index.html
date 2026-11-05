@@ -366,11 +366,15 @@ fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   // net = closed trades + profit already booked by partial exits on open trades
   const bk=s.booked_open_usd||0, nt=s.net_usd+bk, sg=x=>`${x>=0?"+":"−"}$${Math.abs(x).toFixed(2)}`;
   document.getElementById("chint").innerHTML=`${s.trades} closed · ${s.wins} wins · net <b class="${nt>=0?"up":"down"}">${sg(nt)}</b>${bk?` <span class="muted">(incl. ${sg(bk)} booked on open trades)</span>`:""}`;
-  document.getElementById("meta").textContent=`${sm(s)}. Updated ${ist(j.generated_at,true)}.`;
+  const pb=s.predictions||{bets:0};
+  document.getElementById("meta").innerHTML=`Perps: ${sm(s)}.${pb.bets?` Prediction-market bets (not counted above): ${pb.bets}, ${pb.won} won, net ${pb.net_usd>=0?"+":"−"}$${Math.abs(pb.net_usd).toFixed(2)}.`:""} Spot trades aren't included. Updated ${ist(j.generated_at,true)}.`;
   window.JOURNAL=j; document.dispatchEvent(new Event("journal-ready"));
-  document.getElementById("rows").innerHTML=[...j.trades].filter(t=>t.closed).reverse().map(t=>{
+  document.getElementById("rows").innerHTML=[...j.trades].filter(t=>t.closed&&t.kind!=="prediction").reverse().map(t=>{
     const c=t.net>0?"up":t.net<0?"down":"";
-    return `<tr><td><b>${t.coin}</b> ${t.side}</td><td data-label="Opened">${ist(t.opened)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Stop">${f(t.stop)}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Exit">${f(t.avg_exit)}</td><td data-label="Net $" class="${c}">${t.closed?(t.net>=0?"+":"")+t.net.toFixed(2):"–"}</td><td data-label="R" class="${c}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td></tr>`;
+    const moved=t.stop!=null&&t.stop_last!=null&&Math.abs(t.stop_last/t.stop-1)>0.0005;
+    const stopTxt=t.stop==null?'<span class="warn">none</span>':moved?`${f(t.stop)} → ${f(t.stop_last)} <span class="muted">(moved)</span>`:f(t.stop);
+    const name=t.coin.includes(":")?`${t.coin.split(":")[1]} <span class="muted">(${t.coin.split(":")[0]==="xyz"?"stocks":t.coin.split(":")[0]})</span>`:t.coin;
+    return `<tr><td><b>${name}</b> ${t.side}</td><td data-label="Opened">${ist(t.opened)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Stop">${stopTxt}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Exit">${f(t.avg_exit)}</td><td data-label="Net $" class="${c}">${t.closed?(t.net>=0?"+":"")+t.net.toFixed(2):"–"}</td><td data-label="R" class="${c}">${t.r==null?"–":(t.r>0?"+":"")+t.r}</td></tr>`;
   }).join("");
 }).catch(()=>{document.getElementById("rows").innerHTML='<tr><td colspan="8" class="muted">Journal not available.</td></tr>';});
 
