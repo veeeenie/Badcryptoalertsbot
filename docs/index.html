@@ -49,6 +49,14 @@ th{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;
 tr:last-child td{border-bottom:0}
 .box{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
 
+/* chart cards and tabs */
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.tabs button{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:99px;font-weight:600;padding:5px 12px}
+.tabs button.on{border-color:var(--accent);color:var(--accent)}
+.tfc{font-weight:700;font-size:12.5px;margin-right:6px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:4px 16px}
+.calc label{font-size:12px}
+ul.warn{color:var(--down)}
 /* trade ideas: one collapsible full-width card each */
 .ideas{display:grid;gap:10px}
 details.idea{background:var(--panel);border:1px solid var(--line);border-radius:8px;min-width:0}
@@ -122,25 +130,18 @@ details.more>summary{cursor:pointer;margin-top:10px}
 <body>
 <nav id="nav"><div class="navin">
   <span class="brand">Setup Desk</span>
-  <a href="#ideas" data-sec="ideas">Ideas</a>
-  <a href="#testing" data-sec="testing">Testing</a>
+  <a href="#charts" data-sec="charts">Charts</a>
   <a href="#trades" data-sec="trades">Trades</a>
   <a href="#alerts" data-sec="alerts">Alerts</a>
   <a href="#portfolio" data-sec="portfolio">Portfolio</a>
   <a href="rules.html" class="ext">Rule book</a>
 </div></nav>
 <main>
-  <section id="ideas" class="anchor">
-  <h2>Trade ideas</h2>
-  <p class="muted" id="wmeta">Loading…</p>
-  <div id="wrows"></div>
-  <details class="more" id="wnonebox"><summary class="muted">Coins in a trend with no trade</summary><p class="muted" id="wnone"></p></details>
-  </section>
-
-  <section id="testing" class="anchor">
-  <h2>Testing · directional</h2>
-  <p class="muted" id="tmeta">Strongly bullish or bearish coins: buy support, sell rejection, again and again. A trial category, kept apart from the main rules; nothing here changes the ideas above.</p>
-  <div id="trows"></div>
+  <section id="charts" class="anchor">
+  <h2>Charts</h2>
+  <p class="muted" id="cmeta">Loading…</p>
+  <div id="ctabs" class="tabs"></div>
+  <div id="crows"></div>
   </section>
 
   <details class="sec anchor" id="trades">
@@ -223,103 +224,131 @@ const ist=(iso,time)=>{const p=Object.fromEntries(new Intl.DateTimeFormat("en-GB
 const MAIN_ADDR="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE";
 const mainWallet=j=>[(j.wallets||[]).find(w=>w.address.toLowerCase()===MAIN_ADDR.toLowerCase())||{address:MAIN_ADDR,label:""}].map(w=>({addr:w.address,label:w.label}));
 const HL=p=>fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();});
-// status of an idea at a price: orders to place, wait (price beyond the zone), or skip (stop already passed)
-function ideaStatus(r,px){const short=r.side==="short";
-  if(px==null) return r.status||"orders";
-  if(short?px>=r.stop:px<=r.stop) return "skip";
-  const far=short?r.zone_high:r.zone_low;
-  if(short?px>far:px<far) return "wait";
-  return r.status==="wait"?"wait":"orders";   // back inside intraday still needs the daily close
+// ---- charts screener: every Hyperliquid perp, bullish / bearish / mixed on daily, weekly, monthly
+const TFN={d:"D",w:"W",m:"M"}, ARW={bull:['▲','up'],bear:['▼','down'],mixed:['•','muted'],"n/a":['–','muted']};
+const bigc=x=>x==null?"–":"$"+(x>=1e9?(x/1e9).toFixed(2)+"B":x>=1e6?(x/1e6).toFixed(0)+"M":(x/1e3).toFixed(0)+"k");
+let SCR=null, INTEL={coins:{}};
+function chip(r){return ["d","w","m"].map(k=>{const [a,c]=ARW[r.tf[k].trend]||ARW["n/a"];return `<span class="tfc ${c}" title="${{d:"Daily",w:"Weekly",m:"Monthly"}[k]}: ${r.tf[k].trend}">${TFN[k]}${a}</span>`;}).join("");}
+function fund(coin){
+  const c=(INTEL.coins||{})[coin];
+  if(!c) return `<div class="muted">Not researched yet. The top 15 bullish and top 15 bearish coins are researched twice a day (07:47 and 19:47 IST); for any other coin, ask in chat.</div>`;
+  const unl=(c.unlocks||[]).map(u=>`<li><b>${u.date}</b>: ${u.amount||""}${u.pct_supply?` (${u.pct_supply}% of supply)`:""}${u.note?` · ${u.note}`:""}${u.source?` · <a href="${u.source}" target="_blank" rel="noopener">source</a>`:""}${u.new?' <b class="up">new</b>':""}</li>`).join("");
+  const news=(c.news||[]).map(n=>`<li>${n.date?`<span class="muted">${n.date}</span> `:""}<a href="${n.url}" target="_blank" rel="noopener">${n.title}</a>${n.new?' <b class="up">new</b>':""}</li>`).join("");
+  return `${c.about?`<div style="font-size:14px"><b>What it does:</b> ${c.about}</div>`:""}
+    ${c.competitors&&c.competitors.length?`<div style="font-size:14px;margin-top:4px"><b>Competitors:</b> ${c.competitors.join(", ")}</div>`:""}
+    ${c.summary?`<div style="font-size:14px;margin-top:4px">${c.summary}</div>`:""}
+    <div class="muted" style="margin-top:6px">Unlocks in the next 14 days:</div>${unl?`<ul class="il">${unl}</ul>`:'<div style="font-size:13.5px">none found</div>'}
+    ${news?`<div class="muted" style="margin-top:6px">News, last 7 days:</div><ul class="il">${news}</ul>`:""}
+    <div class="muted" style="margin-top:6px">Checked ${c.checked_at?ist(c.checked_at,true):"–"}. From web searches; coverage of small coins can be thin.</div>`;
 }
-const STATUS={orders:["Place orders","up"],wait:["Wait","amber"],skip:["Skip · stop passed","down"],in:["Orders in","accent"]};
-function idea(r,w){
-  const z=r.sizing, short=r.side==="short", cls=short?"down":"up";
-  const risk1=Math.abs(r.stop-r.avg_entry), far=short?r.zone_high:r.zone_low;
-  const es=r.entries, entry=es.length>1?`${f(es[0])}–${f(es[es.length-1])}`:f(es[0]);
-  const tps=r.tps.map(f).join(" / ");
-  const basis=r.ema_basis!=="25/50/100"?` <span class="muted">weekly ${r.ema_basis} EMA</span>`:"";
-  const orders=z.orders.map((o,k)=>`<tr data-px="${o.price}"><td>${o.share}%</td><td>${f(o.price)}</td><td>${fs(o.size)}</td><td>${usd(o.usd)}</td><td class="from">${pct(o.price,r.price).toFixed(1)}%</td></tr>`).join("");
-  const dropped=(r.dropped_levels||[]).length?`<div class="muted dropped" data-lv="${r.dropped_levels.join(",")}">Not placed: ${r.dropped_levels.map(f).join(", ")} (price already passed ${r.dropped_levels.length>1?"them":"it"}; never chased at market).</div>`:"";
-  const lvl=r.rejection_level!=null?`, ${short?"above":"below"} the ${f(r.rejection_level)} rejection level`:"";
-  const exits=r.tps.map((t,i)=>`take-profit ${r.tps.length>1?(i+1)+" (half)":"(all)"} <b>${f(t)}</b> · ${(Math.abs(r.avg_entry-t)/risk1).toFixed(1)}R`).join(" · ");
+function card(r){
+  const lv=(a,dir)=>a.length?a.map(x=>`${f(x.price)} <span class="muted">(${dir}${pct(x.price,r.price).toFixed(1)}%${x.touches>1?`, ${x.touches} touches`:""})</span>`).join(" · "):'<span class="muted">none</span>';
+  const li=a=>a.length?`<ul class="il">${a.map(x=>`<li>${x}</li>`).join("")}</ul>`:'<div class="muted">nothing notable</div>';
   return `<details class="idea" data-coin="${r.coin}">
-    <summary>
-      <span class="coin">${r.coin}</span><span class="pill ${cls}">${short?"Short":"Long"}</span><span class="badge"></span>${basis}
-      <span class="sumitem">entry <b>${entry}</b></span>
-      <span class="sumitem">stop <b>${f(r.stop)}</b></span>
-      <span class="sumitem">target <b>${tps}</b></span>
-      <span class="sumitem"><b>${r.rr.toFixed(1)}R</b></span>
-      <span class="sumitem">risk <b>${usd(z.risk_usd)}</b></span>
-      <span class="sumitem muted pxl">price ${f(r.price)}</span>
-    </summary>
+    <summary><span class="coin">${r.coin}</span>${r.name&&r.name.toUpperCase()!==r.coin.toUpperCase()?`<span class="muted">${r.name}</span>`:""}
+      <span class="sumitem">${chip(r)}</span>
+      <span class="sumitem">price <b class="px">${f(r.price)}</b> <span class="${r.chg24h>=0?"up":"down"}">${r.chg24h>=0?"+":""}${r.chg24h}%</span></span>
+      <span class="sumitem muted">13w ${r.chg13w==null?"–":(r.chg13w>=0?"+":"")+r.chg13w+"%"}</span>
+      <span class="sumitem muted">mcap ${bigc(r.mcap)}${r.mcap_rank?` · #${r.mcap_rank}`:""}</span><span class="badge"></span></summary>
     <div class="body">
-      <div class="block"><div class="innote" hidden></div><div class="waitnote" hidden>No orders yet. Price is beyond the zone: wait for a daily close back ${short?"below":"above"} <b>${f(far)}</b>, then place the orders below.</div>
-        <table class="orders"><thead><tr><th>Share</th><th>Price</th><th>Size (${r.coin})</th><th>Value</th><th>From price</th></tr></thead><tbody>${orders}</tbody></table>
-        ${dropped}
+      <div class="two">
+        <div class="block"><h4>For a long</h4>${li(r.for_long)}</div>
+        <div class="block"><h4>For a short</h4>${li(r.for_short)}</div>
       </div>
       <div class="block facts">
-        <div>${z.orders.length>1?`Average entry <b>${f(r.avg_entry)}</b> if all fill · `:""}Stop <b>${f(r.stop)}</b> (${pct(r.stop,r.avg_entry).toFixed(1)}% away${lvl})</div>
-        <div>${exits}</div>
-        <div>Size <b>${usd(z.notional_usd)}</b> across ${z.orders.length} order${z.orders.length>1?"s":""} · <b>${z.leverage}×</b> isolated · margin ${usd(z.margin_usd)} · risk <b>${usd(z.risk_usd)}</b>${z.orders.length>1?` (${usd(z.risk_first_only_usd)} if only the first fills)`:""}</div>
+        <div><b>Weekly supports:</b> ${lv(r.support,"−")}</div>
+        <div><b>Weekly resistances:</b> ${lv(r.resistance,"+")}</div>
+        <div class="muted">Weekly ATR ${r.atr_w?f(r.atr_w):"–"} (${r.atr_w?(100*r.atr_w/r.price).toFixed(1):"–"}% of price) · funding ${r.funding_apr>=0?"+":""}${r.funding_apr}%/yr · open interest ${bigc(r.oi_usd)} · 24h volume ${bigc(r.vol24h)} · max ${r.max_lev}× · ${r.weeks} weeks of history · <a href="https://app.hyperliquid.xyz/trade/${r.coin}" target="_blank" rel="noopener">chart</a></div>
       </div>
-      <div class="block intel" data-coin="${r.coin}"></div>
-    </div>
-  </details>`;
+      <div class="block"><h4>Fundamentals</h4>${fund(r.coin)}</div>
+      <div class="block"><h4>Check a trade</h4>
+        <form class="calc formrow" data-coin="${r.coin}">
+          <label>Side <select name="side"><option value="long"${r.label!=="bearish"?" selected":""}>Long</option><option value="short"${r.label==="bearish"?" selected":""}>Short</option></select></label>
+          <label>Entry 1 <input name="e1" inputmode="decimal" size="9"></label>
+          <label>Entry 2 <input name="e2" inputmode="decimal" size="9" placeholder="optional"></label>
+          <label>Stop <input name="sl" inputmode="decimal" size="9"></label>
+          <label>Take-profit 1 <input name="t1" inputmode="decimal" size="9"></label>
+          <label>Take-profit 2 <input name="t2" inputmode="decimal" size="9" placeholder="optional"></label>
+          <div style="display:flex;gap:8px;align-items:end"><button type="submit">Check</button><button type="button" class="link sug" style="color:var(--accent)">fill from levels</button></div>
+        </form>
+        <div class="calcout"></div>
+      </div>
+    </div></details>`;
 }
-// live prices on the idea cards (the plans themselves come from the hourly scan)
-async function ideasLive(){
-  const W=window.IDEAS; if(!W) return;
-  let mids={}; try{mids=await HL({type:"allMids"});}catch(e){}
-  // what's already on the account: waiting entry orders and open positions (trader, 4 Nov 2026)
-  let oo=[], pos={};
-  try{const [o,ch]=await Promise.all([HL({type:"frontendOpenOrders",user:MAIN_ADDR}),HL({type:"clearinghouseState",user:MAIN_ADDR})]);
-    oo=o||[]; (ch.assetPositions||[]).forEach(a=>{const q=a.position; if(+q.szi) pos[q.coin]=q;});}catch(e){}
-  const near=(a,b)=>Math.abs(a/b-1)<0.006;
-  let live=0;
-  W.rows.concat(W.testing||[]).forEach(r=>{
-    const el=document.querySelector(`details.idea[data-coin="${r.coin}"]`); if(!el) return;
-    const px=mids[r.coin]!=null?+mids[r.coin]:null; if(px!=null) live++;
-    const short=r.side==="short", p=px??r.price;
-    const mine=oo.filter(o=>o.coin===r.coin&&!o.reduceOnly&&o.side===(short?"A":"B")), q=pos[r.coin], held=q&&((+q.szi>0)!==short);
-    let st=ideaStatus(r,px); if(st!=="skip"&&(mine.length||held)) st="in";
-    let [txt,c]=STATUS[st];
-    if(st==="in") txt=held&&mine.length?"Filled · orders in":held?"Filled":"Orders in";
-    const ep=held?+q.entryPx:null, isFilled=lv=>ep!=null&&near(lv,ep);
-    const dl=el.querySelector(".dropped");
-    if(dl){const lv=dl.dataset.lv.split(",").map(Number), fl=lv.filter(isFilled), rest=lv.filter(x=>!isFilled(x));
-      dl.innerHTML=(fl.length?`<b style="color:var(--accent)">Filled:</b> ${fl.map(f).join(", ")} (your position). `:"")+
-        (rest.length?`Not placed: ${rest.map(f).join(", ")} (price already passed ${rest.length>1?"them":"it"}; never chased at market).`:"");}
-    const inn=el.querySelector(".innote"); inn.hidden=st!=="in";
-    if(st==="in"){const off=mine.filter(m=>!r.sizing.orders.some(o=>near(+m.limitPx,o.price))).length;
-      inn.innerHTML=`Already in: ${held?`position <b>${fs(Math.abs(+q.szi))} ${r.coin}</b> from ${f(+q.entryPx)}`:""}${held&&mine.length?" · ":""}${mine.length?`<b>${mine.length}</b> order${mine.length>1?"s":""} waiting at ${mine.map(m=>f(+m.limitPx)).join(", ")}`:""}${off?` (${off} not at this plan's levels)`:""}. The plan below is for reference: nothing new to place.`;}
-    el.querySelector(".badge").outerHTML=`<span class="badge ${c}">${txt}</span>`;
-    el.querySelector(".pxl").innerHTML=`price ${f(p)}${px!=null?' <span class="live">live</span>':" at scan"}`;
-    el.querySelector(".waitnote").hidden=st!=="wait";
-    el.querySelectorAll("tr[data-px]").forEach(tr=>{const o=+tr.dataset.px, passed=st==="orders"&&(short?p>o:p<o), placed=mine.some(m=>near(+m.limitPx,o));
-      tr.querySelector(".from").innerHTML=isFilled(o)?'<b style="color:var(--accent);font-size:12.5px">filled</b>':placed?'<b style="color:var(--accent);font-size:12.5px">placed</b>':passed?'<span class="warn">passed: skip</span>':pct(o,p).toFixed(1)+"%";});
+function suggest(r,side){
+  const A=r.atr_w||0, s=r.support, R=r.resistance;
+  if(side==="long"){ if(!s.length) return null; const e1=s[0].price, e2=s[1]&&pct(s[0].price,s[1].price)<15?s[1].price:null, base=e2||e1;
+    return {e1,e2,sl:base-0.25*A,t1:R[0]?R[0].price*0.995:null,t2:R[1]?R[1].price*0.995:null}; }
+  if(!R.length) return null; const e1=R[0].price, e2=R[1]&&pct(R[1].price,R[0].price)<15?R[1].price:null, base=e2||e1;
+  return {e1,e2,sl:base+0.25*A,t1:s[0]?s[0].price*1.005:null,t2:s[1]?s[1].price*1.005:null};
+}
+function check(r,v){
+  const long=v.side==="long", sg=long?1:-1, risk$=SCR.risk_usd||3, out=[], warn=[];
+  const es=[v.e1,v.e2].filter(x=>x>0), tps=[v.t1,v.t2].filter(x=>x>0), sl=v.sl;
+  if(!es.length||!(sl>0)||!tps.length) return '<div class="muted">Enter at least entry 1, a stop and take-profit 1.</div>';
+  if(es.some(e=>sg*(e-sl)<=0)) return `<div class="warn">The stop must be ${long?"below":"above"} the entries.</div>`;
+  if(tps.some(t=>sg*(t-es[0])<=0)) return `<div class="warn">Take-profits must be ${long?"above":"below"} entry 1.</div>`;
+  const ws=es.length===2?[0.45,0.55]:[1], avg=es.reduce((a,e,i)=>a+e*ws[i],0), qty=risk$/Math.abs(avg-sl);
+  const orders=es.map((e,i)=>({e,q:qty*ws[i],usd:qty*ws[i]*e}));
+  const split=tps.length===2?[0.5,0.5]:[1], ex=tps.reduce((a,t,i)=>a+t*split[i],0);
+  const rr=sg*(ex-avg)/Math.abs(avg-sl), rr1=sg*(ex-es[0])/Math.abs(es[0]-sl);
+  const q1=orders[0].q, tpSmall=tps.map((t,i)=>({t,usd:q1*split[i]*t})).filter(x=>x.usd<10);
+  const stopPct=Math.abs(es[0]-sl)/es[0], mm=1/(2*(r.max_lev||3));
+  let lev=1; for(let L=1;L<=(r.max_lev||3);L++){ if(1/L-mm>=2*stopPct) lev=L; }
+  const notional=orders.reduce((a,o)=>a+o.usd,0);
+  if(orders.some(o=>o.usd<10)) warn.push(`An order is under Hyperliquid's $10 minimum at ${usd(risk$)} risk: use one entry, or move them apart.`);
+  if(tpSmall.length) warn.push(`If only entry 1 fills, a take-profit order would be under $10 (${tpSmall.map(x=>usd(x.usd)).join(", ")}): use one take-profit then.`);
+  if(rr<1.4||rr1<1.4) warn.push(`Below your 1.4 : 1 gate (${rr.toFixed(2)} all filled, ${rr1.toFixed(2)} first only).`);
+  if((long&&r.tf.w.trend==="bear")||(!long&&r.tf.w.trend==="bull")) warn.push(`Against the weekly trend (rule 1).`);
+  if(1/lev-mm<2*stopPct) warn.push(`Even 1× leaves liquidation within twice the stop distance.`);
+  const p=r.price, chase=long?es[0]>p*1.002:es[0]<p*0.998;
+  if(chase) warn.push(`Entry 1 is ${long?"above":"below"} the current price (${f(p)}): that's a market order, not a waiting one.`);
+  return `<table class="orders"><thead><tr><th>Order</th><th>Price</th><th>Size</th><th>Value</th><th>From price</th></tr></thead><tbody>
+    ${orders.map((o,i)=>`<tr><td>${Math.round(ws[i]*100)}%</td><td>${f(o.e)}</td><td>${fs(o.q)}</td><td>${usd(o.usd)}</td><td>${pct(o.e,p).toFixed(1)}%</td></tr>`).join("")}</tbody></table>
+    <div class="facts">
+      <div>${es.length>1?`Average ${f(avg)} · `:""}stop ${f(sl)} (${(100*Math.abs(avg-sl)/avg).toFixed(1)}% away) · risk <b>${usd(risk$)}</b> (${SCR.risk_pct}% of the portfolio)${es.length>1?` · ${usd(Math.abs(es[0]-sl)*orders[0].q)} if only entry 1 fills`:""}</div>
+      <div>${tps.map((t,i)=>`take-profit ${i+1}${tps.length>1?" (half)":""} <b>${f(t)}</b> · ${(sg*(t-avg)/Math.abs(avg-sl)).toFixed(1)}R`).join(" · ")} · overall <b>${rr.toFixed(2)}R</b>${es.length>1?` (${rr1.toFixed(2)}R first only)`:""}</div>
+      <div>Size ${usd(notional)} · <b>${lev}×</b> isolated · margin ${usd(notional/lev)}</div>
+      ${warn.length?`<ul class="il warn">${warn.map(x=>`<li>${x}</li>`).join("")}</ul>`:'<div class="up">Passes your checks.</div>'}
+    </div>`;
+}
+function bindCards(root){
+  root.querySelectorAll("form.calc").forEach(fm=>{
+    const r=SCR.coins.find(x=>x.coin===fm.dataset.coin), out=fm.nextElementSibling, n=k=>+String(fm.elements[k].value).replace(/[,$]/g,"")||0;
+    const run=()=>{out.innerHTML=check(r,{side:fm.elements.side.value,e1:n("e1"),e2:n("e2"),sl:n("sl"),t1:n("t1"),t2:n("t2")});};
+    fm.addEventListener("submit",e=>{e.preventDefault();run();});
+    fm.querySelector(".sug").addEventListener("click",()=>{const s=suggest(r,fm.elements.side.value);
+      if(!s){out.innerHTML='<div class="muted">No weekly levels on that side to suggest from.</div>';return;}
+      ["e1","e2","sl","t1","t2"].forEach(k=>fm.elements[k].value=s[k]!=null?(+s[k].toPrecision(5)):"");run();});
   });
-  document.getElementById("wmeta").textContent=`${W.rows.filter(r=>r.ready??r.distance_pct<=(W.ready_pct??10)).length} ready of ${W.rows.length} ideas from the top ${W.scanned} coins. Plans from the hourly scan at ${ist(W.generated_at,true)}; ${live?"prices live from Hyperliquid, refreshed every minute":"live prices unavailable, showing scan prices"}. Risk ${W.risk_pct??3}% of the portfolio: ${usd(W.risk_usd)}.`;
 }
-
-fetch("data/watchlist.json?t="+Date.now()).then(r=>r.json()).then(w=>{
-  const c=w.counts; window.IDEAS=w;
-  document.getElementById("wmeta").textContent=`${c.trades} ideas from the top ${w.scanned} coins. Updated ${ist(w.generated_at,true)}.`;
-  // ready: first order within ready_pct of price; the rest wait in a collapsed list (trader, 28 Oct 2026)
-  const RP=w.ready_pct??10, isReady=r=>r.ready??(r.distance_pct<=RP);
-  const ready=w.rows.filter(isReady), later=w.rows.filter(r=>!isReady(r));
-  document.getElementById("wrows").innerHTML=(ready.length?`<div class="ideas">${ready.map(r=>idea(r,w)).join("")}</div>`:
-    `<p class="muted">No idea has its first order within ${RP}% of price. Nothing to place now.</p>`)+
-    (later.length?`<details class="more waitlist"><summary class="muted">Waiting: ${later.length} idea${later.length>1?"s":""} more than ${RP}% from price (${later.map(r=>`${r.coin} ${r.distance_pct.toFixed(0)}%`).join(", ")}). They move up when price comes within ${RP}%.</summary><div class="ideas">${later.map(r=>idea(r,w)).join("")}</div></details>`:"");
-  const g={};(w.trend_no_trade||[]).forEach(x=>{const k=x.why.startsWith("best zone")?"below the 1.4 : 1 gate":x.why;(g[k]=g[k]||[]).push(`${x.coin} ${x.trend==="down"?"↓":"↑"}`);});
-  document.getElementById("wnone").innerHTML=(Object.keys(g).length?Object.entries(g).map(([k,v])=>`<b>${k[0].toUpperCase()+k.slice(1)}:</b> ${v.join(", ")}`).join(". "):"None")+`. ${c.no_trend} coins have no clear weekly trend; ${c.too_young} have under 25 weeks of history.`;
-  // testing: directional coins (weekly EMAs stacked, price beyond the 25, trend or fresh breakout)
-  const T=w.testing||[], tr=T.filter(isReady), tl=T.filter(r=>!isReady(r));
-  document.getElementById("trows").innerHTML=(tr.length?`<div class="ideas">${tr.map(r=>idea(r,w)).join("")}</div>`:`<p class="muted">No directional idea within ${RP}% of price.</p>`)+
-    (tl.length?`<details class="more waitlist"><summary class="muted">Waiting: ${tl.length} idea${tl.length>1?"s":""} more than ${RP}% from price (${tl.map(r=>`${r.coin} ${r.distance_pct.toFixed(0)}%`).join(", ")}).</summary><div class="ideas">${tl.map(r=>idea(r,w)).join("")}</div></details>`:"");
-  document.querySelectorAll("#trows details.idea").forEach(d=>{const r=T.find(x=>x.coin===d.dataset.coin); if(r&&r.breakout) d.querySelector("summary").insertAdjacentHTML("beforeend",'<span class="sumitem muted">breakout</span>');});
-  ideasLive(); setInterval(ideasLive,60000);
-  document.dispatchEvent(new Event("ideas-ready"));
-}).catch(()=>{document.getElementById("wmeta").textContent="Trade ideas not built yet.";});
+function drawCharts(tab){
+  const L=SCR.coins.filter(r=>r.label===tab), el=document.getElementById("crows");
+  document.querySelectorAll("#ctabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+  const grp=(name,rows)=>rows.length?`<h3 style="margin:10px 0 6px">${name} <span class="muted">(${rows.length})</span></h3><div class="ideas">${rows.map(card).join("")}</div>`:"";
+  el.innerHTML=tab==="bullish"?grp("Up on all three",L.filter(r=>r.group==="all three"))+grp("Weekly and monthly up, daily pulling back",L.filter(r=>r.group!=="all three"))
+    :tab==="bearish"?grp("Down on all three",L.filter(r=>r.group==="all three"))+grp("Weekly and monthly down, daily bouncing",L.filter(r=>r.group!=="all three"))
+    :grp("Mixed",L);
+  if(!L.length) el.innerHTML='<p class="muted">None right now.</p>';
+  bindCards(el); liveCharts();
+}
+async function liveCharts(){   // live price and "in position / orders in" on the cards shown
+  let mids={}, oo=[], pos={};
+  try{const [m,o,ch]=await Promise.all([HL({type:"allMids"}),HL({type:"frontendOpenOrders",user:MAIN_ADDR}),HL({type:"clearinghouseState",user:MAIN_ADDR})]);
+    mids=m; oo=o||[]; (ch.assetPositions||[]).forEach(a=>{const q=a.position; if(+q.szi) pos[q.coin]=q;});}catch(e){}
+  document.querySelectorAll("#crows details.idea").forEach(d=>{const c=d.dataset.coin, r=SCR.coins.find(x=>x.coin===c);
+    if(mids[c]){r.price=+mids[c]; d.querySelector(".px").innerHTML=f(r.price)+' <span class="live">live</span>';}
+    const q=pos[c], n=oo.filter(o=>o.coin===c&&!o.reduceOnly).length;
+    d.querySelector(".badge").outerHTML=q?`<span class="badge accent">In position: ${+q.szi>0?"long":"short"} ${fs(Math.abs(+q.szi))}</span>`:n?`<span class="badge accent">${n} order${n>1?"s":""} in</span>`:'<span class="badge"></span>';});
+}
+Promise.all([fetch("data/screener.json?t="+Date.now()).then(r=>r.json()),fetch("data/intel.json?t="+Date.now()).then(r=>r.json()).catch(()=>({coins:{}}))]).then(([s,i])=>{
+  SCR=s; INTEL=i;
+  const n=k=>s.coins.filter(r=>r.label===k).length;
+  document.getElementById("cmeta").textContent=`${s.count} Hyperliquid perps, updated ${ist(s.generated_at,true)}. D / W / M = daily, weekly, monthly trend on closed candles (▲ up: price above the 25 EMA and the EMAs stacked up; ▼ the mirror; • mixed; – not enough history). Bullish = weekly and monthly up; bearish = both down.`;
+  document.getElementById("ctabs").innerHTML=["bullish","bearish","mixed"].map(k=>`<button type="button" data-tab="${k}">${k[0].toUpperCase()+k.slice(1)} <span class="muted">${n(k)}</span></button>`).join("");
+  document.querySelectorAll("#ctabs button").forEach(b=>b.addEventListener("click",()=>drawCharts(b.dataset.tab)));
+  drawCharts("bullish"); setInterval(liveCharts,60000);
+}).catch(()=>{document.getElementById("cmeta").textContent="Charts not built yet: they appear after the next hourly scan.";});
 
 fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   const s=j.summary;
@@ -465,33 +494,13 @@ document.getElementById("wlform").addEventListener("submit",e=>{e.preventDefault
   issue(`/watch ${v.length>=30&&!v.includes(":")?v:v.toUpperCase().replace(/^([A-Z0-9]+):/,m=>m.toLowerCase())}`);
 });
 
-// ---- news and unlocks (written once a day by the news task) inside each trade idea card
-document.addEventListener("ideas-ready",()=>{
-  fetch("data/intel.json?t="+Date.now()).then(r=>r.json()).then(I=>{
-    const when=I.generated_at?ist(I.generated_at,true):"";
-    document.querySelectorAll(".intel").forEach(el=>{
-      const c=(I.coins||{})[el.dataset.coin];
-      if(!c){el.innerHTML=`<h4>News &amp; unlocks</h4><div class="muted">Not checked yet: this idea appeared after the last news check. The next check is at 07:47 or 19:47 IST, whichever comes first.</div>`;return;}
-      const st=c.stance||"neutral", stc=st==="supports"?"up":st==="against"?"down":"muted";
-      const unl=(c.unlocks||(c.unlock?[c.unlock]:[])).map(u=>`<li><b>${u.date}</b>: ${u.amount||""}${u.pct_supply?` (${u.pct_supply}% of supply)`:""}${u.note?` · ${u.note}`:""}${u.source?` · <a href="${u.source}" target="_blank" rel="noopener">source</a>`:""}${u.new?' <b class="up">new</b>':""}</li>`).join("");
-      const news=(c.news||[]).map(n=>`<li>${n.date?`<span class="muted">${n.date}</span> `:""}<a href="${n.url}" target="_blank" rel="noopener">${n.title}</a>${n.new?' <b class="up">new</b>':""}</li>`).join("");
-      el.innerHTML=`<h4>News &amp; unlocks <span class="pill ${stc}" style="text-transform:none;letter-spacing:0">${st==="supports"?"supports the trade":st==="against"?"works against the trade":"neutral"}</span></h4>
-        <div style="font-size:14px">${c.summary||""}</div>
-        <div class="muted" style="margin-top:6px">Unlocks in the next 14 days:</div>${unl?`<ul class="il">${unl}</ul>`:'<div style="font-size:13.5px">none found</div>'}
-        ${news?`<div class="muted" style="margin-top:6px">News, last 7 days:</div><ul class="il">${news}</ul>`:""}
-        <div class="muted" style="margin-top:6px">Checked ${c.checked_at?ist(c.checked_at,true):when}. Checked at 07:47 IST for every idea, and at 19:47 IST for ideas added since. From web searches; coverage of small coins can be thin.</div>`;
-      if(st==="against"){const sum=el.closest("details").querySelector("summary");sum.insertAdjacentHTML("beforeend",'<span class="sumitem warn">news against</span>');}
-    });
-  }).catch(()=>{document.querySelectorAll(".intel").forEach(el=>el.innerHTML='<h4>News &amp; unlocks</h4><div class="muted">Not available.</div>');});
-});
-
 // ---- top buttons: open the section, scroll to it, and glow for the section on screen
 document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("click",e=>{
   e.preventDefault(); const el=document.getElementById(a.dataset.sec); pinned=a.dataset.sec;
   if(el.tagName==="DETAILS") el.open=true;
   el.scrollIntoView({behavior:"smooth",block:"start"}); history.replaceState(null,"","#"+a.dataset.sec); markActive();
 }));
-const secs=["ideas","testing","trades","alerts","portfolio"].map(id=>document.getElementById(id));
+const secs=["charts","trades","alerts","portfolio"].map(id=>document.getElementById(id));
 let pinned=null;   // the section just tapped stays lit until you scroll yourself
 ["wheel","touchmove","keydown"].forEach(ev=>addEventListener(ev,()=>{pinned=null;},{passive:true}));
 function markActive(){
