@@ -1,4 +1,4 @@
-name: VVV reentry check (temporary)
+name: CASHCAT lookup (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -10,39 +10,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/checkout@v5
-        with: {ref: main, path: main}
-      - uses: actions/setup-python@v6
-        with: {python-version: "3.12"}
-      - run: pip install -r main/scanner/requirements.txt
       - run: |
-          cd main/scanner && (python - > ../../vvv2_check.txt 2>&1 || true) <<'PY'
-          import time, json, requests, watchlist as W, risk
-          from scan import daily_candles, weekly_from_daily
-          H="https://api.hyperliquid.xyz/info"; U="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
-          now=int(time.time()*1000)
-          P=lambda b: requests.post(H,json=b,timeout=30).json()
-          mids=P({"type":"allMids"}); price=float(mids["VVV"])
-          print("time",time.strftime("%Y-%m-%d %H:%M UTC",time.gmtime()),"VVV",price,"BTC",mids["BTC"],"risk_usd",risk.risk_usd())
-          for f in P({"type":"userFillsByTime","user":U,"startTime":now-4*86400000}):
-              print("fill",time.strftime("%d-%b %H:%M",time.gmtime(f["time"]/1000+19800)),"IST",f["coin"],f["dir"],f["sz"],"@",f["px"],"pnl",f["closedPnl"])
-          for o in P({"type":"frontendOpenOrders","user":U}):
-              if o["coin"]=="VVV": print("open",o["orderType"],o["side"],o["sz"],o.get("triggerPx"),o["limitPx"])
-          d=daily_candles("VVV"); wk=weekly_from_daily(d)
-          closed=[w for w in wk if w["t"]+7*86400000<=now]
-          A=W.atr_series(closed)[-1]
-          def ema(v,n):
-              a=2/(n+1);e=v[0]
-              for x in v: e=a*x+(1-a)*e
-              return e
-          dc=[x["c"] for x in d[:-1]]
-          print("wATR",round(A,3),"daily ema 25/50/100/200",[round(ema(dc,n),3) for n in (25,50,100,200)])
-          # daily ATR(14)
-          tr=[max(x["h"]-x["l"],abs(x["h"]-y["c"]),abs(x["l"]-y["c"])) for x,y in zip(d[-15:],d[-16:-1])]
-          print("dATR14",round(sum(tr)/len(tr),3))
-          print("days:",[(W.iso(x["t"]),round(x["o"],3),round(x["h"],3),round(x["l"],3),round(x["c"],3)) for x in d[-12:]])
-          print("weeks:",[(W.iso(w["t"]),round(w["o"],2),round(w["h"],2),round(w["l"],2),round(w["c"],2)) for w in wk[-6:]])
-          print("zones:",[(z["kind"],round(z["bottom"],3),round(z["top"],3),z["tests"]) for z in W.zones(closed)][-5:])
-          PY
-          cd ../.. && git config user.name "setup-scanner" && git config user.email "actions@users.noreply.github.com"
-          git add vvv2_check.txt && git commit -qm "vvv2 check" && git push -q origin HEAD:debug-weekly
+          H=https://api.hyperliquid.xyz/info
+          p(){ curl -s -X POST $H -H 'Content-Type: application/json' -d "$1"; }
+          {
+          echo "== dexes"; p '{"type":"perpDexs"}' | head -c 3000; echo
+          echo "== main"; p '{"type":"meta"}' | python3 -c "import json,sys;print([a['name'] for a in json.load(sys.stdin)['universe'] if 'CAT' in a['name'].upper()])"
+          for d in cash xyz flx vntl hyna km abcd para mkts io; do echo "== dex $d"; p "{\"type\":\"metaAndAssetCtxs\",\"dex\":\"$d\"}" | python3 -c "
+          import json,sys
+          try:
+            m,c=json.load(sys.stdin)
+            for a,x in zip(m['universe'],c):
+              if 'CAT' in a['name'].upper(): print(a['name'],x.get('markPx'),x.get('oraclePx'),x.get('dayNtlVlm'),x.get('openInterest'),a.get('maxLeverage'))
+          except Exception as e: print('err',e)"; done
+          echo "== spot"; p '{"type":"spotMeta"}' | python3 -c "import json,sys;print([t['name'] for t in json.load(sys.stdin)['tokens'] if 'CAT' in t['name'].upper()])"
+          echo "== dexscreener"; curl -s "https://api.dexscreener.com/latest/dex/search?q=CASHCAT" | head -c 5000; echo
+          } > cashcat.txt 2>&1
+          git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
+          git add cashcat.txt && git commit -qm "cashcat" && git push -q origin HEAD:debug-weekly
