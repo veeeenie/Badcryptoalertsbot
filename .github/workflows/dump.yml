@@ -1,4 +1,4 @@
-name: CASHCAT lookup (temporary)
+name: Market cap ranks (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,20 +11,28 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          H=https://api.hyperliquid.xyz/info
-          p(){ curl -s -X POST $H -H 'Content-Type: application/json' -d "$1"; }
           {
-          echo "== dexes"; p '{"type":"perpDexs"}' | head -c 3000; echo
-          echo "== main"; p '{"type":"meta"}' | python3 -c "import json,sys;print([a['name'] for a in json.load(sys.stdin)['universe'] if 'CAT' in a['name'].upper()])"
-          for d in cash xyz flx vntl hyna km abcd para mkts io; do echo "== dex $d"; p "{\"type\":\"metaAndAssetCtxs\",\"dex\":\"$d\"}" | python3 -c "
-          import json,sys
-          try:
-            m,c=json.load(sys.stdin)
-            for a,x in zip(m['universe'],c):
-              if 'CAT' in a['name'].upper(): print(a['name'],x.get('markPx'),x.get('oraclePx'),x.get('dayNtlVlm'),x.get('openInterest'),a.get('maxLeverage'))
-          except Exception as e: print('err',e)"; done
-          echo "== spot"; p '{"type":"spotMeta"}' | python3 -c "import json,sys;print([t['name'] for t in json.load(sys.stdin)['tokens'] if 'CAT' in t['name'].upper()])"
-          echo "== dexscreener"; curl -s "https://api.dexscreener.com/latest/dex/search?q=CASHCAT" | head -c 5000; echo
-          } > cashcat.txt 2>&1
+          for pg in 1 2; do curl -s "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=$pg" -H "accept: application/json" -o cg$pg.json; sleep 3; done
+          python3 - <<'PY'
+          import json, requests
+          rows=json.load(open('cg1.json'))+json.load(open('cg2.json'))
+          print('coingecko rows',len(rows))
+          for r in rows:
+              if r.get('market_cap_rank') in (100,150,200,250,300): print('rank',r['market_cap_rank'],r['symbol'],r['name'],r['market_cap'])
+          meta,ctx=requests.post('https://api.hyperliquid.xyz/info',json={'type':'metaAndAssetCtxs'}).json()
+          act=[(a['name'],float(c['dayNtlVlm'])) for a,c in zip(meta['universe'],ctx) if not a.get('isDelisted')]
+          print('HL active perps',len(act))
+          syms={}
+          for r in rows: syms.setdefault(r['symbol'].upper(),r)
+          hit=0; miss=[]
+          for n,_ in act:
+              k=n[1:] if n.startswith('k') and n[1:].isupper() else n
+              if k in syms: hit+=1
+              else: miss.append(n)
+          print('HL perps found in CoinGecko top 500:',hit,'not found:',len(miss), miss[:60])
+          ranks=sorted(syms[(n[1:] if n.startswith('k') and n[1:].isupper() else n)]['market_cap_rank'] or 999 for n,_ in act if (n[1:] if n.startswith('k') and n[1:].isupper() else n) in syms)
+          print('HL perps by CG rank buckets: <=100',sum(1 for r in ranks if r<=100),'101-200',sum(1 for r in ranks if 100<r<=200),'201-500',sum(1 for r in ranks if r>200))
+          PY
+          } > mcap.txt 2>&1
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add cashcat.txt && git commit -qm "cashcat" && git push -q origin HEAD:debug-weekly
+          git add mcap.txt && git commit -qm "mcap" && git push -q origin HEAD:debug-weekly
