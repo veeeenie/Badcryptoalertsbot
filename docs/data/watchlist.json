@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-05T00:09:58+00:00",
+ "generated_at": "2026-11-05T00:20:16+00:00",
  "scanned": 100,
  "gate_rr": 1.4,
  "risk_usd": 3.76,
@@ -46,11 +46,11 @@
     1045.6
    ],
    "dropped_levels": [],
-   "distance_pct": 5.7,
-   "distance_best_pct": 19.7,
+   "distance_pct": 5.5,
+   "distance_best_pct": 19.6,
    "at_zone": false,
    "coin": "ZEC",
-   "price": 1302.3,
+   "price": 1300.0,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 200,
@@ -119,11 +119,11 @@
     74.357
    ],
    "dropped_levels": [],
-   "distance_pct": 5.9,
-   "distance_best_pct": 11.3,
+   "distance_pct": 6.6,
+   "distance_best_pct": 11.8,
    "at_zone": false,
    "coin": "HYPE",
-   "price": 83.792,
+   "price": 84.349,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 100,
@@ -199,11 +199,11 @@
     1.7842
    ],
    "dropped_levels": [],
-   "distance_pct": 11.1,
-   "distance_best_pct": 20.7,
+   "distance_pct": 11.5,
+   "distance_best_pct": 21.0,
    "at_zone": false,
    "coin": "MORPHO",
-   "price": 2.2494,
+   "price": 2.2594,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 101,
@@ -277,11 +277,11 @@
     0.12553
    ],
    "dropped_levels": [],
-   "distance_pct": 13.7,
-   "distance_best_pct": 30.7,
+   "distance_pct": 13.0,
+   "distance_best_pct": 29.9,
    "at_zone": false,
    "coin": "POL",
-   "price": 0.096016,
+   "price": 0.096654,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 112,
@@ -350,11 +350,11 @@
     1.296
    ],
    "dropped_levels": [],
-   "distance_pct": 26.7,
-   "distance_best_pct": 36.4,
+   "distance_pct": 26.6,
+   "distance_best_pct": 36.3,
    "at_zone": false,
    "coin": "DOT",
-   "price": 0.95012,
+   "price": 0.95115,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 307,
@@ -430,11 +430,11 @@
     2.2
    ],
    "dropped_levels": [],
-   "distance_pct": 30.7,
-   "distance_best_pct": 33.9,
+   "distance_pct": 31.0,
+   "distance_best_pct": 34.1,
    "at_zone": false,
    "coin": "LIT",
-   "price": 3.3267,
+   "price": 3.3406,
    "trend": "up",
    "ema_basis": "25",
    "weeks": 45,
@@ -596,16 +596,16 @@
    "why": "only zones taller than a weekly ATR"
   },
   {
-   "coin": "AVNT",
-   "trend": "down",
-   "ema_basis": "25/50",
-   "why": "best zone 0.1273-0.1435 gives 1.3:1"
-  },
-  {
    "coin": "ATOM",
    "trend": "down",
    "ema_basis": "25/50/100",
    "why": "stop more than half a weekly ATR beyond the zone"
+  },
+  {
+   "coin": "AVNT",
+   "trend": "down",
+   "ema_basis": "25/50",
+   "why": "best zone 0.1273-0.1435 gives 1.3:1"
   },
   {
    "coin": "ZK",
@@ -923,12 +923,12 @@
    "structure": "higher high, lower low"
   },
   {
-   "coin": "LDO",
+   "coin": "SEI",
    "ema": "down",
    "structure": "higher high, lower low"
   },
   {
-   "coin": "SEI",
+   "coin": "LDO",
    "ema": "down",
    "structure": "higher high, lower low"
   },
@@ -958,6 +958,11 @@
    "structure": "higher high, lower low"
   },
   {
+   "coin": "WIF",
+   "ema": "down",
+   "structure": "higher high, lower low"
+  },
+  {
    "coin": "SYRUP",
    "ema": "down",
    "structure": "lower high, higher low"
@@ -966,11 +971,6 @@
    "coin": "PYTH",
    "ema": "down",
    "structure": "lower high, higher low"
-  },
-  {
-   "coin": "WIF",
-   "ema": "down",
-   "structure": "higher high, lower low"
   },
   {
    "coin": "NIL",
@@ -1050,11 +1050,11 @@
     513.12
    ],
    "dropped_levels": [],
-   "distance_pct": 12.4,
-   "distance_best_pct": 20.2,
+   "distance_pct": 12.3,
+   "distance_best_pct": 20.1,
    "at_zone": false,
    "coin": "XMR",
-   "price": 643.3,
+   "price": 642.41,
    "trend": "up",
    "ema_basis": "25/50/100",
    "weeks": 185,
@@ -1128,11 +1128,11 @@
     0.68208
    ],
    "dropped_levels": [],
-   "distance_pct": 59.2,
-   "distance_best_pct": 87.3,
+   "distance_pct": 58.6,
+   "distance_best_pct": 86.6,
    "at_zone": false,
    "coin": "JTO",
-   "price": 0.36417,
+   "price": 0.3655,
    "trend": "down",
    "ema_basis": "25/50/100",
    "weeks": 152,
@@ -1229,14 +1229,14 @@
    "why": "only zones taller than a weekly ATR"
   },
   {
-   "coin": "AVNT",
-   "trend": "down",
-   "why": "best zone 0.1273-0.1435 gives 1.3:1"
-  },
-  {
    "coin": "ATOM",
    "trend": "down",
    "why": "stop more than half a weekly ATR beyond the zone"
+  },
+  {
+   "coin": "AVNT",
+   "trend": "down",
+   "why": "best zone 0.1273-0.1435 gives 1.3:1"
   },
   {
    "coin": "ZK",
