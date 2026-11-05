@@ -25,7 +25,6 @@ jobs:
           mkdir -p /tmp/out && cp bench/data/candles_1d.json.gz /tmp/out/
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
           git fetch -q origin bench-data && git checkout -q bench-data || git checkout -q --orphan bench-data
-          git rm -rq --cached . 2>/dev/null || true
           mkdir -p bench/data && cp /tmp/out/candles_1d.json.gz bench/data/
           git add -f bench/data/candles_1d.json.gz
-          git commit -qm "Bench data $(date -u +%F)" && git push -q -f origin HEAD:bench-data
+          git commit -qm "Bench data $(date -u +%F)" && git push -q origin HEAD:bench-data
