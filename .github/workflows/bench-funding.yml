@@ -1,0 +1,49 @@
+name: Bench funding data
+
+# Funding history for the test bench, fetched in parallel shards, then combined into the bench-data branch.
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        i: [0, 1, 2, 3, 4, 5, 6, 7]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+      - run: pip install requests
+      - run: python bench/fetch_funding.py ${{ matrix.i }} 8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: funding-${{ matrix.i }}
+          path: bench/data/funding_${{ matrix.i }}.json
+  combine:
+    needs: shard
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with: {path: parts}
+      - run: |
+          python - <<'PY'
+          import glob, json, gzip
+          out = {}
+          for f in glob.glob("parts/*/funding_*.json"):
+              out.update(json.load(open(f)))
+          with gzip.open("/tmp/funding_1d.json.gz", "wt") as g:
+              json.dump(out, g, separators=(",", ":"))
+          print(len(out), "coins")
+          PY
+          git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
+          git fetch -q origin bench-data && git checkout -q bench-data
+          mkdir -p bench/data && cp /tmp/funding_1d.json.gz bench/data/
+          git add -f bench/data/funding_1d.json.gz && git commit -qm "Bench funding $(date -u +%F)" && git push -q origin HEAD:bench-data
