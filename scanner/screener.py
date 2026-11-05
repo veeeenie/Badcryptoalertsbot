@@ -7,6 +7,8 @@ Trend on each timeframe uses the trader's EMAs (25 / 50 / 100, on closed candles
   bullish  = close above the 25 EMA and the 25 above the 50 (and the 50 above the 100 when there are 100 candles)
   bearish  = the mirror
   mixed    = anything else; "n/a" when there are fewer than 25 candles (young coins on the monthly)
+The daily 200 EMA is a filter (trader, 5 Nov 2026): Bullish also needs price above it, Bearish below it
+(coins with under 200 daily candles skip this check).
 Lists: Bullish = weekly bullish and monthly bullish or n/a; Bearish = the mirror. Within a list, coins
 bullish on all three come first ("all three"), then those whose daily is pulling back ("daily pullback").
 
@@ -121,9 +123,12 @@ def pct(a, b):
     return (a / b - 1) * 100
 
 
-def facts(coin, price, tf, w, A, sup, res, fund_apr, chg13):
+def facts(coin, price, tf, w, A, sup, res, fund_apr, chg13, e200=None):
     """Plain facts, as two lists: points a long would like, points a short would like."""
     bull, bear = [], []
+    if e200:
+        d = pct(price, e200)
+        (bull if d > 0 else bear).append(f"Price {'above' if d > 0 else 'below'} the daily 200 EMA ({fmt(e200)}, {d:+.1f}%)")
     names = {"d": "Daily", "w": "Weekly", "m": "Monthly"}
     for k in ("m", "w", "d"):
         t = tf[k]["trend"]
@@ -200,14 +205,19 @@ def main():
         sup, res = swing_levels(wk, price, A)
         fund_apr = float(c.get("funding") or 0) * 24 * 365 * 100
         chg13 = pct(price, wk[-13]["c"]) if len(wk) >= 13 else None
-        bull, bear = facts(coin, price, tf, wk, A, sup, res, fund_apr, chg13)
+        e200 = ema([x["c"] for x in dc], 200)
+        tf["d"]["ema200"] = round(e200, 8) if e200 else None
+        bull, bear = facts(coin, price, tf, wk, A, sup, res, fund_apr, chg13, e200)
         wt, mt, dt = tf["w"]["trend"], tf["m"]["trend"], tf["d"]["trend"]
-        if wt == "bull" and mt in ("bull", "n/a"):
+        above200 = None if e200 is None else price > e200
+        if wt == "bull" and mt in ("bull", "n/a") and above200 is not False:
             label, group = "bullish", ("all three" if dt == "bull" else "daily pullback")
-        elif wt == "bear" and mt in ("bear", "n/a"):
+        elif wt == "bear" and mt in ("bear", "n/a") and above200 is not True:
             label, group = "bearish", ("all three" if dt == "bear" else "daily bounce")
         else:
-            label, group = "mixed", ""
+            label = "mixed"
+            group = ("weekly up, below the daily 200" if wt == "bull" and mt in ("bull", "n/a") else
+                     "weekly down, above the daily 200" if wt == "bear" and mt in ("bear", "n/a") else "")
         score = sum({"bull": 1, "bear": -1}.get(tf[k]["trend"], 0) * wgt for k, wgt in (("d", 1), ("w", 2), ("m", 2)))
         sym = coin[1:] if coin.startswith("k") and coin[1:].isupper() else coin
         mc = cg.get(sym)

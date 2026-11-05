@@ -236,7 +236,9 @@ const HL=p=>fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Co
 const TFN={d:"D",w:"W",m:"M"}, ARW={bull:['▲','up'],bear:['▼','down'],mixed:['•','muted'],"n/a":['–','muted']};
 const bigc=x=>x==null?"–":"$"+(x>=1e9?(x/1e9).toFixed(2)+"B":x>=1e6?(x/1e6).toFixed(0)+"M":(x/1e3).toFixed(0)+"k");
 let SCR=null, INTEL={coins:{}};
-function chip(r){return ["d","w","m"].map(k=>{const [a,c]=ARW[r.tf[k].trend]||ARW["n/a"];return `<span class="tfc ${c}" title="${{d:"Daily",w:"Weekly",m:"Monthly"}[k]}: ${r.tf[k].trend}">${TFN[k]}${a}</span>`;}).join("");}
+function chip200(r){const e=r.tf.d.ema200; if(!e) return '<span class="tfc muted" title="Under 200 daily candles">D200 –</span>';
+  const d=(r.price/e-1)*100; return `<span class="tfc ${d>0?"up":"down"}" title="Daily 200 EMA ${f(e)}">D200 ${d>0?"▲":"▼"} ${d>0?"+":""}${d.toFixed(1)}%</span>`;}
+function chip(r){return chip200(r)+["d","w","m"].map(k=>{const [a,c]=ARW[r.tf[k].trend]||ARW["n/a"];return `<span class="tfc ${c}" title="${{d:"Daily",w:"Weekly",m:"Monthly"}[k]}: ${r.tf[k].trend}">${TFN[k]}${a}</span>`;}).join("");}
 function fund(coin){
   const c=(INTEL.coins||{})[coin];
   if(!c) return `<div class="muted">Not researched yet. The top 15 bullish and top 15 bearish coins are researched twice a day (07:47 and 19:47 IST); for any other coin, ask in chat.</div>`;
@@ -308,6 +310,7 @@ function check(r,v){
   if(tpSmall.length) warn.push(`If only entry 1 fills, a take-profit order would be under $10 (${tpSmall.map(x=>usd(x.usd)).join(", ")}): use one take-profit then.`);
   if(rr<1.4||rr1<1.4) warn.push(`Below your 1.4 : 1 gate (${rr.toFixed(2)} all filled, ${rr1.toFixed(2)} first only).`);
   if((long&&r.tf.w.trend==="bear")||(!long&&r.tf.w.trend==="bull")) warn.push(`Against the weekly trend (rule 1).`);
+  const e200=r.tf.d.ema200; if(e200&&((long&&r.price<e200)||(!long&&r.price>e200))) warn.push(`Price is ${long?"below":"above"} the daily 200 EMA (${f(e200)}).`);
   if(1/lev-mm<2*stopPct) warn.push(`Even 1× leaves liquidation within twice the stop distance.`);
   const p=r.price, chase=long?es[0]>p*1.002:es[0]<p*0.998;
   if(chase) warn.push(`Entry 1 is ${long?"above":"below"} the current price (${f(p)}): that's a market order, not a waiting one.`);
@@ -336,7 +339,7 @@ function drawCharts(tab){
   const grp=(name,rows)=>rows.length?`<h3 style="margin:10px 0 6px">${name} <span class="muted">(${rows.length})</span></h3><div class="ideas">${rows.map(card).join("")}</div>`:"";
   el.innerHTML=tab==="bullish"?grp("Up on all three",L.filter(r=>r.group==="all three"))+grp("Weekly and monthly up, daily pulling back",L.filter(r=>r.group!=="all three"))
     :tab==="bearish"?grp("Down on all three",L.filter(r=>r.group==="all three"))+grp("Weekly and monthly down, daily bouncing",L.filter(r=>r.group!=="all three"))
-    :grp("Mixed",L);
+    :grp("Trend up but below the daily 200",L.filter(r=>r.group==="weekly up, below the daily 200"))+grp("Trend down but above the daily 200",L.filter(r=>r.group==="weekly down, above the daily 200"))+grp("Mixed",L.filter(r=>!r.group));
   if(!L.length) el.innerHTML='<p class="muted">None right now.</p>';
   bindCards(el); liveCharts();
 }
