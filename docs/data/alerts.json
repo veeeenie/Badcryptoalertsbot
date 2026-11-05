@@ -52,6 +52,51 @@
       "name": "Entry1",
       "touch_pct": 0.0,
       "source": "added via the website, 2026-11-04"
+    },
+    {
+      "id": "HYPE-72",
+      "coin": "HYPE",
+      "type": "level",
+      "price": 72.0,
+      "name": "HYPE 72",
+      "touch_pct": 1.0,
+      "source": "trader via chat, 5 Nov 2026"
+    },
+    {
+      "id": "HYPE-75",
+      "coin": "HYPE",
+      "type": "level",
+      "price": 75.0,
+      "name": "HYPE 75",
+      "touch_pct": 1.0,
+      "source": "trader via chat, 5 Nov 2026"
+    },
+    {
+      "id": "HYPE-80",
+      "coin": "HYPE",
+      "type": "level",
+      "price": 80.0,
+      "name": "HYPE 80",
+      "touch_pct": 1.0,
+      "source": "trader via chat, 5 Nov 2026"
+    },
+    {
+      "id": "HYPE-95",
+      "coin": "HYPE",
+      "type": "level",
+      "price": 95.0,
+      "name": "HYPE 95",
+      "touch_pct": 1.0,
+      "source": "trader via chat, 5 Nov 2026"
+    },
+    {
+      "id": "HYPE-100",
+      "coin": "HYPE",
+      "type": "level",
+      "price": 100.0,
+      "name": "HYPE 100",
+      "touch_pct": 1.0,
+      "source": "trader via chat, 5 Nov 2026"
     }
   ],
   "watch": [
