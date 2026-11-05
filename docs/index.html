@@ -25,7 +25,7 @@ nav a{text-decoration:none;font-size:13.5px;font-weight:600;padding:5px 11px;bor
 nav a.active{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent),0 0 14px color-mix(in srgb,var(--accent) 35%,transparent)}
 nav a.ext{font-weight:500;color:var(--muted)}
 .anchor{scroll-margin-top:calc(var(--navh,56px) + 10px)}
-details.sec{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0}
+details.sec{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;min-width:0;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 details.sec>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;border-radius:10px}
 details.sec>summary::-webkit-details-marker{display:none}
 details.sec>summary::before{content:"›";display:inline-block;width:12px;color:var(--muted);transition:transform .15s;font-size:18px}
@@ -58,9 +58,20 @@ tr:last-child td{border-bottom:0}
 .calc label{font-size:12px}
 ul.warn{color:var(--down)}
 /* trade ideas: one collapsible full-width card each */
-.ideas{display:grid;gap:10px}
-details.idea{background:var(--panel);border:1px solid var(--line);border-radius:8px;min-width:0}
-details.idea>summary{list-style:none;cursor:pointer;padding:12px 14px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;border-radius:8px}
+.ideas{display:grid;gap:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)}
+.agroups details.agrp{border-bottom:1px solid var(--line)}
+.agroups details.agrp:last-child{border-bottom:0}
+.agroups details.agrp>summary{cursor:pointer;padding:10px 14px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;list-style:none}
+.agroups details.agrp>summary::-webkit-details-marker{display:none}
+.agroups details.agrp>summary::before{content:"›";display:inline-block;width:10px;color:var(--muted);transition:transform .15s}
+.agroups details.agrp[open]>summary::before{transform:rotate(90deg)}
+.arow2{display:flex;gap:12px;align-items:baseline;justify-content:space-between;padding:6px 14px 6px 34px;border-top:1px dashed var(--line);font-size:14px}
+.arow2>span:first-child{flex:1;min-width:0}
+.arow2 .n{font-variant-numeric:tabular-nums;white-space:nowrap}
+details.idea{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;min-width:0}
+.ideas>details.idea:last-child{border-bottom:0}
+details.idea[open]{background:var(--panel)}
+details.idea>summary{list-style:none;cursor:pointer;padding:9px 14px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;border-radius:0}
 details.idea>summary::-webkit-details-marker{display:none}
 details.idea>summary::before{content:"›";display:inline-block;width:12px;color:var(--muted);transition:transform .15s}
 details.idea[open]>summary::before{transform:rotate(90deg)}
@@ -106,6 +117,7 @@ button{cursor:pointer;background:var(--ink);color:var(--bg);border-color:var(--i
 button.link{background:none;color:var(--down);border:0;padding:0;font-weight:500;font-size:13px}
 code{font-size:12.5px;background:var(--soft);padding:1px 4px;border-radius:4px}
 
+.badge:empty{display:none}
 .badge{font-size:12.5px;font-weight:700;padding:1px 8px;border-radius:5px;background:var(--soft)}
 .badge.up{color:var(--up)} .badge.down{color:var(--down)} .badge.amber{color:var(--amber)} .badge.accent{color:var(--accent)}
 .innote{font-size:14px;padding:8px 10px;border-radius:6px;background:var(--soft);margin:10px 0 6px;border-left:3px solid var(--accent)}
@@ -139,7 +151,6 @@ details.more>summary{cursor:pointer;margin-top:10px}
 <main>
   <section id="charts" class="anchor">
   <h2>Charts</h2>
-  <p class="muted" id="cmeta">Loading…</p>
   <div id="ctabs" class="tabs"></div>
   <div id="crows"></div>
   </section>
@@ -169,10 +180,7 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <summary><span class="st">Alerts</span><span class="muted"><span id="alhint"></span> · watchlist <span id="wlhint"></span></span></summary>
   <div class="secbody">
   <h3>Price alerts</h3>
-  <div class="box"><table class="stack">
-    <thead><tr><th>Alert</th><th>Level now</th><th>Price</th><th>Distance</th><th></th></tr></thead>
-    <tbody id="arows"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody>
-  </table></div>
+  <div class="box agroups" id="arows"><div class="muted" style="padding:10px 14px">Loading…</div></div>
   <form id="aform" class="box" style="padding:12px 14px;display:grid;gap:10px">
     <div class="formrow">
       <label>Type <select id="atype"><option value="level">Price level</option><option value="trendline">Trendline (two points)</option></select></label>
@@ -344,11 +352,10 @@ async function liveCharts(){   // live price and "in position / orders in" on th
 Promise.all([fetch("data/screener.json?t="+Date.now()).then(r=>r.json()),fetch("data/intel.json?t="+Date.now()).then(r=>r.json()).catch(()=>({coins:{}}))]).then(([s,i])=>{
   SCR=s; INTEL=i;
   const n=k=>s.coins.filter(r=>r.label===k).length;
-  document.getElementById("cmeta").textContent=`${s.count} Hyperliquid perps, updated ${ist(s.generated_at,true)}. D / W / M = daily, weekly, monthly trend on closed candles (▲ up: price above the 25 EMA and the EMAs stacked up; ▼ the mirror; • mixed; – not enough history). Bullish = weekly and monthly up; bearish = both down.`;
   document.getElementById("ctabs").innerHTML=["bullish","bearish","mixed"].map(k=>`<button type="button" data-tab="${k}">${k[0].toUpperCase()+k.slice(1)} <span class="muted">${n(k)}</span></button>`).join("");
   document.querySelectorAll("#ctabs button").forEach(b=>b.addEventListener("click",()=>drawCharts(b.dataset.tab)));
   drawCharts("bullish"); setInterval(liveCharts,60000);
-}).catch(()=>{document.getElementById("cmeta").textContent="Charts not built yet: they appear after the next hourly scan.";});
+}).catch(()=>{document.getElementById("crows").innerHTML='<p class="muted">Charts not built yet: they appear after the next hourly scan.</p>';});
 
 fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   const s=j.summary;
@@ -430,13 +437,19 @@ const lineNow=a=>{if(a.type!=="trendline")return a.price;const t1=Date.parse(a.p
 Promise.all([fetch("data/alerts.json?t="+Date.now()).then(r=>r.json()),HL({type:"allMids"}).catch(()=>({}))]).then(([cfg,mids])=>{
   const al=cfg.alerts||[];
   document.getElementById("alhint").textContent=`${al.length} active`;
-  document.getElementById("arows").innerHTML=al.map(a=>{const lv=lineNow(a),px=mids[a.coin]?+mids[a.coin]:null;
-    return `<tr><td><b>${a.coin}</b> ${a.type==="level"?"level":a.type==="close"?`${a.timeframe||"daily"} close ${a.side||"below"}`:"trendline"} <span class="muted">${a.name||""} · ID ${a.id}</span></td>
-      <td data-label="Level now">${f(lv)}</td><td data-label="Price">${px?f(px):"–"}</td>
-      <td data-label="Distance">${px?(lv>px?"+":"−")+pct(lv,px).toFixed(1)+"%":"–"}</td>
-      <td><button class="link" data-remove="${a.id}">remove</button></td></tr>`;}).join("")||'<tr><td colspan="5" class="muted">No alerts set.</td></tr>';
+  // one row per coin; the arrow opens that coin's alerts, nearest to price first
+  const by={}; al.forEach(a=>(by[a.coin]=by[a.coin]||[]).push(a));
+  const dist=(lv,px)=>px?(lv>px?"+":"−")+pct(lv,px).toFixed(1)+"%":"–";
+  const kind=a=>a.type==="level"?"level":a.type==="close"?`${a.timeframe||"daily"} close ${a.side||"below"}`:"trendline";
+  document.getElementById("arows").innerHTML=Object.keys(by).sort().map(coin=>{
+    const px=mids[coin]?+mids[coin]:null, rows=by[coin].map(a=>({a,lv:lineNow(a)})).sort((x,y)=>px?Math.abs(x.lv-px)-Math.abs(y.lv-px):x.lv-y.lv);
+    const above=px?rows.filter(r=>r.lv>px).length:0, below=px?rows.length-above:0;
+    return `<details class="agrp"><summary><b>${coin}</b><span class="muted">${rows.length} alert${rows.length>1?"s":""}${px?` · price ${f(px)} · ${above} above, ${below} below`:""}</span>
+        <span class="muted">nearest ${f(rows[0].lv)} (${dist(rows[0].lv,px)})</span></summary>
+      ${rows.map(({a,lv})=>`<div class="arow2"><span><b>${f(lv)}</b> <span class="muted">${kind(a)}${a.name&&a.name!==coin+" "+a.price?` · ${a.name}`:""}</span></span><span class="n">${dist(lv,px)}</span><button class="link" data-remove="${a.id}">remove</button></div>`).join("")}
+    </details>`;}).join("")||'<div class="muted" style="padding:10px 14px">No alerts set.</div>';
   document.querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>issue(`/remove ${b.dataset.remove}`)));
-}).catch(()=>{document.getElementById("arows").innerHTML='<tr><td colspan="5" class="muted">Alerts not available.</td></tr>';});
+}).catch(()=>{document.getElementById("arows").innerHTML='<div class="muted" style="padding:10px 14px">Alerts not available.</div>';});
 document.getElementById("atype").addEventListener("change",e=>{const tl=e.target.value==="trendline";
   document.querySelectorAll(".tl").forEach(x=>x.hidden=!tl);document.querySelectorAll(".lvl").forEach(x=>x.hidden=tl);});
 document.getElementById("aform").addEventListener("submit",e=>{e.preventDefault();
