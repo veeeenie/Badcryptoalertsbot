@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-06T02:26:19Z",
+ "generated_at": "2026-11-06T14:18:43Z",
  "coins": {
   "kBONK": {
    "side": "short",
@@ -169,7 +169,7 @@
   "AIXBT": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-05T14:40:28Z",
+   "checked_at": "2026-11-06T14:18:43Z",
    "about": "aixbt is an autonomous AI agent launched on Virtuals Protocol that tracks crypto social chatter and market data and posts market intelligence. Holding AIXBT gives access to its premium analytics terminal.",
    "competitors": [
     "Virtuals Protocol (VIRTUAL)",
@@ -179,7 +179,7 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "neutral",
-   "summary": "No news this week and supply is fully unlocked. The backdrop is thinner liquidity after Binance removed margin and a spot pair in September.",
+   "summary": "No price-moving news in the past week and supply is fully unlocked. Liquidity is still thinner after Binance removed margin and a spot pair in September.",
    "news": [],
    "unlocks": []
   },
@@ -220,7 +220,7 @@
   "DASH": {
    "side": "long",
    "label": "bullish",
-   "checked_at": "2026-11-05T14:40:28Z",
+   "checked_at": "2026-11-06T14:18:43Z",
    "about": "Dash is a proof-of-work digital cash coin with masternodes, instant transactions and optional mixing, plus the Evolution app platform. DASH is used for payments, fees and masternode collateral.",
    "competitors": [
     "Zcash (ZEC)",
@@ -229,20 +229,20 @@
     "Bitcoin Cash (BCH)"
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
-   "stance": "against",
-   "summary": "The privacy-coin sell-off and EU regulatory worry weigh on the long; the v5 upgrade is a modest positive with no activation date yet. Mined coin, no unlocks.",
+   "stance": "neutral",
+   "summary": "A dated catalyst now supports the long: the v24 hard fork (signaling from Nov 9, activation around Nov 28) lets small holders pool masternode collateral. The privacy-coin sell-off and EU regulatory worry still weigh. Mined coin, no unlocks.",
    "news": [
+    {
+     "title": "Dash v24 hard fork set for around Nov 28, adding pooled masternode shares; signaling starts Nov 9",
+     "url": "https://www.tradingview.com/news/coinmarketcal:e92ede5b5094b:0-dash-v24-network-upgrade-introduces-masternode-shares-by-28-nov-2026/",
+     "date": "Nov 5",
+     "new": true
+    },
     {
      "title": "Privacy coins sell off and DASH dips toward $46 as EU anonymity-coin ban looms",
      "url": "https://news.bitcoin.com/altcoins/privacy-coins-tumble-as-zcash-plunges-monero-defies-sell-off/",
      "date": "Nov 3",
-     "new": true
-    },
-    {
-     "title": "Dash ships Evolution Platform v5 with shielded tokens, activation date pending",
-     "url": "https://coinmarketcap.com/community/articles/6ae32f65e2069a2b25b56707",
-     "date": "Oct 29",
-     "new": true
+     "new": false
     }
    ],
    "unlocks": []
