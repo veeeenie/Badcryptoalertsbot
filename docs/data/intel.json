@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-07T02:25:43Z",
+ "generated_at": "2026-11-07T14:18:11Z",
  "coins": {
   "kBONK": {
    "side": "short",
@@ -169,7 +169,7 @@
   "AIXBT": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-06T14:18:43Z",
+   "checked_at": "2026-11-07T14:18:11Z",
    "about": "aixbt is an autonomous AI agent launched on Virtuals Protocol that tracks crypto social chatter and market data and posts market intelligence. Holding AIXBT gives access to its premium analytics terminal.",
    "competitors": [
     "Virtuals Protocol (VIRTUAL)",
@@ -179,7 +179,7 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "neutral",
-   "summary": "No price-moving news in the past week and supply is fully unlocked. Liquidity is still thinner after Binance removed margin and a spot pair in September.",
+   "summary": "No price-moving news in the past week and supply is fully unlocked, so no new supply pressure. Liquidity stays thin after Binance cut margin and a spot pair in September.",
    "news": [],
    "unlocks": []
   },
