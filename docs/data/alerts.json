@@ -97,6 +97,17 @@
       "name": "HYPE 100",
       "touch_pct": 1.0,
       "source": "trader via chat, 5 Nov 2026"
+    },
+    {
+      "id": "JUP-dclose-0.252",
+      "coin": "JUP",
+      "type": "close",
+      "timeframe": "daily",
+      "side": "above",
+      "price": 0.252,
+      "name": "JUP daily close above 0.252",
+      "meaning": "JUP has reclaimed its daily 200 EMA and the weekly 25 EMA: the short case is weaker; step aside rather than add.",
+      "source": "trader via chat, 9 Nov 2026"
     }
   ],
   "watch": [
