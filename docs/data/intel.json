@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-09T02:25:40Z",
+ "generated_at": "2026-11-09T14:28:41Z",
  "coins": {
   "REZ": {
    "side": "short",
@@ -922,6 +922,30 @@
      "title": "Rep. Maxine Waters calls for stricter crypto rules targeting Trump-linked projects as the House Oversight probe looms",
      "url": "https://cryptobriefing.com/rep-maxine-waters-calls-for-stricter-crypto-regulations-targeting-trump-projects/",
      "date": "Nov 6",
+     "new": true
+    }
+   ],
+   "unlocks": []
+  },
+  "BANANA": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-09T14:28:41Z",
+   "about": "Banana Gun is a trading-bot platform (Telegram and web) for sniping and fast swaps across Ethereum, Solana, Base and other chains. BANANA is its token, and holders receive a share of bot fee revenue.",
+   "competitors": [
+    "Maestro",
+    "Trojan",
+    "BONKbot",
+    "Photon"
+   ],
+   "about_checked_at": "2026-11-09T14:28:41Z",
+   "stance": "neutral",
+   "summary": "The only fresh news is Banana Gun pledging 40% of net trading revenue to buy back and burn Kinetiq's KNTQ token, not BANANA, which gives no direct support to BANANA. No dated unlock was found for the next 14 days (Tokenomist lists the next team unlock in 2031).",
+   "news": [
+    {
+     "title": "Banana Gun commits 40% of net trading revenue to KNTQ (Kinetiq) buybacks and burns",
+     "url": "https://www.tokenpost.com/news/investing/47352",
+     "date": "Nov 3",
      "new": true
     }
    ],
