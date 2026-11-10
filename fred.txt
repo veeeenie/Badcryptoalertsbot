@@ -1,12 +1,56 @@
-== RBI rates
-Policy Repo Rate </th> <td> : 5.50%
-Standing Deposit Facility Rate </th> <td> : 5.25%
-Marginal Standing Facility Rate </th> <td> : 5.75%
-Bank Rate </th> <td style="width:50%
-== RBI CPI on home?
-== mospi site
-HTTP 200
-== esankhyiki
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="title" content="esankhyiki | Ministry of Statistics Programme Implementation, Government of India"/><meta name="keywo
-== CNBC IN CPI?
-{"FormattedQuoteResult":{"FormattedQuote":[{"symbol":"INCPIY","code":1}]}}
+rates: US CPI failed: could not convert string to float: '-'
+rates: written ; errors: US CPI: ValueError
+rates: US CPI failed: could not convert string to float: '-'
+rates: written ; errors: US CPI: ValueError
+{
+ "generated_at": "2026-11-10T07:23:05+00:00",
+ "us": {
+  "policy": {
+   "lo": 3.75,
+   "hi": 4.0,
+   "effective": 3.88,
+   "as_of": "2026-11-06"
+  },
+  "cpi": null,
+  "y10": {
+   "value": 4.88,
+   "as_of": "2026-11-09",
+   "wk": 4.91
+  },
+  "real10": {
+   "value": 2.66,
+   "as_of": "2026-11-09",
+   "wk": 2.62,
+   "ytd_lo": 1.72,
+   "ytd_hi": 2.95
+  }
+ },
+ "india": {
+  "repo": 5.5,
+  "cpi": {
+   "value": 5.54,
+   "month": "Sep 2026",
+   "source": "https://www.deccanherald.com/business/food-fuel-push-retail-inflation-to-23-month-high-of-554-4180302",
+   "updated": "2026-11-10"
+  },
+  "y10": {
+   "value": 7.154,
+   "as_of": "2026-11-09",
+   "wk": null
+  },
+  "real10_est": 1.61,
+  "policy_real": -0.04
+ },
+ "alert": {
+  "low": 2.4,
+  "high": 2.95
+ },
+ "alert_zone": "mid",
+ "in10y_hist": {
+  "2026-11-09": 7.154
+ },
+ "us_cpi_checked": "",
+ "errors": [
+  "US CPI: ValueError"
+ ]
+}
