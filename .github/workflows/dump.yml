@@ -1,4 +1,4 @@
-name: Market test 2 (temporary)
+name: FRED test (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -10,12 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/checkout@v5
-        with: {ref: main, path: main}
-      - uses: actions/setup-python@v6
-        with: {python-version: "3.12"}
-      - run: pip install -r main/scanner/requirements.txt
       - run: |
-          cd main/scanner && (python market.py > ../../mkt.txt 2>&1 || true) && cp ../docs/data/market.json ../../market_test.json 2>/dev/null || true
-          cd ../.. && git config user.name "setup-scanner" && git config user.email "actions@users.noreply.github.com"
-          git add mkt.txt market_test.json 2>/dev/null; git add mkt.txt; git commit -qm "mkt test" && git push -q origin HEAD:debug-weekly
+          {
+          for s in DFII10 DGS2 DFEDTARU T10YIE; do echo "== $s"; curl -s -m 30 -A "Mozilla/5.0" "https://fred.stlouisfed.org/graph/fredgraph.csv?id=$s&cosd=2026-08-01" | tail -6; done
+          } > fred.txt 2>&1
+          git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
+          git add fred.txt && git commit -qm "fred" && git push -q origin HEAD:debug-weekly
