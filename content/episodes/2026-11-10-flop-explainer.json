@@ -1,9 +1,9 @@
 {
- "slug": "2026-11-11-flop-explainer",
- "date": "11 NOV",
+ "slug": "2026-11-10-flop-explainer",
+ "date": "10 NOV",
  "sentences": [
   {
-   "text": "Arthur Hayes is building a blockchain for AI|A-I agents.",
+   "text": "Arthur Hayes is building a blockchain for AI agents.",
    "beats": [
     [
      0,
@@ -78,14 +78,14 @@
    ]
   },
   {
-   "text": "No VCs.|V-Cs No presale.",
+   "text": "No VC money. No presale.",
    "beats": [
     [
      0,
      {
       "kind": "pill",
       "group": "B",
-      "text": "0 VC allocation",
+      "text": "0 VC money",
       "x": -220,
       "y": 840,
       "color": "white",
@@ -123,7 +123,7 @@
    ]
   },
   {
-   "text": "AI|A-I agents need computers to run models.",
+   "text": "AI agents need computers to run models.",
    "beats": [
     [
      0,
@@ -464,7 +464,7 @@
    ]
   },
   {
-   "text": "The first block, Q1 2027.|Q-one twenty-twenty-seven",
+   "text": "The first block, Q1|Q-one 2027.|twenty-twenty-seven",
    "beats": [
     [
      2,
