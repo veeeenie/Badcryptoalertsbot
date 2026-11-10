@@ -93,7 +93,8 @@ def row(rid, name, daily, now_value, unit):
         label = "bearish"
     else:
         label = "mixed"
-    return {"id": rid, "name": name, "unit": unit,   # unit: "price" (USD) or "mcap" ($ billions) "value": price, "label": label, "tf": tf,
+    # unit: "price" (USD) or "mcap" ($ billions)
+    return {"id": rid, "name": name, "unit": unit, "value": price, "label": label, "tf": tf,
             "chg7d": round(chg7, 1) if chg7 is not None else None, "chg13w": round(chg13, 1) if chg13 is not None else None,
             "support": sup, "resistance": res, "for_long": bull, "for_short": bear, "atr_w": A}
 
