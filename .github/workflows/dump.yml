@@ -1,4 +1,4 @@
-name: HIP-4 probe 2 (temporary)
+name: HIP-4 probe 3 (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          python3 - > probe.txt 2>&1 <<'PY'
+          (python3 - > probe.txt 2>&1 || true) <<'PY'
           import json, urllib.request, collections, time
           def hl(b):
               r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
@@ -32,4 +32,4 @@ jobs:
           print("ctx try", str(hl({"type":"spotMetaAndAssetCtxs"})[1][:2])[:300])
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add probe.txt && git commit -qm "probe2" && git push -q origin HEAD:debug-weekly
+          git add probe.txt && git commit -qm "probe3" && git push -q origin HEAD:debug-weekly
