@@ -7,6 +7,8 @@ the underlying ends above the threshold, from its current Hyperliquid price, the
 volatility over the last 7 days of hourly candles (a lognormal, no drift; rough, ignores fat tails,
 weekends and the averaging window some markets settle on).
 
+Only markets listed on trade.xyz's Events page alert (venue "txyz" plus Hyperliquid's own recurring daily
+markets); other apps' markets (Skew, Fox, Out) are kept in the file but hidden on the site.
 Telegram alert when a price market with 1.5 to 72 hours left can be bought at least MARGIN (10
 points) below the model price on either side (YES at the ask, or NO at 1 - the YES bid), with at
 least $10 available at that price (Hyperliquid's minimum order). Once per market and side.
@@ -143,6 +145,9 @@ def main():
         if yes not in mids:
             continue            # settled or not trading
         f = kv(o.get("description"))
+        if f.get("class") == "priceBinary":        # Hyperliquid's own recurring daily markets (listed on trade.xyz)
+            f = {"perp": f.get("underlying"), "threshold": f.get("targetPrice"), "time": f.get("expiry")}
+            o = dict(o, name="template:binaryPrice")
         kind = "price" if o.get("name") == "template:binaryPrice" else "touch" if o.get("name") == "template:priceTouch" else "event"
         exp = None
         for k in ("time", "scheduledStart", "resolutionDeadline"):
@@ -164,7 +169,9 @@ def main():
         ask = float(asks[0]["px"]) if asks else None
         bid_usd = sum(float(l["sz"]) * (1 - float(l["px"])) for l in bids if bid - float(l["px"]) <= 0.01) if bids else 0   # buying NO
         ask_usd = sum(float(l["sz"]) * float(l["px"]) for l in asks if float(l["px"]) - ask <= 0.01) if asks else 0
-        r = {"id": oid, "kind": kind, "title": title_of(o, f, qdesc.get(oid)), "venue": o.get("venue"),
+        venue = o.get("venue")
+        r = {"id": oid, "kind": kind, "title": title_of(o, f, qdesc.get(oid)), "venue": venue,
+             "on_txyz": venue in (None, "txyz"),      # what the trade.xyz Events page shows (its own + Hyperliquid's recurring)
              "expiry": exp.isoformat() if exp else None, "hours_left": round(hours, 2) if hours is not None else None,
              "bid": bid, "ask": ask, "spread": round(ask - bid, 4) if bid is not None and ask is not None else None,
              "bid_usd": round(bid_usd, 2), "ask_usd": round(ask_usd, 2)}
@@ -186,7 +193,7 @@ def main():
     sent = {k: v for k, v in (prev.get("alerted") or {}).items() if now_ms - v < 4 * 86_400_000}
     msgs = []
     for r in rows:
-        if r.get("fair") is None or not (ALERT_HOURS[0] <= r["hours_left"] <= ALERT_HOURS[1]):
+        if r.get("fair") is None or not r["on_txyz"] or not (ALERT_HOURS[0] <= r["hours_left"] <= ALERT_HOURS[1]):
             continue
         for side, edge, usd, px in (("YES", r.get("edge_yes"), r["ask_usd"], r["ask"]), ("NO", r.get("edge_no"), r["bid_usd"], None if r["bid"] is None else 1 - r["bid"])):
             key = f"{r['id']}:{side}"

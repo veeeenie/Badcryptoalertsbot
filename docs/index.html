@@ -331,6 +331,7 @@ fetch("data/rates.json?t="+Date.now()).then(r=>r.json()).then(R=>{
 fetch("data/predict.json?t="+Date.now()).then(r=>r.json()).then(P=>{
   const M=P.margin||0.1, pc=x=>x==null?"–":x.toFixed(2);
   const ends=r=>{ if(!r.expiry) return "–"; const h=r.hours_left; return `${ist(r.expiry,true).replace(/-20\d\d/,"")} <span class="muted">(${h<1?Math.round(h*60)+"m":h<48?h.toFixed(1)+"h":Math.round(h/24)+"d"})</span>`; };
+  const hidden=P.markets.filter(r=>r.on_txyz===false).length; P.markets=P.markets.filter(r=>r.on_txyz!==false);
   const real=r=>r.bid!=null&&r.ask!=null&&r.bid>=0.02&&r.ask<=0.98&&r.spread<0.5;
   const all=P.markets.filter(r=>r.fair!=null&&r.hours_left>=0.5&&r.hours_left<=24*7), pr=all.filter(real).sort((a,b)=>a.hours_left-b.hours_left), empty=all.length-pr.length;
   let flagged=0;
@@ -345,8 +346,8 @@ fetch("data/predict.json?t="+Date.now()).then(r=>r.json()).then(P=>{
   document.getElementById("pmwide").innerHTML=wide.length?wide.map(r=>`<tr><td>${r.title}</td><td data-label="Ends">${ends(r)}</td><td data-label="YES">${pc(r.bid)} / ${pc(r.ask)}</td><td data-label="Spread">${(r.spread*100).toFixed(0)}¢</td><td data-label="Pair">$${(r.bid+1-r.ask).toFixed(2)} → pays $1.00 <span class="up">(+${((1/(r.bid+1-r.ask)-1)*100).toFixed(0)}%)</span></td></tr>`).join("")
     :'<tr><td colspan="5" class="muted">No real two-sided market with a spread of 3¢ or more right now.</td></tr>';
   document.getElementById("pmmargin").textContent=Math.round(M*100);
-  document.getElementById("pmhint").textContent=`${P.markets.length} live markets · ${pr.length} price markets with real quotes · ${flagged} ≥ ${Math.round(M*100)} pts off the model`;
-  document.getElementById("pmmeta").textContent=`Updated ${ist(P.generated_at,true)}. Places no orders.`;
+  document.getElementById("pmhint").textContent=`${P.markets.length} on trade.xyz · ${pr.length} price markets with real quotes · ${flagged} ≥ ${Math.round(M*100)} pts off the model`;
+  document.getElementById("pmmeta").textContent=`Only markets listed on trade.xyz Events (its own + Hyperliquid's daily ones). ${hidden} more on other Hyperliquid apps (Skew, Fox, Out) are hidden. Updated ${ist(P.generated_at,true)}. Places no orders.`;
 }).catch(()=>{document.getElementById("pmhint").textContent="not built yet: appears after the next hourly scan";});
 
 // ---- charts screener: every Hyperliquid perp, bullish / bearish / mixed on daily, weekly, monthly
