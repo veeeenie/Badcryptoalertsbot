@@ -1,4 +1,4 @@
-name: Real yield range (temporary)
+name: Rates sources (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,20 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          for y in 2024 2025 2026; do curl -sL -m 40 -A "Mozilla/5.0" "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/$y/all?type=daily_treasury_real_yield_curve&field_tdr_date_value=$y&page&_format=csv" | tail -n +2; done > ry.csv
-          python3 - > fred.txt <<'PY'
-          import csv
-          rows=[(r[0],float(r[3])) for r in csv.reader(open("ry.csv")) if len(r)>3 and r[3]]
-          rows.sort(key=lambda x:(x[0][6:],x[0][:5]))
-          for y in ("2024","2025","2026"):
-              v=[x for x in rows if x[0].endswith(y)]
-              lo=min(v,key=lambda x:x[1]); hi=max(v,key=lambda x:x[1])
-              print(y,"first",v[0],"last",v[-1],"low",lo,"high",hi)
-          # month-end values for 2026
-          last={}
-          for d,x in rows:
-              if d.endswith("2026"): last[d[:2]]=(d,x)
-          print("month ends 2026:",[last[k] for k in sorted(last)])
-          PY
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36"
+          {
+          echo "== Treasury nominal"; curl -sL -m 40 -A "$UA" "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv" | head -3
+          echo "== NYFed EFFR"; curl -sL -m 40 "https://markets.newyorkfed.org/api/rates/unsecured/effr/last/1.json" | head -c 600; echo
+          echo "== BLS CPI"; curl -sL -m 40 "https://api.bls.gov/publicAPI/v1/timeseries/data/CUUR0000SA0" | head -c 700; echo
+          echo "== RBI home"; curl -sL -m 40 -A "$UA" -w "\nHTTP %{http_code}\n" "https://www.rbi.org.in/" | grep -iE -A3 "repo|HTTP " | head -30
+          echo "== MOSPI api"; curl -sL -m 40 -A "$UA" -w "\nHTTP %{http_code}\n" "https://api.mospi.gov.in/api/cpi/getCPIIndex?base_year=2012&series=Current&year=2026&limit=5" | head -c 700; echo
+          echo "== worldgovernmentbonds IN"; curl -sL -m 40 -A "$UA" -w "\nHTTP %{http_code}\n" "https://www.worldgovernmentbonds.com/bond-historical-data/india/10-years/" | grep -oE "[0-9]\.[0-9]{2,3}%|HTTP [0-9]+" | head -8
+          echo "== investing IN10Y"; curl -sL -m 40 -A "$UA" -w "\nHTTP %{http_code}\n" "https://www.investing.com/rates-bonds/india-10-year-bond-yield" | grep -oE 'data-test="instrument-price-last"[^<]*<|HTTP [0-9]+' | head -4
+          echo "== CNBC IN10Y"; curl -sL -m 40 -A "$UA" "https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols=IN10Y&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json" | head -c 500; echo
+          echo "== CNBC US10Y"; curl -sL -m 40 -A "$UA" "https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols=US10Y&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json" | head -c 300; echo
+          } > fred.txt 2>&1
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add fred.txt && git commit -qm "fred3" && git push -q origin HEAD:debug-weekly
+          git add fred.txt && git commit -qm "rates1" && git push -q origin HEAD:debug-weekly
