@@ -1,4 +1,4 @@
-name: HIP-4 probe 3 (temporary)
+name: HIP-4 probe 4 (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -22,9 +22,9 @@ jobs:
               if k!="outcomes": print(k, json.dumps(meta[k])[:1500])
           oc=meta["outcomes"]; live=[o for o in oc if f"#{o['outcome']*10}" in m]
           print("outcomes",len(oc),"live",len(live))
-          print(collections.Counter((o["name"],o["venue"]) for o in live).most_common(30))
+          print(collections.Counter((o["name"],o.get("venue")) for o in live).most_common(30))
           bp=[o for o in live if o["name"]=="template:binaryPrice"]
-          for o in sorted(bp,key=lambda o:o["description"].split("time:")[-1])[:60]: print(o["outcome"],o["venue"],o["description"],m.get(f"#{o['outcome']*10}"))
+          for o in sorted(bp,key=lambda o:o["description"].split("time:")[-1])[:60]: print(o["outcome"],o.get("venue"),o["description"],m.get(f"#{o['outcome']*10}"))
           print("sample other:",[ (o["name"],o["description"][:150]) for o in live if o["name"] not in("template:binaryPrice",)][:15])
           t=time.time()
           for o in bp[:3]:
@@ -32,4 +32,4 @@ jobs:
           print("ctx try", str(hl({"type":"spotMetaAndAssetCtxs"})[1][:2])[:300])
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add probe.txt && git commit -qm "probe3" && git push -q origin HEAD:debug-weekly
+          git add probe.txt && git commit -qm "probe4" && git push -q origin HEAD:debug-weekly
