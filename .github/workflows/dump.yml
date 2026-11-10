@@ -1,4 +1,4 @@
-name: HIP-4 probe (temporary)
+name: HIP-4 probe 2 (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -12,21 +12,24 @@ jobs:
       - uses: actions/checkout@v5
       - run: |
           python3 - > probe.txt 2>&1 <<'PY'
-          import json, urllib.request
+          import json, urllib.request, collections, time
           def hl(b):
-              try:
-                  r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
-                  return json.load(urllib.request.urlopen(r,timeout=30))
-              except Exception as e: return f"ERR {e}"
-          m=hl({"type":"allMids"})
-          outs={k:v for k,v in m.items() if k.startswith("#")}
-          print("MIDS #:",len(outs),json.dumps(outs)[:1500])
-          for t in ("outcomeMeta","outcomeMetaAndAssetCtxs","outcomes","questionMeta"):
-              r=hl({"type":t}); print("==",t, json.dumps(r)[:3000] if not isinstance(r,str) else r)
-          ks=sorted(outs, key=lambda k:int(k[1:]))[:4]
-          for k in ks:
-              b=hl({"type":"l2Book","coin":k}); print("== book",k,json.dumps(b)[:800])
-          print("== spotMeta tokens w/ #?", [t for t in hl({"type":"spotMeta"})["tokens"] if "#" in t["name"]][:5])
+              r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
+              return json.load(urllib.request.urlopen(r,timeout=30))
+          meta=hl({"type":"outcomeMeta"}); m=hl({"type":"allMids"})
+          print("keys",list(meta.keys()))
+          for k in meta:
+              if k!="outcomes": print(k, json.dumps(meta[k])[:1500])
+          oc=meta["outcomes"]; live=[o for o in oc if f"#{o['outcome']*10}" in m]
+          print("outcomes",len(oc),"live",len(live))
+          print(collections.Counter((o["name"],o["venue"]) for o in live).most_common(30))
+          bp=[o for o in live if o["name"]=="template:binaryPrice"]
+          for o in sorted(bp,key=lambda o:o["description"].split("time:")[-1])[:60]: print(o["outcome"],o["venue"],o["description"],m.get(f"#{o['outcome']*10}"))
+          print("sample other:",[ (o["name"],o["description"][:150]) for o in live if o["name"] not in("template:binaryPrice",)][:15])
+          t=time.time()
+          for o in bp[:3]:
+              b=hl({"type":"l2Book","coin":f"#{o['outcome']*10}"}); print("book",o["outcome"],[l[:3] for l in b["levels"]])
+          print("ctx try", str(hl({"type":"spotMetaAndAssetCtxs"})[1][:2])[:300])
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add probe.txt && git commit -qm "probe1" && git push -q origin HEAD:debug-weekly
+          git add probe.txt && git commit -qm "probe2" && git push -q origin HEAD:debug-weekly
