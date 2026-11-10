@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-10T02:26:13Z",
+ "generated_at": "2026-11-10T14:22:48Z",
  "coins": {
   "MORPHO": {
    "side": "long",
@@ -108,31 +108,6 @@
     }
    ],
    "unlocks": []
-  },
-  "ZK": {
-   "side": "short",
-   "checked_at": "2026-11-03T14:21:20Z",
-   "stance": "supports",
-   "summary": "An investor and team unlock of about 173M ZK (roughly 1.5% of circulating supply) lands Nov 17, adding supply that favours the short. Risk to the short: ZKsync teased upcoming ZK token news on Oct 28 with no details yet.",
-   "news": [
-    {
-     "title": "ZKsync teases upcoming ZK token announcement after Prividium Commander launch",
-     "url": "https://cryptonews.net/news/blockchain/33661604",
-     "date": "Oct 28",
-     "new": true
-    }
-   ],
-   "unlocks": [
-    {
-     "date": "Nov 17",
-     "date_iso": "2026-11-17",
-     "amount": "173.4M ZK",
-     "pct_supply": "1.5",
-     "note": "private investors (~59%) and team/insiders (~41%)",
-     "source": "https://app.tokenomics.com/tokenomics/zksync/unlocks",
-     "new": true
-    }
-   ]
   },
   "AIXBT": {
    "side": "short",
@@ -270,7 +245,7 @@
   "NXPC": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-09T02:25:40Z",
+   "checked_at": "2026-11-10T14:22:48Z",
    "about": "NEXPACE is Nexon's Web3 arm behind MapleStory Universe, running on the Henesys chain (an Avalanche L1). NXPC is used for item minting and enhancement, marketplace fees and rewards, with 20% of user-activity revenue burned quarterly.",
    "competitors": [
     "Ronin (RON)",
@@ -280,15 +255,8 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "supports",
-   "summary": "The Nov 15 unlock (about 1M NXPC cliff to IP MG and the team, up to about 7.9M including Contribution Reward emissions, roughly 2.4% of market cap) adds supply that favours the short. No fresh news this week; the Nov 12 Moonbridge/Gloom content launch is the main upside risk.",
-   "news": [
-    {
-     "title": "MapleStory Universe launches Moonbridge on Nov 12 and delays the Black Mage boss to Q1 2027",
-     "url": "https://egamers.io/maplestory-universe-sets-nov-12-for-moonbridge-and-gloom-as-black-mage-moves-to-q1-2027/",
-     "date": "Nov 2",
-     "new": false
-    }
-   ],
+   "summary": "No price-moving news in the past week. The Nov 15 unlock (about 1M NXPC cliff to IP MG and the team, up to about 7.9M including Contribution Reward emissions, roughly 2.4% of market cap) adds supply that favours the short; the Nov 12 Moonbridge/Gloom content launch is the main upside risk.",
+   "news": [],
    "unlocks": [
     {
      "date": "Nov 15",
