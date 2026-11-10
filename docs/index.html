@@ -60,6 +60,12 @@ tr:last-child td{border-bottom:0}
 .mkt details[open] summary::before{transform:rotate(90deg)}
 .mkt .lab{font-weight:700;text-transform:capitalize}
 .mkt .body{padding:4px 14px 12px 34px}
+/* rates: US vs India */
+.rates{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;margin:-6px 0 18px;overflow:hidden}
+.rates table td,.rates table th{padding:6px 12px}
+.rates .note{padding:8px 12px 10px;font-size:12.5px;border-top:1px solid var(--line)}
+.rates td small{color:var(--muted);font-size:11.5px;margin-left:4px;white-space:nowrap}
+.rates td small.up{color:var(--up)} .rates td small.down{color:var(--down)}
 .cbanner{margin:6px 0 10px;padding:8px 12px;border-radius:8px;background:var(--soft);font-size:14px;border-left:3px solid var(--down)}
 /* chart cards and tabs */
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
@@ -164,6 +170,12 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <section id="market" class="mkt">
   <div class="mkthead"><b>Market</b> <span class="muted" id="mktverdict">Loading…</span></div>
   <div id="mktrows"></div>
+  </section>
+
+  <section id="rates" class="rates" hidden>
+  <div class="mkthead"><b>Rates</b> <span class="muted" id="ratesnote"></span></div>
+  <table><thead><tr><th></th><th>US</th><th>India</th></tr></thead><tbody id="ratesrows"></tbody></table>
+  <div class="note muted" id="ratesfoot"></div>
   </section>
 
   <section id="charts" class="anchor">
@@ -274,6 +286,25 @@ fetch("data/market.json?t="+Date.now()).then(r=>r.json()).then(m=>{
     </details>`).join("");
   if(SCR) drawCharts(document.querySelector("#ctabs button.on")?.dataset.tab||"bullish");
 }).catch(()=>{document.getElementById("mktverdict").textContent="Market data not built yet: it appears after the next hourly scan.";});
+
+// ---- rates: US vs India (policy rate, inflation, 10-year yield, real yield)
+fetch("data/rates.json?t="+Date.now()).then(r=>r.json()).then(R=>{
+  const u=R.us||{}, n=R.india||{}, p=x=>x==null?"–":x.toFixed(2)+"%";
+  const wk=(o)=>{ if(!o||o.wk==null) return ""; const d=o.value-o.wk; return `<small class="${d>0?"down":d<0?"up":""}">${d>0?"▲":d<0?"▼":"·"} ${Math.abs(d).toFixed(2)} wk</small>`; };
+  const mo=c=>c?`${c.value}% <small>${c.month}</small>`:"–";
+  const rows=[
+    ["Policy rate", u.policy?`${u.policy.lo.toFixed(2)}–${u.policy.hi.toFixed(2)}% <small>Fed funds</small>`:"–", n.repo!=null?`${n.repo.toFixed(2)}% <small>repo</small>`:"–"],
+    ["Inflation (CPI)", mo(u.cpi), mo(n.cpi)],
+    ["Policy rate minus inflation", u.policy_real!=null?(u.policy_real>=0?"+":"")+u.policy_real.toFixed(2)+"%":"–", n.policy_real!=null?(n.policy_real>=0?"+":"")+n.policy_real.toFixed(2)+"%":"–"],
+    ["10-year govt bond", u.y10?p(u.y10.value)+wk(u.y10):"–", n.y10?p(n.y10.value)+wk(n.y10):"–"],
+    ["10-year real yield", u.real10?`<b>${p(u.real10.value)}</b>${wk(u.real10)}`:"–", n.real10_est!=null?`~${p(n.real10_est)} <small>est.</small>`:"–"]];
+  document.getElementById("ratesrows").innerHTML=rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("");
+  const rr=u.real10, a=R.alert||{};
+  document.getElementById("ratesnote").textContent=rr?`US real yield ${rr.value.toFixed(2)}% · this year ${rr.ytd_lo}–${rr.ytd_hi}% · Telegram alert below ${(+a.low).toFixed(2)}% or above ${(+a.high).toFixed(2)}%`:"";
+  document.getElementById("ratesfoot").innerHTML=`Real yield = what a 10-year government bond pays above inflation. Higher is a headwind for gold (gold pays nothing), lower a tailwind. US: market yield on inflation-protected bonds (TIPS). India has no traded inflation-linked bond, so its figure is the 10-year yield minus the latest CPI. ▲▼ = change on a week ago (a rise in yields is shown red).
+    Sources: NY Fed, BLS, US Treasury, RBI, CNBC (India 10-year), MOSPI (India CPI, updated after each monthly release).${R.errors&&R.errors.length?` Not refreshed this time: ${R.errors.map(e=>e.split(":")[0]).join(", ")}.`:""} Updated ${ist(R.generated_at,true)}.`;
+  document.getElementById("rates").hidden=false;
+}).catch(()=>{});
 
 // ---- charts screener: every Hyperliquid perp, bullish / bearish / mixed on daily, weekly, monthly
 const TFN={d:"D",w:"W",m:"M"}, ARW={bull:['▲','up'],bear:['▼','down'],mixed:['•','muted'],"n/a":['–','muted']};
