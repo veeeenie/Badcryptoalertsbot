@@ -143,6 +143,20 @@ const DRAW = {
     X.strokeStyle = P.red; X.lineWidth = 12; rr(-w / 2, -h / 2, w, h, 22); X.stroke(); text(o.text, 0, 6, X.font, P.red); },
   big(o) { text(o.text, 0, 0, font(SERIF, 800, o.size || 180), P[o.color] || P.ink); if (o.sub) text(o.sub, 0, (o.size || 180) * 0.75, font(SANS, 500, 44), P.mut); },
   small(o) { text(o.text, 0, 0, font(SANS, 500, o.size || 34), P.mut); },
+  path(o, t, a) { // price line that draws itself: vals (% moves), lo = dashed red level with labLo, end label endLab
+    const v = o.vals, w = 760, h = o.h || 320, mn = Math.min(...v, o.lo ?? 0) - 1, mx = Math.max(...v) + 1;
+    const px = i => -w / 2 + w * i / (v.length - 1), py = y => h / 2 - h * (y - mn) / (mx - mn);
+    X.fillStyle = P.paper; rr(-w / 2 - 40, -h / 2 - 90, w + 80, h + 130, 22); X.fill(); X.strokeStyle = P.line; X.lineWidth = 3; X.stroke();
+    if (o.lo != null) { X.save(); X.setLineDash([18, 14]); X.strokeStyle = P.red; X.lineWidth = 5; X.beginPath(); X.moveTo(-w / 2, py(o.lo)); X.lineTo(w / 2, py(o.lo)); X.stroke(); X.restore();
+      if (o.labLo) text(o.labLo, -w / 2, py(o.lo) + 42, font(SANS, 600, 36), P.red, 'left'); }
+    const k = cl(eo(a / (o.dur || 2.2))) * (v.length - 1), n = Math.floor(k);
+    X.strokeStyle = P.ink; X.lineWidth = 9; X.lineJoin = 'round'; X.lineCap = 'round'; X.beginPath(); X.moveTo(px(0), py(v[0]));
+    for (let i = 1; i <= n; i++) X.lineTo(px(i), py(v[i])); let ex = px(n), ey = py(v[n]);
+    if (n < v.length - 1) { const f = k - n; ex = lerp(px(n), px(n + 1), f); ey = lerp(py(v[n]), py(v[n + 1]), f); X.lineTo(ex, ey); } X.stroke(); X.lineCap = 'butt';
+    if (o.lo != null) { const hit = v.findIndex(y => y <= o.lo); if (hit >= 0 && hit <= k) { X.fillStyle = P.red; X.beginPath(); X.arc(px(hit), py(v[hit]), 18, 0, 7); X.fill(); } }
+    X.fillStyle = k >= v.length - 1 ? P.sage : P.ink; X.beginPath(); X.arc(ex, ey, 16, 0, 7); X.fill();
+    if (o.endLab && k >= v.length - 1) text(o.endLab, w / 2, ey - 50, font(SANS, 600, 38), P.sage, 'right');
+    if (o.note) text(o.note, -w / 2, -h / 2 - 45, font(SANS, 500, 34), P.mut, 'left'); },
 };
 
 // ---------- state at time t ----------

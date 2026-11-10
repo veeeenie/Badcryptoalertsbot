@@ -1,0 +1,688 @@
+{
+ "slug": "2026-11-11-nvda-two-ways",
+ "date": "11 NOV",
+ "style": "editorial",
+ "sentences": [
+  {
+   "text": "Same $100.|one-hundred-dollars. Two very different risks.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Same *$100.*"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stack",
+      "n": 10,
+      "r": 110,
+      "y": 900,
+      "value": "$100",
+      "sub": "on NVDA going up",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "head",
+      "text": "Two *risks.*"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "On Hyperliquid, you can bet on NVDA|Nvidia two ways.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Two *ways.*"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "a",
+      "prop": "label",
+      "text": "Perp · HIP-3",
+      "x": 300,
+      "y": 820,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "label",
+      "text": "YES · HIP-4",
+      "x": 780,
+      "y": 820,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "c",
+      "prop": "label",
+      "text": "…with one *catch*",
+      "y": 1100,
+      "size": 46,
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Way one: the perp on trade.xyz.|trade-x-y-z.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Way *one.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "np",
+      "prop": "nameplate",
+      "name": "NVDA perp",
+      "sub": "trade.xyz · HIP-3",
+      "y": 760,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It allows up to 20x|twenty-x leverage.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "move",
+      "id": "np",
+      "y": 640,
+      "s": 0.7,
+      "dur": 0.5
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "lv",
+      "prop": "big",
+      "text": "20×",
+      "size": 200,
+      "color": "acc",
+      "y": 1000,
+      "sub": "max leverage",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "$100|a-hundred-dollars controls $2,000|two-thousand-dollars of Nvidia.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "$100 → *$2,000.*"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "s1",
+      "prop": "stack",
+      "n": 4,
+      "r": 80,
+      "x": 290,
+      "y": 930,
+      "value": "$100",
+      "sub": "your margin",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "s2",
+      "prop": "stack",
+      "n": 16,
+      "r": 110,
+      "x": 780,
+      "y": 930,
+      "value": "$2,000",
+      "sub": "NVDA position",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Up 5%,|five-percent, you make about $100.|a-hundred-dollars.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Up *5%.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "u",
+      "prop": "label",
+      "text": "NVDA +5%  →  *+$100*",
+      "y": 760,
+      "size": 58,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Down 5%,|five-percent, your $100|hundred-dollars is gone.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Down *5%.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "d",
+      "prop": "label",
+      "text": "NVDA −5%  →  −$100",
+      "y": 960,
+      "size": 58,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "dx",
+      "prop": "cross",
+      "y": 962,
+      "w": 560
+     }
+    ]
+   ]
+  },
+  {
+   "text": "You're liquidated before that.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "sp",
+      "prop": "stamp",
+      "text": "LIQUIDATED",
+      "y": 1140,
+      "size": 84,
+      "pop": false,
+      "sfx": "impact_soft"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Way two: a YES contract on HIP-4.|hip-four.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Way *two.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "YES",
+      "fee": "53¢",
+      "y": 760,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Will NVDA|Nvidia be above $169|one-sixty-nine at 4|four PM|p-m Wednesday?",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "q",
+      "prop": "label",
+      "text": "NVDA above *$169?*",
+      "y": 1000,
+      "size": 56,
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "qn",
+      "prop": "small",
+      "text": "Wed 11 Nov · 4 p.m. New York",
+      "y": 1110
+     }
+    ]
+   ]
+  },
+  {
+   "text": "A YES costs about 53|fifty-three cents.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "move",
+      "id": "tk",
+      "x": 540,
+      "y": 700,
+      "s": 1.15,
+      "dur": 0.5,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "$100|a-hundred-dollars buys about 189.|one-eighty-nine.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "*189* YES."
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stack",
+      "n": 18,
+      "r": 110,
+      "y": 930,
+      "value": "189",
+      "sub": "YES at ~53¢",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Above $169,|one-sixty-nine, each pays $1.|one-dollar. That's $189.|one-eighty-nine-dollars.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Right: *$189.*"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "w",
+      "prop": "big",
+      "text": "$189",
+      "size": 180,
+      "color": "gold",
+      "y": 820,
+      "sub": "$1 per YES",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Below, you lose $100.|a-hundred-dollars. Never more.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Wrong: *−$100.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "l",
+      "prop": "label",
+      "text": "max loss = what you paid",
+      "y": 1100,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *catch.*",
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Say Nvidia dips 5%|five-percent at noon, then recovers.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "pa",
+      "prop": "path",
+      "y": 860,
+      "vals": [
+       0,
+       -0.5,
+       -1.5,
+       -2.5,
+       -3.5,
+       -4.5,
+       -5.6,
+       -3,
+       0,
+       2
+      ],
+      "lo": -5,
+      "labLo": "−5%: perp's $100 gone",
+      "endLab": "ends above $169",
+      "note": "example",
+      "dur": 3.2,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The perp is wiped out on the dip.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Perp: *wiped.*"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The YES only checks 4|four PM.|p-m.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "YES: *paid.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "pf",
+      "prop": "proof",
+      "x": 800,
+      "y": 1130,
+      "s": 0.6,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "A perp can liquidate you on the way. A YES only cares where it ends.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *takeaway.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "t1",
+      "prop": "label",
+      "text": "Perp: can liquidate you *on the way*",
+      "y": 760,
+      "size": 46,
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "add",
+      "id": "t2",
+      "prop": "label",
+      "text": "YES: only cares *where it ends*",
+      "y": 920,
+      "size": 46,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Daily, on *X.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "a",
+      "prop": "label",
+      "text": "Hyperliquid",
+      "x": 300,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "label",
+      "text": "trade.xyz",
+      "x": 780,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "c2",
+      "prop": "label",
+      "text": "Metric",
+      "x": 300,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "label",
+      "text": "Flop",
+      "x": 780,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 1040,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Not financial advice · prices checked 10 Nov, 22:26 UTC; they move",
+      "y": 1180,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}
