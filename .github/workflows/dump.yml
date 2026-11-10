@@ -1,4 +1,4 @@
-name: Total mcap sources (temporary)
+name: Market test (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -10,14 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with: {ref: main, path: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: "3.12"}
+      - run: pip install -r main/scanner/requirements.txt
       - run: |
-          {
-          echo "== cg global chart"; curl -s -m 30 "https://api.coingecko.com/api/v3/global/market_cap_chart?days=365" | head -c 400; echo
-          echo "== cg global"; curl -s -m 30 "https://api.coingecko.com/api/v3/global" | head -c 600; echo
-          echo "== cmc data-api"; curl -s -m 30 -A "Mozilla/5.0" "https://api.coinmarketcap.com/data-api/v3/global-metrics/quotes/historical?format=chart&interval=1d&timeStart=1700000000&timeEnd=1762700000" | head -c 800; echo
-          echo "== cmc data-api 2"; curl -s -m 30 -A "Mozilla/5.0" "https://api.coinmarketcap.com/data-api/v4/global-metrics/quotes/historical?convertId=2781&range=ALL" | head -c 800; echo
-          echo "== paprika"; curl -s -m 30 "https://api.coinpaprika.com/v1/global" | head -c 400; echo
-          echo "== defillama stables"; curl -s -m 30 "https://stablecoins.llama.fi/stablecoincharts/all" | head -c 300; echo
-          } > srcs.txt 2>&1
-          git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add srcs.txt && git commit -qm "srcs" && git push -q origin HEAD:debug-weekly
+          cd main/scanner && (python market.py > ../../mkt.txt 2>&1 || true) && cp ../docs/data/market.json ../../market_test.json 2>/dev/null || true
+          cd ../.. && git config user.name "setup-scanner" && git config user.email "actions@users.noreply.github.com"
+          git add mkt.txt market_test.json 2>/dev/null; git add mkt.txt; git commit -qm "mkt test" && git push -q origin HEAD:debug-weekly
