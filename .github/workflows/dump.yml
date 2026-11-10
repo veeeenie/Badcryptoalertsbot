@@ -1,4 +1,4 @@
-name: Market test (temporary)
+name: Market test 2 (temporary)
 on:
   push:
     branches: [debug-weekly]
