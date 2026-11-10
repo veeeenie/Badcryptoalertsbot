@@ -1,0 +1,594 @@
+{
+ "slug": "2026-11-10-hl-prediction-markets",
+ "date": "10 NOV",
+ "sentences": [
+  {
+   "text": "Hyperliquid has 300|three-hundred prediction markets.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "title",
+      "group": "A",
+      "text": "HYPERLIQUID",
+      "y": 330,
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "counter",
+      "group": "A",
+      "n": 300,
+      "label": "prediction markets",
+      "y": 610,
+      "emoji": "🎲",
+      "sfx": "ticks"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Most of the crypto ones?",
+   "beats": [
+    [
+     3,
+     {
+      "kind": "big",
+      "group": "B",
+      "text": "THE CRYPTO ONES?",
+      "y": 420,
+      "emoji": "🪙",
+      "sfx": "whoosh",
+      "size": 94
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Empty.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "stamp",
+      "group": "B",
+      "text": "EMPTY",
+      "y": 820,
+      "color": "red",
+      "sfx": "impact"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And there might be a way to profit from that.",
+   "beats": [
+    [
+     5,
+     {
+      "kind": "big",
+      "group": "C",
+      "text": "A WAY TO PROFIT?",
+      "y": 560,
+      "emoji": "💰",
+      "sfx": "whoosh",
+      "size": 94
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "pill",
+      "group": "C",
+      "text": "…with one catch",
+      "y": 980,
+      "color": "amber",
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Here's how they work.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "title",
+      "group": "D",
+      "text": "HOW IT WORKS",
+      "y": 300,
+      "sfx": "whoosh"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "You buy YES or NO.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "card",
+      "group": "D",
+      "text": "YES",
+      "sub": "$0.46",
+      "x": -230,
+      "y": 470,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "card",
+      "group": "D",
+      "text": "NO",
+      "sub": "$0.54",
+      "x": 230,
+      "y": 470,
+      "color": "red",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Winner gets $1.|one-dollar",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "big",
+      "group": "D",
+      "text": "WINNER GETS $1",
+      "y": 920,
+      "size": 86,
+      "color": "mint",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "No leverage. No liquidations.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "pill",
+      "group": "D",
+      "text": "0× leverage",
+      "x": -215,
+      "y": 1100,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "pill",
+      "group": "D",
+      "text": "0 liquidations",
+      "x": 215,
+      "y": 1100,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "We scanned every single one.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "counter",
+      "group": "E",
+      "n": 296,
+      "label": "markets scanned today",
+      "y": 420,
+      "emoji": "🔍",
+      "sfx": "ticks"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "92|ninety-two bet on prices, like BTC|bitcoin above 75K?|seventy-five-K",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "big",
+      "group": "F",
+      "text": "92",
+      "y": 330,
+      "size": 260,
+      "color": "mint",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "text",
+      "group": "F",
+      "text": "bet on prices",
+      "y": 640,
+      "sfx": null
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "pill",
+      "group": "F",
+      "text": "BTC above $75,000?",
+      "y": 800,
+      "color": "white",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "But 45|forty-five of them have no real quotes.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "ring",
+      "group": "G",
+      "n": 45,
+      "of": 72,
+      "y": 640,
+      "sfx": "impact"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "1¢|one-cent bid. 99¢|ninety-nine-cent ask.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "book",
+      "group": "H",
+      "side": "BID",
+      "px": "0.01",
+      "y": 330,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "book",
+      "group": "H",
+      "side": "ASK",
+      "px": "0.99",
+      "y": 620,
+      "color": "red",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Nobody's home.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "big",
+      "group": "H",
+      "text": "NOBODY'S HOME",
+      "y": 1060,
+      "size": 80,
+      "color": "amber",
+      "emoji": "👻",
+      "sfx": "impact_soft"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Where the pros trade, prices are tight.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "title",
+      "group": "I",
+      "text": "WHERE PROS TRADE",
+      "y": 300,
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "compare",
+      "group": "I",
+      "y": 440,
+      "sfx": "pop",
+      "rows": [
+       [
+        "GOLD above 4,142",
+        32,
+        29
+       ],
+       [
+        "SILVER above 53.43",
+        32,
+        27
+       ],
+       [
+        "S&P 500 above 7,551",
+        60,
+        55
+       ]
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Gold, silver, the S&P|S-and-P 500|five-hundred: within a few points of a simple model.",
+   "beats": [
+    [
+     8,
+     {
+      "kind": "pill",
+      "group": "I",
+      "text": "3–5 points apart",
+      "y": 1150,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "No free money there.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "stamp",
+      "group": "J",
+      "text": "NO FREE MONEY",
+      "y": 560,
+      "color": "red",
+      "size": 120,
+      "sfx": "impact"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The gaps are in quiet markets.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "market",
+      "group": "K",
+      "y": 320,
+      "sfx": "whoosh",
+      "title": "BTC above 74,900 · ends tonight",
+      "left": "bid 0.19",
+      "right": "ask 0.43",
+      "mid": "24¢"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Buy YES at 19¢.|nineteen-cents",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "eq",
+      "group": "K",
+      "text": "YES @ 0.19",
+      "y": 650,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Buy NO at 57¢.|fifty-seven-cents",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "eq",
+      "group": "K",
+      "text": "+ NO @ 0.57",
+      "y": 780,
+      "color": "red",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "You paid 76¢|seventy-six-cents for a guaranteed $1.|dollar",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "eq",
+      "group": "K",
+      "text": "= $0.76",
+      "y": 910,
+      "color": "white",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "eq",
+      "group": "K",
+      "text": "→ PAYS $1.00",
+      "y": 1040,
+      "color": "mint",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch:",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "big",
+      "group": "L",
+      "text": "THE CATCH",
+      "y": 420,
+      "size": 150,
+      "color": "amber",
+      "emoji": "⚠️",
+      "sfx": "riser_hit"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "usually only one side fills.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "text",
+      "group": "L",
+      "text": "only ONE side fills",
+      "y": 800,
+      "size": 70,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "text",
+      "group": "L",
+      "text": "→ now you're holding a bet",
+      "y": 920,
+      "size": 52,
+      "color": "muted",
+      "sfx": null
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "title",
+      "group": "M",
+      "text": "FOLLOW",
+      "y": 280,
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "chip",
+      "group": "M",
+      "text": "Hyperliquid",
+      "x": -220,
+      "y": 470,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "chip",
+      "group": "M",
+      "text": "trade.xyz",
+      "x": 220,
+      "y": 470,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "chip",
+      "group": "M",
+      "text": "Metric",
+      "x": -220,
+      "y": 620,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "chip",
+      "group": "M",
+      "text": "Flop",
+      "x": 220,
+      "y": 620,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "title",
+      "group": "M",
+      "text": "@conxixent",
+      "y": 800,
+      "color": "mint",
+      "size": 110,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "text",
+      "group": "M",
+      "text": "Not financial advice · I trade on Hyperliquid",
+      "y": 990,
+      "size": 34,
+      "color": "muted",
+      "sfx": null
+     }
+    ]
+   ]
+  }
+ ]
+}
