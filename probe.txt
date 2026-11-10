@@ -1,136 +1,46 @@
-{
- "bal": [
-  {
-   "coin": "USDC",
-   "token": 0,
-   "total": "97.0186121",
-   "hold": "80.020985",
-   "entryNtl": "0.0"
-  },
-  {
-   "coin": "+311240",
-   "total": "3.0",
-   "hold": "0.0",
-   "entryNtl": "1.293"
-  },
-  {
-   "coin": "+311241",
-   "total": "3.0",
-   "hold": "0.0",
-   "entryNtl": "1.62"
-  }
- ],
- "fills": [
-  {
-   "coin": "#311240",
-   "px": "0.431",
-   "sz": "3.0",
-   "side": "B",
-   "time": 1794300579140,
-   "startPosition": "0.0",
-   "dir": "Buy",
-   "closedPnl": "0.0",
-   "hash": "0x84aacc7f3974c2f7862404487a1c1c01fb00e464d477e1c9287377d1f8789ce2",
-   "oid": 600379960694,
-   "crossed": true,
-   "fee": "0.0",
-   "tid": 477980740076605,
-   "feeToken": "USDC",
-   "twapId": null
-  },
-  {
-   "coin": "#311241",
-   "px": "0.54",
-   "sz": "3.0",
-   "side": "B",
-   "time": 1794301169643,
-   "startPosition": "0.0",
-   "dir": "Buy",
-   "closedPnl": "0.0",
-   "hash": "0x7bd0d71feeefe94c7d4a04487a3c2b0208df000589e3081e1f998272ade3c337",
-   "oid": 600380452068,
-   "crossed": false,
-   "fee": "0.0",
-   "tid": 365644234151557,
-   "feeToken": "USDC",
-   "twapId": null
-  }
- ],
- "orders": [],
- "info": {
-  "#311240": {
-   "outcome": 31124,
-   "side": 0,
-   "name": "Recurring",
-   "desc": "class:priceBinary|underlying:BTC|expiry:20261111-0600|targetPrice:74798|period:1d",
-   "sides": [
-    {
-     "name": "Yes"
-    },
-    {
-     "name": "No"
-    }
-   ],
-   "question": null,
-   "yes_bid": "0.37569",
-   "yes_ask": "0.38999"
-  },
-  "+311241": {
-   "outcome": 31124,
-   "side": 1,
-   "name": "Recurring",
-   "desc": "class:priceBinary|underlying:BTC|expiry:20261111-0600|targetPrice:74798|period:1d",
-   "sides": [
-    {
-     "name": "Yes"
-    },
-    {
-     "name": "No"
-    }
-   ],
-   "question": null,
-   "yes_bid": "0.37569",
-   "yes_ask": "0.38999"
-  },
-  "#311241": {
-   "outcome": 31124,
-   "side": 1,
-   "name": "Recurring",
-   "desc": "class:priceBinary|underlying:BTC|expiry:20261111-0600|targetPrice:74798|period:1d",
-   "sides": [
-    {
-     "name": "Yes"
-    },
-    {
-     "name": "No"
-    }
-   ],
-   "question": null,
-   "yes_bid": "0.37569",
-   "yes_ask": "0.38999"
-  },
-  "+311240": {
-   "outcome": 31124,
-   "side": 0,
-   "name": "Recurring",
-   "desc": "class:priceBinary|underlying:BTC|expiry:20261111-0600|targetPrice:74798|period:1d",
-   "sides": [
-    {
-     "name": "Yes"
-    },
-    {
-     "name": "No"
-    }
-   ],
-   "question": null,
-   "yes_bid": "0.37569",
-   "yes_ask": "0.38999"
-  }
- },
- "mids": {
-  "BTC": "74425.5",
-  "ETH": "2100.35",
-  "HYPE": "74.1565",
-  "SOL": "85.3795"
- }
-}
+question keys ['question', 'name', 'description', 'fallbackOutcome', 'namedOutcomes', 'settledNamedOutcomes']
+Q {"question": 620, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Bulgaria|participantB:Iceland|resolutionDeadline:20261120-1945|scheduledStart:20261113-1945|season:2026/27|sport:Soccer|stage:C, Matchday 5", "fallbackOutcome": 29101, "namedOutcomes": [29102, 29103, 29104], "settledNamedOutcomes": []}
+Q {"question": 619, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Slovenia|participantB:Switzerland|resolutionDeadline:20261120-1945|scheduledStart:20261113-1945|season:2026/27|sport:Soccer|stage:B, Matchday 5", "fallbackOutcome": 29095, "namedOutcomes": [29096, 29097, 29098], "settledNamedOutcomes": []}
+Q {"question": 198, "name": "template:sportsTournamentWinner", "description": "competition:English Premier League|officialSource:English Premier League|resolutionDeadline:20270605-1200|season:2026/2027|sport:football/soccer", "fallbackOutcome": 1472, "namedOutcomes": [1473, 1474, 1475, 1476, 1477, 1478], "settledNamedOutcomes": []}
+Q {"question": 199, "name": "template:sportsTournamentWinner", "description": "competition:UEFA Champions League|officialSource:UEFA|resolutionDeadline:20270612-1200|season:2026/2027|sport:football/soccer", "fallbackOutcome": 1479, "namedOutcomes": [1480, 1481, 1482, 1483, 1484, 1485], "settledNamedOutcomes": []}
+Q {"question": 200, "name": "template:sportsTournamentWinner", "description": "competition:USA National Football League (NFL)|officialSource:USA National Football League (NFL)|resolutionDeadline:20270221-1200|season:2027|sport:football", "fallbackOutcome": 1486, "namedOutcomes": [1487, 1488, 1489, 1490, 1491, 1492], "settledNamedOutcomes": []}
+Q {"question": 625, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Austria|participantB:Ireland|resolutionDeadline:20261121-1945|scheduledStart:20261114-1945|season:2026/27|sport:Soccer|stage:B, Matchday 5", "fallbackOutcome": 29485, "namedOutcomes": [29486, 29487, 29488], "settledNamedOutcomes": []}
+Q {"question": 617, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Netherlands|participantB:Greece|resolutionDeadline:20261120-1945|scheduledStart:20261113-1945|season:2026/27|sport:Soccer|stage:A, Matchday 5", "fallbackOutcome": 29086, "namedOutcomes": [29087, 29088, 29089], "settledNamedOutcomes": []}
+Q {"question": 626, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Romania|participantB:Poland|resolutionDeadline:20261121-1945|scheduledStart:20261114-1945|season:2026/27|sport:Soccer|stage:B, Matchday 5", "fallbackOutcome": 29490, "namedOutcomes": [29491, 29492, 29493], "settledNamedOutcomes": []}
+Q {"question": 623, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Portugal|participantB:Denmark|resolutionDeadline:20261121-1945|scheduledStart:20261114-1945|season:2026/27|sport:Soccer|stage:A, Matchday 5", "fallbackOutcome": 29475, "namedOutcomes": [29476, 29477, 29478], "settledNamedOutcomes": []}
+Q {"question": 545, "name": "template:policyRateDecision", "description": "decisionDeadline:20270127-1900|decisionLabel:December 2026|institution:Federal Open Market Committee|officialSource:Federal Open Market Committee|policyMeasure:the upper bound of the target range for the federal funds rate|scheduledDecision:20261209-1900", "fallbackOutcome": 19987, "namedOutcomes": [19988, 19989, 19990], "settledNamedOutcomes": []}
+Q {"question": 615, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Albania|participantB:Finland|resolutionDeadline:20261119-1945|scheduledStart:20261112-1945|season:2026/27|sport:Soccer|stage:C, Matchday 5", "fallbackOutcome": 29076, "namedOutcomes": [29077, 29078, 29079], "settledNamedOutcomes": []}
+Q {"question": 622, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Slovakia|participantB:Faroe Islands|resolutionDeadline:20261120-1945|scheduledStart:20261113-1945|season:2026/27|sport:Soccer|stage:C, Matchday 5", "fallbackOutcome": 29469, "namedOutcomes": [29470, 29471, 29472], "settledNamedOutcomes": []}
+Q {"question": 250, "name": "template:sportsTournamentWinner", "description": "competition:MLB Championship|officialSource:MLB|resolutionDeadline:20261110-0000|season:2026|sport:baseball", "fallbackOutcome": 2549, "namedOutcomes": [2550, 2551, 2552, 2553, 2554, 2555, 2556, 2557], "settledNamedOutcomes": []}
+Q {"question": 621, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Moldova|participantB:Kazakhstan|resolutionDeadline:20261120-1700|scheduledStart:20261113-1700|season:2026/27|sport:Soccer|stage:C, Matchday 5", "fallbackOutcome": 29464, "namedOutcomes": [29465, 29466, 29467], "settledNamedOutcomes": []}
+Q {"question": 616, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Serbia|participantB:Germany|resolutionDeadline:20261120-1945|scheduledStart:20261113-1945|season:2026/27|sport:Soccer|stage:A, Matchday 5", "fallbackOutcome": 29081, "namedOutcomes": [29082, 29083, 29084], "settledNamedOutcomes": []}
+Q {"question": 624, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Norway|participantB:Wales|resolutionDeadline:20261121-1700|scheduledStart:20261114-1700|season:2026/27|sport:Soccer|stage:A, Matchday 5", "fallbackOutcome": 29481, "namedOutcomes": [29482, 29483, 29484], "settledNamedOutcomes": []}
+Q {"question": 430, "name": "template:sportsTournamentWinner", "description": "competition:NBA |officialSource:National Basketball Association|resolutionDeadline:20270630-2359|season:2026/2027|sport:Basketball", "fallbackOutcome": 11491, "namedOutcomes": [11492, 11493, 11494, 11495, 11496, 11497, 11498, 11499], "settledNamedOutcomes": []}
+Q {"question": 618, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Scotland|participantB:North Macedonia|resolutionDeadline:20261120-1945|scheduledStart:20261113-1945|season:2026/27|sport:Soccer|stage:B, Matchday 5", "fallbackOutcome": 29090, "namedOutcomes": [29091, 29092, 29093], "settledNamedOutcomes": []}
+Q {"question": 611, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Turkiye|participantB:Belgium|resolutionDeadline:20261119-1700|scheduledStart:20261112-1700|season:2026/27|sport:Soccer|stage:A, Matchday 5", "fallbackOutcome": 29054, "namedOutcomes": [29055, 29056, 29057], "settledNamedOutcomes": []}
+Q {"question": 612, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:England|participantB:Croatia|resolutionDeadline:20261119-1945|scheduledStart:20261112-1945|season:2026/27|sport:Soccer|stage:League A, Matchday 5", "fallbackOutcome": 29059, "namedOutcomes": [29060, 29061, 29062], "settledNamedOutcomes": []}
+Q {"question": 613, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Czechia|participantB:Spain|resolutionDeadline:20261119-1945|scheduledStart:20261112-1945|season:2026/27|sport:Soccer|stage:League A, Matchday 5", "fallbackOutcome": 29063, "namedOutcomes": [29064, 29065, 29066], "settledNamedOutcomes": []}
+Q {"question": 614, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Italy|participantB:France|resolutionDeadline:20261119-1945|scheduledStart:20261112-1945|season:2026/27|sport:Soccer|stage:A, Matchday 5", "fallbackOutcome": 29068, "namedOutcomes": [29069, 29070, 29071], "settledNamedOutcomes": []}
+Q {"question": 628, "name": "Recurring", "description": "class:priceBucket|underlying:BTC|expiry:20261111-0600|priceThresholds:73302,76294|period:1d", "fallbackOutcome": 31128, "namedOutcomes": [31129, 31130, 31131], "settledNamedOutcomes": []}
+Q {"question": 629, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Georgia|participantB:Hungary|resolutionDeadline:20261121-1700|scheduledStart:20261114-1700|season:2026/27|sport:Soccer|stage:B, Matchday 5", "fallbackOutcome": 31258, "namedOutcomes": [31259, 31260, 31261], "settledNamedOutcomes": []}
+Q {"question": 630, "name": "template:sportsContestResult", "description": "competition:UEFA Nations League|contestType:Match|countedPlay:regulation time, 90 minutes plus stoppage time|officialSource:Union of European Football Associations|participantA:Sweden|participantB:Bosnia|resolutionDeadline:20261121-1945|scheduledStart:20261114-1945|season:2026/27|sport:Soccer|stage:B, Matchday 5", "fallbackOutcome": 31265, "namedOutcomes": [31266, 31267, 31268], "settledNamedOutcomes": []}
+O {"outcome": 2552, "name": "template:sportsTournamentParticipant", "description": "participant:New York Yankees", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 5112, "name": "template:companyIpoConfirmed", "description": "company:Anthropic|dateTime:20261130-2359", "sideSpecs": [{"name": "template:Yes"}, {"name": "template:No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 2553, "name": "template:sportsTournamentParticipant", "description": "participant:Tampa Bay Rays", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 2554, "name": "template:sportsTournamentParticipant", "description": "participant:Philadelphia Phillies", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 31131, "name": "Recurring Named Outcome", "description": "index:2", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC"}
+O {"outcome": 31128, "name": "Recurring Fallback", "description": "other", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC"}
+O {"outcome": 2556, "name": "template:sportsTournamentParticipant", "description": "participant:Boston Red Sox", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 2557, "name": "template:sportsTournamentParticipant", "description": "participant:Chicago Cubs", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 2555, "name": "template:sportsTournamentParticipant", "description": "participant:Atlanta Braves", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 2550, "name": "template:sportsTournamentParticipant", "description": "participant:Los Angeles Dodgers", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 7361, "name": "template:companyIpoFirstDayMarketCap", "description": "company:Anthropic|listingDeadline:20261231-2359|marketCapThresholdB:2500", "sideSpecs": [{"name": "template:Yes"}, {"name": "template:No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 2551, "name": "template:sportsTournamentParticipant", "description": "participant:Milwaukee Brewers", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 7362, "name": "template:companyIpoFirstDayMarketCap", "description": "company:Anthropic|listingDeadline:20261231-2359|marketCapThresholdB:1500", "sideSpecs": [{"name": "template:Yes"}, {"name": "template:No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 7364, "name": "template:companyIpoFirstDayMarketCap", "description": "company:Anthropic|listingDeadline:20261231-2359|marketCapThresholdB:1750", "sideSpecs": [{"name": "template:Yes"}, {"name": "template:No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 7360, "name": "template:companyIpoFirstDayMarketCap", "description": "company:Anthropic|listingDeadline:20261231-2359|marketCapThresholdB:2000", "sideSpecs": [{"name": "template:Yes"}, {"name": "template:No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 2549, "name": "template fallback", "description": "other", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC", "venue": "txyz"}
+O {"outcome": 31129, "name": "Recurring Named Outcome", "description": "index:0", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC"}
+O {"outcome": 31130, "name": "Recurring Named Outcome", "description": "index:1", "sideSpecs": [{"name": "Yes"}, {"name": "No"}], "quoteToken": "USDC"}
+O {"outcome": 7363, "name": "template:companyIpoFirstDayMarketCap", "description": "company:Anthropic|listingDeadline:20261231-2359|marketCapThresholdB:2250", "sideSpecs": [{"name": "template:Yes"}, {"name": "template:No"}], "quoteToken": "USDC", "venue": "txyz"}
+venues meta keys ['outcomes', 'questions', 'deployers', 'feeScale']
