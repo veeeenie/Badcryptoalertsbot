@@ -1,0 +1,54 @@
+{
+ "generated_at": "2026-11-10T07:28:06+00:00",
+ "us": {
+  "policy": {
+   "lo": 3.75,
+   "hi": 4.0,
+   "effective": 3.88,
+   "as_of": "2026-11-06"
+  },
+  "cpi": {
+   "value": 3.7,
+   "month": "Sep 2026"
+  },
+  "y10": {
+   "value": 4.88,
+   "as_of": "2026-11-09",
+   "wk": 4.91
+  },
+  "real10": {
+   "value": 2.66,
+   "as_of": "2026-11-09",
+   "wk": 2.62,
+   "ytd_lo": 1.72,
+   "ytd_hi": 2.95
+  },
+  "policy_real": 0.17
+ },
+ "india": {
+  "repo": 5.5,
+  "cpi": {
+   "value": 5.54,
+   "month": "Sep 2026",
+   "source": "https://www.deccanherald.com/business/food-fuel-push-retail-inflation-to-23-month-high-of-554-4180302",
+   "updated": "2026-11-10"
+  },
+  "y10": {
+   "value": 7.154,
+   "as_of": "2026-11-09",
+   "wk": null
+  },
+  "real10_est": 1.61,
+  "policy_real": -0.04
+ },
+ "alert": {
+  "low": 2.4,
+  "high": 2.95
+ },
+ "alert_zone": "mid",
+ "in10y_hist": {
+  "2026-11-09": 7.154
+ },
+ "us_cpi_checked": "2026-11-10T07:28:05+00:00",
+ "errors": []
+}
