@@ -1,5 +1,6 @@
 """Record the editorial page with headless Chrome.
-Usage: record.py stills t1 t2 ...   -> WORK/st_<t>.jpg
+Usage: record.py sheet out.png       -> style sheet with every prop
+       record.py stills t1 t2 ...   -> WORK/st_<t>.jpg
        record.py <part> <parts>     -> WORK/part<part>.mp4 (30 fps, H.264)
 Needs WORK and CACHE env vars (set by make.sh) and WORK/timeline.json from voice.py."""
 import base64, json, os, shutil, subprocess, sys
@@ -8,7 +9,8 @@ from playwright.sync_api import sync_playwright
 WORK, CACHE = os.environ["WORK"], os.environ["CACHE"]
 HERE = os.path.dirname(os.path.abspath(__file__))
 FPS = 30
-TL = json.load(open(os.path.join(WORK, "timeline.json")))
+TLP = os.path.join(WORK, "timeline.json")
+TL = json.load(open(TLP)) if os.path.exists(TLP) else {"sentences": [], "dur": 1}
 FONTS = {"Playfair": "Playfair.ttf", "Outfit": "Outfit.ttf"}
 CHROME = shutil.which("google-chrome") or shutil.which("chromium") or shutil.which("chromium-browser")
 
@@ -31,7 +33,9 @@ def frame(pg, t):
 
 with sync_playwright() as p:
     b, pg = open_page(p)
-    if sys.argv[1] == "stills":
+    if sys.argv[1] == "sheet":  # record.py sheet <out.png>: every prop on one page
+        open(sys.argv[2], "wb").write(base64.b64decode(pg.evaluate("styleSheet()").split(",", 1)[1]))
+    elif sys.argv[1] == "stills":
         for s in sys.argv[2:]:
             open(os.path.join(WORK, f"st_{float(s):05.2f}.jpg"), "wb").write(frame(pg, float(s)))
     else:

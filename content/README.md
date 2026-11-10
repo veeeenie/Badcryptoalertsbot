@@ -36,6 +36,8 @@ First run downloads the free voice model (Kokoro, Apache-2.0), the Inter font an
 
 ## Editorial style (default from 11 Nov 2026)
 
+**Read `DESIGN.md` first**: colours, type, layout, prop drawing, motion, sound and copy rules. New props use the helpers `card()`, `solid()`, `ink()`, `lbl()`, `num()`, `note()` and the tokens in `DS`. Render the style sheet with `record.py sheet out.png` to check a new prop next to the others.
+
 Set `"style": "editorial"` in the episode. Approved look: `episodes/2026-11-10-flop-editorial.json` (warm cream background, Playfair serif headline with one rust accent word, drawn props that act out the idea, a small 3–4-word caption pill, @conxixent at the bottom). Engine: `engine/editorial/page.html` (canvas, every prop is a draw function) recorded by `engine/editorial/record.py` with headless Chrome. A full build takes about 8 minutes.
 
 Beats (same `[word index, {...}]` timing as before; `sfx` works the same, keep it soft: pop, whoosh on clear, ding on a payoff, impact_soft for a stamp, riser_short for the catch):

@@ -41,6 +41,21 @@ function text(s, x, y, f, col, align = 'center', base = 'middle') { X.font = f; 
 function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
 function shadow(x, y, rx, ry, a = 1) { X.save(); X.globalAlpha *= a; X.fillStyle = P.shadow; X.beginPath(); X.ellipse(x, y, rx, ry, 0, 0, 7); X.filter = 'blur(6px)'; X.fill(); X.restore(); }
 
+// ---------- design tokens (content/DESIGN.md) ----------
+// New props are built from these helpers and numbers, not their own, so every scene looks like the same account.
+const DS = {stroke: 7, thin: 3, radius: 22, small: 180, medium: 300, large: 440,
+            type: {head: 104, num: 120, label: 50, note: 42, small: 34}};
+// Paper card (white-ish, thin edge, floor shadow), centred on 0,0.
+function card(w, h, rot = 0) { X.rotate(rot); shadow(0, h / 2 + 18, w * 0.42, 12); X.fillStyle = P.paper; rr(-w / 2, -h / 2, w, h, DS.radius); X.fill(); X.strokeStyle = P.line; X.lineWidth = DS.thin; X.stroke(); }
+// Solid object (machine, box, block), centred on 0,0. fill: a palette colour (dark by default).
+function solid(w, h, fill) { shadow(0, h / 2 + 18, w * 0.42, 12); X.fillStyle = fill || P.dark; rr(-w / 2, -h / 2, w, h, DS.radius); X.fill(); }
+// Ink outline for drawn objects (the agent's head, icons).
+function ink(w) { X.strokeStyle = P.ink; X.lineWidth = w || DS.stroke; X.lineCap = 'round'; X.lineJoin = 'round'; }
+// Text roles: a caption under a prop, a big serif number, a small note.
+function lbl(s, y, col) { text(s, 0, y, font(SANS, 600, DS.type.label), col || P.mut); }
+function num(s, y, col) { text(s, 0, y, font(SERIF, 800, DS.type.num), col || P.ink); }
+function note(s, y) { text(s, 0, y, font(SANS, 500, DS.type.note), P.mut); }
+
 // ---------- background ----------
 const DECOR = [[50, 640, 36, 0.2, 1], [1030, 560, 32, 1.7, 0], [1025, 1080, 42, 3.1, 1], [55, 1150, 30, 4.4, 0], [985, 1700, 40, 5.2, 0], [95, 1730, 44, 2.6, 1]];
 function background(t) {
@@ -160,6 +175,31 @@ function caption(t) {
   const pw = tw + 70, ph = 104, y = CAP_Y; X.fillStyle = 'rgba(255,252,246,0.7)'; rr(W / 2 - pw / 2, y - ph / 2, pw, ph, 26); X.fill();
   let x = W / 2 - tw / 2; X.textBaseline = 'middle';
   chunk.forEach((w, i) => { const on = t >= w.s; X.fillStyle = (c0 + i === cur) ? P.acc : P.ink; X.globalAlpha = on ? 1 : 0; X.fillText(w.w, x, y + 3); X.globalAlpha = 1; x += X.measureText(w.w).width + sp; });
+}
+
+// Style sheet: every prop on one page, for checking new props against the rest.
+function styleSheet() {
+  C.width = 1440; C.height = 2700; X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1;
+  X.fillStyle = P.bg; X.fillRect(0, 0, C.width, C.height);
+  text('@conxixent · editorial style', 720, 90, font(SERIF, 800, 72), P.ink);
+  const sw = [['bg', 'background'], ['paper', 'cards'], ['line', 'edges'], ['ink', 'text'], ['mut', 'notes'], ['acc', 'accent'], ['gold', 'value'], ['dark', 'objects'], ['sage', 'success'], ['red', 'warning']];
+  sw.forEach(([k, n], i) => { const x = 90 + i * 128; X.fillStyle = P[k]; rr(x - 50, 150, 100, 100, 18); X.fill(); X.strokeStyle = P.line; X.lineWidth = 3; X.stroke();
+    text(n, x, 285, font(SANS, 600, 26), P.ink); text(P[k], x, 318, font(SANS, 400, 22), P.mut); });
+  X.font = font(SERIF, 800, 84); X.textAlign = 'left'; X.textBaseline = 'alphabetic'; X.fillStyle = P.ink; X.fillText('Headline ', 70, 450); const hw = X.measureText('Headline ').width; X.fillStyle = P.acc; X.fillText('accent.', 70 + hw, 450);
+  text('Playfair 800 · 2–4 words · one rust word', 1370, 430, font(SANS, 500, 30), P.mut, 'right');
+  X.font = font(SANS, 600, 46); X.fillStyle = 'rgba(255,252,246,0.75)'; rr(70, 490, 460, 84, 24); X.fill(); X.textBaseline = 'middle'; X.fillStyle = P.ink; X.fillText('Caption pill ', 100, 534); X.fillStyle = P.acc; X.fillText('word', 100 + X.measureText('Caption pill ').width, 534);
+  text('Outfit 500–600 · labels, captions, notes', 1370, 534, font(SANS, 500, 30), P.mut, 'right');
+  const I = [
+    ['coin', {r: 80}, 0.9, 0], ['nameplate', {name: 'Name', sub: 'Role, Company'}, 0.42, 0], ['chain', {n: 4, size: 110, hi: 3}, 0.5, 0], ['agent', {s: 0.9, label: 'AI agent'}, 0.62, -30],
+    ['gpu', {s: 0.85, label: 'miner'}, 0.62, -30], ['ticket', {fee: 'fee'}, 0.8, 0], ['proof', {}, 0.8, 0], ['label', {text: 'one *accent* word'}, 0.55, 0],
+    ['x', {r: 90}, 0.7, 0], ['parachute', {}, 0.48, -20], ['stack', {n: 16, value: '96', sub: 'per block'}, 0.5, -15], ['halving', {values: [96, 48, 24, 12, 6, 3]}, 0.36, 40],
+    ['bars', {rows: [['Miners', 75, 'acc'], ['Others', 25, 'ink']]}, 0.36, -30], ['pile', {sub: 'genesis'}, 0.42, 40], ['donut', {pct: 20, sub: 'note'}, 0.45, -30], ['timeline', {items: [['Q4', 'Event'], ['Q1', 'Next']], note: 'target'}, 0.36, 0],
+    ['stamp', {text: 'WARNING', size: 100}, 0.42, 0], ['big', {text: '2.48B', size: 160, color: 'acc', sub: 'big number'}, 0.55, -20], ['small', {text: 'Not financial advice'}, 0.8, 0], ['cross', {w: 220}, 0.8, 0]];
+  I.forEach(([prop, o, sc, dy], i) => { const cx = 180 + (i % 4) * 360, cy = 760 + Math.floor(i / 4) * 390;
+    X.fillStyle = 'rgba(255,252,246,0.35)'; rr(cx - 165, cy - 175, 330, 350, 24); X.fill();
+    X.save(); X.translate(cx, cy + dy); X.scale(sc, sc); o.prop = prop; o.born = 0; o.upto = 9; DRAW[prop](o, 5, 5); X.restore();
+    text(prop, cx, cy + 150, font(SANS, 600, 28), P.mut); });
+  return C.toDataURL('image/png');
 }
 
 function render(t) {
