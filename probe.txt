@@ -1,5 +1,136 @@
-predict: 296 markets, 92 modelled, 0 alerts
-
-real	1m19.501s
-user	0m6.338s
-sys	0m0.149s
+{
+ "bal": [
+  {
+   "coin": "USDC",
+   "token": 0,
+   "total": "97.0186121",
+   "hold": "80.020985",
+   "entryNtl": "0.0"
+  },
+  {
+   "coin": "+311240",
+   "total": "3.0",
+   "hold": "0.0",
+   "entryNtl": "1.293"
+  },
+  {
+   "coin": "+311241",
+   "total": "3.0",
+   "hold": "0.0",
+   "entryNtl": "1.62"
+  }
+ ],
+ "fills": [
+  {
+   "coin": "#311240",
+   "px": "0.431",
+   "sz": "3.0",
+   "side": "B",
+   "time": 1794300579140,
+   "startPosition": "0.0",
+   "dir": "Buy",
+   "closedPnl": "0.0",
+   "hash": "0x84aacc7f3974c2f7862404487a1c1c01fb00e464d477e1c9287377d1f8789ce2",
+   "oid": 600379960694,
+   "crossed": true,
+   "fee": "0.0",
+   "tid": 477980740076605,
+   "feeToken": "USDC",
+   "twapId": null
+  },
+  {
+   "coin": "#311241",
+   "px": "0.54",
+   "sz": "3.0",
+   "side": "B",
+   "time": 1794301169643,
+   "startPosition": "0.0",
+   "dir": "Buy",
+   "closedPnl": "0.0",
+   "hash": "0x7bd0d71feeefe94c7d4a04487a3c2b0208df000589e3081e1f998272ade3c337",
+   "oid": 600380452068,
+   "crossed": false,
+   "fee": "0.0",
+   "tid": 365644234151557,
+   "feeToken": "USDC",
+   "twapId": null
+  }
+ ],
+ "orders": [],
+ "info": {
+  "#311240": {
+   "outcome": 31124,
+   "side": 0,
+   "name": "Recurring",
+   "desc": "class:priceBinary|underlying:BTC|expiry:20261111-0600|targetPrice:74798|period:1d",
+   "sides": [
+    {
+     "name": "Yes"
+    },
+    {
+     "name": "No"
+    }
+   ],
+   "question": null,
+   "yes_bid": "0.37569",
+   "yes_ask": "0.38999"
+  },
+  "+311241": {
+   "outcome": 31124,
+   "side": 1,
+   "name": "Recurring",
+   "desc": "class:priceBinary|underlying:BTC|expiry:20261111-0600|targetPrice:74798|period:1d",
+   "sides": [
+    {
+     "name": "Yes"
+    },
+    {
+     "name": "No"
+    }
+   ],
+   "question": null,
+   "yes_bid": "0.37569",
+   "yes_ask": "0.38999"
+  },
+  "#311241": {
+   "outcome": 31124,
+   "side": 1,
+   "name": "Recurring",
+   "desc": "class:priceBinary|underlying:BTC|expiry:20261111-0600|targetPrice:74798|period:1d",
+   "sides": [
+    {
+     "name": "Yes"
+    },
+    {
+     "name": "No"
+    }
+   ],
+   "question": null,
+   "yes_bid": "0.37569",
+   "yes_ask": "0.38999"
+  },
+  "+311240": {
+   "outcome": 31124,
+   "side": 0,
+   "name": "Recurring",
+   "desc": "class:priceBinary|underlying:BTC|expiry:20261111-0600|targetPrice:74798|period:1d",
+   "sides": [
+    {
+     "name": "Yes"
+    },
+    {
+     "name": "No"
+    }
+   ],
+   "question": null,
+   "yes_bid": "0.37569",
+   "yes_ask": "0.38999"
+  }
+ },
+ "mids": {
+  "BTC": "74425.5",
+  "ETH": "2100.35",
+  "HYPE": "74.1565",
+  "SOL": "85.3795"
+ }
+}
