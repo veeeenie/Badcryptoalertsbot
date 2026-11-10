@@ -1,0 +1,837 @@
+{
+ "slug": "2026-11-10-flop-editorial",
+ "date": "10 NOV",
+ "style": "editorial",
+ "sentences": [
+  {
+   "text": "Arthur Hayes is building a blockchain for AI agents.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "A new *chain.*"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "np",
+      "prop": "nameplate",
+      "name": "Arthur Hayes",
+      "sub": "CEO, Flop Labs",
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "ch",
+      "prop": "chain",
+      "n": 4,
+      "size": 110,
+      "y": 960,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 880,
+      "y": 1080,
+      "s": 0.55,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It's called Flop.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "head",
+      "text": "Called *Flop.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "set",
+      "id": "ch",
+      "hi": 3,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Every token at launch goes to airdrops.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "All *airdropped.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "pc",
+      "prop": "parachute",
+      "y": 870,
+      "pop": false
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "l1",
+      "prop": "label",
+      "text": "100% of genesis tokens",
+      "y": 1150,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "No VC money. No presale.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "remove",
+      "id": "l1"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "v",
+      "prop": "label",
+      "text": "VC money",
+      "x": 330,
+      "y": 1130,
+      "size": 48,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "vx",
+      "prop": "cross",
+      "x": 330,
+      "y": 1133,
+      "w": 250
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "label",
+      "text": "Presale",
+      "x": 750,
+      "y": 1130,
+      "size": 48,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "px",
+      "prop": "cross",
+      "x": 750,
+      "y": 1133,
+      "w": 220
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "c",
+      "prop": "label",
+      "text": "…with one *catch*",
+      "y": 1290,
+      "size": 46,
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "AI agents need computers to run models.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Agents need *compute.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 290,
+      "y": 820,
+      "s": 0.9,
+      "label": "AI agent",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "g",
+      "prop": "gpu",
+      "x": 760,
+      "y": 840,
+      "s": 0.85,
+      "label": "anyone's GPU",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Flop lets anyone with a GPU|G-P-U sell that compute.",
+   "beats": [
+    [
+     5,
+     {
+      "kind": "head",
+      "text": "Your GPU *earns.*"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "k1",
+      "prop": "coin",
+      "r": 46,
+      "x": 290,
+      "y": 640
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "move",
+      "id": "k1",
+      "x": 760,
+      "y": 640,
+      "dur": 0.9
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "set",
+      "id": "g",
+      "spin": 2.5,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "An agent posts a job and a fee.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "One *job.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 230,
+      "y": 660,
+      "s": 0.7,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "x": 480,
+      "y": 660,
+      "fee": "fee",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "A miner runs the model.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "g",
+      "prop": "gpu",
+      "x": 800,
+      "y": 660,
+      "s": 0.75,
+      "label": "miner",
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "move",
+      "id": "tk",
+      "x": 800,
+      "y": 640,
+      "dur": 0.6
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And sends back a proof.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "pf",
+      "prop": "proof",
+      "x": 800,
+      "y": 660,
+      "pop": false
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "move",
+      "id": "pf",
+      "x": 540,
+      "y": 930,
+      "dur": 0.7,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Validators settle it. Proof of useful inference.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ch",
+      "prop": "chain",
+      "n": 3,
+      "size": 90,
+      "y": 1150,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "move",
+      "id": "pf",
+      "x": 540,
+      "y": 1010,
+      "s": 0.5,
+      "dur": 0.6
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "ch",
+      "hi": 2,
+      "sfx": "ding"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "head",
+      "text": "Proof of *useful inference.*"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Rewards start at 96|ninety-six FLOP per block.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "*96* per block."
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stack",
+      "n": 24,
+      "r": 130,
+      "y": 1050,
+      "value": "96",
+      "sub": "FLOP per block",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Halving every 2|two years, down to 3|three forever.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Halved every *2 years.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "hv",
+      "prop": "halving",
+      "values": [
+       96,
+       48,
+       24,
+       12,
+       6,
+       3
+      ],
+      "y": 1000,
+      "pop": false
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "f",
+      "prop": "label",
+      "text": "3 per block, *forever*",
+      "y": 1180,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Miners get 75%,|seventy-five-percent validators and agents 10%|ten-percent each, stakers 5%.|five-percent",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Who *earns.*"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "bars",
+      "y": 620,
+      "pop": false,
+      "rows": [
+       [
+        "Miners",
+        75,
+        "acc"
+       ],
+       [
+        "Validators",
+        10,
+        "ink"
+       ],
+       [
+        "Agents",
+        10,
+        "ink"
+       ],
+       [
+        "Stakers",
+        5,
+        "mut"
+       ]
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "About 2.48|two-point-four-eight billion FLOP at genesis.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "*2.48B* at genesis."
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "pl",
+      "prop": "pile",
+      "y": 1000,
+      "pop": false,
+      "sub": "FLOP at genesis · current spec",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And about 20%|twenty-percent of supply is proposed for testnet users, over 10|ten years.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "*20%* for testers."
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "d",
+      "prop": "donut",
+      "pct": 20,
+      "y": 860,
+      "pop": false,
+      "sub": "to testnet users · over 10 years · proposed",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The airdrop is targeted for Q4.|Q-four",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *timeline.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "tl",
+      "prop": "timeline",
+      "y": 860,
+      "upto": 1,
+      "note": "target",
+      "items": [
+       [
+        "Q4 2026",
+        "Airdrop"
+       ],
+       [
+        "Q1 2027",
+        "First block"
+       ]
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The first block, Q1|Q-one 2027.|twenty-twenty-seven",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "tl",
+      "upto": 2,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch:",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *catch.*",
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Hayes says no FLOP token exists yet.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "sp",
+      "prop": "stamp",
+      "text": "NO TOKEN YET",
+      "y": 700,
+      "size": 100,
+      "pop": false,
+      "sfx": "impact_soft"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "So anything sold as FLOP today is a scam.",
+   "beats": [
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "fc",
+      "prop": "coin",
+      "r": 110,
+      "label": "FLOP?",
+      "x": 540,
+      "y": 1030,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "fx",
+      "prop": "x",
+      "x": 540,
+      "y": 1030,
+      "r": 120
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Daily, on *X.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "a",
+      "prop": "label",
+      "text": "Hyperliquid",
+      "x": 300,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "label",
+      "text": "trade.xyz",
+      "x": 780,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "c2",
+      "prop": "label",
+      "text": "Metric",
+      "x": 300,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "label",
+      "text": "Flop",
+      "x": 780,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 1040,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Not financial advice · specs may still change",
+      "y": 1180,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}

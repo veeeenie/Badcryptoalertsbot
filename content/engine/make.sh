@@ -9,10 +9,19 @@ python3 -c "import kokoro_onnx, soundfile, scipy, PIL" 2>/dev/null || pip instal
 [ -f "$CACHE/voices.bin" ] || curl -sL -o "$CACHE/voices.bin" https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
 if [ ! -d "$CACHE/inter" ]; then curl -sL -o "$CACHE/inter.zip" https://github.com/rsms/inter/releases/download/v4.0/Inter-4.0.zip && unzip -q -o "$CACHE/inter.zip" -d "$CACHE/inter"; fi
 [ -f /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf ] || [ -f "$CACHE/NotoColorEmoji.ttf" ] || curl -sL -o "$CACHE/NotoColorEmoji.ttf" https://raw.githubusercontent.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf
+STYLE="$(python3 -c "import json,sys;print(json.load(open(sys.argv[1])).get('style','kinetic'))" "$EP")"
+R="$HERE/render.py"
+if [ "$STYLE" = "editorial" ]; then
+  R="$HERE/editorial/record.py"
+  python3 -c "import playwright" 2>/dev/null || pip install -q --break-system-packages playwright
+  mkdir -p "$CACHE/fonts"
+  [ -f "$CACHE/fonts/Playfair.ttf" ] || curl -sfL -o "$CACHE/fonts/Playfair.ttf" "https://raw.githubusercontent.com/google/fonts/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf"
+  [ -f "$CACHE/fonts/Outfit.ttf" ] || curl -sfL -o "$CACHE/fonts/Outfit.ttf" "https://raw.githubusercontent.com/google/fonts/main/ofl/outfit/Outfit%5Bwght%5D.ttf"
+fi
 python3 "$HERE/voice.py" "$EP" "$WORK"
-if [ "${2:-}" = "stills" ]; then shift 2; python3 "$HERE/render.py" stills "$@"; echo "stills in $WORK"; exit 0; fi
+if [ "${2:-}" = "stills" ]; then shift 2; python3 "$R" stills "$@"; echo "stills in $WORK"; exit 0; fi
 python3 "$HERE/audio.py" "$WORK"
-for i in 0 1 2 3; do python3 "$HERE/render.py" $i 4 & done; wait
+for i in 0 1 2 3; do python3 "$R" $i 4 & done; wait
 for i in 0 1 2 3; do [ -f "$WORK/part$i.mp4" ] || { echo "part $i failed"; exit 1; }; echo "file 'part$i.mp4'"; done > "$WORK/list.txt"
 ffmpeg -loglevel error -y -f concat -safe 0 -i "$WORK/list.txt" -c copy "$WORK/video.mp4"
 ffmpeg -loglevel error -y -i "$WORK/video.mp4" -i "$WORK/mix.wav" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 192k -shortest "$HERE/../out/$SLUG.mp4"
