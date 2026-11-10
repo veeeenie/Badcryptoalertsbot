@@ -1,4 +1,4 @@
-name: VVV live (temporary)
+name: Live positions JUP VVV (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,19 +11,26 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          python3 - > vvvlive.txt 2>&1 <<'PY'
+          python3 - > live2.txt 2>&1 <<'PY'
           import json, time, urllib.request
-          H="https://api.hyperliquid.xyz/info"
+          H="https://api.hyperliquid.xyz/info"; U="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
           def P(b):
               r=urllib.request.Request(H,data=json.dumps(b).encode(),headers={'Content-Type':'application/json'}); return json.load(urllib.request.urlopen(r,timeout=30))
-          print(time.strftime("%Y-%m-%d %H:%M UTC",time.gmtime()))
-          m=P({"type":"allMids"}); print("VVV",m["VVV"],"JUP",m["JUP"],"BTC",m["BTC"])
-          now=int(time.time()*1000)
-          d=P({"type":"candleSnapshot","req":{"coin":"VVV","interval":"1d","startTime":now-16*86400000,"endTime":now}})
-          for c in d: print(time.strftime("%d-%b",time.gmtime(c["t"]/1000)),c["o"],c["h"],c["l"],c["c"])
-          meta,ctx=P({"type":"metaAndAssetCtxs"})
-          for a,c in zip(meta["universe"],ctx):
-              if a["name"]=="VVV": print("funding",float(c["funding"])*24*365*100,"%/yr OI",float(c["openInterest"])*float(c["markPx"]),"maxLev",a["maxLeverage"])
+          ist=lambda ms: time.strftime("%d-%b %H:%M",time.gmtime(ms/1000+19800))
+          now=int(time.time()*1000); print("now",ist(now),"IST")
+          m=P({"type":"allMids"}); print("mids JUP",m["JUP"],"VVV",m["VVV"],"BTC",m["BTC"])
+          ch=P({"type":"clearinghouseState","user":U})
+          for a in ch["assetPositions"]:
+              q=a["position"]; print("POS",q["coin"],q["szi"],"entry",q["entryPx"],"uPnL",q["unrealizedPnl"],"lev",q["leverage"],"liq",q["liquidationPx"],"margin",q["marginUsed"])
+          for o in P({"type":"frontendOpenOrders","user":U}):
+              print("ORD",o["coin"],o["orderType"],o["side"],o["sz"],"trig",o.get("triggerPx"),"lim",o["limitPx"],"ro",o["reduceOnly"])
+          for f in P({"type":"userFillsByTime","user":U,"startTime":now-3*86400000}):
+              print("FILL",ist(f["time"]),f["coin"],f["dir"],f["sz"],"@",f["px"],"pnl",f["closedPnl"])
+          for c in ("JUP","VVV"):
+              d=P({"type":"candleSnapshot","req":{"coin":c,"interval":"1d","startTime":now-6*86400000,"endTime":now}})
+              print(c,"days:",[(time.strftime("%d-%b",time.gmtime(x["t"]/1000)),x["o"],x["h"],x["l"],x["c"]) for x in d])
+              h=P({"type":"candleSnapshot","req":{"coin":c,"interval":"1h","startTime":now-14*3600000,"endTime":now}})
+              print(c,"last 14h:",[(time.strftime("%H",time.gmtime(x["t"]/1000+19800)),x["h"],x["l"],x["c"]) for x in h])
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add vvvlive.txt && git commit -qm "vvv live" && git push -q origin HEAD:debug-weekly
+          git add live2.txt && git commit -qm "live2" && git push -q origin HEAD:debug-weekly
