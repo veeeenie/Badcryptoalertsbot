@@ -1,4 +1,4 @@
-name: HYPE spot check (temporary)
+name: HYPE spot check 2 (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -13,21 +13,27 @@ jobs:
       - run: |
           python3 - > orders.json <<'PY'
           import json, urllib.request, time
-          W="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
+          WS={"5EaE":"0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE","3991":"0xfb4e07C7BF05464e6206abc93873078f2fc53991"}
           def hl(b):
               r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
               return json.load(urllib.request.urlopen(r,timeout=30))
           now=int(time.time()*1000)
-          out={"t":now}
-          out["open"]=hl({"type":"frontendOpenOrders","user":W})
-          out["hist"]=[o for o in hl({"type":"historicalOrders","user":W}) if o["statusTimestamp"]>now-10*86400000]
-          out["fills"]=hl({"type":"userFillsByTime","user":W,"startTime":now-10*86400000,"aggregateByTime":True})
-          out["spot"]=hl({"type":"spotClearinghouseState","user":W})
-          out["mids"]={k:v for k,v in hl({"type":"allMids"}).items() if k in ("HYPE","@107")}
-          c=hl({"type":"candleSnapshot","req":{"coin":"@107","interval":"1h","startTime":now-3*86400000,"endTime":now}})
-          out["low72h"]=min(float(x["l"]) for x in c) if c else None
-          out["lows"]=[(x["t"],x["l"]) for x in c][-30:]
+          meta=hl({"type":"spotMeta"})
+          toks={t["index"]:t["name"] for t in meta["tokens"]}
+          pairs={u["name"]:f"{toks[u['tokens'][0]]}/{toks[u['tokens'][1]]}" for u in meta["universe"]}
+          out={"t":now,"hype_pairs":{k:v for k,v in pairs.items() if v.startswith("HYPE/") or "/HYPE" in v}}
+          for n,W in WS.items():
+              o={}
+              o["open"]=hl({"type":"openOrders","user":W})
+              o["frontend"]=hl({"type":"frontendOpenOrders","user":W})
+              o["twap"]=hl({"type":"twapHistory","user":W}) if True else None
+              hist=hl({"type":"historicalOrders","user":W})
+              o["hist_spot"]=[dict(x,pair=pairs.get(x["order"]["coin"])) for x in hist if x["order"]["coin"].startswith("@") or x["order"]["coin"] in pairs]
+              o["fills_spot"]=[dict(f,pair=pairs.get(f["coin"])) for f in hl({"type":"userFillsByTime","user":W,"startTime":now-30*86400000,"aggregateByTime":True}) if f["coin"].startswith("@") or f["coin"] in pairs]
+              o["spot"]=hl({"type":"spotClearinghouseState","user":W})["balances"]
+              out[n]=o
+          out["pairs"]=pairs
           print(json.dumps(out))
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add orders.json && git commit -qm "orders2" && git push -q origin HEAD:debug-weekly
+          git add orders.json && git commit -qm "orders3" && git push -q origin HEAD:debug-weekly
