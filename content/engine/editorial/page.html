@@ -7,6 +7,9 @@ const C = document.getElementById('c'), X = C.getContext('2d'), W = 1080, H = 19
 const P = {bg:'#EFE7DA', bg2:'#E5D8C5', ink:'#2B1E16', acc:'#B5532B', mut:'#7F6C5A', gold:'#D7A544', goldD:'#A6782A',
            sage:'#6E8A62', red:'#B33A2C', paper:'#FBF7EF', line:'#D6C5AD', dark:'#3B2F27', shadow:'rgba(60,40,20,0.16)'};
 const SERIF = '"Playfair"', SANS = '"Outfit"';
+// Safe area: X's phone player covers roughly the top 12% (back/menu buttons) and bottom 28% (name, post text, buttons).
+// Everything sits between y 400 and 1370. Episode prop coordinates (stage y 430-1220) are scaled 0.8 around the centre.
+const HEAD_Y = 470, CAP_Y = 1272, HANDLE_Y = 1362, FLOOR = 1196, STAGE = [108, 216, 0.8];
 let TL = null, OPS = [], DUR = 1;
 const cl = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const eo = x => 1 - Math.pow(1 - cl(x), 3);
@@ -39,12 +42,12 @@ function rr(x, y, w, h, r) { X.beginPath(); X.roundRect(x, y, w, h, r); }
 function shadow(x, y, rx, ry, a = 1) { X.save(); X.globalAlpha *= a; X.fillStyle = P.shadow; X.beginPath(); X.ellipse(x, y, rx, ry, 0, 0, 7); X.filter = 'blur(6px)'; X.fill(); X.restore(); }
 
 // ---------- background ----------
-const DECOR = [[60, 560, 40, 0.2, 1], [1015, 400, 34, 1.7, 0], [1010, 1120, 46, 3.1, 1], [70, 1190, 32, 4.4, 0], [985, 1660, 40, 5.2, 0], [95, 1690, 44, 2.6, 1]];
+const DECOR = [[50, 640, 36, 0.2, 1], [1030, 560, 32, 1.7, 0], [1025, 1080, 42, 3.1, 1], [55, 1150, 30, 4.4, 0], [985, 1700, 40, 5.2, 0], [95, 1730, 44, 2.6, 1]];
 function background(t) {
   X.fillStyle = P.bg; X.fillRect(0, 0, W, H);
   let g = X.createRadialGradient(W / 2, 700, 100, W / 2, 800, 1100); g.addColorStop(0, 'rgba(255,250,240,0.55)'); g.addColorStop(1, 'rgba(255,250,240,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H);
-  g = X.createLinearGradient(0, 1240, 0, H); g.addColorStop(0, P.bg2); g.addColorStop(1, '#DCCDB8'); X.fillStyle = g; X.fillRect(0, 1240, W, H - 1240);
-  X.fillStyle = P.line; X.fillRect(0, 1238, W, 4);
+  g = X.createLinearGradient(0, FLOOR, 0, H); g.addColorStop(0, P.bg2); g.addColorStop(1, '#DCCDB8'); X.fillStyle = g; X.fillRect(0, FLOOR, W, H - FLOOR);
+  X.fillStyle = P.line; X.fillRect(0, FLOOR - 2, W, 4);
   DECOR.forEach(([x, y, r, ph, blur]) => { X.save(); X.globalAlpha = blur ? 0.32 : 0.55; if (blur) X.filter = 'blur(5px)';
     coinFace(x + Math.sin(t * 0.5 + ph) * 6, y + Math.sin(t * 0.8 + ph) * 10, r, '', Math.sin(t * 0.6 + ph) * 0.3); X.restore(); });
   g = X.createRadialGradient(W / 2, H / 2, 600, W / 2, H / 2, 1250); g.addColorStop(0, 'rgba(60,40,20,0)'); g.addColorStop(1, 'rgba(60,40,20,0.18)'); X.fillStyle = g; X.fillRect(0, 0, W, H);
@@ -145,7 +148,7 @@ function stateAt(t) {
 function drawHead(h, t, out) {
   if (!h) return; const a = out ? 1 - eo((t - out) / 0.2) : eo((t - h.t - 0.2) / 0.35); if (a <= 0) return;
   const dy = out ? -20 * (1 - a) : 30 * (1 - a); const f = font(SERIF, 800, 104); const lines = wrapRuns(runs(h.text), 940, f);
-  X.save(); X.globalAlpha = a; drawRunsCentered(lines, W / 2, 300 + dy - (lines.length - 1) * 56, 118, f, P.ink, P.acc); X.restore();
+  X.save(); X.globalAlpha = a; drawRunsCentered(lines, W / 2, HEAD_Y + dy - (lines.length - 1) * 56, 118, f, P.ink, P.acc); X.restore();
 }
 
 function caption(t) {
@@ -154,7 +157,7 @@ function caption(t) {
   const nc = Math.ceil(ws.length / 4), per = Math.ceil(ws.length / nc), c0 = Math.floor(cur / per) * per, chunk = ws.slice(c0, c0 + per);
   X.font = font(SANS, 600, 58); const sp = X.measureText(' ').width;
   const vis = chunk.filter((w, i) => t >= w.s || i === 0); const tw = chunk.reduce((a, w) => a + X.measureText(w.w).width, 0) + sp * (chunk.length - 1);
-  const pw = tw + 70, ph = 104, y = 1480; X.fillStyle = 'rgba(255,252,246,0.7)'; rr(W / 2 - pw / 2, y - ph / 2, pw, ph, 26); X.fill();
+  const pw = tw + 70, ph = 104, y = CAP_Y; X.fillStyle = 'rgba(255,252,246,0.7)'; rr(W / 2 - pw / 2, y - ph / 2, pw, ph, 26); X.fill();
   let x = W / 2 - tw / 2; X.textBaseline = 'middle';
   chunk.forEach((w, i) => { const on = t >= w.s; X.fillStyle = (c0 + i === cur) ? P.acc : P.ink; X.globalAlpha = on ? 1 : 0; X.fillText(w.w, x, y + 3); X.globalAlpha = 1; x += X.measureText(w.w).width + sp; });
 }
@@ -163,14 +166,16 @@ function render(t) {
   X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1; X.filter = 'none'; background(t);
   const st = stateAt(t);
   if (st.headPrev && t - st.head.t < 0.2) drawHead(st.headPrev, t, st.head.t); drawHead(st.head, t, null);
+  X.save(); X.translate(STAGE[0], STAGE[1]); X.scale(STAGE[2], STAGE[2]);
   for (const o of st.objs.values()) {
     const age = t - o.born; if (age < 0) continue; let a = cl(age / 0.3); if (o.die != null) { a = Math.min(a, 1 - (t - o.die) / 0.22); if (a <= 0) continue; }
     const k = o.die != null ? 1 : (o.pop === false ? 1 : back(age / 0.32));
     X.save(); X.globalAlpha = cl(a); X.translate(o.x, o.y); X.scale(k, k); DRAW[o.prop](o, t, age); X.restore();
   }
+  X.restore();
   caption(t);
   X.fillStyle = 'rgba(60,40,20,0.12)'; X.fillRect(0, 0, W, 8); X.fillStyle = P.acc; X.fillRect(0, 0, W * t / DUR, 8);
-  text('@conxixent', W / 2, 1712, font(SANS, 600, 40), 'rgba(90,70,55,0.75)');
+  text('@conxixent', W / 2, HANDLE_Y, font(SANS, 600, 38), 'rgba(90,70,55,0.75)');
   return true;
 }
 </script></body></html>

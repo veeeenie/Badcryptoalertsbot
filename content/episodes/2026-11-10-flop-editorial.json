@@ -342,7 +342,15 @@
       "id": "tk",
       "x": 800,
       "y": 640,
-      "dur": 0.6
+      "dur": 0.6,
+      "s": 0.4
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "remove",
+      "id": "tk"
      }
     ]
    ]
@@ -443,7 +451,7 @@
       "prop": "stack",
       "n": 24,
       "r": 130,
-      "y": 1050,
+      "y": 960,
       "value": "96",
       "sub": "FLOP per block",
       "pop": false,
@@ -575,7 +583,7 @@
       "kind": "add",
       "id": "pl",
       "prop": "pile",
-      "y": 1000,
+      "y": 960,
       "pop": false,
       "sub": "FLOP at genesis · current spec",
       "sfx": "pop"
@@ -607,7 +615,7 @@
       "id": "d",
       "prop": "donut",
       "pct": 20,
-      "y": 860,
+      "y": 820,
       "pop": false,
       "sub": "to testnet users · over 10 years · proposed",
       "sfx": "pop"
