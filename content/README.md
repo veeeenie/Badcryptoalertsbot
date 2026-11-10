@@ -28,6 +28,7 @@ First run downloads the free voice model (Kokoro, Apache-2.0), the Inter font an
 - Hook in the first second: the claim or number on screen at once. No intro, no logo.
 - A new visual every 1–2 s; 18–26 short sentences; 40–55 s total.
 - Open loop early ("…with one catch"), pay it off near the end.
+- One takeaway per video: a single sentence the viewer can repeat or use (e.g. "HIP-3 is the stock market, HIP-4 is the betting market"). Decide it before writing; it is the catch's payoff, shown on screen as its own beat just before the follow line.
 - Kinetic word captions, emoji icons, grid background, no header text (progress bar only).
 - @conxixent is drawn small under the captions on every frame (render.py, HANDLE), so a clip or screenshot still carries it.
 - End: "Follow for daily Hyperliquid, trade.xyz, Metric and Flop data." + "Not financial advice." line, @conxixent shown.
