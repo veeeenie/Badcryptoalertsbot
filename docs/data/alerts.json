@@ -119,6 +119,28 @@
       "name": "VVV daily close above 22.9 (daily 25 EMA)",
       "meaning": "The breakdown below 21 has failed: the VVV short case is cancelled.",
       "source": "trader via chat, 9 Nov 2026"
+    },
+    {
+      "id": "JUP-dclose-0.248",
+      "coin": "JUP",
+      "type": "close",
+      "timeframe": "daily",
+      "side": "below",
+      "price": 0.248,
+      "name": "JUP daily close below 0.248 (daily 200 EMA)",
+      "meaning": "Rejection confirmed: JUP lost its daily 200 EMA again; the short is working.",
+      "source": "trader via chat, 10 Nov 2026"
+    },
+    {
+      "id": "VVV-dclose-21.1",
+      "coin": "VVV",
+      "type": "close",
+      "timeframe": "daily",
+      "side": "below",
+      "price": 21.1,
+      "name": "VVV daily close below 21.1",
+      "meaning": "Breakdown confirmed: next is the 19.6 low.",
+      "source": "trader via chat, 10 Nov 2026"
     }
   ],
   "watch": [
