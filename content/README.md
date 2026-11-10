@@ -44,6 +44,8 @@ Beats (same `[word index, {...}]` timing as before; `sfx` works the same, keep i
 - `{"kind":"add","id":"g","prop":"gpu","x":760,"y":840, ...}`: add a prop (x is the centre, 540 = middle; keep props between y 430 and 1220). `"pop": false` skips the bounce.
 - `{"kind":"move","id":"g","x":..,"y":..,"s":0.5,"dur":0.6}`, `{"kind":"set","id":"ch","hi":2}`, `{"kind":"remove","id":"g"}`.
 
+Safe area: X's phone player covers the top ~12% and bottom ~28% of the video, so the page keeps everything between y 400 and 1370 (headline at 470, caption at 1272, handle at 1362). Prop coordinates are stage coordinates (y 430–1220, x 0–1080) and are scaled 0.8 around the centre automatically; keep side props between x 180 and 900.
+
 Props and their fields:
 - `coin` r, label · `nameplate` name, sub · `chain` n, size, hi (highlighted block) · `agent` s, label · `gpu` s, label, spin
 - `ticket` title, fee · `proof` (check mark draws itself) · `label` text (`*accent*`), size, x · `cross` w (strike through a label) · `x` r (red X over something)
