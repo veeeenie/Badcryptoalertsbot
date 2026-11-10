@@ -7,7 +7,7 @@ name: Setup scan
 on:
   push:
     branches: [main]
-    paths: ["scanner/journal.py", "scanner/scan.py", "scanner/watchlist.py", "scanner/screener.py", "scanner/market.py", "scanner/alerts_cmd.py", "scanner/fills.py", "scanner/risk.py", "scanner/rates.py", ".github/workflows/scan.yml"]
+    paths: ["scanner/journal.py", "scanner/scan.py", "scanner/watchlist.py", "scanner/screener.py", "scanner/market.py", "scanner/alerts_cmd.py", "scanner/fills.py", "scanner/risk.py", "scanner/rates.py", "scanner/predict.py", ".github/workflows/scan.yml"]
   schedule:
     - cron: "7,37 * * * *"   # two chances an hour for GitHub to start the loop
   workflow_dispatch: {}      # "Run workflow" button for a manual scan
@@ -51,6 +51,7 @@ jobs:
             (cd scanner && python screener.py) || echo "::warning::screener failed"
             (cd scanner && python market.py) || echo "::warning::market failed"
             python scanner/rates.py || echo "::warning::rates failed"
+            python scanner/predict.py || echo "::warning::predict failed"
             git add docs/data/setups.json docs/data/state.json
             [ -f docs/data/journal.json ] && git add docs/data/journal.json
             [ -f docs/data/portfolio.json ] && git add docs/data/portfolio.json
@@ -58,12 +59,13 @@ jobs:
             [ -f docs/data/screener.json ] && git add docs/data/screener.json
             [ -f docs/data/market.json ] && git add docs/data/market.json
             [ -f docs/data/rates.json ] && git add docs/data/rates.json
+            [ -f docs/data/predict.json ] && git add docs/data/predict.json
             git add docs/data/alerts.json
             if ! git diff --cached --quiet; then
               git commit -q -m "Scan $(date -u +'%Y-%m-%d %H:%M') UTC"
               # keep this run's generated files whole: a line-by-line rebase merge of two scans' JSON can
               # duplicate rows (seen 30 Oct 2026), so after rebasing they are put back exactly as written
-              GEN="setups.json state.json journal.json portfolio.json activity.json screener.json market.json rates.json"
+              GEN="setups.json state.json journal.json portfolio.json activity.json screener.json market.json rates.json predict.json"
               mkdir -p "$RUNNER_TEMP/gen"; for f in $GEN; do [ -f docs/data/$f ] && cp docs/data/$f "$RUNNER_TEMP/gen/"; done
               for i in 1 2 3; do
                 git pull -q --rebase -X theirs origin main || { git rebase --abort 2>/dev/null; sleep 5; continue; }
