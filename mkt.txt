@@ -1,0 +1,1 @@
+market: [('BTC', 'mixed'), ('TOTAL', 'mixed'), ('ALTS', 'mixed')] | Mixed: no clear direction. Smaller size, wait for the market to pick a side.
