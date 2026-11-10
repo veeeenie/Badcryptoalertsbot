@@ -33,3 +33,21 @@ First run downloads the free voice model (Kokoro, Apache-2.0), the Inter font an
 - End: "Follow for daily Hyperliquid, trade.xyz, Metric and Flop data." + "Not financial advice." line, @conxixent shown.
 - No project logos or brand art, no impersonation: an independent account.
 - Every number must come from a source checked that day (repo data files or a page actually opened). No hype, no "guaranteed airdrop", no price targets.
+
+## Editorial style (default from 11 Nov 2026)
+
+Set `"style": "editorial"` in the episode. Approved look: `episodes/2026-11-10-flop-editorial.json` (warm cream background, Playfair serif headline with one rust accent word, drawn props that act out the idea, a small 3–4-word caption pill, @conxixent at the bottom). Engine: `engine/editorial/page.html` (canvas, every prop is a draw function) recorded by `engine/editorial/record.py` with headless Chrome. A full build takes about 8 minutes.
+
+Beats (same `[word index, {...}]` timing as before; `sfx` works the same, keep it soft: pop, whoosh on clear, ding on a payoff, impact_soft for a stamp, riser_short for the catch):
+- `{"kind":"head","text":"All *airdropped.*"}`: headline, 2–4 words, `*...*` = rust accent. Fades the old one out.
+- `{"kind":"clear"}`: fades out the scene; props added at the same moment wait until it's gone. One scene per idea.
+- `{"kind":"add","id":"g","prop":"gpu","x":760,"y":840, ...}`: add a prop (x is the centre, 540 = middle; keep props between y 430 and 1220). `"pop": false` skips the bounce.
+- `{"kind":"move","id":"g","x":..,"y":..,"s":0.5,"dur":0.6}`, `{"kind":"set","id":"ch","hi":2}`, `{"kind":"remove","id":"g"}`.
+
+Props and their fields:
+- `coin` r, label · `nameplate` name, sub · `chain` n, size, hi (highlighted block) · `agent` s, label · `gpu` s, label, spin
+- `ticket` title, fee · `proof` (check mark draws itself) · `label` text (`*accent*`), size, x · `cross` w (strike through a label) · `x` r (red X over something)
+- `parachute` (drops a coin) · `stack` n coins, value, sub · `halving` values [96,48,...] · `bars` rows [[label, pct, "acc"|"ink"|"mut"|"gold"|"sage"|"red"]]
+- `pile` sub · `donut` pct, sub · `timeline` items [[when, what]], upto (reveal more with set), note · `stamp` text, size · `big` text, size, color, sub · `small` text
+
+Add a new prop to `DRAW` in page.html when a story needs one (simple shapes, the palette in `P`), and check it in stills.
