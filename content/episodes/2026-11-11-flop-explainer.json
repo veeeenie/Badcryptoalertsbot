@@ -1,0 +1,623 @@
+{
+ "slug": "2026-11-11-flop-explainer",
+ "date": "11 NOV",
+ "sentences": [
+  {
+   "text": "Arthur Hayes is building a blockchain for AI|A-I agents.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "big",
+      "group": "A",
+      "text": "ARTHUR HAYES",
+      "y": 420,
+      "size": 100,
+      "emoji": "🧠",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "pill",
+      "group": "A",
+      "text": "a blockchain for AI agents",
+      "y": 700,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It's called Flop.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "stamp",
+      "group": "A",
+      "text": "FLOP",
+      "y": 960,
+      "color": "mint",
+      "size": 170,
+      "sfx": "impact"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Every token at launch goes to airdrops.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "big",
+      "group": "B",
+      "text": "100% AIRDROP",
+      "y": 440,
+      "size": 104,
+      "color": "mint",
+      "emoji": "🪂",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "text",
+      "group": "B",
+      "text": "all genesis tokens",
+      "y": 680,
+      "size": 56,
+      "color": "muted",
+      "sfx": null
+     }
+    ]
+   ]
+  },
+  {
+   "text": "No VCs.|V-Cs No presale.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "pill",
+      "group": "B",
+      "text": "0 VC allocation",
+      "x": -220,
+      "y": 840,
+      "color": "white",
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "pill",
+      "group": "B",
+      "text": "0 presale",
+      "x": 230,
+      "y": 840,
+      "color": "white",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "pill",
+      "group": "B",
+      "text": "…with one catch",
+      "y": 1040,
+      "color": "amber",
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "AI|A-I agents need computers to run models.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "title",
+      "group": "C",
+      "text": "HOW IT WORKS",
+      "y": 300,
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "big",
+      "group": "C",
+      "text": "AI AGENTS",
+      "y": 620,
+      "size": 110,
+      "emoji": "🤖",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "text",
+      "group": "C",
+      "text": "need compute to run models",
+      "y": 860,
+      "size": 56,
+      "color": "muted",
+      "sfx": null
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Flop lets anyone with a GPU|G-P-U sell that compute.",
+   "beats": [
+    [
+     4,
+     {
+      "kind": "big",
+      "group": "D",
+      "text": "YOUR GPU",
+      "y": 440,
+      "size": 110,
+      "color": "mint",
+      "emoji": "🖥️",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "pill",
+      "group": "D",
+      "text": "sells compute, earns FLOP",
+      "y": 720,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "An agent posts a job and a fee.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "title",
+      "group": "E",
+      "text": "ONE JOB",
+      "y": 290,
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "eq",
+      "group": "E",
+      "text": "1 · AGENT POSTS",
+      "y": 480,
+      "color": "white",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "A miner runs the model.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "eq",
+      "group": "E",
+      "text": "2 · MINER RUNS",
+      "y": 640,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And sends back a proof.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "eq",
+      "group": "E",
+      "text": "3 · PROOF BACK",
+      "y": 800,
+      "color": "amber",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Validators settle it. Proof of useful inference.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "eq",
+      "group": "E",
+      "text": "4 · SETTLED",
+      "y": 960,
+      "color": "white",
+      "sfx": "ding"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "pill",
+      "group": "E",
+      "text": "Proof of Useful Inference",
+      "y": 1120,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Rewards start at 96|ninety-six FLOP per block.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "counter",
+      "group": "F",
+      "n": 96,
+      "label": "FLOP per block",
+      "y": 400,
+      "emoji": "⛏️",
+      "sfx": "ticks"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Halving every 2|two years, down to 3|three forever.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "text",
+      "group": "F",
+      "text": "96 → 48 → 24 → 12 → 6 → 3",
+      "y": 980,
+      "size": 62,
+      "color": "amber",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "pill",
+      "group": "F",
+      "text": "3 per block, forever",
+      "y": 1110,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Miners get 75%,|seventy-five-percent validators and agents 10%|ten-percent each, stakers 5%.|five-percent",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "title",
+      "group": "G",
+      "text": "WHO EARNS",
+      "y": 290,
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "eq",
+      "group": "G",
+      "text": "MINERS 75%",
+      "y": 480,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "eq",
+      "group": "G",
+      "text": "VALIDATORS 10%",
+      "y": 630,
+      "color": "white",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "eq",
+      "group": "G",
+      "text": "AGENTS 10%",
+      "y": 780,
+      "color": "white",
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "eq",
+      "group": "G",
+      "text": "STAKERS 5%",
+      "y": 930,
+      "color": "muted",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "About 2.48|two-point-four-eight billion FLOP at genesis.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "big",
+      "group": "H",
+      "text": "2.48B",
+      "y": 420,
+      "size": 220,
+      "color": "mint",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "text",
+      "group": "H",
+      "text": "FLOP at genesis · current spec",
+      "y": 640,
+      "size": 52,
+      "color": "muted",
+      "sfx": null
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And about 20%|twenty-percent of supply is proposed for testnet users, over 10|ten years.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "big",
+      "group": "H",
+      "text": "20%",
+      "y": 880,
+      "size": 150,
+      "color": "amber",
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "text",
+      "group": "H",
+      "text": "to testnet users · 10 years · proposed",
+      "y": 1080,
+      "size": 46,
+      "color": "muted",
+      "sfx": null
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The airdrop is targeted for Q4.|Q-four",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "title",
+      "group": "I",
+      "text": "TIMELINE",
+      "y": 290,
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "pill",
+      "group": "I",
+      "text": "Airdrop · Q4 2026 (target)",
+      "y": 520,
+      "color": "mint",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The first block, Q1 2027.|Q-one twenty-twenty-seven",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "pill",
+      "group": "I",
+      "text": "Genesis · Q1 2027 (target)",
+      "y": 680,
+      "color": "white",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch:",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "big",
+      "group": "J",
+      "text": "THE CATCH",
+      "y": 420,
+      "size": 150,
+      "color": "amber",
+      "emoji": "⚠️",
+      "sfx": "riser_hit"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Hayes says no FLOP token exists yet.",
+   "beats": [
+    [
+     3,
+     {
+      "kind": "stamp",
+      "group": "J",
+      "text": "NO TOKEN YET",
+      "y": 800,
+      "color": "red",
+      "size": 120,
+      "sfx": "impact"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "So anything sold as FLOP today is a scam.",
+   "beats": [
+    [
+     4,
+     {
+      "kind": "text",
+      "group": "J",
+      "text": "anything sold as FLOP = scam",
+      "y": 1040,
+      "size": 60,
+      "color": "red",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "title",
+      "group": "M",
+      "text": "FOLLOW",
+      "y": 280,
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "chip",
+      "group": "M",
+      "text": "Hyperliquid",
+      "x": -220,
+      "y": 470,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "chip",
+      "group": "M",
+      "text": "trade.xyz",
+      "x": 220,
+      "y": 470,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "chip",
+      "group": "M",
+      "text": "Metric",
+      "x": -220,
+      "y": 620,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "chip",
+      "group": "M",
+      "text": "Flop",
+      "x": 220,
+      "y": 620,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "title",
+      "group": "M",
+      "text": "@conxixent",
+      "y": 800,
+      "color": "mint",
+      "size": 110,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "text",
+      "group": "M",
+      "text": "Not financial advice · specs may still change",
+      "y": 990,
+      "size": 34,
+      "color": "muted",
+      "sfx": null
+     }
+    ]
+   ]
+  }
+ ]
+}
