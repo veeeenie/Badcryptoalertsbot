@@ -1,4 +1,4 @@
-name: Event positions (temporary)
+name: Outcome titles probe (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -12,30 +12,20 @@ jobs:
       - uses: actions/checkout@v5
       - run: |
           (python3 - > probe.txt 2>&1 || true) <<'PY'
-          import json, urllib.request, time
-          W="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
+          import json, urllib.request
           def hl(b):
               r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
               return json.load(urllib.request.urlopen(r,timeout=30))
-          now=int(time.time()*1000)
-          sp=hl({"type":"spotClearinghouseState","user":W})
-          bal=[b for b in sp["balances"] if float(b["total"])!=0]
-          fills=[f for f in hl({"type":"userFillsByTime","user":W,"startTime":now-2*86400000,"aggregateByTime":True}) if f["coin"].startswith("#")]
-          orders=[o for o in hl({"type":"frontendOpenOrders","user":W}) if o["coin"].startswith("#")]
-          meta=hl({"type":"outcomeMeta"}); om={o["outcome"]:o for o in meta["outcomes"]}
-          qd={}
-          for q in meta.get("questions",[]):
-              for oid in (q.get("namedOutcomes") or [])+([q["fallbackOutcome"]] if q.get("fallbackOutcome") is not None else []): qd[oid]=q.get("description")
-          coins={f["coin"] for f in fills}|{o["coin"] for o in orders}|{b["coin"] for b in bal if b["coin"].startswith("#") or b["coin"].startswith("+")}
-          info={}
-          for c in coins:
-              n=int(c.lstrip("#+")); oid,side=n//10,n%10
-              o=om.get(oid,{})
-              bk=hl({"type":"l2Book","coin":f"#{oid*10}"})["levels"]
-              info[c]={"outcome":oid,"side":side,"name":o.get("name"),"desc":o.get("description"),"sides":o.get("sideSpecs"),"question":qd.get(oid),
-                       "yes_bid":bk[0][0]["px"] if bk[0] else None,"yes_ask":bk[1][0]["px"] if bk[1] else None}
-          mids=hl({"type":"allMids"})
-          print(json.dumps({"bal":bal,"fills":fills,"orders":orders,"info":info,"mids":{k:mids.get(k) for k in ("BTC","ETH","HYPE","SOL")}},indent=1))
+          meta=hl({"type":"outcomeMeta"}); m=hl({"type":"allMids"})
+          qs=meta.get("questions",[])
+          print("question keys", list(qs[0].keys()) if qs else None)
+          for q in qs:
+              if q.get("venue") in ("txyz",None) or any((o.get("venue") in ("txyz",None)) for o in meta["outcomes"] if o["outcome"] in (q.get("namedOutcomes") or [])):
+                  print("Q", json.dumps(q)[:600])
+          for o in meta["outcomes"]:
+              if o.get("venue") in ("txyz",None) and f"#{o['outcome']*10}" in m and "priceBinary" not in o.get("description","") and "binaryPrice" not in o.get("name",""):
+                  print("O", json.dumps(o)[:400])
+          print("venues meta keys", [k for k in meta.keys()])
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f probe.txt && git commit -qm "events1" && git push -q origin HEAD:debug-weekly
+          git add -f probe.txt && git commit -qm "titles1" && git push -q origin HEAD:debug-weekly
