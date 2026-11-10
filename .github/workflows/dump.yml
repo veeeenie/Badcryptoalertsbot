@@ -1,4 +1,4 @@
-name: Rates sources (temporary)
+name: Rates test (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,13 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36"
-          {
-          echo "== RBI rates"; curl -sL -m 40 -A "$UA" "https://www.rbi.org.in/" | tr -s ' \t\r\n' ' ' | grep -oE "(Policy Repo Rate|Standing Deposit Facility Rate|Marginal Standing Facility Rate|Bank Rate)[^%]{0,120}%" | head -6
-          echo "== RBI CPI on home?"; curl -sL -m 40 -A "$UA" "https://www.rbi.org.in/" | tr -s ' \t\r\n' ' ' | grep -oiE "(inflation|CPI)[^%]{0,150}%" | head -5
-          echo "== mospi site"; curl -sL -m 40 -A "$UA" -w "\nHTTP %{http_code}\n" "https://www.mospi.gov.in/" | tr -s ' \t\r\n' ' ' | grep -oiE "(CPI|inflation)[^<]{0,120}|HTTP [0-9]+" | head -8
-          echo "== esankhyiki"; curl -sL -m 40 -A "$UA" -w "\nHTTP %{http_code}\n" "https://esankhyiki.mospi.gov.in/" | head -c 300; echo
-          echo "== CNBC IN CPI?"; curl -sL -m 40 -A "$UA" "https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols=INCPIY&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json" | head -c 300; echo
-          } > fred.txt 2>&1
+          pip -q install requests
+          python scanner/rates.py > fred.txt 2>&1; python scanner/rates.py >> fred.txt 2>&1; cat docs/data/rates.json >> fred.txt
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add fred.txt && git commit -qm "rates2" && git push -q origin HEAD:debug-weekly
+          git add fred.txt && git commit -qm "rates3" && git push -q origin HEAD:debug-weekly
