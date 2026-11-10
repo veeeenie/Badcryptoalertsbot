@@ -1,4 +1,4 @@
-name: Orders dump (temporary)
+name: HYPE spot check (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -12,21 +12,22 @@ jobs:
       - uses: actions/checkout@v5
       - run: |
           python3 - > orders.json <<'PY'
-          import json, urllib.request
+          import json, urllib.request, time
           W="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
           def hl(b):
               r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
               return json.load(urllib.request.urlopen(r,timeout=30))
-          out={}
-          out["state"]=hl({"type":"clearinghouseState","user":W})
-          out["state_xyz"]=hl({"type":"clearinghouseState","user":W,"dex":"xyz"})
-          out["orders"]=hl({"type":"frontendOpenOrders","user":W})
-          out["orders_xyz"]=hl({"type":"frontendOpenOrders","user":W,"dex":"xyz"})
-          out["mids"]=hl({"type":"allMids"})
-          out["mids_xyz"]=hl({"type":"allMids","dex":"xyz"})
+          now=int(time.time()*1000)
+          out={"t":now}
+          out["open"]=hl({"type":"frontendOpenOrders","user":W})
+          out["hist"]=[o for o in hl({"type":"historicalOrders","user":W}) if o["statusTimestamp"]>now-10*86400000]
+          out["fills"]=hl({"type":"userFillsByTime","user":W,"startTime":now-10*86400000,"aggregateByTime":True})
           out["spot"]=hl({"type":"spotClearinghouseState","user":W})
-          import time; out["t"]=time.time()
+          out["mids"]={k:v for k,v in hl({"type":"allMids"}).items() if k in ("HYPE","@107")}
+          c=hl({"type":"candleSnapshot","req":{"coin":"@107","interval":"1h","startTime":now-3*86400000,"endTime":now}})
+          out["low72h"]=min(float(x["l"]) for x in c) if c else None
+          out["lows"]=[(x["t"],x["l"]) for x in c][-30:]
           print(json.dumps(out))
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add orders.json && git commit -qm "orders1" && git push -q origin HEAD:debug-weekly
+          git add orders.json && git commit -qm "orders2" && git push -q origin HEAD:debug-weekly
