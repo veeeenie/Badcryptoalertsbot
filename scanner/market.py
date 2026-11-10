@@ -93,14 +93,21 @@ def row(rid, name, daily, now_value, unit):
         label = "bearish"
     else:
         label = "mixed"
+    # lean: the weekly trend and the daily 200 agree even if the monthly hasn't turned
+    lean = "bearish" if wt == "bear" and above is False else "bullish" if wt == "bull" and above is True else None
     # unit: "price" (USD) or "mcap" ($ billions)
-    return {"id": rid, "name": name, "unit": unit, "value": price, "label": label, "tf": tf,
+    return {"id": rid, "name": name, "unit": unit, "value": price, "label": label, "lean": lean if label == "mixed" else label, "tf": tf,
             "chg7d": round(chg7, 1) if chg7 is not None else None, "chg13w": round(chg13, 1) if chg13 is not None else None,
             "support": sup, "resistance": res, "for_long": bull, "for_short": bear, "atr_w": A}
 
 
 def verdict(rows):
     lab = {r["id"]: r["label"] for r in rows if r.get("label")}
+    lean = {r["id"]: r.get("lean") for r in rows if r.get("label")}
+    if all(v == "mixed" for v in lab.values()) and lean.get("BTC") == lean.get("ALTS") == "bearish":
+        return "Leaning risk-off: BTC and alts are down on the weekly and below their daily 200; the monthly hasn't turned yet. Shorts favoured."
+    if all(v == "mixed" for v in lab.values()) and lean.get("BTC") == lean.get("ALTS") == "bullish":
+        return "Leaning risk-on: BTC and alts are up on the weekly and above their daily 200; the monthly hasn't turned yet. Longs favoured."
     b, a = lab.get("BTC"), lab.get("ALTS")
     if b == "bearish" and a == "bearish":
         return "Risk-off: shorts favoured, longs need a strong reason."
@@ -167,8 +174,10 @@ def main():
     changes = []
     for r in rows:
         p = prev.get(r["id"])
-        if r.get("label") and p and p.get("label") != r["label"]:
-            changes.append(f"{r['id']}: {p['label']} → {r['label'].upper()}")
+        if r.get("label") and p and (p.get("label"), p.get("lean")) != (r["label"], r.get("lean")):
+            was = p["label"] + (f" (leaning {p['lean']})" if p.get("lean") and p["label"] == "mixed" else "")
+            now = r["label"].upper() + (f" (leaning {r['lean']})" if r.get("lean") and r["label"] == "mixed" else "")
+            changes.append(f"{r['id']}: {was} → {now}")
     v = verdict(rows)
     if changes:
         telegram("📊 Market change\n" + "\n".join(changes) + f"\n\n{v}")

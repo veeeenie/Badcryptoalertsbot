@@ -49,6 +49,18 @@ th{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;
 tr:last-child td{border-bottom:0}
 .box{background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
 
+/* market strip */
+.mkt{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:12px;margin:14px 0 18px;overflow:hidden}
+.mkthead{padding:10px 14px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;border-bottom:1px solid var(--line)}
+#mktverdict.risk-off{color:var(--down);font-weight:600} #mktverdict.risk-on{color:var(--up);font-weight:600}
+.mkt details{border-bottom:1px solid var(--line)} .mkt details:last-child{border-bottom:0}
+.mkt summary{list-style:none;cursor:pointer;padding:9px 14px;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline}
+.mkt summary::-webkit-details-marker{display:none}
+.mkt summary::before{content:"›";display:inline-block;width:10px;color:var(--muted);transition:transform .15s}
+.mkt details[open] summary::before{transform:rotate(90deg)}
+.mkt .lab{font-weight:700;text-transform:capitalize}
+.mkt .body{padding:4px 14px 12px 34px}
+.cbanner{margin:6px 0 10px;padding:8px 12px;border-radius:8px;background:var(--soft);font-size:14px;border-left:3px solid var(--down)}
 /* chart cards and tabs */
 .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
 .tabs button{background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:99px;font-weight:600;padding:5px 12px}
@@ -149,9 +161,15 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <a href="rules.html" class="ext">Rule book</a>
 </div></nav>
 <main>
+  <section id="market" class="mkt">
+  <div class="mkthead"><b>Market</b> <span class="muted" id="mktverdict">Loading…</span></div>
+  <div id="mktrows"></div>
+  </section>
+
   <section id="charts" class="anchor">
   <h2>Charts</h2>
   <div id="ctabs" class="tabs"></div>
+  <div id="cbanner"></div>
   <div id="crows"></div>
   </section>
 
@@ -232,6 +250,31 @@ const ist=(iso,time)=>{const p=Object.fromEntries(new Intl.DateTimeFormat("en-GB
 const MAIN_ADDR="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE";
 const mainWallet=j=>[(j.wallets||[]).find(w=>w.address.toLowerCase()===MAIN_ADDR.toLowerCase())||{address:MAIN_ADDR,label:""}].map(w=>({addr:w.address,label:w.label}));
 const HL=p=>fetch("https://api.hyperliquid.xyz/info",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();});
+
+// ---- market strip: BTC, TOTAL, ALTS (minus BTC and stablecoins)
+let MKT=null;
+const mval=r=>r.unit==="mcap"?(r.value>=1000?"$"+(r.value/1000).toFixed(2)+"T":"$"+r.value.toFixed(0)+"B"):f(r.value);
+const labTxt=r=>r.label==="mixed"&&r.lean?`mixed, leaning ${r.lean}`:r.label;
+const labCls=r=>(r.label==="mixed"?r.lean:r.label)==="bullish"?"up":(r.label==="mixed"?r.lean:r.label)==="bearish"?"down":"muted";
+function altMood(){ if(!MKT) return null; const a=MKT.rows.find(r=>r.id==="ALTS"&&r.label); return a?(a.label==="mixed"?a.lean:a.label):null; }
+function btcMood(){ if(!MKT) return null; const a=MKT.rows.find(r=>r.id==="BTC"&&r.label); return a?(a.label==="mixed"?a.lean:a.label):null; }
+fetch("data/market.json?t="+Date.now()).then(r=>r.json()).then(m=>{
+  MKT=m;
+  const v=document.getElementById("mktverdict"); v.textContent=m.verdict;
+  v.className=/risk-off/i.test(m.verdict)?"risk-off":/risk-on/i.test(m.verdict)?"risk-on":"muted";
+  const li=a=>a&&a.length?`<ul class="il">${a.map(x=>`<li>${x}</li>`).join("")}</ul>`:'<div class="muted">nothing notable</div>';
+  document.getElementById("mktrows").innerHTML=m.rows.map(r=>r.error?`<details><summary><b>${r.id}</b><span class="muted">${r.name}: data unavailable right now</span></summary></details>`:`
+    <details><summary><b>${r.id}</b><span class="muted">${r.name}</span><span>${chip(Object.assign({price:r.value},r))}</span>
+      <span>${mval(r)}</span><span class="${(r.chg7d||0)>=0?"up":"down"}">7d ${(r.chg7d||0)>=0?"+":""}${r.chg7d}%</span><span class="muted">13w ${(r.chg13w||0)>=0?"+":""}${r.chg13w}%</span>
+      <span class="lab ${labCls(r)}">${labTxt(r)}</span>${r.id==="ALTS"&&m.btc_dominance?`<span class="muted">BTC dominance ${m.btc_dominance.now}% (${m.btc_dominance.d30?(m.btc_dominance.now-m.btc_dominance.d30>=0?"+":"")+(m.btc_dominance.now-m.btc_dominance.d30).toFixed(1)+" in 30 days":""})</span>`:""}</summary>
+      <div class="body"><div class="two"><div class="block"><h4>For longs</h4>${li(r.for_long)}</div><div class="block"><h4>For shorts</h4>${li(r.for_short)}</div></div>
+        <div class="facts"><div><b>Weekly supports:</b> ${(r.support||[]).map(x=>(r.unit==="mcap"?"$"+x.price.toFixed(0)+"B":f(x.price))+` <span class="muted">(−${pct(r.value,x.price).toFixed(1)}%)</span>`).join(" · ")||"none"}</div>
+        <div><b>Weekly resistances:</b> ${(r.resistance||[]).map(x=>(r.unit==="mcap"?"$"+x.price.toFixed(0)+"B":f(x.price))+` <span class="muted">(+${pct(x.price,r.value).toFixed(1)}%)</span>`).join(" · ")||"none"}</div>
+        ${r.unit==="mcap"?`<div class="muted">Market caps from CoinMarketCap${r.id==="ALTS"?`, minus ${m.btc_dominance&&m.btc_dominance.stables_usd?"$"+(m.btc_dominance.stables_usd/1e9).toFixed(0)+"B of":""} stablecoins (DefiLlama)`:""}; one value a day, so levels are from daily closes.</div>`:""}</div></div>
+    </details>`).join("");
+  if(SCR) drawCharts(document.querySelector("#ctabs button.on")?.dataset.tab||"bullish");
+}).catch(()=>{document.getElementById("mktverdict").textContent="Market data not built yet: it appears after the next hourly scan.";});
+
 // ---- charts screener: every Hyperliquid perp, bullish / bearish / mixed on daily, weekly, monthly
 const TFN={d:"D",w:"W",m:"M"}, ARW={bull:['▲','up'],bear:['▼','down'],mixed:['•','muted'],"n/a":['–','muted']};
 const bigc=x=>x==null?"–":"$"+(x>=1e9?(x/1e9).toFixed(2)+"B":x>=1e6?(x/1e6).toFixed(0)+"M":(x/1e3).toFixed(0)+"k");
@@ -311,6 +354,8 @@ function check(r,v){
   if(rr<1.4||rr1<1.4) warn.push(`Below your 1.4 : 1 gate (${rr.toFixed(2)} all filled, ${rr1.toFixed(2)} first only).`);
   if((long&&r.tf.w.trend==="bear")||(!long&&r.tf.w.trend==="bull")) warn.push(`Against the weekly trend (rule 1).`);
   const e200=r.tf.d.ema200; if(e200&&((long&&r.price<e200)||(!long&&r.price>e200))) warn.push(`Price is ${long?"below":"above"} the daily 200 EMA (${f(e200)}).`);
+  const mood=r.coin==="BTC"?btcMood():altMood(), mk=r.coin==="BTC"?"BTC":"The alt market";
+  if((long&&mood==="bearish")||(!long&&mood==="bullish")) warn.push(`${mk} is ${mood}: this ${long?"long":"short"} goes against it.`);
   if(1/lev-mm<2*stopPct) warn.push(`Even 1× leaves liquidation within twice the stop distance.`);
   const p=r.price, chase=long?es[0]>p*1.002:es[0]<p*0.998;
   if(chase) warn.push(`Entry 1 is ${long?"above":"below"} the current price (${f(p)}): that's a market order, not a waiting one.`);
@@ -341,6 +386,9 @@ function drawCharts(tab){
     :tab==="bearish"?grp("Down on all three",L.filter(r=>r.group==="all three"))+grp("Weekly and monthly down, daily bouncing",L.filter(r=>r.group!=="all three"))
     :grp("Trend up but below the daily 200",L.filter(r=>r.group==="weekly up, below the daily 200"))+grp("Trend down but above the daily 200",L.filter(r=>r.group==="weekly down, above the daily 200"))+grp("Mixed",L.filter(r=>!r.group));
   if(!L.length) el.innerHTML='<p class="muted">None right now.</p>';
+  const am=altMood(), bn=document.getElementById("cbanner");
+  bn.innerHTML=tab==="bullish"&&am==="bearish"?'<div class="cbanner">The alt market is bearish: longs here go against it. Smaller size, or wait for it to turn.</div>'
+    :tab==="bearish"&&am==="bullish"?'<div class="cbanner" style="border-left-color:var(--up)">The alt market is bullish: shorts here go against it.</div>':"";
   bindCards(el); liveCharts();
 }
 async function liveCharts(){   // live price and "in position / orders in" on the cards shown
