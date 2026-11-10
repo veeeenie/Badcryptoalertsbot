@@ -29,6 +29,7 @@ First run downloads the free voice model (Kokoro, Apache-2.0), the Inter font an
 - A new visual every 1–2 s; 18–26 short sentences; 40–55 s total.
 - Open loop early ("…with one catch"), pay it off near the end.
 - Kinetic word captions, emoji icons, grid background, no header text (progress bar only).
+- @conxixent is drawn small under the captions on every frame (render.py, HANDLE), so a clip or screenshot still carries it.
 - End: "Follow for daily Hyperliquid, trade.xyz, Metric and Flop data." + "Not financial advice." line, @conxixent shown.
 - No project logos or brand art, no impersonation: an independent account.
 - Every number must come from a source checked that day (repo data files or a page actually opened). No hype, no "guaranteed airdrop", no price targets.

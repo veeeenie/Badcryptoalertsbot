@@ -22,6 +22,7 @@ def font(w, s):
 EMO = ImageFont.truetype(next(p for p in ("/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf", os.path.join(CACHE, "NotoColorEmoji.ttf")) if os.path.exists(p)), 109)
 BG = (9, 13, 24); GRID = (24, 33, 52)
 COL = {"white": (245, 247, 250), "muted": (140, 152, 170), "mint": (62, 230, 184), "red": (255, 84, 104), "amber": (255, 196, 70)}
+HANDLE = "@conxixent"
 WORK = os.environ["WORK"]
 TL = json.load(open(os.path.join(WORK, "timeline.json")))
 DUR = TL["dur"]
@@ -210,6 +211,9 @@ def captions(cv, t):
 def chrome(cv, t):
     d = ImageDraw.Draw(cv)
     d.rectangle((0, 0, W, 12), fill=(25, 32, 48)); d.rectangle((0, 0, int(W * t / DUR), 12), fill=COL["mint"])
+    # handle on every frame, below the captions and above the player controls
+    L = cached("handle", lambda: text_layer(HANDLE, font("b", 44), COL["white"] + (200,), 4, (0, 0, 0)))
+    place(cv, L, W / 2, 1700)
 
 def frame(t):
     off = int((t * 18) % 90)
