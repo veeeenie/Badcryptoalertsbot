@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-10T14:22:48Z",
+ "generated_at": "2026-11-11T02:25:51Z",
  "coins": {
   "MORPHO": {
    "side": "long",
@@ -245,7 +245,7 @@
   "NXPC": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T14:22:48Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "NEXPACE is Nexon's Web3 arm behind MapleStory Universe, running on the Henesys chain (an Avalanche L1). NXPC is used for item minting and enhancement, marketplace fees and rewards, with 20% of user-activity revenue burned quarterly.",
    "competitors": [
     "Ronin (RON)",
@@ -254,16 +254,29 @@
     "Gala (GALA)"
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
-   "stance": "supports",
-   "summary": "No price-moving news in the past week. The Nov 15 unlock (about 1M NXPC cliff to IP MG and the team, up to about 7.9M including Contribution Reward emissions, roughly 2.4% of market cap) adds supply that favours the short; the Nov 12 Moonbridge/Gloom content launch is the main upside risk.",
-   "news": [],
+   "stance": "against",
+   "summary": "Nexpace's Nov 9 revision is a large supply cut: about 95.7M NXPC (roughly 30% of circulating) to be burned in December, weekly Contribution Reward releases burned for at least 52 weeks, and Reactor shut down, which works against the short. The Nov 15 unlock still adds supply before the burns take effect in December, so it is the main near-term support for the short.",
+   "news": [
+    {
+     "title": "Nexpace revises NXPC whitepaper, halting new Contribution Reward emissions",
+     "url": "https://egamers.io/maplestory-universe-revises-nxpc-whitepaper-halts-new-contribution-reward-emissions/",
+     "date": "Nov 9",
+     "new": true
+    },
+    {
+     "title": "Nexpace to burn 95.7M NXPC (about 30% of circulating) in December and close Reactor",
+     "url": "https://www.blockchaingamer.biz/news/43187/nexpace-tweaks-maplestory-universe-economy-burns-30-percent-circulating-nxpc/",
+     "date": "Nov 10",
+     "new": true
+    }
+   ],
    "unlocks": [
     {
      "date": "Nov 15",
      "date_iso": "2026-11-15",
      "amount": "7.92M NXPC",
      "pct_supply": "",
-     "note": "Foundation/Contribution Reward (~97%) and insiders (~3%) per Tokenomics.com, ~2.4% of market cap. Date confirmed by Tokenomist (Contribution Reward) and CoinGecko, which lists only the 0.99M IP MG + Team cliff portion (0.10% of total supply); the rest is reward emissions",
+     "note": "Foundation/Contribution Reward (~97%) and insiders (~3%) per Tokenomics.com, ~2.4% of market cap. Date confirmed by Tokenomist (IP MG and Team cliff) and CoinGecko, which lists only the 0.99M IP MG + Team cliff portion; the rest is reward emissions. Burning of weekly rewards starts only in December",
      "source": "https://app.tokenomics.com/tokenomics/nexpace/unlocks",
      "new": false
     }
@@ -366,7 +379,7 @@
   "ZEC": {
    "side": "long",
    "label": "bullish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Zcash is a privacy-focused proof-of-work cryptocurrency that supports shielded (encrypted) transactions using zero-knowledge proofs. ZEC is used for payments and paying fees, and is mined with a fixed 21M supply cap.",
    "competitors": [
     "Monero (XMR)",
@@ -375,26 +388,26 @@
     "Secret (SCRT)"
    ],
    "about_checked_at": "2026-11-06T02:26:19Z",
-   "stance": "neutral",
-   "summary": "NU7 is live and grant-funding worries eased after ZCG dropped its 98K ZEC plan, but heavy long liquidations on Nov 8 and Grayscale ETF outflows point to sell-the-news selling. It is a mined coin, so there are no vesting unlocks.",
+   "stance": "against",
+   "summary": "ZEC is giving back its NU7 gains, falling about 6% on Nov 10 with around $7M in liquidations, mostly longs, which works against the long for now. It is a mined coin, so there are no vesting unlocks.",
    "news": [
     {
-     "title": "ZEC falls about 5% in a day, triggering about $5.2M of liquidations, mostly longs",
-     "url": "https://tokenpost.com/news/investing/51197",
+     "title": "ZEC drops about 6% in a day; roughly $7M liquidated, about $5.4M of it longs",
+     "url": "https://tokenpost.com/news/investing/52661",
+     "date": "Nov 10",
+     "new": true
+    },
+    {
+     "title": "Developers propose cutting block time again to 20 seconds in a future NU7.1 upgrade",
+     "url": "https://crypto.news/zcash-20-second-blocks-nu7-upgrade/",
      "date": "Nov 8",
-     "new": false
+     "new": true
     },
     {
      "title": "NU7 goes live on Nov 6 with 25-second blocks and a fee reserve; ZEC rises while the wider market falls",
      "url": "https://cryptoticker.io/en/zcash-nu7-upgrade-zec-price-rises/",
      "date": "Nov 6",
      "new": false
-    },
-    {
-     "title": "Zcash Community Grants withdraws its plan to move about 98,000 ZEC into the miner reserve",
-     "url": "https://cryptoticker.io/en/zcash-zcg-drops-98000-zec-plan/",
-     "date": "Nov 4",
-     "new": true
     }
    ],
    "unlocks": []
@@ -402,7 +415,7 @@
   "VVV": {
    "side": "long",
    "label": "bullish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Venice is a privacy-first AI platform offering private, uncensored access to text, image and code models via app and API. Staking VVV gives a share of free API inference capacity, and part of supply is burned.",
    "competitors": [
     "Bittensor (TAO)",
@@ -411,19 +424,25 @@
     "Morpheus (MOR)"
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
-   "stance": "neutral",
-   "summary": "No new catalyst since the Valour ETP listing; price mostly tracks the altcoin market, with analysts watching about $19 as support. No dated cliff unlock in the window, only small linear emissions (about 2M VVV a year) offset by buy-and-burn.",
+   "stance": "supports",
+   "summary": "A record monthly buyback-and-burn and outperformance on Nov 9 support the long, with about $19 watched as support. No dated cliff unlock in the window, only small linear emissions offset by burns.",
    "news": [
+    {
+     "title": "Venice burns a record 21,657 VVV (about $458K) in its monthly buyback, about 10% more than October",
+     "url": "https://finance.yahoo.com/markets/crypto/articles/venice-sets-vvv-burn-record-205630924.html",
+     "date": "Nov 9",
+     "new": true
+    },
+    {
+     "title": "VVV gains about 7% in a day, among the top performers as SocialFi tokens rise",
+     "url": "https://tokenpost.com/news/investing/52734",
+     "date": "Nov 9",
+     "new": true
+    },
     {
      "title": "Valour lists a Venice (VVV) exchange-traded product on Sweden's Spotlight Stock Market",
      "url": "https://www.tradingview.com/news/prnewswire:799ab9532343d:0-defi-technologies-subsidiary-valour-launches-eight-new-digital-asset-etps-on-spotlight-stock-market-expanding-access-to-ai-institutional-blockchain-defi-and-community-tokens/",
      "date": "Nov 5",
-     "new": false
-    },
-    {
-     "title": "VVV rises about 17% as DeFi tokens rally after the US midterms",
-     "url": "https://coinmarketcap.com/community/articles/6aeb5c60018d1e26c7a7e5ce",
-     "date": "Nov 4",
      "new": false
     }
    ],
@@ -432,7 +451,7 @@
   "XMR": {
    "side": "long",
    "label": "bullish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Monero is a privacy-focused proof-of-work cryptocurrency where sender, receiver and amount are hidden by default. XMR is used for private payments and has a small perpetual tail emission.",
    "competitors": [
     "Zcash (ZEC)",
@@ -440,25 +459,25 @@
     "Firo (FIRO)"
    ],
    "about_checked_at": "2026-11-06T02:26:19Z",
-   "stance": "supports",
-   "summary": "XMR keeps outperforming BTC and is holding the roughly $600 support, which fits the long, though a BTC close below $75K could drag it toward about $540. Hack proceeds being laundered through XMR add regulatory and delisting headline risk; it is mined, so there are no unlocks.",
+   "stance": "neutral",
+   "summary": "XMR is still one of the year's strongest large caps and is being pitched as a hedge in a weak market, which fits the long, but regulators keep treating privacy coins as a separate risk, which adds headline risk. It is mined, so there are no unlocks.",
    "news": [
     {
-     "title": "XMR drops only about 3% in the AI-stock-driven sell-off while BTC falls more than 5%",
-     "url": "https://bitcoinist.com/bitcoin-holds-critical-76k-level-as-ai-sell-off-triggers-market-wide-panic/",
-     "date": "Nov 6",
-     "new": false
+     "title": "South Korean police move seized crypto to Upbit Custody but exclude Monero, which stays in separate cold wallets",
+     "url": "https://coinmarketcap.com/community/articles/6af19f80ecc5805b066b4182",
+     "date": "Nov 9",
+     "new": true
+    },
+    {
+     "title": "Analysis: XMR is up about 73% in 2026, but EU anti-money-laundering rules bar regulated platforms from privacy coins from July 2027",
+     "url": "https://finance.yahoo.com/markets/crypto/articles/under-radar-cryptocurrency-big-far-181600665.html",
+     "date": "Nov 9",
+     "new": true
     },
     {
      "title": "Credit Mutuel Arkea confirms a cyberattack costing $133M+; ZachXBT traces part of the stolen funds into XMR",
      "url": "https://coinmarketcap.com/community/articles/6aec3d5e38ef9b6c4ca435b4",
      "date": "Nov 5",
-     "new": false
-    },
-    {
-     "title": "Decibel adds XMR perpetual futures on Aptos with up to 5x leverage",
-     "url": "https://coinmarketcap.com/community/articles/6aebb0bf1f2c201e6d347bfd",
-     "date": "Nov 4",
      "new": false
     }
    ],
@@ -467,7 +486,7 @@
   "LIT": {
    "side": "long",
    "label": "bullish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Lighter is a perpetual-futures DEX built on an Ethereum zk-rollup with verifiable order matching, also offering stock perps. LIT is its native token, used for governance and staking, with protocol revenue funding buybacks.",
    "competitors": [
     "Hyperliquid (HYPE)",
@@ -477,8 +496,14 @@
    ],
    "about_checked_at": "2026-11-06T02:26:19Z",
    "stance": "supports",
-   "summary": "The expected November CFTC filing and fee-funded buybacks still support the long, but there is no fresh catalyst and top perp traders reportedly tilted short around Nov 8, with $3.03 and $2.90 as nearby support. No unlock in the window; the 500M LIT team and investor cliff starts Dec 27.",
+   "summary": "Rising protocol revenue that funds buybacks, a short squeeze on Nov 7 and the expected CFTC filing support the long, though there is no confirmed approval or new listing yet. No unlock in the window; the large team and investor cliff starts Dec 27.",
    "news": [
+    {
+     "title": "LIT rebounds about 5% on strong daily revenue and short covering; weekly fees up about 18%",
+     "url": "https://coinmarketcap.com/top-stories/6aeef7af186e1f6fb5cc60e6/",
+     "date": "Nov 7",
+     "new": true
+    },
     {
      "title": "CFTC allows registered exchanges to list single-stock perpetual futures; Lighter is among the venues that could apply",
      "url": "https://decrypt.co/382497/morning-minute-cftc-clears-stock-perps-gets-sued-the-same-day",
@@ -491,7 +516,7 @@
   "HYPE": {
    "side": "long",
    "label": "bullish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Hyperliquid is a layer-1 chain built around an on-chain perpetual futures and spot exchange. HYPE pays gas, is staked for security and to deploy HIP-3 markets, and receives buybacks from trading fees.",
    "competitors": [
     "Aster (ASTER)",
@@ -500,13 +525,13 @@
     "dYdX (DYDX)"
    ],
    "about_checked_at": "2026-11-06T02:26:19Z",
-   "stance": "neutral",
-   "summary": "The PURR FCM filing and Kinetiq's Elysium L2 (gas paid in HYPE, launch set for Nov 9) add ecosystem upside, but Hyperliquid whales turning net short on BTC points to a risk-off backdrop. The monthly team unlock passed on Nov 6, and nothing else is due before early December.",
+   "stance": "supports",
+   "summary": "Elysium's mainnet launched on Nov 9 with HYPE as gas and Uniswap deployed on it, and almost all revenue still goes to buybacks, which supports the long, though whales leaning short on BTC keep the backdrop risk-off. The monthly team unlock passed on Nov 6, and nothing else is due before early December.",
    "news": [
     {
-     "title": "Kinetiq set Nov 9 as the mainnet date for Elysium, a Hyperliquid layer 2 that uses HYPE for gas",
-     "url": "https://coinranking.com/news/elysium-layer-2-mainnet-launches-november-9-trading-apps",
-     "date": "Nov 9",
+     "title": "Uniswap v2, v3 and v4 go live on Elysium, the HYPE-gas layer 2 whose public mainnet launched on Nov 9",
+     "url": "https://tokenpost.com/news/technology/53153",
+     "date": "Nov 10",
      "new": true
     },
     {
@@ -527,7 +552,7 @@
   "FOGO": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Fogo is a Solana-VM-compatible Layer-1 built for low-latency on-chain trading. FOGO pays gas, is staked to secure the network and funds ecosystem incentives.",
    "competitors": [
     "Solana (SOL)",
@@ -537,7 +562,7 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "supports",
-   "summary": "Bitget's spot delisting took effect Nov 6 and cuts liquidity. Tokenomics.com lists a 171.5M FOGO insider/investor unlock (about 4.3% of market cap) on Nov 15, though Tokenomist dates the next tranche Nov 26. Both point the same way as the short.",
+   "summary": "Bitget's spot delisting (effective Nov 6) thinned liquidity, and tokenomics.com shows a 171.5M FOGO insider/investor unlock (about 4.3% of market cap) on Nov 15, while Tokenomist puts the next tranche on Nov 26. Both the delisting and the coming supply line up with the short.",
    "news": [
     {
      "title": "Bitget delisting of the FOGO/USDT spot pair takes effect",
@@ -561,7 +586,7 @@
   "SOPH": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Sophon was a consumer-focused Ethereum L2 built on ZKsync tech that is shutting its chain to focus on apps on Base. SOPH was its gas, staking and governance token and is migrating to an Ethereum ERC-20.",
    "competitors": [
     "Abstract",
@@ -571,21 +596,14 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "supports",
-   "summary": "The chain wind-down is on track: Upbit ends SOPH trading Nov 16, withdrawals close Nov 25 and mainnet shuts Nov 30. That keeps pressure on SOPH and fits the short. No unlock falls in the window, and the next is 169.4M SOPH (about 3.1% of market cap) on Nov 28.",
-   "news": [
-    {
-     "title": "Sophon reminds users to withdraw SOPH, ETH and USDC by Nov 25 ahead of the Nov 30 mainnet shutdown",
-     "url": "https://tokenpost.com/news/business/47325",
-     "date": "Nov 3",
-     "new": false
-    }
-   ],
+   "summary": "Nothing new this week; the wind-down timeline stands, with Upbit ending SOPH trading Nov 16, withdrawals closing Nov 25 and mainnet shutting Nov 30. No unlock falls in the window (next is about Nov 28), and the shutdown overhang still fits the short.",
+   "news": [],
    "unlocks": []
   },
   "2Z": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "DoubleZero is a high-performance fiber network for Solana and other chains' validators, aimed at cutting latency and bandwidth costs. 2Z pays for network access and rewards bandwidth contributors.",
    "competitors": [
     "Jito (JTO)",
@@ -595,21 +613,14 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "neutral",
-   "summary": "The only fresh 2Z item is Binance reopening 2Z withdrawals after its hack, which is plumbing rather than a catalyst. The next unlock (135.4M 2Z, about 2.6% of market cap) is Dec 2, outside the window.",
-   "news": [
-    {
-     "title": "Binance reopens withdrawals for more assets, including 2Z on Solana, as it recovers from its $6.3B breach",
-     "url": "https://www.thestar.com.my/tech/tech-news/2026/11/03/binance-to-reopen-withdrawals-for-more-assets-on-several-networks",
-     "date": "Nov 3",
-     "new": false
-    }
-   ],
+   "summary": "No price-moving 2Z news surfaced in the last 7 days, and no unlock is scheduled before the Dec 2 tranche (135.4M 2Z). Nothing here adds to or against the short.",
+   "news": [],
    "unlocks": []
   },
   "BLUR": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Blur is a pro-trader NFT marketplace and aggregator on Ethereum that also ran Blend, a peer-to-peer NFT lending product. BLUR is its governance token and controls the fee switch.",
    "competitors": [
     "OpenSea",
@@ -619,7 +630,7 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "supports",
-   "summary": "Blur's website and new Blend loans shut Nov 12, a 40.4M BLUR insider/investor/foundation unlock (about 1.5% of market cap) lands Nov 14, and Upbit delists BLUR Nov 30. Less use, thinner liquidity and new supply all fit the short.",
+   "summary": "The blur.io site and new Blend loans shut Nov 12, a 40.4M BLUR insider/investor/foundation unlock (about 1.5% of market cap) follows Nov 14, and Upbit delists BLUR Nov 30. Shrinking use, thinner liquidity and new supply all fit the short.",
    "news": [],
    "unlocks": [
     {
@@ -636,7 +647,7 @@
   "KAITO": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Kaito is an AI-driven crypto research and InfoFi platform that ranks social attention and links brands with creators. KAITO is used for staking, governance and access to platform rewards.",
    "competitors": [
     "Cookie DAO (COOKIE)",
@@ -646,8 +657,15 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "supports",
-   "summary": "No KAITO-specific news this past week. The Nov 20 monthly unlock of about 27.2M KAITO (2.7% of total supply, ~5.4% of market cap) is the main supply event in the window and fits the short.",
-   "news": [],
+   "summary": "The main supply event is the Nov 20 monthly unlock of about 27.2M KAITO (core contributors per Tokenomist), which suits the short. MEXC is also dropping its KAITO USDC-margined perp on Nov 12, a small cut to derivatives liquidity.",
+   "news": [
+    {
+     "title": "MEXC delists KAITO USDC-margined perpetual (one of 14 pairs), effective Nov 12",
+     "url": "https://www.mexc.com/announcements/article/delisting-of-ltc-wif-etc-op-kaito-apt-icp-virtual-h-fil-crv-trx-pendle-and-pengu-usdc-m-perpetual-futures-pairs-nov-12-2026-07-17827791539633",
+     "date": "Nov 10",
+     "new": true
+    }
+   ],
    "unlocks": [
     {
      "date": "Nov 20",
@@ -663,7 +681,7 @@
   "JTO": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Jito is Solana's largest liquid-staking and MEV infrastructure project (JitoSOL, the Jito block engine and the Block Assembly Marketplace). JTO is its governance token, with JTX platform revenue going to buybacks and burns under JIP-38.",
    "competitors": [
     "Marinade (MNDE)",
@@ -673,18 +691,12 @@
    ],
    "about_checked_at": "2026-11-06T02:26:19Z",
    "stance": "against",
-   "summary": "JTO's vesting ended Nov 7, so no new scheduled supply is due in the window. The week's news is positive: JTX tokenized-stock trading sends 80% of fees to JTO buybacks, and Jito and ORE now hold each other's tokens. That works against the short, though recently unlocked tokens could still be sold.",
+   "summary": "JTO's scheduled vesting wrapped up around Nov 7, so no new supply is due in the window. JTX's tokenized-stock trading, with 80% of fees funding JTO buybacks, is a positive catalyst that works against the short, though recently unlocked tokens could still be sold.",
    "news": [
     {
      "title": "JTX adds RFQ trading in 1,650+ tokenized stocks on Solana; 80% of fees go to JTO buybacks",
      "url": "https://cryptobriefing.com/jtx-equities-rfq-tokenized-stocks-solana/",
      "date": "Nov 5",
-     "new": false
-    },
-    {
-     "title": "ORE and Jito Foundation agree reciprocal treasury holdings; ORE moves part of its SOL into JitoSOL",
-     "url": "https://coinfomania.com/ore-announces-reciprocal-treasury-holdings-with-jito",
-     "date": "Nov 3",
      "new": false
     }
    ],
@@ -693,7 +705,7 @@
   "HEMI": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Hemi is a modular Layer-2 that joins Bitcoin and Ethereum, anchoring state to Bitcoin so developers can build BTC DeFi with EVM tools. HEMI pays network fees and is staked as veHEMI for governance and yield.",
    "competitors": [
     "Stacks (STX)",
@@ -703,14 +715,14 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "neutral",
-   "summary": "No HEMI news this week, Hemi's status page shows no November incidents, and no unlock lands in the window. The next monthly tranche (341.2M HEMI, ~11% of market cap) is due Nov 29, so for now the short depends on the chart and broader market moves.",
+   "summary": "No price-moving HEMI news this week and no unlock in the window. The next monthly tranche (341.2M HEMI, 3.4% of total supply) lands Nov 29, so for now the short depends on the chart.",
    "news": [],
    "unlocks": []
   },
   "ME": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Magic Eden is an NFT and token trading platform that in 2026 closed its Bitcoin and EVM marketplaces to focus on Solana and 'crypto entertainment'. ME is its governance and rewards token, with 15% of platform revenue going to buybacks and staker rewards.",
    "competitors": [
     "Tensor (TNSR)",
@@ -720,7 +732,7 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "supports",
-   "summary": "The OKX spot delisting (effective Nov 5) reduced liquidity, and today's Community & Ecosystem cliff unlock of 6.96M ME (~1.12% of float) adds supply. Both favour the short; revenue-funded buybacks are the main offset.",
+   "summary": "The OKX spot delisting (Nov 5) has cut liquidity, and the Nov 10 Community & Ecosystem unlock (6.96M ME) is now in circulation. No further unlock is scheduled before Nov 25, so revenue-funded buybacks are the main offset to the short.",
    "news": [
     {
      "title": "OKX delists ME spot pairs and suspends deposits, effective Nov 5",
@@ -729,22 +741,12 @@
      "new": false
     }
    ],
-   "unlocks": [
-    {
-     "date": "Nov 10",
-     "date_iso": "2026-11-10",
-     "amount": "6.96M ME",
-     "pct_supply": "1.12",
-     "note": "Community & Ecosystem cliff unlock at 01:08 UTC (0.7% of max supply, 1.12% of float per DefiLlama).",
-     "source": "https://defillama.com/unlocks/magic-eden",
-     "new": false
-    }
-   ]
+   "unlocks": []
   },
   "XPL": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Plasma is an EVM-compatible Layer-1 built for stablecoin payments, offering zero-fee USDT transfers and anchoring to Bitcoin. XPL is the native token used for gas, validator staking and network rewards.",
    "competitors": [
     "Tron (TRX)",
@@ -754,33 +756,43 @@
    ],
    "about_checked_at": "2026-11-06T02:26:19Z",
    "stance": "neutral",
-   "summary": "XPL set new all-time lows near $0.056 on Nov 8. Binance plans to reopen Plasma withdrawals before the Nov 14–15 weekend (HYPE and APT already reopened Nov 8), which could free up sell flow or ease pressure on trapped holders. The next monthly unlock is Nov 25, just after the window.",
+   "summary": "XPL hit new all-time lows near $0.056 on Nov 8, and Binance aims to reopen Plasma withdrawals before the Nov 14-15 weekend, which could release trapped sell flow. The Nov 25 monthly unlock of about 232M XPL (~4.9% of market cap) adds supply that favours the short, but at record lows the downside may be stretched.",
    "news": [
     {
      "title": "Binance plans to reopen withdrawals for six tokens, including Plasma, before the Nov 14-15 weekend",
      "url": "https://www.tokenpost.com/news/business/51345",
      "date": "Nov 8",
-     "new": true
+     "new": false
     },
     {
      "title": "Binance reopens HYPE and APT withdrawals; Plasma still waiting in the same post-hack phase",
      "url": "https://crypto.news/binance-restores-hype-apt-withdrawals-after-hack/",
      "date": "Nov 8",
-     "new": true
+     "new": false
     },
     {
      "title": "XPL among 26 tokens printing new all-time lows, trading around $0.056",
      "url": "https://tokenpost.com/news/investing/51595",
      "date": "Nov 8",
-     "new": true
+     "new": false
     }
    ],
-   "unlocks": []
+   "unlocks": [
+    {
+     "date": "Nov 25",
+     "date_iso": "2026-11-25",
+     "amount": "232M XPL",
+     "pct_supply": "",
+     "note": "Monthly vesting (2.3% of total supply, ~4.9% of market cap): community ~38%, private investors ~32%, insiders ~30%. Tokenomist and CoinMarketCal also list Nov 25.",
+     "source": "https://app.tokenomics.com/tokenomics/plasma/unlocks",
+     "new": true
+    }
+   ]
   },
   "BERA": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Berachain is an EVM-compatible Layer-1 using Proof-of-Liquidity, where validators direct rewards to liquidity providers. BERA is the gas and staking token, while BGT handles governance and reward emissions.",
    "competitors": [
     "Monad",
@@ -790,14 +802,14 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "neutral",
-   "summary": "Tokenomist shows no cliff unlock before the next monthly release on Dec 6, and there was no price-moving Berachain news this week. BERA sits near $0.10 with no fresh catalyst for the short.",
+   "summary": "No price-moving Berachain news this week and no unlock until Dec 6 (13.4M BERA). The short has no fresh catalyst beyond the chart and the broader market.",
    "news": [],
    "unlocks": []
   },
   "BOME": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "BOOK OF MEME is a Solana memecoin themed around permanently storing meme culture on decentralized storage. BOME has no real utility and trades on speculation and community attention.",
    "competitors": [
     "dogwifhat (WIF)",
@@ -807,14 +819,14 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "neutral",
-   "summary": "No BOME-specific news since the mid-October selloff, and the supply is fully circulating, so there are no unlocks. Price follows broad memecoin sentiment and leverage flushes.",
+   "summary": "No BOME-specific news in the past week and the supply is fully circulating, so there are no unlocks. Price follows broad memecoin sentiment and leverage flushes.",
    "news": [],
    "unlocks": []
   },
   "HMSTR": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Hamster Kombat is a tap-to-earn Telegram game on TON that grew from a viral clicker into a wider gaming ecosystem. HMSTR is its token, distributed through player airdrops and used for rewards and in-game activity.",
    "competitors": [
     "Notcoin (NOT)",
@@ -824,7 +836,7 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "neutral",
-   "summary": "No price-moving HMSTR news this week; recent coverage only notes it trades about 97% below its listing-day peak. The next scheduled unlock (about 347M HMSTR, roughly 0.3% of supply, insiders and foundation) is Nov 26, just after the window, so price tracks Telegram-game and memecoin sentiment for now.",
+   "summary": "No price-moving HMSTR news this week; coverage only notes it trades about 97% below its listing-day peak. The next scheduled unlock (about 347M HMSTR, insiders and foundation) is Nov 26, just after the window, so price tracks Telegram-game and memecoin sentiment for now.",
    "news": [],
    "unlocks": []
   },
@@ -855,7 +867,7 @@
   "BANANA": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T02:25:51Z",
    "about": "Banana Gun is a trading-bot platform (Telegram and web) for sniping and fast swaps across Ethereum, Solana, Base and other chains. BANANA is its token, and holders receive a share of bot fee revenue.",
    "competitors": [
     "Maestro",
@@ -865,15 +877,8 @@
    ],
    "about_checked_at": "2026-11-09T14:28:41Z",
    "stance": "neutral",
-   "summary": "The only fresh item is Banana Gun pledging 40% of net trading revenue to buy back and burn Kinetiq's KNTQ token, not BANANA, so it gives BANANA no direct support. No dated unlock was found for the next 14 days.",
-   "news": [
-    {
-     "title": "Banana Gun commits 40% of net trading revenue to KNTQ (Kinetiq) buybacks and burns",
-     "url": "https://www.tokenpost.com/news/investing/47352",
-     "date": "Nov 3",
-     "new": false
-    }
-   ],
+   "summary": "No BANANA-specific news in the past week (the Nov 3 KNTQ buyback pledge has aged out and did not benefit BANANA directly). No dated unlock was found for the next 14 days, so price follows trading-bot volumes and broad market sentiment.",
+   "news": [],
    "unlocks": []
   },
   "PEOPLE": {
@@ -892,6 +897,33 @@
    "summary": "No project news or unlocks, and the supply is fully circulating. The political-theme catalyst from the US midterms has passed, so price trades on memecoin sentiment.",
    "news": [],
    "unlocks": []
+  },
+  "HYPER": {
+   "side": "short",
+   "label": "bearish",
+   "checked_at": "2026-11-11T02:25:51Z",
+   "about": "Hyperlane is a permissionless interoperability protocol that lets apps send messages and bridge tokens (Warp Routes) across 150+ chains, including EVM, Solana and Cosmos networks. HYPER is used for staking to secure the network, governance, and rewards for users and chains that expand its use.",
+   "competitors": [
+    "LayerZero (ZRO)",
+    "Wormhole (W)",
+    "Axelar (AXL)",
+    "Chainlink CCIP (LINK)"
+   ],
+   "about_checked_at": "2026-11-11T02:25:51Z",
+   "stance": "supports",
+   "summary": "No price-moving Hyperlane news in the past week; the October Autheo bridge exploit remains the last notable headline. The monthly Nov 22 unlock (about 22.3M HYPER, roughly 5.7% of market cap, mostly insiders and private investors) adds supply that favours the short.",
+   "news": [],
+   "unlocks": [
+    {
+     "date": "Nov 22",
+     "date_iso": "2026-11-22",
+     "amount": "22.26M HYPER",
+     "pct_supply": "",
+     "note": "Monthly vesting: insiders/core team ~47%, community rewards ~22%, private investors ~20%, foundation ~11%; ~2.2% of total supply, ~5.7% of market cap per Tokenomics.com. DropsTab shows the team, early-backer and foundation tranches (13.5M) due on the same timing",
+     "source": "https://app.tokenomics.com/tokenomics/hyperlane/unlocks",
+     "new": true
+    }
+   ]
   }
  }
 }
