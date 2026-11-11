@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-11T02:25:51Z",
+ "generated_at": "2026-11-11T14:20:43Z",
  "coins": {
   "MORPHO": {
    "side": "long",
@@ -843,7 +843,7 @@
   "TNSR": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-10T02:26:13Z",
+   "checked_at": "2026-11-11T14:20:43Z",
    "about": "Tensor is a pro-trader NFT marketplace on Solana run by the Tensor Foundation. TNSR is its governance token, and marketplace fees flow to the TNSR treasury.",
    "competitors": [
     "Magic Eden (ME)",
@@ -853,7 +853,7 @@
    ],
    "about_checked_at": "2026-11-09T02:20:00Z",
    "stance": "supports",
-   "summary": "Coinbase suspended TNSR trading on Nov 9, which cuts US spot liquidity and access after Binance dropped its TNSR/USDC pair in September. The monthly unlock landed on Nov 8, before the window, and Tokenomist shows no cliff unlock scheduled for Nov 10-24.",
+   "summary": "Coinbase suspended TNSR trading on Nov 9, adding to thin liquidity after Binance dropped its TNSR/USDC pair in September. Tokenomist shows no cliff unlock scheduled through Nov 25; only small linear vesting continues.",
    "news": [
     {
      "title": "Coinbase suspends TNSR (and BAL) trading on Nov 9 after a listing review; order books already limit-only",
