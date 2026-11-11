@@ -1,0 +1,651 @@
+{
+ "slug": "2026-11-11-anthropic-pre-ipo-perp",
+ "date": "11 NOV",
+ "style": "editorial",
+ "sentences": [
+  {
+   "text": "Anthropic isn't public yet.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Not public *yet.*"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "np",
+      "prop": "nameplate",
+      "name": "Anthropic",
+      "sub": "IPO expected next week",
+      "y": 760,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "But you can already trade it on Hyperliquid.",
+   "beats": [
+    [
+     5,
+     {
+      "kind": "move",
+      "id": "np",
+      "y": 640,
+      "s": 0.75,
+      "dur": 0.5
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "lb",
+      "prop": "label",
+      "text": "Already *trading*",
+      "y": 1000,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And traders are paying more than the IPO price.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "head",
+      "text": "Paying *more.*"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "c",
+      "prop": "label",
+      "text": "…with one *catch*",
+      "y": 1150,
+      "size": 46,
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Anthropic set a range of $70|seventy to $78|seventy-eight-dollars a share.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *IPO.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "ANT",
+      "fee": "IPO",
+      "y": 760,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "bg",
+      "prop": "big",
+      "text": "$70–78",
+      "size": 170,
+      "color": "acc",
+      "sub": "per share · price range",
+      "y": 1050,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "At the top, that values it at about $1.4|one-point-four trillion.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Up to *$1.4T.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "v1",
+      "prop": "big",
+      "text": "$1.4T",
+      "size": 200,
+      "sub": "fully diluted · top of range",
+      "y": 880,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Trading is expected to start next week.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *timeline.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "tl",
+      "prop": "timeline",
+      "y": 860,
+      "upto": 1,
+      "note": "expected",
+      "items": [
+       [
+        "Nov 10",
+        "Range set"
+       ],
+       [
+        "Nov 19",
+        "First trade"
+       ]
+      ],
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "tl",
+      "upto": 2,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the perp, on trade.xyz.|trade-x-y-z.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *perp.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "np2",
+      "prop": "nameplate",
+      "name": "ANT perp",
+      "sub": "trade.xyz · HIP-3 · pre-IPO",
+      "y": 760,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Today it traded around $106.|a-hundred-and-six-dollars.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "move",
+      "id": "np2",
+      "y": 620,
+      "s": 0.7,
+      "dur": 0.5
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "big",
+      "text": "$106",
+      "size": 200,
+      "color": "acc",
+      "sub": "perp price today",
+      "y": 980,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That's about 36%|thirty-six-percent above the top of the range.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "*36%* above."
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "bars",
+      "y": 700,
+      "pop": false,
+      "rows": [
+       [
+        "IPO range top",
+        74,
+        "ink"
+       ],
+       [
+        "Perp today",
+        100,
+        "acc"
+       ]
+      ],
+      "vals": [
+       "$78",
+       "$106"
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Up about 10%|ten-percent in a day.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "vl",
+      "prop": "label",
+      "text": "+9.8% in 24h · $64.8M volume",
+      "y": 1080,
+      "size": 44,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That values Anthropic at about $1.9|one-point-nine trillion.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Two *valuations.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "b2",
+      "prop": "bars",
+      "y": 700,
+      "pop": false,
+      "rows": [
+       [
+        "IPO range top",
+        74,
+        "ink"
+       ],
+       [
+        "Perp price",
+        100,
+        "acc"
+       ]
+      ],
+      "vals": [
+       "$1.4T",
+       "$1.9T"
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "So the perp is a bet on where ANT|A-N-T trades after it lists.",
+   "beats": [
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "lb2",
+      "prop": "label",
+      "text": "a bet on the *first trades*",
+      "y": 1090,
+      "size": 46,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *catch.*",
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "No ANT|A-N-T stock trades yet.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "sp",
+      "prop": "stamp",
+      "text": "NO STOCK YET",
+      "size": 96,
+      "y": 720,
+      "pop": false,
+      "sfx": "impact_soft"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "So the price comes only from traders on the perp.",
+   "beats": [
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "lb3",
+      "prop": "label",
+      "text": "price = *perp traders only*",
+      "y": 1000,
+      "size": 46,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "If ANT|A-N-T opens below $106,|a-hundred-and-six, longs from there start in a loss.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Day *one.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "lb4",
+      "prop": "label",
+      "text": "opens below $106?",
+      "y": 740,
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "lb5",
+      "prop": "label",
+      "text": "longs from $106: *in a loss*",
+      "y": 900,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The IPO price and the perp price are two different numbers.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Two *prices.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "a1",
+      "prop": "label",
+      "text": "IPO price",
+      "x": 300,
+      "y": 820,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "a2",
+      "prop": "label",
+      "text": "Perp price",
+      "x": 780,
+      "y": 820,
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "add",
+      "id": "ne",
+      "prop": "big",
+      "text": "≠",
+      "size": 160,
+      "color": "acc",
+      "y": 840,
+      "pop": false,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Daily, on *X.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "e1",
+      "prop": "label",
+      "text": "Hyperliquid",
+      "x": 300,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "e2",
+      "prop": "label",
+      "text": "trade.xyz",
+      "x": 780,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "e3",
+      "prop": "label",
+      "text": "Metric",
+      "x": 300,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "e4",
+      "prop": "label",
+      "text": "Flop",
+      "x": 780,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 1040,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Not financial advice · figures as reported 11 Nov",
+      "y": 1180,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}

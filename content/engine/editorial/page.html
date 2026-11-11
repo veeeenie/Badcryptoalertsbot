@@ -128,7 +128,7 @@ const DRAW = {
     v.forEach((val, i) => { const k = eo((a - i * 0.32) / 0.35); if (k <= 0) return; X.save(); X.globalAlpha *= k; const x = x0 + i * gap, n = Math.max(1, Math.round(val / 4));
       for (let j = 0; j < n; j++) disc(x, -j * 15, 52); text(String(val), x, 90, font(SERIF, 800, 64), i === v.length - 1 ? P.acc : P.ink); X.restore(); }); },
   bars(o, t, a) { o.rows.forEach(([lab, pct, col], i) => { const k = eo((a - i * 0.25) / 0.6); if (k <= 0) return; const y = i * 150; X.save(); X.globalAlpha *= cl(k * 2);
-    text(lab, -380, y - 38, font(SANS, 600, 46), P.ink, 'left'); text(pct + '%', 380, y - 38, font(SERIF, 800, 56), P[col] || P.ink, 'right');
+    text(lab, -380, y - 38, font(SANS, 600, 46), P.ink, 'left'); text(o.vals ? o.vals[i] : pct + '%', 380, y - 38, font(SERIF, 800, 56), P[col] || P.ink, 'right');
     X.fillStyle = P.line; rr(-380, y, 760, 34, 17); X.fill(); X.fillStyle = P[col] || P.ink; rr(-380, y, Math.max(34, 760 * pct / 100 * k), 34, 17); X.fill(); X.restore(); }); },
   pile(o, t, a) { const cols = [[-260, 7], [-130, 11], [0, 15], [130, 10], [260, 6]]; cols.forEach(([x, n], i) => { const m = Math.round(n * eo((a - i * 0.1) / 0.8)); for (let j = 0; j < m; j++) disc(x, -j * 16, 70); });
     if (o.sub) text(o.sub, 0, 110, font(SANS, 500, 44), P.mut); },
