@@ -1,4 +1,4 @@
-name: Outcome titles probe (temporary)
+name: ANT price (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -12,20 +12,18 @@ jobs:
       - uses: actions/checkout@v5
       - run: |
           (python3 - > probe.txt 2>&1 || true) <<'PY'
-          import json, urllib.request
+          import json, urllib.request, time
           def hl(b):
               r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
               return json.load(urllib.request.urlopen(r,timeout=30))
-          meta=hl({"type":"outcomeMeta"}); m=hl({"type":"allMids"})
-          qs=meta.get("questions",[])
-          print("question keys", list(qs[0].keys()) if qs else None)
-          for q in qs:
-              if q.get("venue") in ("txyz",None) or any((o.get("venue") in ("txyz",None)) for o in meta["outcomes"] if o["outcome"] in (q.get("namedOutcomes") or [])):
-                  print("Q", json.dumps(q)[:600])
-          for o in meta["outcomes"]:
-              if o.get("venue") in ("txyz",None) and f"#{o['outcome']*10}" in m and "priceBinary" not in o.get("description","") and "binaryPrice" not in o.get("name",""):
-                  print("O", json.dumps(o)[:400])
-          print("venues meta keys", [k for k in meta.keys()])
+          meta,ctx=hl({"type":"metaAndAssetCtxs","dex":"xyz"})
+          for u,c in zip(meta["universe"],ctx):
+              if "ANT" in u["name"] or "OPENAI" in u["name"].upper() or "SPCX" in u["name"]:
+                  print(u["name"], json.dumps(c))
+          now=int(time.time()*1000)
+          cs=hl({"type":"candleSnapshot","req":{"coin":"xyz:ANT","interval":"1d","startTime":now-20*86400000,"endTime":now}})
+          print([(time.strftime('%m-%d',time.gmtime(x['t']/1000)),x['c']) for x in cs])
+          print("utc", time.strftime('%Y-%m-%d %H:%M',time.gmtime()))
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f probe.txt && git commit -qm "titles1" && git push -q origin HEAD:debug-weekly
+          git add -f probe.txt && git commit -qm "ant1" && git push -q origin HEAD:debug-weekly
