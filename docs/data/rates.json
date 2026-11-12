@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-12T14:11:52+00:00",
+ "generated_at": "2026-11-12T15:11:33+00:00",
  "us": {
   "policy": {
    "lo": 3.75,
@@ -28,18 +28,18 @@
  "india": {
   "repo": 5.5,
   "cpi": {
-   "value": 5.54,
-   "month": "Sep 2026",
-   "source": "https://www.deccanherald.com/business/food-fuel-push-retail-inflation-to-23-month-high-of-554-4180302",
-   "updated": "2026-11-10"
+   "value": 6.09,
+   "month": "Oct 2026",
+   "source": "https://www.tribuneindia.com/news/6inflation/retail-inflation-hits-24-month-high-of-6-09-in-october-crosses-rbis-upper-tolerance-limit-ahead-of-december-mpc-meet",
+   "updated": "2026-11-12"
   },
   "y10": {
    "value": 7.248,
    "as_of": "2026-11-12",
    "wk": null
   },
-  "real10_est": 1.71,
-  "policy_real": -0.04
+  "real10_est": 1.16,
+  "policy_real": -0.59
  },
  "alert": {
   "low": 2.4,
