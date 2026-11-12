@@ -1,5 +1,6 @@
 """Record the editorial page with headless Chrome.
 Usage: record.py sheet out.png       -> style sheet with every prop
+       record.py events             -> WORK/cam.json (camera events for the sound mix)
        record.py stills t1 t2 ...   -> WORK/st_<t>.jpg
        record.py <part> <parts>     -> WORK/part<part>.mp4 (30 fps, H.264)
 Needs WORK and CACHE env vars (set by make.sh) and WORK/timeline.json from voice.py."""
@@ -35,6 +36,8 @@ with sync_playwright() as p:
     b, pg = open_page(p)
     if sys.argv[1] == "sheet":  # record.py sheet <out.png>: every prop on one page
         open(sys.argv[2], "wb").write(base64.b64decode(pg.evaluate("styleSheet()").split(",", 1)[1]))
+    elif sys.argv[1] == "events":  # record.py events: camera punches, cuts, hits, counters -> WORK/cam.json (for audio.py)
+        json.dump(pg.evaluate("EVENTS"), open(os.path.join(WORK, "cam.json"), "w"))
     elif sys.argv[1] == "stills":
         for s in sys.argv[2:]:
             open(os.path.join(WORK, f"st_{float(s):05.2f}.jpg"), "wb").write(frame(pg, float(s)))

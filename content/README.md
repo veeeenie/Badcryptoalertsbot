@@ -41,6 +41,8 @@ First run downloads the free voice model (Kokoro, Apache-2.0), the Inter font an
 
 Set `"style": "editorial"` in the episode. Approved look: `episodes/2026-11-10-flop-editorial.json` (warm cream background, Playfair serif headline with one rust accent word, drawn props that act out the idea, a small 3–4-word caption pill, @conxixent at the bottom). Engine: `engine/editorial/page.html` (canvas, every prop is a draw function) recorded by `engine/editorial/record.py` with headless Chrome. A full build takes about 8 minutes.
 
+Camera, cuts and transitions are automatic (DESIGN.md section 6): every scene is a new shot, every prop/move/set punches the camera in, and scene changes are wipes, zoom-throughs or whip pans. Give each scene 2–4 beats so the camera has targets.
+
 Beats (same `[word index, {...}]` timing as before; `sfx` works the same, keep it soft: pop, whoosh on clear, ding on a payoff, impact_soft for a stamp, riser_short for the catch):
 - `{"kind":"head","text":"All *airdropped.*"}`: headline, 2–4 words, `*...*` = rust accent. Fades the old one out.
 - `{"kind":"clear"}`: fades out the scene; props added at the same moment wait until it's gone. One scene per idea.

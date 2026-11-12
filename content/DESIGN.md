@@ -13,7 +13,7 @@ Calm, warm, clear. A well-made magazine explainer, not a hype channel. One idea 
 | Background | `bg` #EFE7DA, floor `bg2` | Always the cream room with the table line. Never change the background. |
 | Text | `ink` #2B1E16 | Headlines, labels, numbers. |
 | Notes | `mut` #7F6C5A | Prop captions, small print. |
-| Accent | `acc` #B5532B (rust) | The one accent word in a headline, the current caption word, and the single "hero" element of a scene (the highlighted block, the main bar). At most one rust thing per scene besides the headline. |
+| Accent | `acc` #B5532B (rust) | The one accent word in a headline, the current caption word, the single "hero" element of a scene (the highlighted block, the main bar), and the rust wipe between scenes. At most one rust thing per scene besides the headline. |
 | Value | `gold` #D7A544, `goldD` | Coins and anything that is money or tokens. Gold means value, nothing else. |
 | Objects | `dark` #3B2F27 | Machines, blocks, solid things. |
 | Cards | `paper` #FBF7EF, edge `line` | Tickets, proofs, nameplates, labels. |
@@ -40,14 +40,19 @@ Calm, warm, clear. A well-made magazine explainer, not a hype channel. One idea 
 - Only the agent has a face. No people, no logos, no brand art, no real product shapes.
 - A new prop is built from `card()`, `solid()`, `ink()`, `lbl()`, `num()`, `note()` and palette colours, then checked on the style sheet next to the others before it ships.
 
-## 6. Motion
-- Props pop in with a small bounce (0.3 s). Moves ease out over ~0.6 s. Scenes fade out (0.22 s) before the next fades in. Headlines fade up.
-- Numbers count up; bars, rings and check marks draw themselves.
-- Nothing shakes, flashes, zooms or spins fast (the GPU fans are the exception, and speed up when it "works").
-- A visible change every 1.5–2.5 s. A scene lasts 3–8 s.
+## 6. Motion (updated 12 Nov 2026: more cuts, more angles; the trader found the calm version too static)
+Attention has to be re-earned every 1.5–2 s. The engine's camera director (`planCamera()` in page.html) does this automatically from the beats; episodes don't need extra fields.
+- Every scene is a new shot with its own angle: push in, pull out, tilt left, pan right, tilt right (cycled). The camera drifts the whole time, so no frame is fully still.
+- Each new prop, move or set-with-sfx inside a scene punches the camera toward it, alternating hard cuts and fast eases (0.22 s). If no beat lands for ~2 s, the camera reframes anyway.
+- Scene changes are cuts, not fades. They cycle through a rust wipe, a zoom-through with blur, a whip pan, and an ink wipe.
+- Payoff beats (`ding`, `impact`, `impact_soft`, `riser_hit`) get a short shake, a soft cream flash and light rays behind the subject.
+- Headline words drop in one by one with a bounce; the accent word gets a faint rust marker. The caption pill pops on each new chunk. Big numbers (`big` with digits) count up.
+- Props still pop in with a bounce (0.3 s); bars, rings and check marks draw themselves.
+- The headline, caption pill and @conxixent are an overlay: the camera never moves them, so they stay readable.
+- When writing beats: give each scene 2–4 beats (props, moves, sets) spread across its sentences, so the punches have targets. A scene with one prop and no other beats gets only the automatic reframes.
 
 ## 7. Sound
-Soft and sparse: pop when a prop appears, whoosh on a scene change, ding on a payoff, `impact_soft` only for a warning stamp, `riser_short` only for the "one catch" tease. The low beat stays under the voice.
+Punchy but under the voice: a swish on every camera punch, swish plus a low boom on every scene cut, a snap on every prop without its own sfx, ticks under counting numbers, a low hit under payoffs. Beat sfx work as before (pop, whoosh, ding, `impact_soft` for a warning stamp, `riser_short` for the "one catch" tease). The music bed has hats on every 8th and a clap on 2 and 4, ducked under the voice.
 
 ## 8. Voice and copy
 - Kokoro `af_heart` at 1.2. Short, plain sentences. 18–24 sentences, 45–55 s.

@@ -52,6 +52,27 @@ for s in TL["sentences"]:
         elif fx == "ticks":
             for k in range(16): add(tick(), t + k * 0.07, 0.8)
             add(ding(), t + 1.15, 0.5)
+def swish():  # short airy swipe for a camera punch / cut
+    n = int(0.16 * SR); t = np.arange(n) / n; x = bp(rng.standard_normal(n), 2500, 9000) * np.sin(np.pi * t) ** 1.5
+    return 0.28 * x / (np.abs(x).max() + 1e-9)
+def boom():  # low hit under a scene change
+    n = int(0.5 * SR); t = np.arange(n) / SR; f = 70 * np.exp(-t * 10) + 34
+    return 0.5 * np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 7)
+def snap():  # tight click for an auto pop
+    n = int(0.05 * SR); t = np.arange(n) / SR; return 0.35 * hp(rng.standard_normal(n), 3000) * np.exp(-t * 120)
+# camera events from the editorial engine (record.py events): punches, transitions, hits, counters
+CAM = os.path.join(WORK, "cam.json")
+if os.path.exists(CAM):
+    for e in json.load(open(CAM)):
+        if e["kind"] == "punch": add(swish(), e["t"] - 0.04, 0.55)
+        elif e["kind"] == "trans": add(boom(), e["t"], 0.7); add(swish(), e["t"] - 0.12, 0.7)
+        elif e["kind"] == "hit": add(boom(), e["t"], 0.45)
+        elif e["kind"] == "count":
+            for k in range(10): add(tick(), e["t"] + k * 0.07, 0.7)
+    for s in TL["sentences"]:
+        for b in s["beats"]:
+            if b.get("kind") == "add" and not b.get("sfx"): add(snap(), b["t"], 0.6)
+EDITORIAL = os.path.exists(CAM)
 # music: 104 bpm, kick + hat + soft pad (Am - F - C - G)
 bpm = 104; beat = 60 / bpm; music = np.zeros(N + SR * 2)
 def kick():
@@ -66,6 +87,9 @@ for i in range(nb):
     if at >= len(music): break
     music[at:at + len(K)] += 0.8 * K[: len(music) - at]
     h = int((i + 0.5) * beat * SR); music[h:h + len(Hh)] += Hh[: max(0, len(music) - h)]
+    if EDITORIAL:  # extra drive: hats on every 8th, a clap on 2 and 4
+        music[at:at + len(Hh)] += 0.6 * Hh[: max(0, len(music) - at)]
+        if i % 2: cp = hp(rng.standard_normal(int(0.12 * SR)), 1200) * np.exp(-np.arange(int(0.12 * SR)) / SR * 30) * 0.45; music[at:at + len(cp)] += cp[: max(0, len(music) - at)]
     if i % 4 == 0:
         c = chords[(i // 4) % 4]; n = int(4 * beat * SR); t = np.arange(n) / SR
         pad = sum(np.sin(2 * np.pi * f * t) + 0.3 * np.sin(2 * np.pi * 2 * f * t) for f in c) * np.minimum(1, t / 0.4) * np.exp(-t / 3) * 0.12
@@ -78,7 +102,7 @@ voice = np.zeros(N + SR * 2); voice[: len(v)] += v[: len(voice)]
 venv = np.convolve(np.abs(voice), np.ones(int(0.15 * SR)) / int(0.15 * SR), "same")
 duck = 1 - 0.55 * np.clip(venv / (venv.max() * 0.25), 0, 1)
 fade = np.ones(len(music)); fe = int(1.2 * SR); end = int(DUR * SR); fade[end - fe:end] = np.linspace(1, 0, fe); fade[end:] = 0
-out = 1.0 * voice + 0.16 * music * duck * fade + 0.55 * mix_sfx
+out = 1.0 * voice + (0.21 if EDITORIAL else 0.16) * music * duck * fade + 0.55 * mix_sfx
 out = out[:N]; out = out / max(1.0, np.abs(out).max() / 0.95)
 sf.write(os.path.join(WORK, "mix.wav"), out.astype(np.float32), SR)
 print("mixed", round(len(out) / SR, 2), "peak", round(float(np.abs(out).max()), 3))

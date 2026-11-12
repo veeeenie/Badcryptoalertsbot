@@ -20,6 +20,7 @@ if [ "$STYLE" = "editorial" ]; then
 fi
 python3 "$HERE/voice.py" "$EP" "$WORK"
 if [ "${2:-}" = "stills" ]; then shift 2; python3 "$R" stills "$@"; echo "stills in $WORK"; exit 0; fi
+[ "$STYLE" = "editorial" ] && python3 "$R" events
 python3 "$HERE/audio.py" "$WORK"
 for i in 0 1 2 3; do python3 "$R" $i 4 & done; wait
 for i in 0 1 2 3; do [ -f "$WORK/part$i.mp4" ] || { echo "part $i failed"; exit 1; }; echo "file 'part$i.mp4'"; done > "$WORK/list.txt"
