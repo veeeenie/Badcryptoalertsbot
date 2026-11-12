@@ -1,0 +1,641 @@
+{
+ "slug": "2026-11-12-nvda-after-hours",
+ "date": "12 NOV",
+ "style": "editorial",
+ "sentences": [
+  {
+   "text": "At 4|four PM,|p-m the stock market closed.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Market *closed.*"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "h": 4,
+      "y": 820,
+      "label": "4 PM, New York",
+      "sub": "Nasdaq closes",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Nvidia kept trading on Hyperliquid.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "move",
+      "id": "ck",
+      "x": 290,
+      "y": 800,
+      "s": 0.8,
+      "dur": 0.6
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "head",
+      "text": "Still *trading.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "l1",
+      "prop": "label",
+      "text": "NVDA perp · *24/7*",
+      "x": 760,
+      "y": 800,
+      "size": 52,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Then a report hit.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Then, *news.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "np",
+      "prop": "nameplate",
+      "name": "Jensen Huang",
+      "sub": "CEO, Nvidia",
+      "y": 760,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The Wall Street Journal said Nvidia's board was preparing to remove him.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "l2",
+      "prop": "label",
+      "text": "WSJ: board preparing to *remove* him",
+      "y": 1040,
+      "size": 46,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "c",
+      "prop": "label",
+      "text": "…with one *catch*",
+      "y": 1180,
+      "size": 44,
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Nvidia closed the day at $173.73.|one-seventy-three-seventy-three",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *close.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "big",
+      "text": "$173.73",
+      "size": 200,
+      "color": "ink",
+      "sub": "NVDA close, Wednesday",
+      "y": 820,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The stock stopped. The perp didn't.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "h": 4,
+      "x": 330,
+      "y": 1030,
+      "s": 0.5,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "move",
+      "id": "b",
+      "y": 620,
+      "dur": 0.5
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "l3",
+      "prop": "label",
+      "text": "perp: *still open*",
+      "x": 730,
+      "y": 1030,
+      "size": 46,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Around 5|five PM,|p-m it started sliding.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *slide.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "pa",
+      "prop": "path",
+      "y": 840,
+      "vals": [
+       0,
+       0,
+       -0.3,
+       -1,
+       -3,
+       -6,
+       -8.5,
+       -10.1,
+       -9.2,
+       -8.6,
+       -8,
+       -7.3
+      ],
+      "lo": -10.1,
+      "labLo": "low ≈ $156",
+      "endCol": "acc",
+      "endLab": "≈ $161 this morning",
+      "note": "NVDA perp vs. $173.73 close · simplified",
+      "dur": 4.8,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It hit about $156.|one-fifty-six",
+   "beats": []
+  },
+  {
+   "text": "That's about 10%|ten-percent below the close.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "head",
+      "text": "About *−10%.*"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The stock itself fell about 8%|eight-percent after hours.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Perp vs. *stock.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "br",
+      "prop": "bars",
+      "y": 720,
+      "pop": false,
+      "rows": [
+       [
+        "NVDA perp, overnight low",
+        100,
+        "acc"
+       ],
+       [
+        "Stock, after hours",
+        79,
+        "ink"
+       ]
+      ],
+      "vals": [
+       "−10%",
+       "−8%"
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "On HIP-4,|hip-four traders are betting on today's close.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Today's *bet.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "YES?",
+      "fee": "",
+      "x": 540,
+      "y": 760,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Will Nvidia close above $173.91?|one-seventy-three-ninety-one",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "q",
+      "prop": "label",
+      "text": "NVDA above *$173.91* at the close?",
+      "y": 1010,
+      "size": 46,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "YES costs about 14|fourteen cents.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "remove",
+      "id": "q"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "move",
+      "id": "tk",
+      "x": 300,
+      "y": 800,
+      "dur": 0.6
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "co",
+      "prop": "coin",
+      "r": 110,
+      "label": "14¢",
+      "x": 770,
+      "y": 800,
+      "sfx": "ding"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "HIP-4 price, 08:40 IST",
+      "y": 1060,
+      "pop": false
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *catch.*",
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It was a report. No decision had been announced.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "sp",
+      "prop": "stamp",
+      "text": "UNCONFIRMED",
+      "y": 800,
+      "size": 96,
+      "pop": false,
+      "sfx": "impact_soft"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The perp moved 10%|ten-percent before anything was confirmed.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "l4",
+      "prop": "label",
+      "text": "−10% on a *report*",
+      "y": 1060,
+      "size": 50,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "At 9:30,|nine-thirty the stock gets its own say.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Then, *the open.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "h": 9.5,
+      "y": 800,
+      "label": "9:30 AM, New York",
+      "sub": "Nasdaq opens",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The perp reacts first. The open decides.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Reacts *first.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "t1",
+      "prop": "label",
+      "text": "Perp: *reacts first*",
+      "y": 740,
+      "size": 56,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "t2",
+      "prop": "label",
+      "text": "Stock: the open decides",
+      "y": 900,
+      "size": 56,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Daily, on *X.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "a",
+      "prop": "label",
+      "text": "Hyperliquid",
+      "x": 300,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "b2",
+      "prop": "label",
+      "text": "trade.xyz",
+      "x": 780,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "c2",
+      "prop": "label",
+      "text": "Metric",
+      "x": 300,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "label",
+      "text": "Flop",
+      "x": 780,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 1040,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Not financial advice · prices as of 12 Nov, 08:40 IST",
+      "y": 1180,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}

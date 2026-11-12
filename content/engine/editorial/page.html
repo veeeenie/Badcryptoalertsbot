@@ -154,9 +154,17 @@ const DRAW = {
     for (let i = 1; i <= n; i++) X.lineTo(px(i), py(v[i])); let ex = px(n), ey = py(v[n]);
     if (n < v.length - 1) { const f = k - n; ex = lerp(px(n), px(n + 1), f); ey = lerp(py(v[n]), py(v[n + 1]), f); X.lineTo(ex, ey); } X.stroke(); X.lineCap = 'butt';
     if (o.lo != null) { const hit = v.findIndex(y => y <= o.lo); if (hit >= 0 && hit <= k) { X.fillStyle = P.red; X.beginPath(); X.arc(px(hit), py(v[hit]), 18, 0, 7); X.fill(); } }
-    X.fillStyle = k >= v.length - 1 ? P.sage : P.ink; X.beginPath(); X.arc(ex, ey, 16, 0, 7); X.fill();
-    if (o.endLab && k >= v.length - 1) text(o.endLab, w / 2, ey - 50, font(SANS, 600, 38), P.sage, 'right');
+    const ec = P[o.endCol] || P.sage; X.fillStyle = k >= v.length - 1 ? ec : P.ink; X.beginPath(); X.arc(ex, ey, 16, 0, 7); X.fill();
+    if (o.endLab && k >= v.length - 1) text(o.endLab, w / 2, ey - 50, font(SANS, 600, 38), ec, 'right');
     if (o.note) text(o.note, -w / 2, -h / 2 - 45, font(SANS, 500, 34), P.mut, 'left'); },
+  clock(o, t, a) { // wall clock: h (hour, 9.5 = 9:30), hands ease into place; label under it
+    const R = 150, h = o.h ?? 4, k = eo(a / 0.8), hh = h - 0.5 * (1 - k), mm = (hh % 1) * 60;
+    shadow(0, R + 28, R * 0.8, 14); X.fillStyle = P.paper; X.beginPath(); X.arc(0, 0, R, 0, 7); X.fill(); ink(); X.stroke();
+    for (let i = 0; i < 12; i++) { const an = i * Math.PI / 6, r0 = i % 3 ? R - 26 : R - 38; X.lineWidth = i % 3 ? DS.thin : DS.stroke - 2; X.beginPath(); X.moveTo(Math.cos(an) * r0, Math.sin(an) * r0); X.lineTo(Math.cos(an) * (R - 14), Math.sin(an) * (R - 14)); X.stroke(); }
+    const hand = (an, len, wd) => { ink(wd); X.beginPath(); X.moveTo(0, 0); X.lineTo(Math.cos(an) * len, Math.sin(an) * len); X.stroke(); };
+    hand((hh % 12) / 12 * 2 * Math.PI - Math.PI / 2, R * 0.5, 12); hand(mm / 60 * 2 * Math.PI - Math.PI / 2, R * 0.78, DS.stroke);
+    X.fillStyle = P.acc; X.beginPath(); X.arc(0, 0, 14, 0, 7); X.fill();
+    if (o.label) lbl(o.label, R + 70, P.ink); if (o.sub) note(o.sub, R + 128); },
 };
 
 // ---------- state at time t ----------
@@ -193,7 +201,7 @@ function caption(t) {
 
 // Style sheet: every prop on one page, for checking new props against the rest.
 function styleSheet() {
-  C.width = 1440; C.height = 2700; X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1;
+  C.width = 1440; C.height = 3100; X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1;
   X.fillStyle = P.bg; X.fillRect(0, 0, C.width, C.height);
   text('@conxixent · editorial style', 720, 90, font(SERIF, 800, 72), P.ink);
   const sw = [['bg', 'background'], ['paper', 'cards'], ['line', 'edges'], ['ink', 'text'], ['mut', 'notes'], ['acc', 'accent'], ['gold', 'value'], ['dark', 'objects'], ['sage', 'success'], ['red', 'warning']];
@@ -208,7 +216,8 @@ function styleSheet() {
     ['gpu', {s: 0.85, label: 'miner'}, 0.62, -30], ['ticket', {fee: 'fee'}, 0.8, 0], ['proof', {}, 0.8, 0], ['label', {text: 'one *accent* word'}, 0.55, 0],
     ['x', {r: 90}, 0.7, 0], ['parachute', {}, 0.48, -20], ['stack', {n: 16, value: '96', sub: 'per block'}, 0.5, -15], ['halving', {values: [96, 48, 24, 12, 6, 3]}, 0.36, 40],
     ['bars', {rows: [['Miners', 75, 'acc'], ['Others', 25, 'ink']]}, 0.36, -30], ['pile', {sub: 'genesis'}, 0.42, 40], ['donut', {pct: 20, sub: 'note'}, 0.45, -30], ['timeline', {items: [['Q4', 'Event'], ['Q1', 'Next']], note: 'target'}, 0.36, 0],
-    ['stamp', {text: 'WARNING', size: 100}, 0.42, 0], ['big', {text: '2.48B', size: 160, color: 'acc', sub: 'big number'}, 0.55, -20], ['small', {text: 'Not financial advice'}, 0.8, 0], ['cross', {w: 220}, 0.8, 0]];
+    ['stamp', {text: 'WARNING', size: 100}, 0.42, 0], ['big', {text: '2.48B', size: 160, color: 'acc', sub: 'big number'}, 0.55, -20], ['small', {text: 'Not financial advice'}, 0.8, 0], ['cross', {w: 220}, 0.8, 0],
+    ['path', {vals: [0, -1, -4, -9, -7], endCol: 'acc', endLab: '-7%'}, 0.36, 20], ['clock', {h: 4, label: '4 PM', sub: 'market closed'}, 0.5, -40]];
   I.forEach(([prop, o, sc, dy], i) => { const cx = 180 + (i % 4) * 360, cy = 760 + Math.floor(i / 4) * 390;
     X.fillStyle = 'rgba(255,252,246,0.35)'; rr(cx - 165, cy - 175, 330, 350, 24); X.fill();
     X.save(); X.translate(cx, cy + dy); X.scale(sc, sc); o.prop = prop; o.born = 0; o.upto = 9; DRAW[prop](o, 5, 5); X.restore();
