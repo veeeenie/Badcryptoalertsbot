@@ -1,169 +1,198 @@
 {
-  "note": "Custom price alerts checked by the hourly scan. Trendlines: two points (date, price) extended in a straight line; Telegram once a week when price reaches the line and on a weekly close through it. Levels: a flat price, exact (the day's high/low must reach it); Telegram once a week when price reaches it and on a daily close through it.",
-  "alerts": [
-    {
-      "id": "BTC-82,230",
-      "coin": "BTC",
-      "type": "level",
-      "price": 82230.0,
-      "name": "area to reclaim",
-      "touch_pct": 0.0,
-      "source": "added via the website, 2026-10-27"
-    },
-    {
-      "id": "ZEC-wclose-1046",
-      "coin": "ZEC",
-      "type": "close",
-      "timeframe": "weekly",
-      "side": "below",
-      "price": 1046.0,
-      "name": "ZEC weekly close below the demand zone (1,046)",
-      "meaning": "The ZEC long's demand zone has failed: the weekly uptrend case for the long is broken.",
-      "source": "trader via chat, 4 Nov 2026"
-    },
-    {
-      "id": "VVV-dclose-20.46",
-      "coin": "VVV",
-      "type": "close",
-      "timeframe": "daily",
-      "side": "below",
-      "price": 20.46,
-      "name": "VVV daily close below the 3 Nov sweep low (20.46)",
-      "meaning": "The sweep-and-reclaim of 21 has failed; the 19.80 stop is next.",
-      "source": "trader via chat, 4 Nov 2026"
-    },
-    {
-      "id": "VVV-23",
-      "coin": "VVV",
-      "type": "level",
-      "price": 23.0,
-      "name": "VVV crossing 23",
-      "touch_pct": 1.0,
-      "meaning_touch": "Back above this week's open (22.92) toward the 23.7–24.0 daily EMAs and your 24.0 take-profit.",
-      "meaning_above": "Daily close above 23: the sweep of 21 is holding; next is 23.7–24.0.",
-      "meaning_below": "Daily close back below 23.",
-      "source": "trader via chat, 4 Nov 2026"
-    },
-    {
-      "id": "XMR-570",
-      "coin": "XMR",
-      "type": "level",
-      "price": 570.0,
-      "name": "Entry1",
-      "touch_pct": 0.0,
-      "source": "added via the website, 2026-11-04"
-    },
-    {
-      "id": "HYPE-72",
-      "coin": "HYPE",
-      "type": "level",
-      "price": 72.0,
-      "name": "HYPE 72",
-      "touch_pct": 1.0,
-      "source": "trader via chat, 5 Nov 2026"
-    },
-    {
-      "id": "HYPE-75",
-      "coin": "HYPE",
-      "type": "level",
-      "price": 75.0,
-      "name": "HYPE 75",
-      "touch_pct": 1.0,
-      "source": "trader via chat, 5 Nov 2026"
-    },
-    {
-      "id": "HYPE-80",
-      "coin": "HYPE",
-      "type": "level",
-      "price": 80.0,
-      "name": "HYPE 80",
-      "touch_pct": 1.0,
-      "source": "trader via chat, 5 Nov 2026"
-    },
-    {
-      "id": "HYPE-95",
-      "coin": "HYPE",
-      "type": "level",
-      "price": 95.0,
-      "name": "HYPE 95",
-      "touch_pct": 1.0,
-      "source": "trader via chat, 5 Nov 2026"
-    },
-    {
-      "id": "HYPE-100",
-      "coin": "HYPE",
-      "type": "level",
-      "price": 100.0,
-      "name": "HYPE 100",
-      "touch_pct": 1.0,
-      "source": "trader via chat, 5 Nov 2026"
-    },
-    {
-      "id": "JUP-dclose-0.252",
-      "coin": "JUP",
-      "type": "close",
-      "timeframe": "daily",
-      "side": "above",
-      "price": 0.252,
-      "name": "JUP daily close above 0.252",
-      "meaning": "JUP has reclaimed its daily 200 EMA and the weekly 25 EMA: the short case is weaker; step aside rather than add.",
-      "source": "trader via chat, 9 Nov 2026"
-    },
-    {
-      "id": "VVV-dclose-22.9",
-      "coin": "VVV",
-      "type": "close",
-      "timeframe": "daily",
-      "side": "above",
-      "price": 22.9,
-      "name": "VVV daily close above 22.9 (daily 25 EMA)",
-      "meaning": "The breakdown below 21 has failed: the VVV short case is cancelled.",
-      "source": "trader via chat, 9 Nov 2026"
-    },
-    {
-      "id": "JUP-dclose-0.248",
-      "coin": "JUP",
-      "type": "close",
-      "timeframe": "daily",
-      "side": "below",
-      "price": 0.248,
-      "name": "JUP daily close below 0.248 (daily 200 EMA)",
-      "meaning": "Rejection confirmed: JUP lost its daily 200 EMA again; the short is working.",
-      "source": "trader via chat, 10 Nov 2026"
-    },
-    {
-      "id": "VVV-dclose-21.1",
-      "coin": "VVV",
-      "type": "close",
-      "timeframe": "daily",
-      "side": "below",
-      "price": 21.1,
-      "name": "VVV daily close below 21.1",
-      "meaning": "Breakdown confirmed: next is the 19.6 low.",
-      "source": "trader via chat, 10 Nov 2026"
-    }
-  ],
-  "watch": [
-    {
-      "symbol": "CHIP",
-      "source": "hyperliquid",
-      "coin": "CHIP",
-      "added": "via chat, 2026-10-26"
-    },
-    {
-      "symbol": "STONK",
-      "source": "dexscreener",
-      "chain": "solana",
-      "address": "6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx",
-      "added": "via chat, 2026-10-26",
-      "also_on": "MEXC spot (STONK/USDT)"
-    },
-    {
-      "symbol": "BP",
-      "source": "dexscreener",
-      "chain": "solana",
-      "address": "BPxxfRCXkUVhig4HS1Lh7kZqV6SPJhzfEk4x6fVBjPCy",
-      "added": "via the website, 2026-10-26"
-    }
-  ]
+ "note": "Custom price alerts checked by the hourly scan. Trendlines: two points (date, price) extended in a straight line; Telegram once a week when price reaches the line and on a weekly close through it. Levels: a flat price, exact (the day's high/low must reach it); Telegram once a week when price reaches it and on a daily close through it.",
+ "alerts": [
+  {
+   "id": "BTC-82,230",
+   "coin": "BTC",
+   "type": "level",
+   "price": 82230.0,
+   "name": "area to reclaim",
+   "touch_pct": 0.0,
+   "source": "added via the website, 2026-10-27"
+  },
+  {
+   "id": "ZEC-wclose-1046",
+   "coin": "ZEC",
+   "type": "close",
+   "timeframe": "weekly",
+   "side": "below",
+   "price": 1046.0,
+   "name": "ZEC weekly close below the demand zone (1,046)",
+   "meaning": "The ZEC long's demand zone has failed: the weekly uptrend case for the long is broken.",
+   "source": "trader via chat, 4 Nov 2026"
+  },
+  {
+   "id": "VVV-dclose-20.46",
+   "coin": "VVV",
+   "type": "close",
+   "timeframe": "daily",
+   "side": "below",
+   "price": 20.46,
+   "name": "VVV daily close below the 3 Nov sweep low (20.46)",
+   "meaning": "The sweep-and-reclaim of 21 has failed; the 19.80 stop is next.",
+   "source": "trader via chat, 4 Nov 2026"
+  },
+  {
+   "id": "VVV-23",
+   "coin": "VVV",
+   "type": "level",
+   "price": 23.0,
+   "name": "VVV crossing 23",
+   "touch_pct": 1.0,
+   "meaning_touch": "Back above this week's open (22.92) toward the 23.7–24.0 daily EMAs and your 24.0 take-profit.",
+   "meaning_above": "Daily close above 23: the sweep of 21 is holding; next is 23.7–24.0.",
+   "meaning_below": "Daily close back below 23.",
+   "source": "trader via chat, 4 Nov 2026"
+  },
+  {
+   "id": "XMR-570",
+   "coin": "XMR",
+   "type": "level",
+   "price": 570.0,
+   "name": "Entry1",
+   "touch_pct": 0.0,
+   "source": "added via the website, 2026-11-04"
+  },
+  {
+   "id": "HYPE-72",
+   "coin": "HYPE",
+   "type": "level",
+   "price": 72.0,
+   "name": "HYPE 72",
+   "touch_pct": 1.0,
+   "source": "trader via chat, 5 Nov 2026"
+  },
+  {
+   "id": "HYPE-75",
+   "coin": "HYPE",
+   "type": "level",
+   "price": 75.0,
+   "name": "HYPE 75",
+   "touch_pct": 1.0,
+   "source": "trader via chat, 5 Nov 2026"
+  },
+  {
+   "id": "HYPE-80",
+   "coin": "HYPE",
+   "type": "level",
+   "price": 80.0,
+   "name": "HYPE 80",
+   "touch_pct": 1.0,
+   "source": "trader via chat, 5 Nov 2026"
+  },
+  {
+   "id": "HYPE-95",
+   "coin": "HYPE",
+   "type": "level",
+   "price": 95.0,
+   "name": "HYPE 95",
+   "touch_pct": 1.0,
+   "source": "trader via chat, 5 Nov 2026"
+  },
+  {
+   "id": "HYPE-100",
+   "coin": "HYPE",
+   "type": "level",
+   "price": 100.0,
+   "name": "HYPE 100",
+   "touch_pct": 1.0,
+   "source": "trader via chat, 5 Nov 2026"
+  },
+  {
+   "id": "JUP-dclose-0.252",
+   "coin": "JUP",
+   "type": "close",
+   "timeframe": "daily",
+   "side": "above",
+   "price": 0.252,
+   "name": "JUP daily close above 0.252",
+   "meaning": "JUP has reclaimed its daily 200 EMA and the weekly 25 EMA: the short case is weaker; step aside rather than add.",
+   "source": "trader via chat, 9 Nov 2026"
+  },
+  {
+   "id": "VVV-dclose-22.9",
+   "coin": "VVV",
+   "type": "close",
+   "timeframe": "daily",
+   "side": "above",
+   "price": 22.9,
+   "name": "VVV daily close above 22.9 (daily 25 EMA)",
+   "meaning": "The breakdown below 21 has failed: the VVV short case is cancelled.",
+   "source": "trader via chat, 9 Nov 2026"
+  },
+  {
+   "id": "JUP-dclose-0.248",
+   "coin": "JUP",
+   "type": "close",
+   "timeframe": "daily",
+   "side": "below",
+   "price": 0.248,
+   "name": "JUP daily close below 0.248 (daily 200 EMA)",
+   "meaning": "Rejection confirmed: JUP lost its daily 200 EMA again; the short is working.",
+   "source": "trader via chat, 10 Nov 2026"
+  },
+  {
+   "id": "VVV-dclose-21.1",
+   "coin": "VVV",
+   "type": "close",
+   "timeframe": "daily",
+   "side": "below",
+   "price": 21.1,
+   "name": "VVV daily close below 21.1",
+   "meaning": "Breakdown confirmed: next is the 19.6 low.",
+   "source": "trader via chat, 10 Nov 2026"
+  },
+  {
+   "id": "CAMBRICON-wclose-154.8",
+   "coin": "xyz:CAMBRICON",
+   "type": "close",
+   "timeframe": "weekly",
+   "side": "above",
+   "price": 154.8,
+   "name": "CAMBRICON weekly close above 154.8 (¥1,031: 25-week EMA + Oct supply)",
+   "meaning": "Long A trigger: the weekly downtrend is turning. Plan: buy the retest of 150.1–154.6 (¥1,000–1,030), stop under 141 (¥940), targets 163.6 / 173.4.",
+   "source": "trader via chat, 12 Nov 2026"
+  },
+  {
+   "id": "CAMBRICON-137.4",
+   "coin": "xyz:CAMBRICON",
+   "type": "level",
+   "price": 137.4,
+   "name": "CAMBRICON 137.4 (¥915: Long B entry 1)",
+   "meaning_touch": "Long B (counter-trend bounce) entry 1 zone: 0.135 sh limit at 137.4, entry 2 at 132.1, stop 122.3, TP1 150.1 / TP2 163.6. Check the Shanghai session first.",
+   "source": "trader via chat, 12 Nov 2026"
+  },
+  {
+   "id": "CAMBRICON-132.1",
+   "coin": "xyz:CAMBRICON",
+   "type": "level",
+   "price": 132.1,
+   "name": "CAMBRICON 132.1 (¥880: Long B entry 2)",
+   "meaning_touch": "Long B entry 2: both entries filled if both alerts fired. Stop 122.3 (¥815) for the whole position.",
+   "source": "trader via chat, 12 Nov 2026"
+  }
+ ],
+ "watch": [
+  {
+   "symbol": "CHIP",
+   "source": "hyperliquid",
+   "coin": "CHIP",
+   "added": "via chat, 2026-10-26"
+  },
+  {
+   "symbol": "STONK",
+   "source": "dexscreener",
+   "chain": "solana",
+   "address": "6GmAFSYs4gk3FDao5FzzySQpPZaWsa4rUJHacpMpUNgx",
+   "added": "via chat, 2026-10-26",
+   "also_on": "MEXC spot (STONK/USDT)"
+  },
+  {
+   "symbol": "BP",
+   "source": "dexscreener",
+   "chain": "solana",
+   "address": "BPxxfRCXkUVhig4HS1Lh7kZqV6SPJhzfEk4x6fVBjPCy",
+   "added": "via the website, 2026-10-26"
+  }
+ ]
 }
