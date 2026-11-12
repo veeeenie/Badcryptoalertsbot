@@ -1,4 +1,4 @@
-name: CAMBRICON ohlc (temporary)
+name: A-share data (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,20 +11,11 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          (python3 - > probe.txt 2>&1 || true) <<'PY'
-          import json, urllib.request, time
-          def hl(b):
-              r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
-              return json.load(urllib.request.urlopen(r,timeout=30))
-          now=int(time.time()*1000)
-          for iv,days in (("1d",400),("4h",20)):
-              cs=hl({"type":"candleSnapshot","req":{"coin":"xyz:CAMBRICON","interval":iv,"startTime":now-days*86400000,"endTime":now}})
-              print(iv,len(cs)); print([(time.strftime('%m-%d %H',time.gmtime(x['t']/1000)),x['o'],x['h'],x['l'],x['c']) for x in cs])
-          meta,ctx=hl({"type":"metaAndAssetCtxs","dex":"xyz"})
-          for u,c in zip(meta["universe"],ctx):
-              if u["name"]=="xyz:CAMBRICON": print(json.dumps(c))
-          b=hl({"type":"l2Book","coin":"xyz:CAMBRICON"})["levels"]; print("book bids",b[0][:6]); print("book asks",b[1][:6])
-          print("utc", time.strftime('%Y-%m-%d %H:%M',time.gmtime()))
-          PY
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36"
+          curl -sL -m 40 -A "$UA" "https://query1.finance.yahoo.com/v8/finance/chart/688256.SS?range=2y&interval=1d" -o y_688256.json; echo "yahoo $(wc -c < y_688256.json)"
+          curl -sL -m 40 -A "$UA" "https://query1.finance.yahoo.com/v8/finance/chart/CNY=X?range=3mo&interval=1d" -o y_cny.json; echo "cny $(wc -c < y_cny.json)"
+          curl -sL -m 40 -A "$UA" "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.688256&fields1=f1,f2,f3&fields2=f51,f52,f53,f54,f55,f56,f57&klt=101&fqt=1&beg=20240101&end=20500101" -o em_688256.json; echo "eastmoney $(wc -c < em_688256.json)"
+          curl -sL -m 40 -A "$UA" "https://push2.eastmoney.com/api/qt/stock/get?secid=1.688256&fields=f43,f44,f45,f46,f47,f48,f57,f58,f60,f116,f162,f167,f168,f170" -o em_quote.json; echo "quote $(wc -c < em_quote.json)"
+          mkdir -p ashare && mv y_688256.json y_cny.json em_688256.json em_quote.json ashare/
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f probe.txt && git commit -qm "camb2" && git push -q origin HEAD:debug-weekly
+          git add -f ashare && git commit -qm "ashare1" && git push -q origin HEAD:debug-weekly
