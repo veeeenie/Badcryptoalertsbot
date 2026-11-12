@@ -1,4 +1,4 @@
-name: ANT price (temporary)
+name: CAMBRICON price (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -18,12 +18,14 @@ jobs:
               return json.load(urllib.request.urlopen(r,timeout=30))
           meta,ctx=hl({"type":"metaAndAssetCtxs","dex":"xyz"})
           for u,c in zip(meta["universe"],ctx):
-              if "ANT" in u["name"] or "OPENAI" in u["name"].upper() or "SPCX" in u["name"]:
-                  print(u["name"], json.dumps(c))
+              if "CAMB" in u["name"] or "SMIC" in u["name"] or "CXMT" in u["name"]:
+                  print(u["name"], u.get("maxLeverage"), json.dumps(c))
           now=int(time.time()*1000)
-          cs=hl({"type":"candleSnapshot","req":{"coin":"xyz:ANT","interval":"1d","startTime":now-20*86400000,"endTime":now}})
-          print([(time.strftime('%m-%d',time.gmtime(x['t']/1000)),x['c']) for x in cs])
+          cs=hl({"type":"candleSnapshot","req":{"coin":"xyz:CAMBRICON","interval":"1d","startTime":now-120*86400000,"endTime":now}})
+          print(len(cs), [(time.strftime('%m-%d',time.gmtime(x['t']/1000)),x['c']) for x in cs])
+          fh=hl({"type":"fundingHistory","coin":"xyz:CAMBRICON","startTime":now-14*86400000})
+          print("funding 14d avg hourly", sum(float(x['fundingRate']) for x in fh)/max(1,len(fh)), len(fh))
           print("utc", time.strftime('%Y-%m-%d %H:%M',time.gmtime()))
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f probe.txt && git commit -qm "ant1" && git push -q origin HEAD:debug-weekly
+          git add -f probe.txt && git commit -qm "camb1" && git push -q origin HEAD:debug-weekly
