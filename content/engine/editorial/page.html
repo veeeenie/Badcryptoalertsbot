@@ -165,6 +165,14 @@ const DRAW = {
     hand((hh % 12) / 12 * 2 * Math.PI - Math.PI / 2, R * 0.5, 12); hand(mm / 60 * 2 * Math.PI - Math.PI / 2, R * 0.78, DS.stroke);
     X.fillStyle = P.acc; X.beginPath(); X.arc(0, 0, 14, 0, 7); X.fill();
     if (o.label) lbl(o.label, R + 70, P.ink); if (o.sub) note(o.sub, R + 128); },
+  hours(o, t, a) { // hourly columns around a zero line (e.g. funding): vals, hi (rust column), hiLab, from/to labels under the axis
+    const v = o.vals, w = 760, h = o.h || 340, mx = Math.max(...v, 0), mn = Math.min(...v, 0), n = v.length, bw = w / n * 0.62, zy = -h / 2 + h * mx / (mx - mn);
+    shadow(0, h / 2 + 158, w * 0.42, 12); X.fillStyle = P.paper; rr(-w / 2 - 40, -h / 2 - 90, w + 80, h + 230, DS.radius); X.fill(); X.strokeStyle = P.line; X.lineWidth = DS.thin; X.stroke();
+    X.fillStyle = P.line; X.fillRect(-w / 2, zy - 2, w, 4);
+    v.forEach((val, i) => { const k = eo((a - i * 0.05) / 0.4); if (k <= 0) return; const x = -w / 2 + w * (i + 0.5) / n, bh = h * Math.abs(val) / (mx - mn) * k;
+      X.fillStyle = i === o.hi ? P.acc : (val < 0 ? P.mut : P.dark); rr(x - bw / 2, val >= 0 ? zy - bh : zy, bw, Math.max(4, bh), Math.min(8, bw / 2)); X.fill(); });
+    if (o.hi != null && o.hiLab) { const i = o.hi, val = v[i], x = -w / 2 + w * (i + 0.5) / n, bh = h * Math.abs(val) / (mx - mn); text(o.hiLab, x, val >= 0 ? zy - bh - 40 : zy + bh + 40, font(SANS, 700, 40), P.acc); }
+    if (o.from) text(o.from, -w / 2, h / 2 + 100, font(SANS, 500, DS.type.small), P.mut, 'left'); if (o.to) text(o.to, w / 2, h / 2 + 100, font(SANS, 500, DS.type.small), P.mut, 'right'); },
 };
 
 // ---------- state at time t ----------
@@ -217,7 +225,8 @@ function styleSheet() {
     ['x', {r: 90}, 0.7, 0], ['parachute', {}, 0.48, -20], ['stack', {n: 16, value: '96', sub: 'per block'}, 0.5, -15], ['halving', {values: [96, 48, 24, 12, 6, 3]}, 0.36, 40],
     ['bars', {rows: [['Miners', 75, 'acc'], ['Others', 25, 'ink']]}, 0.36, -30], ['pile', {sub: 'genesis'}, 0.42, 40], ['donut', {pct: 20, sub: 'note'}, 0.45, -30], ['timeline', {items: [['Q4', 'Event'], ['Q1', 'Next']], note: 'target'}, 0.36, 0],
     ['stamp', {text: 'WARNING', size: 100}, 0.42, 0], ['big', {text: '2.48B', size: 160, color: 'acc', sub: 'big number'}, 0.55, -20], ['small', {text: 'Not financial advice'}, 0.8, 0], ['cross', {w: 220}, 0.8, 0],
-    ['path', {vals: [0, -1, -4, -9, -7], endCol: 'acc', endLab: '-7%'}, 0.36, 20], ['clock', {h: 4, label: '4 PM', sub: 'market closed'}, 0.5, -40]];
+    ['path', {vals: [0, -1, -4, -9, -7], endCol: 'acc', endLab: '-7%'}, 0.36, 20], ['clock', {h: 4, label: '4 PM', sub: 'market closed'}, 0.5, -40],
+    ['hours', {vals: [138, 11, -90, 42, 231, 17, 274, 788, 415, 594, 866], hi: 2, hiLab: '-90%', from: 'yesterday', to: 'now'}, 0.36, -10]];
   I.forEach(([prop, o, sc, dy], i) => { const cx = 180 + (i % 4) * 360, cy = 760 + Math.floor(i / 4) * 390;
     X.fillStyle = 'rgba(255,252,246,0.35)'; rr(cx - 165, cy - 175, 330, 350, 24); X.fill();
     X.save(); X.translate(cx, cy + dy); X.scale(sc, sc); o.prop = prop; o.born = 0; o.upto = 9; DRAW[prop](o, 5, 5); X.restore();

@@ -1,0 +1,775 @@
+{
+ "slug": "2026-11-12-xmr-funding",
+ "date": "12 NOV",
+ "style": "editorial",
+ "sentences": [
+  {
+   "text": "Monero longs on Hyperliquid are paying 866%|eight-hundred-sixty-six-percent a year.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "*866%* a year."
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "big",
+      "text": "866%",
+      "size": 210,
+      "color": "ink",
+      "sub": "XMR perp funding, per year",
+      "y": 740,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "They pay it to the shorts.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "l",
+      "prop": "label",
+      "text": "longs → *shorts*",
+      "y": 1000,
+      "size": 52,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "c",
+      "prop": "label",
+      "text": "…with one *catch*",
+      "y": 1120,
+      "size": 44,
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "A perp never expires.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "No *expiry.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "e",
+      "prop": "label",
+      "text": "Expiry date",
+      "y": 760,
+      "size": 60,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "ex",
+      "prop": "cross",
+      "y": 763,
+      "w": 380
+     }
+    ]
+   ]
+  },
+  {
+   "text": "So every hour, one side pays the other.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "head",
+      "text": "Every *hour.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "h": 1,
+      "x": 540,
+      "y": 1000,
+      "s": 0.75,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "When longs crowd in, longs pay shorts.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Longs *pay.*"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "lo",
+      "prop": "label",
+      "text": "Longs",
+      "x": 290,
+      "y": 700,
+      "size": 56,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "sh",
+      "prop": "label",
+      "text": "Shorts",
+      "x": 790,
+      "y": 700,
+      "size": 56,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "k",
+      "prop": "coin",
+      "r": 60,
+      "x": 290,
+      "y": 920
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "move",
+      "id": "k",
+      "x": 790,
+      "y": 920,
+      "dur": 0.9,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "On most coins, it sits at about 11%|eleven-percent a year.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Usually *11%.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "b1",
+      "prop": "bars",
+      "y": 700,
+      "pop": false,
+      "rows": [
+       [
+        "Most perps",
+        1.3,
+        "ink"
+       ]
+      ],
+      "vals": [
+       "11%"
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Today, 152|a-hundred-fifty-two of 178|a-hundred-seventy-eight perps are right there.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "label",
+      "text": "152 of 178 perps at 11%",
+      "y": 1100,
+      "size": 46,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Monero is at 866.|eight-hundred-sixty-six",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "remove",
+      "id": "n"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Monero, *866%.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "b2",
+      "prop": "bars",
+      "y": 880,
+      "pop": false,
+      "rows": [
+       [
+        "Monero",
+        100,
+        "acc"
+       ]
+      ],
+      "vals": [
+       "866%"
+      ],
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That's about 0.1%|zero-point-one-percent every hour.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Per *hour.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "big",
+      "text": "0.099%",
+      "size": 190,
+      "color": "ink",
+      "sub": "per hour = 866% ÷ 8,760",
+      "y": 800,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "A $1,000|one-thousand-dollar long pays about a dollar an hour.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "*$1* an hour."
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "lo",
+      "prop": "label",
+      "text": "$1,000 long",
+      "x": 300,
+      "y": 700,
+      "size": 52,
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "sh",
+      "prop": "label",
+      "text": "Shorts",
+      "x": 790,
+      "y": 700,
+      "size": 52
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "k",
+      "prop": "coin",
+      "r": 56,
+      "label": "$1",
+      "x": 300,
+      "y": 920,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "move",
+      "id": "k",
+      "x": 790,
+      "y": 920,
+      "dur": 0.8
+     }
+    ]
+   ]
+  },
+  {
+   "text": "About $24|twenty-four-dollars a day, if it holds.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "*$24* a day."
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stack",
+      "n": 24,
+      "r": 120,
+      "y": 900,
+      "value": "$24",
+      "sub": "per day, at this hour's rate",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Meanwhile, the price fell about 4%|four-percent in 24|twenty-four hours.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Price *down.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       0.0,
+       0.3,
+       1.6,
+       1.6,
+       2.2,
+       3.0,
+       2.4,
+       1.9,
+       2.0,
+       2.1,
+       1.1,
+       1.2,
+       1.0,
+       0.4,
+       0.1,
+       -0.5,
+       -0.4,
+       -1.5,
+       -3.9,
+       -3.6,
+       -4.7,
+       -3.8
+      ],
+      "y": 850,
+      "endCol": "acc",
+      "endLab": "-4%",
+      "note": "XMR price, last 24 hours",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *catch.*",
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Funding resets every hour.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Resets *hourly.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "hr",
+      "prop": "hours",
+      "vals": [
+       138,
+       79,
+       11,
+       -90,
+       -35,
+       11,
+       42,
+       6,
+       231,
+       17,
+       11,
+       194,
+       274,
+       664,
+       788,
+       360,
+       415,
+       245,
+       560,
+       594,
+       412,
+       866
+      ],
+      "y": 860,
+      "pop": false,
+      "sfx": "pop",
+      "from": "yesterday 10:00 UTC",
+      "to": "today 11:00 UTC",
+      "hi": 21,
+      "hiLab": "866%"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Yesterday evening, it was minus 90%.|ninety-percent",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "hr",
+      "hi": 3,
+      "hiLab": "-90%",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Shorts were the ones paying.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Shorts *paid.*"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And 866%|eight-hundred-sixty-six-percent is one hour's rate, times 8,760|eighty-seven-sixty hours.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "One *hour.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "big",
+      "text": "× 8,760",
+      "size": 170,
+      "color": "ink",
+      "sub": "hours in a year",
+      "y": 800,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Only if it stays this high all year.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "If it *holds.*"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Funding is a toll you pay by the hour, not a yearly price.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "An hourly *toll.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "h": 11,
+      "x": 540,
+      "y": 860,
+      "s": 0.85,
+      "pop": true,
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "add",
+      "id": "t",
+      "prop": "label",
+      "text": "hourly toll, *not* a yearly price",
+      "y": 1130,
+      "size": 44,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Daily, on *X.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "a",
+      "prop": "label",
+      "text": "Hyperliquid",
+      "x": 300,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "label",
+      "text": "trade.xyz",
+      "x": 780,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "c2",
+      "prop": "label",
+      "text": "Metric",
+      "x": 300,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "label",
+      "text": "Flop",
+      "x": 780,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 1040,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Not financial advice · funding changes every hour",
+      "y": 1180,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}
