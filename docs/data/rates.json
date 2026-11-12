@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-12T15:11:33+00:00",
+ "generated_at": "2026-11-12T18:36:56+00:00",
  "us": {
   "policy": {
    "lo": 3.75,
@@ -54,6 +54,6 @@
  },
  "us_cpi_checked": "2026-11-10T07:28:05+00:00",
  "errors": [
-  "US CPI: ValueError"
+  "US CPI: HTTPError"
  ]
 }
