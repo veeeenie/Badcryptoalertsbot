@@ -1,0 +1,679 @@
+{
+ "slug": "2026-11-13-nvda-volume",
+ "date": "13 NOV",
+ "style": "editorial",
+ "sentences": [
+  {
+   "text": "A stock just outtraded Ethereum on a crypto exchange.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Stock beats *Ethereum.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "br",
+      "prop": "bars",
+      "y": 700,
+      "pop": false,
+      "rows": [
+       [
+        "Nvidia perp",
+        100,
+        "acc"
+       ],
+       [
+        "Ethereum",
+        52,
+        "ink"
+       ]
+      ],
+      "vals": [
+       "$2.35B",
+       "~half"
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Nvidia's perp on Hyperliquid traded $2.35|two-point-three-five billion in a day.",
+   "beats": [
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bg",
+      "prop": "big",
+      "text": "$2.35B",
+      "size": 170,
+      "y": 1020,
+      "sub": "NVDA perp · 24h to Thursday midday",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Almost twice Ethereum's volume.",
+   "beats": []
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "c",
+      "prop": "label",
+      "text": "…with one *catch*",
+      "y": 1200,
+      "size": 44,
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "On Thursday, Nvidia said Jensen Huang had resigned as CEO.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Then, *news.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "np",
+      "prop": "nameplate",
+      "name": "Jensen Huang",
+      "sub": "resigned as CEO, Nvidia",
+      "y": 760,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The news came before the stock market opened.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "move",
+      "id": "np",
+      "y": 600,
+      "s": 0.75,
+      "dur": 0.5
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "h": 9.5,
+      "x": 540,
+      "y": 900,
+      "s": 0.6,
+      "label": "before the 9:30 open",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "But the perp trades around the clock.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Open *24/7.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "ck2",
+      "prop": "clock",
+      "h": 7,
+      "x": 290,
+      "y": 800,
+      "s": 0.8,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "l1",
+      "prop": "label",
+      "text": "NVDA perp · *24/7*",
+      "x": 760,
+      "y": 800,
+      "size": 50,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "So traders went there first.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 540,
+      "y": 1080,
+      "s": 0.5,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "move",
+      "id": "ag",
+      "x": 760,
+      "y": 1000,
+      "dur": 0.6
+     }
+    ]
+   ]
+  },
+  {
+   "text": "About 62%|sixty-two-percent of that volume traded while the stock market was closed.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Off the *clock.*"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "d",
+      "prop": "donut",
+      "pct": 62,
+      "y": 800,
+      "pop": false,
+      "sub": "traded outside US stock hours",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "On a normal day, this market is much quieter.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "A normal *day.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "br2",
+      "prop": "bars",
+      "y": 680,
+      "pop": false,
+      "rows": [
+       [
+        "Nov 5",
+        13,
+        "ink"
+       ]
+      ],
+      "vals": [
+       "$317M"
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Its busiest day since September was $317|three-hundred-seventeen million.",
+   "beats": [
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "n5",
+      "prop": "small",
+      "text": "busiest day since September, before this week",
+      "y": 860,
+      "pop": false
+     }
+    ]
+   ]
+  },
+  {
+   "text": "This was more than seven times that.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "remove",
+      "id": "n5"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "remove",
+      "id": "br2"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "br3",
+      "prop": "bars",
+      "y": 680,
+      "pop": false,
+      "rows": [
+       [
+        "Nov 5",
+        13,
+        "ink"
+       ],
+       [
+        "24h to Nov 12",
+        100,
+        "acc"
+       ]
+      ],
+      "vals": [
+       "$317M",
+       "$2.35B"
+      ],
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "x7",
+      "prop": "big",
+      "text": "7x",
+      "size": 170,
+      "y": 1100,
+      "color": "acc",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "The *catch.*",
+      "sfx": "riser_short"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Volume counts every trade.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "k1",
+      "prop": "coin",
+      "r": 60,
+      "x": 290,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "lv",
+      "prop": "label",
+      "text": "*Volume* = every trade",
+      "y": 1080,
+      "size": 50,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "move",
+      "id": "k1",
+      "x": 790,
+      "y": 800,
+      "dur": 0.5
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The same dollar can trade again and again.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "move",
+      "id": "k1",
+      "x": 290,
+      "y": 800,
+      "dur": 0.45
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "move",
+      "id": "k1",
+      "x": 790,
+      "y": 800,
+      "dur": 0.45
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "move",
+      "id": "k1",
+      "x": 540,
+      "y": 760,
+      "dur": 0.45,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Open interest counts the bets still open.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "What *stayed.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stack",
+      "n": 8,
+      "r": 120,
+      "y": 900,
+      "value": "$495M",
+      "sub": "open interest, NVDA perp",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That was near $495|four-hundred-ninety-five million.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "set",
+      "id": "st",
+      "n": 10,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "About a fifth of the day's volume.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Traded vs. *stayed.*"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "br4",
+      "prop": "bars",
+      "y": 680,
+      "pop": false,
+      "rows": [
+       [
+        "Volume, 24h",
+        100,
+        "ink"
+       ],
+       [
+        "Open interest",
+        21,
+        "acc"
+       ]
+      ],
+      "vals": [
+       "$2.35B",
+       "$495M"
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Volume shows how much traded. Open interest shows how much stayed.",
+   "beats": [
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "t1",
+      "prop": "label",
+      "text": "Volume: how much *traded*",
+      "y": 1000,
+      "size": 48,
+      "sfx": "pop"
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "add",
+      "id": "t2",
+      "prop": "label",
+      "text": "Open interest: how much stayed",
+      "y": 1130,
+      "size": 48,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "head",
+      "text": "Daily, on *X.*"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "a",
+      "prop": "label",
+      "text": "Hyperliquid",
+      "x": 300,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "b2",
+      "prop": "label",
+      "text": "trade.xyz",
+      "x": 780,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "c2",
+      "prop": "label",
+      "text": "Metric",
+      "x": 300,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "label",
+      "text": "Flop",
+      "x": 780,
+      "y": 800,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 1040,
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Not financial advice · Hyperliquid data via CoinMarketCap, 12 Nov",
+      "y": 1180,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}
