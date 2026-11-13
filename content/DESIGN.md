@@ -1,68 +1,69 @@
 # @conxixent design language (editorial style)
 
-Every video should look like it came from the same account. This file is the rule book; the engine (`engine/editorial/page.html`) builds most of it in. Check new work against the style sheet: `WORK=/tmp/ds CACHE=content/.cache python3 content/engine/editorial/record.py sheet sheet.png`.
+Every video should look like it came from the same account. This file is the rule book; the engine (`engine/editorial/page.html`) builds most of it in. Check new props against the style sheet: `WORK=/tmp/ds CACHE=content/.cache python3 content/engine/editorial/record.py sheet sheet.png`.
 
-Adopted 10 Nov 2026. Reference: the instant-coffee explainer reel the trader liked (warm, calm, editorial).
+Adopted 10 Nov 2026; reworked 13 Nov 2026 after the trader's feedback (more happening on screen, real cuts, characters, 4:5, no repeated text, mood-matched music, more depth). Reference episode: `episodes/2026-11-13-btc-liquidations.json`.
 
 ## 1. Feel
-Calm, warm, clear. A well-made magazine explainer, not a hype channel. One idea at a time, acted out by simple objects. If a frame needs explaining, it has too much in it.
+Warm, clear, and busy in a good way: a story acted out by two characters and simple objects, cut like an explainer reel. Something moves or changes every 1.5–2 s. One idea per scene.
 
-## 2. Colour (the palette `P`; no other colours)
+## 2. Format
+- **4:5, 1080×1350** (`"format": "4:5"` in the episode). X's feed player covers almost nothing at this size.
+- Top: the **chapter label** (small pill, beat kind `chapter`), changing only when the story moves on (3–6 chapters per video). There is **no headline** in 4:5.
+- Middle: the scene (stage y 430–1220, centre 825, scale 1.0; keep side props between x 150 and 930).
+- Bottom: the caption pill (66 px, whole phrase shown solid, current word rust) and @conxixent.
+
+## 3. Colour (the palette `P`; no other colours)
 | Role | Token | Use |
 |---|---|---|
-| Background | `bg` #EFE7DA, floor `bg2` | Always the cream room with the table line. Never change the background. |
-| Text | `ink` #2B1E16 | Headlines, labels, numbers. |
-| Notes | `mut` #7F6C5A | Prop captions, small print. |
-| Accent | `acc` #B5532B (rust) | The one accent word in a headline, the current caption word, the single "hero" element of a scene (the highlighted block, the main bar), and the rust wipe between scenes. At most one rust thing per scene besides the headline. |
-| Value | `gold` #D7A544, `goldD` | Coins and anything that is money or tokens. Gold means value, nothing else. |
-| Objects | `dark` #3B2F27 | Machines, blocks, solid things. |
-| Cards | `paper` #FBF7EF, edge `line` | Tickets, proofs, nameplates, labels. |
-| Success | `sage` #6E8A62 | Check marks and "this worked" only. |
-| Warning | `red` #B33A2C | Stamps, X marks, strike-throughs: scams, risks, "no". Never decoration. |
+| Background | `bg` #EFE7DA | The cream room with the floor line. |
+| Rust frame | `acc` #B5532B | Full rust background with a cream spotlight: automatic on the first scene (the hook), and on the catch (`{"kind":"bg","mode":"rust"}`). It stands out against X's white and black feeds. |
+| Text | `ink` #2B1E16 | Numbers, labels. |
+| Notes | `mut` #7F6C5A | Small print, sources. |
+| Accent | `acc` | The current caption word, the hero element of a scene (one per scene), rust wipes. |
+| Value | `gold` #D7A544 | Coins, money, fee meters. Gold means value. |
+| Objects | `dark` #3B2F27 | Machines, booths, arrows. |
+| Cards | `paper` #FBF7EF, edge `line` | Charts, dials, labels. |
+| Characters | `bull` #C0643A, `bear` #6B5444, `ivory` | The bull and the bear only. |
+| Success | `sage` | Check marks only. |
+| Warning | `red` #B33A2C | Stamps, X marks, liquidation lines: risk and "no". |
 
-## 3. Type
-- Headline: Playfair Display 800, 104 px, 2–4 words, one `*accent*` word, ends with a full stop. Sits at y 470.
-- Big numbers: Playfair 800, 120 px (`num()`), up to 160–220 for a single hero number.
-- Labels and captions: Outfit 600, 50 px (`lbl()`); notes Outfit 500, 42 px (`note()`); fine print 34 px.
-- Caption pill: Outfit 600, 58 px, 3–4 words at a time, current word in rust.
-- Sentence case everywhere except stamps (caps). No emoji on screen.
+## 4. Characters
+- **The bull is the longs, the bear is the shorts.** They carry the story: they pay, catch, cheer, sweat, get shocked, tip over.
+- Props `bull` / `bear`: `s` (0.3–0.6), `mood` (calm, happy, sad, shock, sweat), `action` (pay, cheer, hold), `dir`, `tag` (a small word under the feet, e.g. "20x"), `fall` (set to 1 to tip over; a row of bulls falling one by one is a cascade).
+- Use them in most scenes. Several small bulls = a crowd of traders.
 
-## 4. Layout
-- Safe area: X's phone player covers the top ~12% and bottom ~28%, so everything lives between y 400 and 1370 (headline 470, scene, caption pill 1272, @conxixent 1362). Built in.
-- Prop coordinates are stage coordinates (y 430–1220), scaled 0.8 around the centre automatically. Side props stay between x 180 and 900; any text a prop draws stays above stage y 1160.
-- One idea per scene. At most 3 props on screen (a group like bars or a timeline counts as one). The main prop is centred, or two props sit left/right as a pair (x ≈ 290 / 790).
-- Leave air: if a scene feels full, split it into two scenes.
+## 5. Camera and cuts
+- The camera stays level (no tilts). Every scene is a new shot with a slow push, pull or pan.
+- **Real angles:** within a scene, cut between a wide shot and close-ups with `{"kind":"shot","z":1.6–2.6,"x":..,"y":..}` (stage coordinates of what to frame) and back with `{"kind":"shot"}`. Typical scene: wide → close-up on the detail (the meter, the needle, the jar, a face) → wide or another detail. Keep characters inside the frame at the zoom you pick.
+- Scenes without shot beats get automatic punch-ins on each new prop.
+- Scene changes are cuts: rust wipe, zoom-through, slide, ink wipe (automatic). Payoff beats (`ding`, `impact`, …) add a short shake, flash and light rays.
+- Props pop in; needles swing; numbers count (never past their value); bars, lines and checks draw themselves.
 
-## 5. Drawing props
-- Flat shapes, rounded corners (`DS.radius` 22), one soft floor shadow (`shadow()`), front view. No gradients on objects, no 3D, no textures.
-- Two families only: paper cards (`card()`: paper fill, thin edge) and solid objects (`solid()`: dark fill). Drawn icons use the ink outline (`ink()`, 7 px).
-- Sizes: small ≈ 180 px, medium ≈ 300, large ≈ 440 wide (`DS.small/medium/large`).
-- Only the agent has a face. No people, no logos, no brand art, no real product shapes.
-- A new prop is built from `card()`, `solid()`, `ink()`, `lbl()`, `num()`, `note()` and palette colours, then checked on the style sheet next to the others before it ships.
+## 6. Text on screen: never repeat the voice
+- The caption pill already shows what is said. **On-screen text must never repeat the words or numbers being spoken** (no "$31M" while the voice says "$31 million", no "The catch." while it says "Now the catch").
+- Show numbers as things: piles, stacks, jars, gauges without numbers, bars, lines, toppling bulls.
+- On-screen text only adds what isn't said: the source, the date or time window, a unit, "forecast", leverage tags.
+- Check it: `python3 content/engine/editorial/checktext.py <episode.json>` must report `overlaps: 0` (chapter labels count too).
 
-## 6. Motion (updated 12 Nov 2026: more cuts, more angles; the trader found the calm version too static)
-Attention has to be re-earned every 1.5–2 s. The engine's camera director (`planCamera()` in page.html) does this automatically from the beats; episodes don't need extra fields.
-- Every scene is a new shot with its own angle: push in, pull out, tilt left, pan right, tilt right (cycled). The camera drifts the whole time, so no frame is fully still.
-- Each new prop, move or set-with-sfx inside a scene punches the camera toward it, alternating hard cuts and fast eases (0.22 s). If no beat lands for ~2 s, the camera reframes anyway.
-- Scene changes are cuts, not fades. They cycle through a rust wipe, a zoom-through with blur, a whip pan, and an ink wipe.
-- Payoff beats (`ding`, `impact`, `impact_soft`, `riser_hit`) get a short shake, a soft cream flash and light rays behind the subject.
-- Headline words drop in one by one with a bounce; the accent word gets a faint rust marker. The caption pill pops on each new chunk. Big numbers (`big` with digits) count up.
-- Props still pop in with a bounce (0.3 s); bars, rings and check marks draw themselves.
-- The headline, caption pill and @conxixent are an overlay: the camera never moves them, so they stay readable.
-- When writing beats: give each scene 2–4 beats (props, moves, sets) spread across its sentences, so the punches have targets. A scene with one prop and no other beats gets only the automatic reframes.
-
-## 7. Sound
-Punchy but under the voice: a swish on every camera punch, swish plus a low boom on every scene cut, a snap on every prop without its own sfx, ticks under counting numbers, a low hit under payoffs. Beat sfx work as before (pop, whoosh, ding, `impact_soft` for a warning stamp, `riser_short` for the "one catch" tease). The music bed has hats on every 8th and a clap on 2 and 4, ducked under the voice.
+## 7. Sound and music
+- Effects: soft pop/snap on props, swish on cuts, boom on scene changes, ticks on counting, `impact`/`impact_soft` for stamps and shocks, `riser_short` before the catch.
+- **Music matches the story's mood.** Set `"mood"` and `"music"` (part of a track's file name) in the episode:
+  - tense (liquidations, crashes, hacks, scams): `hip-hop-beat` (approved 13 Nov), `cyberpunk`, `viacheslavstarostin-background-music`, `synthwave`; or `"music": "generated"` with `"mood": "tense"`.
+  - neutral (explainers, how-it-works): `lo-fi`, `chill-beats-instrumental`, `vlog`, `lnplusmusic-background-music`.
+  - upbeat (launches, records, airdrops): `upbeat-electronic`, `upbeat-motivation`, `funky-house`, `upbeat-summer`, `future-bass`, `product-launch`.
+  - The tracks live in the private repo `veeeenie/conxixent-music` (never in this public repo: the Pixabay licence forbids redistributing the files); copy them to `content/.cache/music/`. Without them, use `"music": "generated"`.
+- The music drops out for a beat before the rust catch frame (automatic) and stays under the voice.
 
 ## 8. Voice and copy
-- Kokoro `af_heart` at 1.2. Short, plain sentences. 18–24 sentences, 45–55 s.
-- Structure: hook in the first sentence → "With one catch." early → explain with scenes → the catch → end card.
-- No hype words ("insane", "huge", "to the moon"), no price predictions, no "guaranteed". Uncertain facts stay out; targets and proposals are labelled as such.
-- Every number on screen comes from a source checked that day.
-- End card, always the same: "Follow for daily Hyperliquid, trade.xyz, Metric and Flop data." with the four labels and a big rust @conxixent, then "Not financial advice." as small print.
+- Kokoro `af_heart` at 1.2. Short, plain sentences.
+- **Go into depth; don't cut context.** 25–35 sentences, 60–100 s. Structure: hook (what happened, the striking number) → "With one catch." → why it happened → how it works (with live numbers) → today's numbers → the catch (rust frame) → the takeaway → end card.
+- No hype words, no price predictions, no "guaranteed". Uncertain facts stay out; approximations are said as approximations ("about", "roughly").
+- Every number comes from a source checked that day.
+- End: voice "Follow for daily Hyperliquid, trade.xyz, Metric and Flop data." + "Not financial advice."; screen shows @conxixent big, "new videos at 10:00 and 18:00 IST", the bull and bear cheering, and the data sources in small print (not the four names, which are spoken).
 
-## 9. Before shipping, check the stills
-- Headline 2–4 words, one rust word, not overlapping anything.
-- Every prop inside the safe area; no text touching the caption pill.
-- Only palette colours; at most one rust hero per scene; gold only for value; red only for warnings.
-- Any new prop sits naturally on the style sheet next to the others.
+## 9. Before shipping
+- `checktext.py` reports 0 overlaps.
+- Stills, one per scene: nothing important cropped by a close-up, nothing under the caption pill, no prop overlapping another, characters inside the spotlight on rust frames.
+- Only palette colours; gold only for value; red only for risk.
+- New props sit naturally on the style sheet next to the others.

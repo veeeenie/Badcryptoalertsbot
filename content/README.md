@@ -35,26 +35,30 @@ First run downloads the free voice model (Kokoro, Apache-2.0), the Inter font an
 - No project logos or brand art, no impersonation: an independent account.
 - Every number must come from a source checked that day (repo data files or a page actually opened). No hype, no "guaranteed airdrop", no price targets.
 
-## Editorial style (default from 11 Nov 2026)
+## Editorial style (default; 4:5 with characters from 13 Nov 2026)
 
-**Read `DESIGN.md` first**: colours, type, layout, prop drawing, motion, sound and copy rules. New props use the helpers `card()`, `solid()`, `ink()`, `lbl()`, `num()`, `note()` and the tokens in `DS`. Render the style sheet with `record.py sheet out.png` to check a new prop next to the others.
+**Read `DESIGN.md` first**: format, colours, characters, camera, text, music and copy rules. Reference episode: `episodes/2026-11-13-btc-liquidations.json` (4:5, bull and bear, close-ups, rust hook and catch frames, no repeated text, tense music). Engine: `engine/editorial/page.html` (canvas, every prop is a draw function) recorded by `engine/editorial/record.py` with headless Chrome. An 85-second build takes about 10 minutes.
 
-Set `"style": "editorial"` in the episode. Approved look: `episodes/2026-11-10-flop-editorial.json` (warm cream background, Playfair serif headline with one rust accent word, drawn props that act out the idea, a small 3–4-word caption pill, @conxixent at the bottom). Engine: `engine/editorial/page.html` (canvas, every prop is a draw function) recorded by `engine/editorial/record.py` with headless Chrome. A full build takes about 8 minutes.
+Episode fields: `"style": "editorial"`, `"format": "4:5"`, `"mood": "tense"|"neutral"|"upbeat"`, `"music": "<part of a track file name>"` or `"generated"`, optional `"hook": false` (no rust opening frame).
 
-Camera, cuts and transitions are automatic (DESIGN.md section 6): every scene is a new shot, every prop/move/set punches the camera in, and scene changes are wipes, zoom-throughs or whip pans. Give each scene 2–4 beats so the camera has targets.
+Music: tracks are read from `content/.cache/music/` (or `$MUSIC_DIR`), never committed. Clone the private repo `veeeenie/conxixent-music` there when it's available. audio.py beat-tracks the track (librosa), starts it where its beats line up with the cuts, loops with a crossfade, and drops it out before the catch. Without tracks it uses a generated bed (`mood` tense = dark minor pulse).
 
-Beats (same `[word index, {...}]` timing as before; `sfx` works the same, keep it soft: pop, whoosh on clear, ding on a payoff, impact_soft for a stamp, riser_short for the catch):
-- `{"kind":"head","text":"All *airdropped.*"}`: headline, 2–4 words, `*...*` = rust accent. Fades the old one out.
-- `{"kind":"clear"}`: fades out the scene; props added at the same moment wait until it's gone. One scene per idea.
-- `{"kind":"add","id":"g","prop":"gpu","x":760,"y":840, ...}`: add a prop (x is the centre, 540 = middle; keep props between y 430 and 1220). `"pop": false` skips the bounce.
-- `{"kind":"move","id":"g","x":..,"y":..,"s":0.5,"dur":0.6}`, `{"kind":"set","id":"ch","hi":2}`, `{"kind":"remove","id":"g"}`.
+Check before building: `python3 content/engine/editorial/checktext.py <episode.json>` (on-screen text must not repeat the spoken line; it must print `overlaps: 0`).
 
-Safe area: X's phone player covers the top ~12% and bottom ~28% of the video, so the page keeps everything between y 400 and 1370 (headline at 470, caption at 1272, handle at 1362). Prop coordinates are stage coordinates (y 430–1220, x 0–1080) and are scaled 0.8 around the centre automatically; keep side props between x 180 and 900, and keep any text a prop draws above stage y 1160 so it clears the caption pill.
+Beats (`[word index, {...}]`, fired at that word of the sentence; `sfx`: pop, whoosh, ding, impact, impact_soft, riser_short, ticks):
+- `{"kind":"chapter","text":"Why it fell"}`: the section label at the top (4:5). Must not repeat words spoken while it shows.
+- `{"kind":"clear"}`: ends the scene (a cut: wipe, zoom-through, slide or ink wipe, chosen automatically).
+- `{"kind":"shot","z":2.0,"x":700,"y":555}`: hard cut to a close-up framing stage point x,y; `{"kind":"shot"}` cuts back to wide.
+- `{"kind":"bg","mode":"rust"}`: rust frame for this scene (use on the catch; the first scene gets it automatically). `{"kind":"drop"}`: music drop at that word.
+- `{"kind":"add","id":"g","prop":"gauge","x":540,"y":700, ...}`: add a prop (stage coordinates, y 430–1220). `"pop": false` skips the bounce.
+- `{"kind":"move","id":..,"x":..,"y":..,"s":..,"dur":0.6}`, `{"kind":"set","id":..,<field>:<value>}` (numeric fields animate from their old value), `{"kind":"remove","id":..}`.
+- 9:16 only: `{"kind":"head","text":"All *airdropped.*"}` headline.
 
 Props and their fields:
-- `coin` r, label · `nameplate` name, sub · `chain` n, size, hi (highlighted block) · `agent` s, label · `gpu` s, label, spin
-- `ticket` title, fee · `proof` (check mark draws itself) · `label` text (`*accent*`), size, x · `cross` w (strike through a label) · `x` r (red X over something)
-- `parachute` (drops a coin) · `stack` n coins, value, sub · `halving` values [96,48,...] · `bars` rows [[label, pct, "acc"|"ink"|"mut"|"gold"|"sage"|"red"]]
-- `pile` sub · `donut` pct, sub · `timeline` items [[when, what]], upto (reveal more with set), note · `stamp` text, size · `big` text, size, color, sub · `small` text
+- Characters: `bull` / `bear` s, mood (calm|happy|sad|shock|sweat), action (pay|cheer|hold), dir, tag, fall (set 1 to tip over)
+- Money: `coin` r, label · `coinflow` dx, h, period, dir, r (coins arcing left→right) · `stack` n, r, value, sub · `pile` sub · `jar` fill (0–1, set to fill), drop, value
+- Dials and charts: `gauge` v (set to swing), min, max, unit, sub, seq + dt (steps through values) · `gauges` cols, rows, hi (set: that one swings to max) · `path` vals (% moves), lo (dashed red line; set to move), labLo, endCol, endLab, note, dur · `hours` vals, hi, hiLab, from, to · `bars` rows [[label, pct, colour]], vals · `donut` pct, sub · `thermo` level (set to rise), mark, markLab, note
+- Objects: `tollbooth` fee, lift, open · `clock` h, spin, label, sub · `arrow` dir, sym, len, col, note · `chain` · `agent` · `gpu` · `ticket` · `proof` · `parachute` · `halving` · `timeline` items, upto, note
+- Text (use sparingly, never repeating the voice): `label` text (`*accent*`), size · `big` text, size, color, sub · `small` text, size · `stamp` text, size · `cross` w · `x` r
 
-Add a new prop to `DRAW` in page.html when a story needs one (simple shapes, the palette in `P`), and check it in stills.
+Add a new prop to `DRAW` in page.html when a story needs one (palette `P`, helpers `card()`, `solid()`, `ink()`, `lbl()`, `num()`, `note()`, tokens `DS`), add it to `styleSheet()`, and check the sheet.
