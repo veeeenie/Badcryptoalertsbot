@@ -5,7 +5,7 @@
 // The recorder injects fonts + timeline, then calls render(t) for each frame.
 const C = document.getElementById('c'), X = C.getContext('2d'), W = 1080; let H = 1920;
 const P = {bg:'#EFE7DA', bg2:'#E5D8C5', ink:'#2B1E16', acc:'#B5532B', mut:'#7F6C5A', gold:'#D7A544', goldD:'#A6782A',
-           sage:'#6E8A62', red:'#B33A2C', paper:'#FBF7EF', line:'#D6C5AD', dark:'#3B2F27', shadow:'rgba(60,40,20,0.16)'};
+           sage:'#6E8A62', bull:'#C0643A', bear:'#6B5444', ivory:'#F3E6CF', red:'#B33A2C', paper:'#FBF7EF', line:'#D6C5AD', dark:'#3B2F27', shadow:'rgba(60,40,20,0.16)'};
 const SERIF = '"Playfair"', SANS = '"Outfit"';
 // Safe area: X's phone player covers roughly the top 12% (back/menu buttons) and bottom 28% (name, post text, buttons).
 // Everything sits between y 400 and 1370. Episode prop coordinates (stage y 430-1220) are scaled 0.8 around the centre.
@@ -35,11 +35,10 @@ function setup(tl) {
 // transition (rust wipe, zoom-through, whip pan, ink wipe), payoff beats get a shake + flash + light rays.
 // Headline, caption pill and handle are an overlay: the camera never moves them, so they stay readable.
 const SHOT_TYPES = [
-  {z0: 1.00, z1: 1.07, r0: 0,     r1: 0,     x0: 0,   x1: 0},     // slow push in
-  {z0: 1.13, z1: 1.03, r0: -0.6,  r1: 0,     x0: 0,   x1: 0},     // pull out
-  {z0: 1.06, z1: 1.09, r0: -2.4,  r1: -1.2,  x0: 18,  x1: -10},   // tilted left
-  {z0: 1.07, z1: 1.07, r0: 0.4,   r1: 0.4,   x0: -36, x1: 36},    // pan right
-  {z0: 1.05, z1: 1.10, r0: 2.2,   r1: 1.0,   x0: -14, x1: 12},    // tilted right
+  {z0: 1.00, z1: 1.06, r0: 0, r1: 0, x0: 0,   x1: 0},     // slow push in
+  {z0: 1.10, z1: 1.02, r0: 0, r1: 0, x0: 0,   x1: 0},     // pull out
+  {z0: 1.05, z1: 1.05, r0: 0, r1: 0, x0: -30, x1: 30},    // pan right
+  {z0: 1.05, z1: 1.05, r0: 0, r1: 0, x0: 30,  x1: -30},   // pan left
 ];
 const TRANS = ['wipe', 'zoom', 'whip', 'ink'];
 let SHOTS = [], EVENTS = [];
@@ -49,14 +48,15 @@ function planCamera() {
   const clears = [0, ...OPS.filter(o => o.kind === 'clear').map(o => o.t), DUR + 1];
   for (let i = 0; i < clears.length - 1; i++) {
     const t0 = clears[i], t1 = clears[i + 1], ops = OPS.filter(o => o.t >= t0 && o.t < t1 && o.kind !== 'clear');
-    const sh = {t0, t1, type: SHOT_TYPES[i % SHOT_TYPES.length], trans: i ? TRANS[(i - 1) % TRANS.length] : null, punches: [], hits: []};
+    const sh = {t0, t1, type: SHOT_TYPES[i % SHOT_TYPES.length], trans: i ? TRANS[(i - 1) % TRANS.length] : null, punches: [], hits: [], cuts: ops.filter(o => o.kind === 'shot')};
+    sh.cuts.forEach(c => EVENTS.push({t: c.t, kind: 'punch'}));
     if (sh.trans) EVENTS.push({t: t0, kind: 'trans', trans: sh.trans});
     let last = t0 + 0.2, n = 0, first = true;
     for (const o of ops) {
       if (['ding', 'impact', 'impact_soft', 'riser_hit'].includes(o.sfx)) { sh.hits.push({t: o.t, big: o.sfx !== 'ding'}); EVENTS.push({t: o.t, kind: 'hit'}); }
       if (o.kind === 'add' && o.prop === 'big' && /\d/.test(o.text || '') && !(o.text || '').startsWith('@')) EVENTS.push({t: Math.max(o.t, t0 + 0.25), kind: 'count'});
       const isAdd = o.kind === 'add' || o.kind === 'move' || (o.kind === 'set' && o.sfx);
-      if (!isAdd) continue;
+      if (!isAdd || sh.cuts.length) continue;
       if (first && o.kind === 'add') { first = false; continue; }
       if (o.t - last < 0.6) continue;
       const tgt = OPS.filter(q => q.kind === 'add' && q.id === o.id && q.t <= o.t).pop() || o;
@@ -64,7 +64,7 @@ function planCamera() {
       sh.punches.push({t: o.t, fx, fy, n: n++}); last = o.t; EVENTS.push({t: o.t, kind: 'punch'});
     }
     // fill quiet stretches so something moves every ~2 s
-    const end = Math.min(t1, DUR), marks = [t0 + 0.2, ...sh.punches.map(p => p.t), end];
+    const end = sh.cuts.length ? -1 : Math.min(t1, DUR), marks = [t0 + 0.2, ...sh.punches.map(p => p.t), end];
     for (let j = 0; j < marks.length - 1; j++) for (let tt = marks[j] + 1.9; tt < marks[j + 1] - 0.8; tt += 1.9) {
       sh.punches.push({t: tt, fx: 540 + (n % 2 ? 60 : -60), fy: CAM_Y - 20, n: n++, re: true}); EVENTS.push({t: tt, kind: 'punch'}); }
     sh.punches.sort((a, b) => a.t - b.t);
@@ -83,9 +83,11 @@ function camAt(t) {
   let pz = 0, px = 0, py = 0, pr = 0;
   for (const p of sh.punches) { if (p.t > t) break;
     const k = p.n % 2 ? 1 : eo((t - p.t) / 0.22), amt = p.n % 2 ? 0.075 : 0.045;
-    const tz = amt, tx = (540 - p.fx) * (WIDE ? 0.15 : 0.35), ty = (CAM_Y - p.fy) * 0.3, tr = (p.n % 3 - 1) * 1.3;
+    const tz = amt, tx = (540 - p.fx) * (WIDE ? 0.15 : 0.35), ty = (CAM_Y - p.fy) * 0.3, tr = 0;
     pz = lerp(pz, tz, k); px = lerp(px, tx, k); py = lerp(py, ty, k); pr = lerp(pr, tr, k); }
   z += pz; x += px; y += py; r += pr;
+  const cut = sh.cuts.filter(c => c.t <= t).pop();
+  if (cut) { const [fx, fy] = toScreen(cut.x ?? 540, cut.y ?? 825); z = (cut.z || 1) * (1 + 0.035 * cl((t - cut.t) / 2.5)); x = -z * (fx - W / 2); y = -z * (fy - CAM_Y); r = 0; }
   // hits: short shake
   let sx = 0, sy = 0, flash = 0, rays = null;
   for (const h of sh.hits) { const a = t - h.t; if (a < 0 || a > 0.9) continue;
@@ -187,7 +189,113 @@ function countUp(s, a) { // "866%" -> counts 0..866 over 0.7 s, keeping prefix, 
 function raysAt(cx, cy, a) { // light rays behind a payoff, 0.7 s
   const k = cl(a / 0.15) * (1 - cl((a - 0.35) / 0.4)); if (k <= 0) return; X.save(); X.translate(cx, cy); X.rotate(a * 0.6); X.globalAlpha = 0.55 * k; X.fillStyle = P.paper;
   for (let i = 0; i < 14; i++) { X.rotate(Math.PI * 2 / 14); X.beginPath(); X.moveTo(0, 0); X.lineTo(900, -70); X.lineTo(900, 70); X.closePath(); X.fill(); } X.restore(); }
+function anim(o, k, t, dur, ease) { // value of a numeric field, eased from its previous value after a set
+  if (o[k + '_t'] == null) return o[k]; return lerp(o[k + '_0'], o[k], (ease || eo)((t - o[k + '_t']) / dur)); }
+function overshoot(x) { x = cl(x); return x === 1 ? 1 : 1 - Math.pow(2, -9 * x) * Math.cos(x * 9); }
+// Characters: the bull is the longs, the bear is the shorts. mood: calm|happy|sad|shock|sweat, action: pay|cheer|hold, dir 1/-1, tag (small word under the feet)
+function character(o, t, a, kind) {
+  const s = o.s || 1, d = o.dir || (kind === 'bull' ? 1 : -1), col = P[kind], mood = o.mood || 'calm', act = o.action || '';
+  const bob = mood === 'shock' ? 0 : Math.sin(t * 4.2 + (kind === 'bull' ? 0 : 1.7) + (o.ph || 0)) * 5, jit = mood === 'shock' ? Math.sin(t * 70) * 2.5 : 0;
+  const hop = act === 'cheer' ? Math.abs(Math.sin(t * 7)) * -18 : 0;
+  X.scale(s, s); shadow(0, 166, 120, 14);
+  if (o.tag) text(o.tag, 0, 215, font(SANS, 600, 46), P.mut);
+  X.save(); X.scale(d, 1);
+  X.fillStyle = P.dark; rr(-72, 104, 54, 58, 22); X.fill(); rr(18, 104, 54, 58, 22); X.fill();
+  X.translate(jit, bob + hop);
+  const arm = (sx, ang, front) => { const L = 92, hx = sx + Math.cos(ang) * L * Math.sign(sx), hy = 18 + Math.sin(ang) * L;
+    X.strokeStyle = col; X.lineWidth = 38; X.lineCap = 'round'; X.beginPath(); X.moveTo(sx, 18); X.lineTo(hx, hy); X.stroke(); X.lineCap = 'butt';
+    if (front && act === 'pay') coinFace(hx + 6, hy - 6, 30, '', Math.sin(t * 6) * 0.3);
+    return [hx, hy]; };
+  const pay = Math.sin(t * 6) * 0.12, cheer = Math.sin(t * 9) * 0.25;
+  const angF = act === 'pay' ? -0.25 + pay : act === 'cheer' ? -1.15 + cheer : act === 'hold' ? -0.1 : 1.15;
+  const angB = act === 'cheer' ? -1.15 - cheer : 1.2;
+  arm(-100, angB, false);
+  X.fillStyle = col; rr(-122, -62, 244, 196, 92); X.fill();
+  X.fillStyle = 'rgba(255,250,240,0.26)'; X.beginPath(); X.ellipse(0, 48, 72, 60, 0, 0, 7); X.fill();
+  const hy = -128;
+  if (kind === 'bull') {
+    X.strokeStyle = P.ivory; X.lineWidth = 26; X.lineCap = 'round';
+    [-1, 1].forEach(k => { X.beginPath(); X.moveTo(k * 62, hy - 70); X.quadraticCurveTo(k * 130, hy - 80, k * 128, hy - 140); X.stroke(); });
+    X.lineCap = 'butt'; X.fillStyle = col; [-1, 1].forEach(k => { X.save(); X.translate(k * 104, hy - 30); X.rotate(k * 0.5); X.beginPath(); X.ellipse(0, 0, 34, 18, 0, 0, 7); X.fill(); X.restore(); });
+  } else {
+    [-1, 1].forEach(k => { X.fillStyle = col; X.beginPath(); X.arc(k * 74, hy - 76, 36, 0, 7); X.fill(); X.fillStyle = 'rgba(255,250,240,0.35)'; X.beginPath(); X.arc(k * 74, hy - 76, 18, 0, 7); X.fill(); });
+  }
+  X.fillStyle = col; X.beginPath(); X.arc(0, hy, 102, 0, 7); X.fill();
+  X.fillStyle = 'rgba(255,250,240,0.5)'; X.beginPath(); X.ellipse(0, hy + 48, kind === 'bull' ? 64 : 54, kind === 'bull' ? 42 : 38, 0, 0, 7); X.fill();
+  X.fillStyle = P.ink;
+  if (kind === 'bull') [-1, 1].forEach(k => { X.beginPath(); X.ellipse(k * 22, hy + 44, 8, 11, 0, 0, 7); X.fill(); });
+  else { X.beginPath(); X.ellipse(0, hy + 30, 20, 13, 0, 0, 7); X.fill(); }
+  const ey = hy - 14, blink = (t + (kind === 'bull' ? 0 : 1.3)) % 3.4 < 0.12;
+  [-1, 1].forEach(k => { const ex = k * 40;
+    if (mood === 'happy') { ink(7); X.beginPath(); X.arc(ex, ey + 8, 15, Math.PI * 1.1, Math.PI * 1.9); X.stroke(); }
+    else if (mood === 'shock') { X.fillStyle = P.paper; X.beginPath(); X.arc(ex, ey, 25, 0, 7); X.fill(); ink(4); X.stroke(); X.fillStyle = P.ink; X.beginPath(); X.arc(ex, ey + 3, 9, 0, 7); X.fill(); }
+    else { X.fillStyle = P.ink; X.beginPath(); X.ellipse(ex, ey, 11, blink ? 2 : 15, 0, 0, 7); X.fill(); }
+    if (mood === 'sad' || mood === 'sweat') { ink(6); X.beginPath(); X.moveTo(k * 22, ey - 30); X.lineTo(k * 58, ey - 22); X.stroke(); } });
+  const my = hy + (kind === 'bull' ? 76 : 66); ink(6);
+  if (mood === 'happy') { X.beginPath(); X.arc(0, my - 12, 20, 0.15 * Math.PI, 0.85 * Math.PI); X.stroke(); }
+  else if (mood === 'sad' || mood === 'sweat') { X.beginPath(); X.arc(0, my + 12, 16, 1.2 * Math.PI, 1.8 * Math.PI); X.stroke(); }
+  else if (mood === 'shock') { X.fillStyle = P.ink; X.beginPath(); X.ellipse(0, my, 12, 16, 0, 0, 7); X.fill(); }
+  else { X.beginPath(); X.moveTo(-12, my); X.lineTo(12, my); X.stroke(); }
+  if (mood === 'sweat') { const u = (t * 0.9) % 1, dy = u * 60; X.save(); X.globalAlpha *= 1 - u; X.fillStyle = P.paper; X.strokeStyle = P.ink; X.lineWidth = 3;
+    X.beginPath(); X.moveTo(112, hy - 70 + dy); X.quadraticCurveTo(128, hy - 40 + dy, 112, hy - 34 + dy); X.quadraticCurveTo(96, hy - 40 + dy, 112, hy - 70 + dy); X.fill(); X.stroke(); X.restore(); }
+  arm(100, angF, true);
+  X.restore();
+}
+function gaugeFrac(v, mn, mx) { const z = 0.14; return v >= 0 ? z + (1 - z) * Math.sqrt(Math.min(v, mx) / mx) : z * (1 - Math.min(1, -v / -mn)); }
+function miniGauge(R, fr, hot) {
+  X.fillStyle = P.paper; X.beginPath(); X.arc(0, 0, R + 10, Math.PI, 0); X.closePath(); X.fill(); X.strokeStyle = P.line; X.lineWidth = 2; X.stroke();
+  X.lineWidth = R * 0.24; X.strokeStyle = P.line; X.beginPath(); X.arc(0, 0, R - 6, Math.PI, 2 * Math.PI); X.stroke();
+  X.strokeStyle = hot ? P.acc : P.mut; X.beginPath(); X.arc(0, 0, R - 6, Math.PI, Math.PI + fr * Math.PI); X.stroke();
+  const an = Math.PI + fr * Math.PI; ink(4); X.beginPath(); X.moveTo(0, 0); X.lineTo(Math.cos(an) * (R - 8), Math.sin(an) * (R - 8)); X.stroke();
+  X.fillStyle = hot ? P.acc : P.ink; X.beginPath(); X.arc(0, 0, 6, 0, 7); X.fill();
+}
 const DRAW = {
+  bull(o, t, a) { character(o, t, a, 'bull'); },
+  bear(o, t, a) { character(o, t, a, 'bear'); },
+  gauge(o, t, a) { // dial with a needle: v (set it to swing, overshoots), or seq [..] stepping every dt s; min/max, unit, sub
+    const Rr = o.r || 210, mn = o.min ?? -100, mx = o.max || 1000;
+    let v; if (o.seq) { const i = Math.floor(Math.max(0, a - 0.3) / (o.dt || 0.15)), j = Math.min(i, o.seq.length - 1), p = o.seq[Math.max(0, j - 1)], f = eo((Math.max(0, a - 0.3) - j * (o.dt || 0.15)) / 0.08); v = j >= o.seq.length - 1 && i > j ? o.seq[j] : lerp(p, o.seq[j], f); }
+    else v = o.v_t != null ? lerp(o.v_0, o.v, overshoot((t - o.v_t) / 1.0)) : (o.v ?? 0);
+    const fr = gaugeFrac(v, mn, mx), an = Math.PI + fr * Math.PI + (fr > 0.8 ? Math.sin(t * 31) * 0.012 : 0), z0 = Math.PI + 0.14 * Math.PI;
+    shadow(0, 150, Rr * 0.9, 14); X.fillStyle = P.paper; X.beginPath(); X.arc(0, 0, Rr + 34, Math.PI, 0); X.lineTo(Rr + 34, 130); X.lineTo(-Rr - 34, 130); X.closePath(); X.fill(); X.strokeStyle = P.line; X.lineWidth = DS.thin; X.stroke();
+    X.lineWidth = 36; X.strokeStyle = P.line; X.beginPath(); X.arc(0, 0, Rr - 24, Math.PI, 2 * Math.PI); X.stroke();
+    X.strokeStyle = v < 0 ? P.mut : P.acc; X.beginPath(); X.arc(0, 0, Rr - 24, Math.min(z0, an), Math.max(z0, an)); X.stroke();
+    for (let i = 0; i <= 10; i++) { const q = Math.PI + i * Math.PI / 10; ink(i % 5 ? DS.thin : 5); X.beginPath(); X.moveTo(Math.cos(q) * (Rr + 4), Math.sin(q) * (Rr + 4)); X.lineTo(Math.cos(q) * (Rr + 22), Math.sin(q) * (Rr + 22)); X.stroke(); }
+    ink(5); X.beginPath(); X.moveTo(Math.cos(z0) * (Rr - 50), Math.sin(z0) * (Rr - 50)); X.lineTo(Math.cos(z0) * (Rr + 2), Math.sin(z0) * (Rr + 2)); X.stroke();
+    X.strokeStyle = P.ink; X.lineWidth = 12; X.lineCap = 'round'; X.beginPath(); X.moveTo(-Math.cos(an) * 26, -Math.sin(an) * 26); X.lineTo(Math.cos(an) * (Rr - 40), Math.sin(an) * (Rr - 40)); X.stroke(); X.lineCap = 'butt';
+    X.fillStyle = P.acc; X.beginPath(); X.arc(0, 0, 22, 0, 7); X.fill();
+    if (o.unit != null) text(Math.round(v) + o.unit, 0, 78, font(SERIF, 800, Rr * 0.36), v < 0 ? P.mut : P.ink);
+    if (o.sub) note(o.sub, 172); },
+  gauges(o, t, a) { // a wall of mini gauges, all low; hi = index of the one that swings to the max (rust)
+    const c = o.cols || 7, r = o.rows || 5, gx = 124, gy = 112, R = 48;
+    for (let i = 0; i < c * r; i++) { const k = back((a - i * 0.015) / 0.3); if (k <= 0) continue; const x = (i % c - (c - 1) / 2) * gx, y = (Math.floor(i / c) - (r - 1) / 2) * gy;
+      const hot = i === o.hi, f0 = gaugeFrac(11, -100, 1000) + Math.sin(t * 3 + i) * 0.01, fr = hot && o.hi_set != null ? lerp(f0, 0.99, overshoot((t - o.hi_set) / 0.9)) : f0;
+      X.save(); X.translate(x, y); X.scale(k * (hot && o.hi_set != null ? 1 + 0.25 * eo((t - o.hi_set) / 0.4) : 1), k); miniGauge(R, fr, hot && o.hi_set != null); X.restore(); } },
+  jar(o, t, a) { // glass jar filling with coins: fill 0..1 (set it to animate), drop: seconds between falling coins, value under it
+    const w = o.w || 250, h = o.h || 300, f = anim(o, 'fill', t, 1.8) ?? 0, top = -h / 2, lvl = h / 2 - 16 - f * (h - 40);
+    shadow(0, h / 2 + 20, w * 0.45, 12);
+    X.save(); rr(-w / 2, top, w, h, 46); X.clip(); X.fillStyle = 'rgba(255,252,246,0.5)'; X.fillRect(-w / 2, top, w, h);
+    for (let yy = h / 2 - 22, row = 0; yy > lvl; yy -= 15, row++) for (let xx = -w / 2 + 20 + (row % 2) * 22; xx < w / 2; xx += 44) disc(xx, yy, 24);
+    X.restore(); rr(-w / 2, top, w, h, 46); ink(6); X.stroke(); X.fillStyle = 'rgba(255,255,255,0.35)'; rr(-w / 2 + 22, top + 30, 18, h * 0.55, 9); X.fill();
+    X.fillStyle = P.dark; rr(-w / 2 + 24, top - 36, w - 48, 40, 12); X.fill();
+    if (o.drop) { const p = o.drop, m = Math.floor(a / p); for (let j = m - 2; j <= m; j++) { if (j < 0) continue; const u = (a - j * p) / 0.5; if (u < 0 || u > 1) continue;
+      X.save(); X.globalAlpha *= 1 - cl((u - 0.85) / 0.15); coinFace(((j * 37) % 60) - 30, lerp(top - 220, lvl - 10, u * u), 26, '', u * 4); X.restore(); } }
+    if (o.value) text(countUp(o.value, a), 0, h / 2 + 90, font(SERIF, 800, 110), P.ink); },
+  coinflow(o, t, a) { // coins arcing from left to right (dir -1: right to left) every period s; dx distance, h arc height
+    if (o.stop) return; const dx = o.dx || 560, hg = o.h || 150, p = o.period || 0.55, d = o.dir || 1, m = Math.floor(a / p);
+    for (let j = m - 3; j <= m; j++) { if (j < 0) continue; const u = (a - j * p) / 0.9; if (u < 0 || u > 1) continue;
+      X.save(); X.translate(d * (-dx / 2 + dx * u), -4 * hg * u * (1 - u)); X.scale(0.25 + 0.75 * Math.abs(Math.cos(a * 7 + j)), 1); X.globalAlpha *= cl(u * 8) * cl((1 - u) * 8); coinFace(0, 0, o.r || 30, ''); X.restore(); } },
+  tollbooth(o, t, a) { // booth with a fee meter on top (fee, in gold: it's money) and a gate arm to the left; lift: seconds between openings
+    shadow(10, 190, 170, 14);
+    const op = o.lift ? Math.max(0, Math.sin(((a % o.lift) / o.lift) * Math.PI)) ** 0.6 : (anim(o, 'open', t, 0.5) ?? 0), ang = op * 1.25;
+    X.save(); X.translate(-104, 70); X.rotate(ang); for (let i = 0; i < 6; i++) { X.fillStyle = i % 2 ? P.paper : P.acc; X.fillRect(-60 - i * 55, -13, 55, 26); } X.strokeStyle = P.line; X.lineWidth = 2; X.strokeRect(-390, -13, 330, 26); X.restore();
+    X.fillStyle = P.dark; X.beginPath(); X.arc(-104, 70, 20, 0, 7); X.fill(); rr(-118, 70, 28, 104, 8); X.fill();
+    X.fillStyle = P.dark; rr(-100, -150, 200, 324, 22); X.fill(); X.fillStyle = '#2A211B'; rr(-132, -206, 264, 64, 20); X.fill();
+    X.fillStyle = P.paper; rr(-72, -108, 144, 112, 14); X.fill(); X.fillStyle = 'rgba(60,40,20,0.12)'; rr(-72, -40, 144, 44, [0, 0, 14, 14]); X.fill();
+    X.fillStyle = P.dark; rr(-8, -240, 16, 40, 4); X.fill(); X.fillStyle = P.ink; rr(-138, -330, 276, 104, 18); X.fill();
+    X.save(); X.beginPath(); rr(-130, -322, 260, 88, 12); X.clip(); text(o.fee || '', 0, -276, font(SERIF, 800, 62), P.gold); X.restore();
+    if (o.fee_set != null) { const k = 1 - cl((t - o.fee_set) / 0.35); if (k > 0) { X.strokeStyle = P.gold; X.globalAlpha *= k; X.lineWidth = 6; rr(-146, -338, 292, 120, 22); X.stroke(); } } },
+
   coin(o, t) { shadow(0, o.r + 26, o.r * 0.8, 12); coinFace(0, Math.sin(t * 2 + (o.ph || 0)) * 6, o.r || 70, o.label || ''); },
   nameplate(o) { shadow(0, 150, 300, 18); X.fillStyle = P.paper; rr(-340, -120, 680, 240, 26); X.fill(); X.strokeStyle = P.line; X.lineWidth = 3; X.stroke();
     X.fillStyle = P.acc; rr(-340, -120, 18, 240, [26, 0, 0, 26]); X.fill();
@@ -263,7 +371,7 @@ const DRAW = {
     if (o.endLab && k >= v.length - 1) text(o.endLab, w / 2, ey - 50, font(SANS, 600, 38), ec, 'right');
     if (o.note) text(o.note, -w / 2, -h / 2 - 45, font(SANS, 500, 34), P.mut, 'left'); },
   clock(o, t, a) { // wall clock: h (hour, 9.5 = 9:30), hands ease into place; label under it
-    const R = 150, h = o.h ?? 4, k = eo(a / 0.8), hh = h - 0.5 * (1 - k), mm = (hh % 1) * 60;
+    const R = 150, h = o.h ?? 4, k = eo(a / 0.8), hh = h - 0.5 * (1 - k) + (o.spin || 0) * Math.max(0, a), mm = (hh % 1) * 60;
     shadow(0, R + 28, R * 0.8, 14); X.fillStyle = P.paper; X.beginPath(); X.arc(0, 0, R, 0, 7); X.fill(); ink(); X.stroke();
     for (let i = 0; i < 12; i++) { const an = i * Math.PI / 6, r0 = i % 3 ? R - 26 : R - 38; X.lineWidth = i % 3 ? DS.thin : DS.stroke - 2; X.beginPath(); X.moveTo(Math.cos(an) * r0, Math.sin(an) * r0); X.lineTo(Math.cos(an) * (R - 14), Math.sin(an) * (R - 14)); X.stroke(); }
     const hand = (an, len, wd) => { ink(wd); X.beginPath(); X.moveTo(0, 0); X.lineTo(Math.cos(an) * len, Math.sin(an) * len); X.stroke(); };
@@ -290,7 +398,7 @@ function stateAt(t) {
     if (op.kind === 'add') { const o = Object.assign({}, op, {born: op.t - lastClear < 0.25 ? lastClear + 0.25 : op.t}); objs.delete(op.id || ('o' + op.t)); o.x = op.x ?? 540; o.y = op.y ?? 820; objs.set(op.id || ('o' + op.t), o); continue; }
     const o = objs.get(op.id); if (!o) continue; const t0 = Math.max(op.t, o.born);
     if (op.kind === 'move') { const k = eo((t - t0) / (op.dur || 0.6)); o.x = lerp(o.x, op.x ?? o.x, k); o.y = lerp(o.y, op.y ?? o.y, k); if (op.s != null) o.s = lerp(o.s ?? 1, op.s, k); }
-    else if (op.kind === 'set') { for (const [k, v] of Object.entries(op)) if (!['kind', 't', 'id', 'sfx'].includes(k)) { o[k] = v; if (k === 'upto') o['t' + (v - 1)] = op.t; } }
+    else if (op.kind === 'set') { for (const [k, v] of Object.entries(op)) if (!['kind', 't', 'id', 'sfx'].includes(k)) { if (typeof v === 'number') { o[k + '_0'] = typeof o[k] === 'number' ? o[k] : v; o[k + '_t'] = op.t; } o[k] = v; o[k + '_set'] = op.t; if (k === 'upto') o['t' + (v - 1)] = op.t; } }
     else if (op.kind === 'remove') o.die = op.t;
   }
   return {objs, head, headPrev, chap, chapPrev};
@@ -332,7 +440,7 @@ function caption(t) {
 
 // Style sheet: every prop on one page, for checking new props against the rest.
 function styleSheet() {
-  C.width = 1440; C.height = 3100; X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1;
+  C.width = 1440; C.height = 3900; X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1;
   X.fillStyle = P.bg; X.fillRect(0, 0, C.width, C.height);
   text('@conxixent · editorial style', 720, 90, font(SERIF, 800, 72), P.ink);
   const sw = [['bg', 'background'], ['paper', 'cards'], ['line', 'edges'], ['ink', 'text'], ['mut', 'notes'], ['acc', 'accent'], ['gold', 'value'], ['dark', 'objects'], ['sage', 'success'], ['red', 'warning']];
@@ -349,7 +457,9 @@ function styleSheet() {
     ['bars', {rows: [['Miners', 75, 'acc'], ['Others', 25, 'ink']]}, 0.36, -30], ['pile', {sub: 'genesis'}, 0.42, 40], ['donut', {pct: 20, sub: 'note'}, 0.45, -30], ['timeline', {items: [['Q4', 'Event'], ['Q1', 'Next']], note: 'target'}, 0.36, 0],
     ['stamp', {text: 'WARNING', size: 100}, 0.42, 0], ['big', {text: '2.48B', size: 160, color: 'acc', sub: 'big number'}, 0.55, -20], ['small', {text: 'Not financial advice'}, 0.8, 0], ['cross', {w: 220}, 0.8, 0],
     ['path', {vals: [0, -1, -4, -9, -7], endCol: 'acc', endLab: '-7%'}, 0.36, 20], ['clock', {h: 4, label: '4 PM', sub: 'market closed'}, 0.5, -40],
-    ['hours', {vals: [138, 11, -90, 42, 231, 17, 274, 788, 415, 594, 866], hi: 2, hiLab: '-90%', from: 'yesterday', to: 'now'}, 0.36, -10]];
+    ['hours', {vals: [138, 11, -90, 42, 231, 17, 274, 788, 415, 594, 866], hi: 2, hiLab: '-90%', from: 'yesterday', to: 'now'}, 0.36, -10],
+    ['bull', {s: 0.9, mood: 'sweat', action: 'pay', tag: 'longs'}, 0.36, -10], ['bear', {s: 0.9, mood: 'happy', tag: 'shorts'}, 0.36, -10], ['gauge', {v: 866, unit: '%'}, 0.5, 10], ['gauges', {cols: 6, rows: 4, hi: 9, hi_set: 0}, 0.4, 0],
+    ['jar', {fill: 0.6, value: '$24'}, 0.45, -30], ['coinflow', {dx: 300}, 0.6, 0], ['tollbooth', {fee: '$1/hr'}, 0.4, 20]];
   I.forEach(([prop, o, sc, dy], i) => { const cx = 180 + (i % 4) * 360, cy = 760 + Math.floor(i / 4) * 390;
     X.fillStyle = 'rgba(255,252,246,0.35)'; rr(cx - 165, cy - 175, 330, 350, 24); X.fill();
     X.save(); X.translate(cx, cy + dy); X.scale(sc, sc); o.prop = prop; o.born = 0; o.upto = 9; DRAW[prop](o, 5, 5); X.restore();
