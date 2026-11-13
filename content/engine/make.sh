@@ -18,6 +18,7 @@ if [ "$STYLE" = "editorial" ]; then
   [ -f "$CACHE/fonts/Playfair.ttf" ] || curl -sfL -o "$CACHE/fonts/Playfair.ttf" "https://raw.githubusercontent.com/google/fonts/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf"
   [ -f "$CACHE/fonts/Outfit.ttf" ] || curl -sfL -o "$CACHE/fonts/Outfit.ttf" "https://raw.githubusercontent.com/google/fonts/main/ofl/outfit/Outfit%5Bwght%5D.ttf"
 fi
+MDIR="${MUSIC_DIR:-$CACHE/music}"; if ls "$MDIR" 2>/dev/null | grep -qiE "\.(mp3|wav|m4a|ogg|flac)$"; then python3 -c "import librosa" 2>/dev/null || pip install -q --break-system-packages librosa; fi
 python3 "$HERE/voice.py" "$EP" "$WORK"
 if [ "${2:-}" = "stills" ]; then shift 2; python3 "$R" stills "$@"; echo "stills in $WORK"; exit 0; fi
 [ "$STYLE" = "editorial" ] && python3 "$R" events

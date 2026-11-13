@@ -28,5 +28,5 @@ for s in ep["sentences"]:
     parts += [a, np.zeros(int(SR * gap), np.float32)]; t += d + gap
 parts.append(np.zeros(SR, np.float32))
 sf.write(os.path.join(WORK, "voice.wav"), np.concatenate(parts), SR)
-json.dump({"sentences": out, "dur": round(t + 1.0, 3), "date": ep.get("date", ""), "format": ep.get("format", "9:16")}, open(os.path.join(WORK, "timeline.json"), "w"), indent=1, ensure_ascii=False)
+json.dump({"sentences": out, "dur": round(t + 1.0, 3), "date": ep.get("date", ""), "format": ep.get("format", "9:16"), "hook": ep.get("hook", True), "slug": ep.get("slug", ""), "music": ep.get("music")}, open(os.path.join(WORK, "timeline.json"), "w"), indent=1, ensure_ascii=False)
 print("voice: duration", round(t + 1.0, 1), "s")

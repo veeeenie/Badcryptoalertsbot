@@ -25,6 +25,7 @@ const lerp = (a, b, k) => a + (b - a) * k;
 function setup(tl) {
   TL = tl; DUR = tl.dur; OPS = []; useFormat(tl.format);
   for (const s of tl.sentences) for (const b of s.beats) OPS.push(b);
+  if (tl.hook !== false) OPS.push({kind: 'bg', mode: 'rust', t: 0, auto: true});
   OPS.sort((a, b) => a.t - b.t);
   planCamera();
 }
@@ -157,6 +158,14 @@ function note(s, y) { text(s, 0, y, font(SANS, 500, DS.type.note), P.mut); }
 // ---------- background ----------
 const DECOR = [[50, 640, 36, 0.2, 1], [1030, 560, 32, 1.7, 0], [1025, 1080, 42, 3.1, 1], [55, 1150, 30, 4.4, 0], [985, 1700, 40, 5.2, 0], [95, 1730, 44, 2.6, 1]];
 const DECOR45 = [[46, 260, 34, 0.2, 1], [1034, 200, 30, 1.7, 0], [1030, 760, 40, 3.1, 1], [50, 900, 30, 4.4, 0], [990, 1240, 38, 5.2, 0], [90, 1260, 42, 2.6, 1]];
+// Rust hook / catch frame: full rust background with a cream spotlight where the scene plays. It stands out against
+// both X's white and black feeds; used on the first scene (auto) and on "the catch" ({"kind":"bg","mode":"rust"}).
+function rustFrame(t, t0) {
+  const k = eo((t - t0) / 0.25), r = (H > 1500 ? 470 : 430) * (0.85 + 0.15 * k) + Math.sin(t * 2.2) * 6;
+  X.fillStyle = P.acc; X.fillRect(-200, -200, W + 400, H + 400);
+  X.fillStyle = 'rgba(255,240,225,0.10)'; for (let i = 0; i < 12; i++) { X.save(); X.translate(W / 2, CAM_Y); X.rotate(i * Math.PI / 6 + t * 0.15); X.beginPath(); X.moveTo(0, 0); X.lineTo(1400, -120); X.lineTo(1400, 120); X.closePath(); X.fill(); X.restore(); }
+  X.fillStyle = P.bg; X.beginPath(); X.arc(W / 2, CAM_Y, r, 0, 7); X.fill(); X.strokeStyle = P.paper; X.lineWidth = 10; X.stroke();
+}
 function background(t) {
   X.fillStyle = P.bg; X.fillRect(0, 0, W, H);
   let g = X.createRadialGradient(W / 2, H * 0.36, 100, W / 2, H * 0.42, H * 0.57); g.addColorStop(0, 'rgba(255,250,240,0.55)'); g.addColorStop(1, 'rgba(255,250,240,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H);
@@ -390,18 +399,19 @@ const DRAW = {
 
 // ---------- state at time t ----------
 function stateAt(t) {
-  const objs = new Map(); let head = null, headPrev = null, lastClear = -9, chap = null, chapPrev = null;
+  const objs = new Map(); let head = null, headPrev = null, lastClear = -9, chap = null, chapPrev = null, bg = null;
   for (const op of OPS) { if (op.t > t) break;
     if (op.kind === 'head') { headPrev = head; head = {text: op.text, t: op.t}; continue; }
     if (op.kind === 'chapter') { chapPrev = chap; chap = {text: op.text, t: op.t}; continue; }
-    if (op.kind === 'clear') { lastClear = op.t; for (const o of objs.values()) if (o.die == null) o.die = op.t; continue; }
+    if (op.kind === 'bg') { bg = {mode: op.mode, t: op.t}; continue; }
+    if (op.kind === 'clear') { lastClear = op.t; bg = null; for (const o of objs.values()) if (o.die == null) o.die = op.t; continue; }
     if (op.kind === 'add') { const o = Object.assign({}, op, {born: op.t - lastClear < 0.25 ? lastClear + 0.25 : op.t}); objs.delete(op.id || ('o' + op.t)); o.x = op.x ?? 540; o.y = op.y ?? 820; objs.set(op.id || ('o' + op.t), o); continue; }
     const o = objs.get(op.id); if (!o) continue; const t0 = Math.max(op.t, o.born);
     if (op.kind === 'move') { const k = eo((t - t0) / (op.dur || 0.6)); o.x = lerp(o.x, op.x ?? o.x, k); o.y = lerp(o.y, op.y ?? o.y, k); if (op.s != null) o.s = lerp(o.s ?? 1, op.s, k); }
     else if (op.kind === 'set') { for (const [k, v] of Object.entries(op)) if (!['kind', 't', 'id', 'sfx'].includes(k)) { if (typeof v === 'number') { o[k + '_0'] = typeof o[k] === 'number' ? o[k] : v; o[k + '_t'] = op.t; } o[k] = v; o[k + '_set'] = op.t; if (k === 'upto') o['t' + (v - 1)] = op.t; } }
     else if (op.kind === 'remove') o.die = op.t;
   }
-  return {objs, head, headPrev, chap, chapPrev};
+  return {objs, head, headPrev, chap, chapPrev, bg};
 }
 
 function drawHead(h, t, out) {
@@ -471,7 +481,7 @@ function render(t) {
   X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1; X.filter = 'none';
   const cam = camAt(t), st = stateAt(t), CX = W / 2, CY = CAM_Y;
   X.save(); X.translate(CX + cam.x, CY + cam.y); X.rotate(cam.r); X.scale(cam.z, cam.z); X.translate(-CX, -CY);
-  X.save(); X.translate(CX, CY); X.scale(1.12, 1.12); X.translate(-CX, -CY); background(t); X.restore(); // oversize so tilts never show corners
+  X.save(); X.translate(CX, CY); X.scale(1.12, 1.12); X.translate(-CX, -CY); background(t); if (st.bg && st.bg.mode === 'rust') rustFrame(t, st.bg.t); X.restore(); // oversize so tilts never show corners
   if (cam.rays) { const p = cam.sh.punches.filter(q => q.t <= t).pop(); raysAt(p ? p.fx : 540, p ? p.fy : CAM_Y, cam.rays.a); }
   X.save(); X.translate(STAGE[0], STAGE[1]); X.scale(STAGE[2], STAGE[2]);
   for (const o of st.objs.values()) {
