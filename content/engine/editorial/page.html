@@ -273,7 +273,8 @@ const DRAW = {
     ink(5); X.beginPath(); X.moveTo(Math.cos(z0) * (Rr - 50), Math.sin(z0) * (Rr - 50)); X.lineTo(Math.cos(z0) * (Rr + 2), Math.sin(z0) * (Rr + 2)); X.stroke();
     X.strokeStyle = P.ink; X.lineWidth = 12; X.lineCap = 'round'; X.beginPath(); X.moveTo(-Math.cos(an) * 26, -Math.sin(an) * 26); X.lineTo(Math.cos(an) * (Rr - 40), Math.sin(an) * (Rr - 40)); X.stroke(); X.lineCap = 'butt';
     X.fillStyle = P.acc; X.beginPath(); X.arc(0, 0, 22, 0, 7); X.fill();
-    if (o.unit != null) text(Math.round(v) + o.unit, 0, 78, font(SERIF, 800, Rr * 0.36), v < 0 ? P.mut : P.ink);
+    const shown = o.seq ? v : (o.v_t != null ? lerp(o.v_0, o.v, eo((t - o.v_t) / 0.8)) : (o.v ?? 0)); // the number never overshoots, only the needle
+    if (o.unit != null) text(Math.round(shown) + o.unit, 0, 78, font(SERIF, 800, Rr * 0.36), shown < 0 ? P.mut : P.ink);
     if (o.sub) note(o.sub, 172); },
   gauges(o, t, a) { // a wall of mini gauges, all low; hi = index of the one that swings to the max (rust)
     const c = o.cols || 7, r = o.rows || 5, gx = 124, gy = 112, R = 48;
