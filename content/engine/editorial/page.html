@@ -3,13 +3,19 @@
 <script>
 // Warm editorial style: serif headline, one scene of drawn props acting out the idea, small word-by-word caption pill.
 // The recorder injects fonts + timeline, then calls render(t) for each frame.
-const C = document.getElementById('c'), X = C.getContext('2d'), W = 1080, H = 1920;
+const C = document.getElementById('c'), X = C.getContext('2d'), W = 1080; let H = 1920;
 const P = {bg:'#EFE7DA', bg2:'#E5D8C5', ink:'#2B1E16', acc:'#B5532B', mut:'#7F6C5A', gold:'#D7A544', goldD:'#A6782A',
            sage:'#6E8A62', red:'#B33A2C', paper:'#FBF7EF', line:'#D6C5AD', dark:'#3B2F27', shadow:'rgba(60,40,20,0.16)'};
 const SERIF = '"Playfair"', SANS = '"Outfit"';
 // Safe area: X's phone player covers roughly the top 12% (back/menu buttons) and bottom 28% (name, post text, buttons).
 // Everything sits between y 400 and 1370. Episode prop coordinates (stage y 430-1220) are scaled 0.8 around the centre.
-const HEAD_Y = 470, CAP_Y = 1272, HANDLE_Y = 1362, FLOOR = 1196, STAGE = [108, 216, 0.8];
+let HEAD_Y = 470, CAP_Y = 1272, HANDLE_Y = 1362, FLOOR = 1196, STAGE = [108, 216, 0.8], CAM_Y = 880, CAP_SIZE = 58, WIDE = false;
+// 4:5 (1080x1350, "format": "4:5"): no headline; a small chapter label at the top (beat kind "chapter"), the props are the hero
+// (stage at scale 1.0 in y ~265-1055, punches pan less so wide props stay in frame), bigger caption pill at the bottom. X's feed player covers almost nothing at this size.
+function useFormat(f) {
+  if (f !== '4:5') return; WIDE = true; H = 1350; C.height = H;
+  CAP_Y = 1192; HANDLE_Y = 1300; FLOOR = 1085; CAP_SIZE = 66; CAM_Y = 660; STAGE = [0, 660 - 825, 1.0];
+}
 let TL = null, OPS = [], DUR = 1;
 const cl = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
 const eo = x => 1 - Math.pow(1 - cl(x), 3);
@@ -17,7 +23,7 @@ const back = x => { x = cl(x); const c = 1.6; return 1 + (c + 1) * Math.pow(x - 
 const lerp = (a, b, k) => a + (b - a) * k;
 
 function setup(tl) {
-  TL = tl; DUR = tl.dur; OPS = [];
+  TL = tl; DUR = tl.dur; OPS = []; useFormat(tl.format);
   for (const s of tl.sentences) for (const b of s.beats) OPS.push(b);
   OPS.sort((a, b) => a.t - b.t);
   planCamera();
@@ -60,7 +66,7 @@ function planCamera() {
     // fill quiet stretches so something moves every ~2 s
     const end = Math.min(t1, DUR), marks = [t0 + 0.2, ...sh.punches.map(p => p.t), end];
     for (let j = 0; j < marks.length - 1; j++) for (let tt = marks[j] + 1.9; tt < marks[j + 1] - 0.8; tt += 1.9) {
-      sh.punches.push({t: tt, fx: 540 + (n % 2 ? 60 : -60), fy: 860, n: n++, re: true}); EVENTS.push({t: tt, kind: 'punch'}); }
+      sh.punches.push({t: tt, fx: 540 + (n % 2 ? 60 : -60), fy: CAM_Y - 20, n: n++, re: true}); EVENTS.push({t: tt, kind: 'punch'}); }
     sh.punches.sort((a, b) => a.t - b.t);
     SHOTS.push(sh);
   }
@@ -77,7 +83,7 @@ function camAt(t) {
   let pz = 0, px = 0, py = 0, pr = 0;
   for (const p of sh.punches) { if (p.t > t) break;
     const k = p.n % 2 ? 1 : eo((t - p.t) / 0.22), amt = p.n % 2 ? 0.075 : 0.045;
-    const tz = amt, tx = (540 - p.fx) * 0.35, ty = (900 - p.fy) * 0.3, tr = (p.n % 3 - 1) * 1.3;
+    const tz = amt, tx = (540 - p.fx) * (WIDE ? 0.15 : 0.35), ty = (CAM_Y - p.fy) * 0.3, tr = (p.n % 3 - 1) * 1.3;
     pz = lerp(pz, tz, k); px = lerp(px, tx, k); py = lerp(py, ty, k); pr = lerp(pr, tr, k); }
   z += pz; x += px; y += py; r += pr;
   // hits: short shake
@@ -148,14 +154,15 @@ function note(s, y) { text(s, 0, y, font(SANS, 500, DS.type.note), P.mut); }
 
 // ---------- background ----------
 const DECOR = [[50, 640, 36, 0.2, 1], [1030, 560, 32, 1.7, 0], [1025, 1080, 42, 3.1, 1], [55, 1150, 30, 4.4, 0], [985, 1700, 40, 5.2, 0], [95, 1730, 44, 2.6, 1]];
+const DECOR45 = [[46, 260, 34, 0.2, 1], [1034, 200, 30, 1.7, 0], [1030, 760, 40, 3.1, 1], [50, 900, 30, 4.4, 0], [990, 1240, 38, 5.2, 0], [90, 1260, 42, 2.6, 1]];
 function background(t) {
   X.fillStyle = P.bg; X.fillRect(0, 0, W, H);
-  let g = X.createRadialGradient(W / 2, 700, 100, W / 2, 800, 1100); g.addColorStop(0, 'rgba(255,250,240,0.55)'); g.addColorStop(1, 'rgba(255,250,240,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H);
+  let g = X.createRadialGradient(W / 2, H * 0.36, 100, W / 2, H * 0.42, H * 0.57); g.addColorStop(0, 'rgba(255,250,240,0.55)'); g.addColorStop(1, 'rgba(255,250,240,0)'); X.fillStyle = g; X.fillRect(0, 0, W, H);
   g = X.createLinearGradient(0, FLOOR, 0, H); g.addColorStop(0, P.bg2); g.addColorStop(1, '#DCCDB8'); X.fillStyle = g; X.fillRect(0, FLOOR, W, H - FLOOR);
   X.fillStyle = P.line; X.fillRect(0, FLOOR - 2, W, 4);
-  DECOR.forEach(([x, y, r, ph, blur]) => { X.save(); X.globalAlpha = blur ? 0.32 : 0.55; if (blur) X.filter = 'blur(5px)';
+  (WIDE ? DECOR45 : DECOR).forEach(([x, y, r, ph, blur]) => { X.save(); X.globalAlpha = blur ? 0.32 : 0.55; if (blur) X.filter = 'blur(5px)';
     coinFace(x + Math.sin(t * 0.5 + ph) * 6, y + Math.sin(t * 0.8 + ph) * 10, r, '', Math.sin(t * 0.6 + ph) * 0.3); X.restore(); });
-  g = X.createRadialGradient(W / 2, H / 2, 600, W / 2, H / 2, 1250); g.addColorStop(0, 'rgba(60,40,20,0)'); g.addColorStop(1, 'rgba(60,40,20,0.18)'); X.fillStyle = g; X.fillRect(0, 0, W, H);
+  g = X.createRadialGradient(W / 2, H / 2, H * 0.31, W / 2, H / 2, H * 0.65); g.addColorStop(0, 'rgba(60,40,20,0)'); g.addColorStop(1, 'rgba(60,40,20,0.18)'); X.fillStyle = g; X.fillRect(0, 0, W, H);
 }
 
 // ---------- props ----------
@@ -275,9 +282,10 @@ const DRAW = {
 
 // ---------- state at time t ----------
 function stateAt(t) {
-  const objs = new Map(); let head = null, headPrev = null, lastClear = -9;
+  const objs = new Map(); let head = null, headPrev = null, lastClear = -9, chap = null, chapPrev = null;
   for (const op of OPS) { if (op.t > t) break;
     if (op.kind === 'head') { headPrev = head; head = {text: op.text, t: op.t}; continue; }
+    if (op.kind === 'chapter') { chapPrev = chap; chap = {text: op.text, t: op.t}; continue; }
     if (op.kind === 'clear') { lastClear = op.t; for (const o of objs.values()) if (o.die == null) o.die = op.t; continue; }
     if (op.kind === 'add') { const o = Object.assign({}, op, {born: op.t - lastClear < 0.25 ? lastClear + 0.25 : op.t}); objs.delete(op.id || ('o' + op.t)); o.x = op.x ?? 540; o.y = op.y ?? 820; objs.set(op.id || ('o' + op.t), o); continue; }
     const o = objs.get(op.id); if (!o) continue; const t0 = Math.max(op.t, o.born);
@@ -285,7 +293,7 @@ function stateAt(t) {
     else if (op.kind === 'set') { for (const [k, v] of Object.entries(op)) if (!['kind', 't', 'id', 'sfx'].includes(k)) { o[k] = v; if (k === 'upto') o['t' + (v - 1)] = op.t; } }
     else if (op.kind === 'remove') o.die = op.t;
   }
-  return {objs, head, headPrev};
+  return {objs, head, headPrev, chap, chapPrev};
 }
 
 function drawHead(h, t, out) {
@@ -303,16 +311,23 @@ function drawHead(h, t, out) {
   X.restore(); X.textAlign = 'left';
 }
 
+function drawChapter(c, t, out) { // small label at the top of a 4:5 video: rust dot + text on a paper pill; slides in on change
+  if (!c) return; const a = out ? 1 - eo((t - out) / 0.18) : eo((t - c.t) / 0.3); if (a <= 0) return;
+  X.font = font(SANS, 600, 40); const tw = X.measureText(c.text).width, w = tw + 104, h = 76, y = 78, x = W / 2 + (out ? -60 * (1 - a) : 90 * (1 - a));
+  X.save(); X.globalAlpha = a; X.fillStyle = P.paper; rr(x - w / 2, y - h / 2, w, h, h / 2); X.fill(); X.strokeStyle = P.line; X.lineWidth = DS.thin; X.stroke();
+  X.fillStyle = P.acc; X.beginPath(); X.arc(x - w / 2 + 40, y, 10, 0, 7); X.fill(); text(c.text, x - w / 2 + 66, y + 2, X.font, P.ink, 'left'); X.restore();
+}
+
 function caption(t) {
   let s = null; for (const x of TL.sentences) if (t >= x.start - 0.05 && t <= x.end + 0.25) s = x; if (!s) return;
   const ws = s.words; let cur = 0; ws.forEach((w, i) => { if (t >= w.s) cur = i; });
   const nc = Math.ceil(ws.length / 4), per = Math.ceil(ws.length / nc), c0 = Math.floor(cur / per) * per, chunk = ws.slice(c0, c0 + per);
-  X.font = font(SANS, 600, 58); const sp = X.measureText(' ').width;
+  X.font = font(SANS, 600, CAP_SIZE); const sp = X.measureText(' ').width;
   const vis = chunk.filter((w, i) => t >= w.s || i === 0); const tw = chunk.reduce((a, w) => a + X.measureText(w.w).width, 0) + sp * (chunk.length - 1);
-  const pw = tw + 70, ph = 104, y = CAP_Y, pk = 1 + 0.14 * (1 - eo((t - chunk[0].s) / 0.2)); X.save(); X.translate(W / 2, y); X.scale(pk, pk); X.translate(-W / 2, -y);
+  const pw = tw + 70, ph = CAP_SIZE * 1.8, y = CAP_Y, pk = 1 + 0.14 * (1 - eo((t - chunk[0].s) / 0.2)); X.save(); X.translate(W / 2, y); X.scale(pk, pk); X.translate(-W / 2, -y);
   X.fillStyle = 'rgba(255,252,246,0.7)'; rr(W / 2 - pw / 2, y - ph / 2, pw, ph, 26); X.fill();
   let x = W / 2 - tw / 2; X.textBaseline = 'middle';
-  chunk.forEach((w, i) => { const on = t >= w.s; X.fillStyle = (c0 + i === cur) ? P.acc : P.ink; X.globalAlpha = on ? 1 : 0; X.fillText(w.w, x, y + 3); X.globalAlpha = 1; x += X.measureText(w.w).width + sp; }); X.restore();
+  chunk.forEach((w, i) => { const on = t >= w.s; X.fillStyle = (c0 + i === cur) ? P.acc : P.ink; X.globalAlpha = on ? 1 : (WIDE ? 0.4 : 0); X.fillText(w.w, x, y + 3); X.globalAlpha = 1; x += X.measureText(w.w).width + sp; }); X.restore();
 }
 
 // Style sheet: every prop on one page, for checking new props against the rest.
@@ -344,10 +359,10 @@ function styleSheet() {
 
 function render(t) {
   X.setTransform(1, 0, 0, 1, 0, 0); X.globalAlpha = 1; X.filter = 'none';
-  const cam = camAt(t), st = stateAt(t), CX = W / 2, CY = 880;
+  const cam = camAt(t), st = stateAt(t), CX = W / 2, CY = CAM_Y;
   X.save(); X.translate(CX + cam.x, CY + cam.y); X.rotate(cam.r); X.scale(cam.z, cam.z); X.translate(-CX, -CY);
   X.save(); X.translate(CX, CY); X.scale(1.12, 1.12); X.translate(-CX, -CY); background(t); X.restore(); // oversize so tilts never show corners
-  if (cam.rays) { const p = cam.sh.punches.filter(q => q.t <= t).pop(); raysAt(p ? p.fx : 540, p ? p.fy : 860, cam.rays.a); }
+  if (cam.rays) { const p = cam.sh.punches.filter(q => q.t <= t).pop(); raysAt(p ? p.fx : 540, p ? p.fy : CAM_Y, cam.rays.a); }
   X.save(); X.translate(STAGE[0], STAGE[1]); X.scale(STAGE[2], STAGE[2]);
   for (const o of st.objs.values()) {
     const age = t - o.born; if (age < 0) continue; let a = cl(age / 0.3); if (o.die != null) { a = Math.min(a, 1 - (t - o.die) / 0.22); if (a <= 0) continue; }
@@ -357,7 +372,8 @@ function render(t) {
   X.restore(); X.restore();
   if (cam.blur || cam.ghost) postBlur(cam.blur, cam.ghost);
   if (cam.flash) { X.fillStyle = `rgba(255,252,246,${cam.flash})`; X.fillRect(0, 0, W, H); }
-  if (st.headPrev && t - st.head.t < 0.2) drawHead(st.headPrev, t, st.head.t); drawHead(st.head, t, null);
+  if (WIDE) { if (st.chapPrev && t - st.chap.t < 0.18) drawChapter(st.chapPrev, t, st.chap.t); else drawChapter(st.chap, t, null); }
+  else { if (st.headPrev && t - st.head.t < 0.2) drawHead(st.headPrev, t, st.head.t); drawHead(st.head, t, null); }
   caption(t);
   wipe(t);
   X.fillStyle = 'rgba(60,40,20,0.12)'; X.fillRect(0, 0, W, 8); X.fillStyle = P.acc; X.fillRect(0, 0, W * t / DUR, 8);

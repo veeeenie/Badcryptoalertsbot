@@ -18,7 +18,7 @@ CHROME = shutil.which("google-chrome") or shutil.which("chromium") or shutil.whi
 
 def open_page(p):
     b = p.chromium.launch(executable_path=CHROME, args=["--disable-gpu", "--force-color-profile=srgb"]) if CHROME else p.chromium.launch()
-    pg = b.new_page(viewport={"width": 1080, "height": 1920})
+    pg = b.new_page(viewport={"width": 1080, "height": 1350 if TL.get("format") == "4:5" else 1920})
     pg.goto("file://" + os.path.join(HERE, "page.html"))
     for fam, fn in FONTS.items():
         data = base64.b64encode(open(os.path.join(CACHE, "fonts", fn), "rb").read()).decode()
