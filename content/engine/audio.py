@@ -96,6 +96,29 @@ for i in range(nb):
         music[at:at + n] += pad[: len(music) - at]
         bass = np.sin(2 * np.pi * c[0] / 2 * t) * np.exp(-t * 1.2) * 0.35; music[at:at + n] += bass[: len(music) - at]
 music = lp(music, 6000)
+MOOD = TL.get("mood") or "upbeat"
+if MOOD == "tense":  # generated tension bed for bad-news days: A minor, pulsing 8th-note bass, ticking 16ths, low drone, E-major turn for unease
+    bpm = 108; beat = 60 / bpm; music = np.zeros(N + SR * 2)
+    prog = [(110.0, (220, 261.6, 329.6)), (87.3, (174.6, 220, 261.6)), (73.4, (146.8, 174.6, 220)), (82.4, (164.8, 207.7, 246.9))]  # Am F Dm E
+    def pluck(f, n, dec=9):
+        t = np.arange(n) / SR; x = np.sign(np.sin(2 * np.pi * f * t)) * 0.5 + np.sin(2 * np.pi * f * t) * 0.5
+        return lp(x, 900) * np.exp(-t * dec) * np.minimum(1, t / 0.004)
+    tick = hp(rng.standard_normal(int(0.03 * SR)), 6000) * np.exp(-np.arange(int(0.03 * SR)) / SR * 160) * 0.22
+    for i in range(int(DUR / beat) + 2):
+        at = int(i * beat * SR)
+        if at >= len(music): break
+        root, ch = prog[(i // 8) % 4]
+        if i % 2 == 0: music[at:at + len(K)] += 0.9 * K[: len(music) - at]
+        for e in (0, 0.5):  # 8th-note bass pulse
+            b0 = int((i + e) * beat * SR); bl = pluck(root, int(beat * 0.5 * SR)) * (0.5 if e else 0.62); music[b0:b0 + len(bl)] += bl[: max(0, len(music) - b0)]
+        for q in range(4):  # ticking 16ths, accent on the beat
+            t0 = int((i + q / 4) * beat * SR); music[t0:t0 + len(tick)] += (1.0 if q == 0 else 0.45) * tick[: max(0, len(music) - t0)]
+        if i % 8 == 0:  # dark pad + drone per chord (2 bars)
+            n = int(8 * beat * SR); t = np.arange(n) / SR
+            pad = sum(np.sin(2 * np.pi * f * t + 0.3 * np.sin(2 * np.pi * 0.25 * t)) for f in ch) * np.minimum(1, t / 1.2) * np.minimum(1, (t[-1] - t) / 0.6 + 0.01) * 0.07
+            drone = np.sin(2 * np.pi * root / 2 * t) * 0.18 * np.minimum(1, t / 0.5)
+            music[at:at + n] += (lp(pad, 2500) + drone)[: len(music) - at]
+    music = lp(music, 7000)
 MUSIC_GAIN = 0.21 if EDITORIAL else 0.16
 # Real tracks: any .mp3/.wav/.m4a in $MUSIC_DIR (default: CACHE/music, never committed: the repo is public and the
 # Pixabay licence forbids redistributing the raw files). One track per episode, picked by slug (or "music" in the
@@ -105,7 +128,7 @@ import glob, hashlib, subprocess, tempfile
 MDIR = os.environ.get("MUSIC_DIR") or os.path.join(os.environ.get("CACHE", os.path.join(os.path.dirname(__file__), "..", ".cache")), "music")
 tracks = sorted(f for f in glob.glob(os.path.join(MDIR, "*")) if f.lower().endswith((".mp3", ".wav", ".m4a", ".ogg", ".flac")))
 TRACK_INFO = None
-if tracks:
+if tracks and TL.get("music") != "generated":
     want = TL.get("music")
     pick = next((f for f in tracks if want and want.lower() in os.path.basename(f).lower()), None) or \
         tracks[int(hashlib.md5(TL.get("slug", WORK).encode()).hexdigest(), 16) % len(tracks)]
@@ -127,7 +150,10 @@ if tracks:
             d = np.min(np.abs(cuts[:, None] - b[None, :]), axis=1); sc = float(np.exp(-(d / 0.05) ** 2 / 2).sum())
             if sc > best: best, bo = sc, float(o)
     seg = tr[int(bo * SR):]
-    while len(seg) < N + SR * 2: seg = np.concatenate([seg, tr])
+    xf = int(1.5 * SR)  # loop short tracks with a 1.5 s crossfade so the seam doesn't jump
+    while len(seg) < N + SR * 2:
+        r = np.linspace(0, 1, xf); nxt = tr[int(min(8.0, len(tr) / 4) * SR):]  # re-enter after the intro
+        seg = np.concatenate([seg[:-xf], seg[-xf:] * (1 - r) + nxt[:xf] * r, nxt[xf:]])
     seg = seg[: N + SR * 2]; seg = seg / (np.sqrt(np.mean(seg[: N] ** 2)) + 1e-9) * 0.25  # same loudness for every track
     seg[: int(0.25 * SR)] *= np.linspace(0, 1, int(0.25 * SR))
     music = seg; MUSIC_GAIN = 0.34

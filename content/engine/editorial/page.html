@@ -117,7 +117,7 @@ function postBlur(px, ghost) { // whole-frame blur (zoom cut) or horizontal smea
   const o = OFF.getContext('2d'); o.setTransform(1, 0, 0, 1, 0, 0); o.filter = 'none'; o.clearRect(0, 0, W, H); o.drawImage(C, 0, 0);
   X.save(); X.setTransform(1, 0, 0, 1, 0, 0);
   if (px > 0.3) { X.filter = `blur(${px}px)`; X.drawImage(OFF, 0, 0); X.filter = 'none'; }
-  if (ghost > 0.05) { for (let i = 1; i <= 5; i++) { X.globalAlpha = 0.22; X.drawImage(OFF, i * 26 * ghost, 0); X.drawImage(OFF, -i * 26 * ghost, 0); } }
+  if (ghost > 0.05 && px <= 0.3) { X.filter = `blur(${(6 * ghost).toFixed(1)}px)`; X.drawImage(OFF, 0, 0); X.filter = 'none'; } // whip: clean slide + light blur (no doubled copies of text)
   X.restore();
 }
 
@@ -206,7 +206,10 @@ function character(o, t, a, kind) {
   const s = o.s || 1, d = o.dir || (kind === 'bull' ? 1 : -1), col = P[kind], mood = o.mood || 'calm', act = o.action || '';
   const bob = mood === 'shock' ? 0 : Math.sin(t * 4.2 + (kind === 'bull' ? 0 : 1.7) + (o.ph || 0)) * 5, jit = mood === 'shock' ? Math.sin(t * 70) * 2.5 : 0;
   const hop = act === 'cheer' ? Math.abs(Math.sin(t * 7)) * -18 : 0;
-  X.scale(s, s); shadow(0, 166, 120, 14);
+  X.scale(s, s);
+  const fall = o.fall_t != null ? lerp(o.fall_0, o.fall, cl((t - o.fall_t) / 0.45) ** 2) : (o.fall || 0); // set fall: 1 = tips over (dominoes)
+  shadow(0, 166, 120 + 90 * fall, 14);
+  if (fall) { X.translate(0, 160); X.rotate(d * fall * 1.45); X.translate(0, -160); }
   if (o.tag) text(o.tag, 0, 215, font(SANS, 600, 46), P.mut);
   X.save(); X.scale(d, 1);
   X.fillStyle = P.dark; rr(-72, 104, 54, 58, 22); X.fill(); rr(18, 104, 54, 58, 22); X.fill();
@@ -291,6 +294,23 @@ const DRAW = {
     if (o.drop) { const p = o.drop, m = Math.floor(a / p); for (let j = m - 2; j <= m; j++) { if (j < 0) continue; const u = (a - j * p) / 0.5; if (u < 0 || u > 1) continue;
       X.save(); X.globalAlpha *= 1 - cl((u - 0.85) / 0.15); coinFace(((j * 37) % 60) - 30, lerp(top - 220, lvl - 10, u * u), 26, '', u * 4); X.restore(); } }
     if (o.value) text(countUp(o.value, a), 0, h / 2 + 90, font(SERIF, 800, 110), P.ink); },
+  thermo(o, t, a) { // thermometer: level 0..1 (set it to rise), mark = dashed level (e.g. the forecast), note under it
+    const lv = anim(o, 'level', t, 1.0) ?? 0.3, h = 420, tw = 64, bulb = 62, top = -h / 2, base = h / 2 - 20;
+    shadow(0, h / 2 + bulb + 10, 90, 12);
+    X.fillStyle = P.paper; rr(-tw / 2, top, tw, h, tw / 2); X.fill(); X.beginPath(); X.arc(0, base + 30, bulb, 0, 7); X.fill();
+    ink(6); rr(-tw / 2, top, tw, h, tw / 2); X.stroke(); X.beginPath(); X.arc(0, base + 30, bulb, -1.25, 4.39); X.stroke();
+    const my = base - lv * (h - 60); X.fillStyle = P.acc; rr(-tw / 2 + 14, my, tw - 28, base - my + 40, 16); X.fill(); X.beginPath(); X.arc(0, base + 30, bulb - 14, 0, 7); X.fill();
+    for (let i = 1; i < 8; i++) { const yy = base - i * (h - 60) / 8; ink(DS.thin); X.beginPath(); X.moveTo(tw / 2 + 6, yy); X.lineTo(tw / 2 + 26, yy); X.stroke(); }
+    if (o.mark != null) { const yy = base - o.mark * (h - 60); X.save(); X.setLineDash([14, 10]); ink(5); X.beginPath(); X.moveTo(-tw / 2 - 70, yy); X.lineTo(tw / 2 + 70, yy); X.stroke(); X.restore();
+      if (o.markLab) text(o.markLab, tw / 2 + 84, yy, font(SANS, 600, 38), P.mut, 'left'); }
+    if (lv > 0.7) { const w = Math.sin(t * 9) * 4; X.strokeStyle = 'rgba(181,83,43,0.5)'; X.lineWidth = 6; [-1, 1].forEach(k => { X.beginPath(); X.moveTo(k * 110 + w, top + 40); X.quadraticCurveTo(k * 130 - w, top + 10, k * 110 + w, top - 20); X.stroke(); }); }
+    if (o.note) note(o.note, h / 2 + bulb + 70); },
+  arrow(o, t, a) { // big arrow up or down (dir 1/-1) with a symbol in a coin-like badge (e.g. "$"); grows in
+    const k = eo(a / 0.6), d = o.dir || 1, L = (o.len || 380) * k, col = P[o.col || 'ink'];
+    X.save(); X.scale(1, -d); X.fillStyle = col; X.beginPath(); X.moveTo(-46, -L / 2 + 40); X.lineTo(46, -L / 2 + 40); X.lineTo(46, L / 2 - 90); X.lineTo(110, L / 2 - 90); X.lineTo(0, L / 2 + 30); X.lineTo(-110, L / 2 - 90); X.lineTo(-46, L / 2 - 90); X.closePath(); X.fill(); X.restore();
+    if (o.sym) { const by = d * (L / 2 + 30) * -1 + d * 0; X.fillStyle = P.paper; X.beginPath(); X.arc(0, -d * -L / 2 * 0 + (d > 0 ? L / 2 + 40 : -L / 2 - 40) * 1, 0, 0, 7); }
+    if (o.sym) { const cy = d > 0 ? L / 2 + 95 : -L / 2 - 95; X.fillStyle = P.paper; X.beginPath(); X.arc(0, cy, 70, 0, 7); X.fill(); ink(6); X.stroke(); text(o.sym, 0, cy + 4, font(SERIF, 800, 80), P.ink); }
+    if (o.note) note(o.note, (d > 0 ? -1 : 1) * (L / 2 + 70)); },
   coinflow(o, t, a) { // coins arcing from left to right (dir -1: right to left) every period s; dx distance, h arc height
     if (o.stop) return; const dx = o.dx || 560, hg = o.h || 150, p = o.period || 0.55, d = o.dir || 1, m = Math.floor(a / p);
     for (let j = m - 3; j <= m; j++) { if (j < 0) continue; const u = (a - j * p) / 0.9; if (u < 0 || u > 1) continue;
@@ -444,9 +464,9 @@ function caption(t) {
   X.font = font(SANS, 600, CAP_SIZE); const sp = X.measureText(' ').width;
   const vis = chunk.filter((w, i) => t >= w.s || i === 0); const tw = chunk.reduce((a, w) => a + X.measureText(w.w).width, 0) + sp * (chunk.length - 1);
   const pw = tw + 70, ph = CAP_SIZE * 1.8, y = CAP_Y, pk = 1 + 0.14 * (1 - eo((t - chunk[0].s) / 0.2)); X.save(); X.translate(W / 2, y); X.scale(pk, pk); X.translate(-W / 2, -y);
-  X.fillStyle = 'rgba(255,252,246,0.7)'; rr(W / 2 - pw / 2, y - ph / 2, pw, ph, 26); X.fill();
+  X.fillStyle = 'rgba(255,252,246,0.94)'; rr(W / 2 - pw / 2, y - ph / 2, pw, ph, 26); X.fill(); X.strokeStyle = P.line; X.lineWidth = 2; X.stroke();
   let x = W / 2 - tw / 2; X.textBaseline = 'middle';
-  chunk.forEach((w, i) => { const on = t >= w.s; X.fillStyle = (c0 + i === cur) ? P.acc : P.ink; X.globalAlpha = on ? 1 : (WIDE ? 0.4 : 0); X.fillText(w.w, x, y + 3); X.globalAlpha = 1; x += X.measureText(w.w).width + sp; }); X.restore();
+  chunk.forEach((w, i) => { const on = t >= w.s; X.fillStyle = (c0 + i === cur) ? P.acc : P.ink; X.globalAlpha = 1; X.fillText(w.w, x, y + 3); X.globalAlpha = 1; x += X.measureText(w.w).width + sp; }); X.restore();
 }
 
 // Style sheet: every prop on one page, for checking new props against the rest.

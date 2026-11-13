@@ -1,0 +1,1815 @@
+{
+ "slug": "2026-11-13-btc-liquidations",
+ "date": "13 NOV",
+ "style": "editorial",
+ "format": "4:5",
+ "mood": "tense",
+ "music": "hip-hop-beat",
+ "sentences": [
+  {
+   "text": "Bitcoin just dropped below $70,000.|seventy-thousand-dollars",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Overnight"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       0.0,
+       0.0,
+       -0.21,
+       -0.3,
+       -0.39,
+       -0.51,
+       -0.52,
+       -1.36,
+       -1.54,
+       -1.89,
+       -3.27,
+       -2.34,
+       -2.99,
+       -3.0,
+       -3.2,
+       -3.09,
+       -3.08,
+       -3.32,
+       -3.23,
+       -3.93,
+       -4.05,
+       -5.01,
+       -6.71
+      ],
+      "y": 640,
+      "h": 280,
+      "lo": -5.13,
+      "endCol": "acc",
+      "note": "BTC perp, last 24h",
+      "dur": 1.8,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 260,
+      "y": 1040,
+      "s": 0.5,
+      "mood": "calm"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "shock",
+      "sfx": "impact"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 800,
+      "y": 650
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And the biggest wipeout of the selloff happened on Hyperliquid.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 1,
+      "x": 540,
+      "y": 825
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stamp",
+      "text": "LIQUIDATED",
+      "size": 90,
+      "x": 640,
+      "y": 900,
+      "sfx": "impact_soft"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "set",
+      "id": "bu",
+      "fall": 1
+     }
+    ]
+   ]
+  },
+  {
+   "text": "One bitcoin long, worth more than $31|thirty-one million, closed by force.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "pl",
+      "prop": "pile",
+      "y": 900,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n0",
+      "prop": "small",
+      "text": "largest single liquidation of the day · CoinDesk",
+      "y": 560,
+      "size": 40
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 170,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "happy",
+      "action": "hold",
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "add",
+      "id": "x",
+      "prop": "x",
+      "x": 540,
+      "y": 800,
+      "r": 150,
+      "sfx": "impact_soft"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "shock"
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 400,
+      "y": 880
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 2.2,
+      "x": 170,
+      "y": 900
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "sweat"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "drop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It started with inflation.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Why it fell"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "th",
+      "prop": "thermo",
+      "x": 540,
+      "y": 800,
+      "level": 0.35,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "October's US price data came in hotter than expected.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "set",
+      "id": "th",
+      "mark": 0.55,
+      "markLab": "forecast"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "set",
+      "id": "th",
+      "level": 0.82,
+      "sfx": "ding"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "shot",
+      "z": 1.7,
+      "x": 560,
+      "y": 640
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That raised the odds of a Fed rate hike in December.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "g",
+      "prop": "gauge",
+      "v": 10,
+      "y": 700,
+      "r": 230,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "set",
+      "id": "g",
+      "v": 600,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 200,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "sweat",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The dollar index climbed above 103,|one-oh-three its highest since April 2025.|twenty-twenty-five",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ar",
+      "prop": "arrow",
+      "x": 540,
+      "y": 640,
+      "dir": 1,
+      "sym": "$",
+      "len": 360,
+      "col": "dark",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "shot",
+      "z": 1.4,
+      "x": 540,
+      "y": 600
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And the US 10-year|ten-year yield hit 5.1%,|five-point-one-percent up from 4.84%|four-point-eight-four a week ago.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "b1",
+      "prop": "bars",
+      "y": 700,
+      "pop": false,
+      "rows": [
+       [
+        "Nov 5",
+        48.4,
+        "mut"
+       ]
+      ],
+      "vals": [
+       ""
+      ],
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "b2",
+      "prop": "bars",
+      "y": 850,
+      "pop": false,
+      "rows": [
+       [
+        "Nov 12",
+        51,
+        "acc"
+       ]
+      ],
+      "vals": [
+       ""
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "When safe assets pay more, risky ones like bitcoin often get sold.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1020,
+      "s": 0.5,
+      "mood": "sad",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 540,
+      "y": 900,
+      "dx": 600,
+      "h": 140,
+      "period": 0.3,
+      "r": 36
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 860,
+      "y": 1020,
+      "s": 0.5,
+      "mood": "happy",
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "shot",
+      "z": 1.7,
+      "x": 230,
+      "y": 900
+     }
+    ]
+   ]
+  },
+  {
+   "text": "On Hyperliquid, you can borrow up to 40|forty times your money on bitcoin.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "The mechanics"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1030,
+      "s": 0.5,
+      "mood": "happy",
+      "action": "hold",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "s1",
+      "prop": "stack",
+      "n": 3,
+      "r": 70,
+      "x": 480,
+      "y": 1040,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "pl",
+      "prop": "pile",
+      "x": 780,
+      "y": 1040,
+      "sfx": "pop"
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 700,
+      "y": 920
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Leverage makes the bet bigger.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 1,
+      "x": 540,
+      "y": 825
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "set",
+      "id": "bu",
+      "action": "cheer"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "But it shrinks how far the price can move against you.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       0,
+       0.4,
+       -0.8,
+       -0.3,
+       -2.0,
+       -3.1,
+       -2.6,
+       -4.4,
+       -6.7
+      ],
+      "y": 640,
+      "h": 300,
+      "lo": -10,
+      "endCol": "acc",
+      "dur": 2.6,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "sweat"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "At 10x,|ten-x a drop of about 10%|ten-percent wipes out your money.",
+   "beats": [
+    [
+     4,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 760,
+      "y": 700
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "happy"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "At 40x,|forty-x about 2.5%.|two-point-five-percent",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 1,
+      "x": 540,
+      "y": 825
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "p",
+      "lo": -2.5,
+      "sfx": "ding"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "shock"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "When that happens, the exchange closes your trade. That's a liquidation.",
+   "beats": [
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stamp",
+      "text": "MARGIN GONE",
+      "size": 80,
+      "x": 680,
+      "y": 930,
+      "sfx": "impact_soft"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "set",
+      "id": "bu",
+      "fall": 1
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "shot",
+      "z": 1.7,
+      "x": 400,
+      "y": 960
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Bitcoin fell 6.7%|six-point-seven-percent in a day, to about $69,000.|sixty-nine-thousand",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Today"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       0.0,
+       0.0,
+       -0.21,
+       -0.3,
+       -0.39,
+       -0.51,
+       -0.52,
+       -1.36,
+       -1.54,
+       -1.89,
+       -3.27,
+       -2.34,
+       -2.99,
+       -3.0,
+       -3.2,
+       -3.09,
+       -3.08,
+       -3.32,
+       -3.23,
+       -3.93,
+       -4.05,
+       -5.01,
+       -6.71
+      ],
+      "y": 640,
+      "h": 300,
+      "endCol": "acc",
+      "note": "BTC on Hyperliquid, 12–13 Nov",
+      "dur": 2.0,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "sad",
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 860,
+      "y": 720
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Its lowest since August.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 1,
+      "x": 540,
+      "y": 825
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 850,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "A long opened yesterday at 15x|fifteen-x or more would be gone.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d0",
+      "prop": "bull",
+      "x": 150,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "5x",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d1",
+      "prop": "bull",
+      "x": 345,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "10x",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "bull",
+      "x": 540,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "20x",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d3",
+      "prop": "bull",
+      "x": 735,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "30x",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d4",
+      "prop": "bull",
+      "x": 930,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "40x",
+      "pop": true
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "set",
+      "id": "d2",
+      "fall": 1,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "d3",
+      "fall": 1,
+      "mood": "shock"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "d4",
+      "fall": 1,
+      "mood": "shock"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "d0",
+      "mood": "happy"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "d1",
+      "mood": "sweat"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Across crypto, more than $1.3|one-point-three billion in bets were liquidated.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "pl",
+      "prop": "pile",
+      "y": 760,
+      "pop": false,
+      "sub": "CoinGlass via CoinDesk · 24 hours",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "d0",
+      "prop": "bull",
+      "x": 170,
+      "y": 1080,
+      "s": 0.3,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "d1",
+      "prop": "bull",
+      "x": 355,
+      "y": 1080,
+      "s": 0.3,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "bull",
+      "x": 540,
+      "y": 1080,
+      "s": 0.3,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "d3",
+      "prop": "bull",
+      "x": 725,
+      "y": 1080,
+      "s": 0.3,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "add",
+      "id": "d4",
+      "prop": "bull",
+      "x": 910,
+      "y": 1080,
+      "s": 0.3,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "d0",
+      "fall": 1
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "d1",
+      "fall": 1
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "d2",
+      "fall": 1
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "d3",
+      "fall": 1
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "d4",
+      "fall": 1
+     }
+    ]
+   ]
+  },
+  {
+   "text": "About half of that was bitcoin.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "dn",
+      "prop": "donut",
+      "pct": 52,
+      "y": 780,
+      "pop": false,
+      "sub": "BTC share of liquidations",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Nearly $500|five-hundred million hit right as bitcoin crossed $70,000.|seventy-thousand",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       -3.32,
+       -3.23,
+       -3.93,
+       -4.05,
+       -5.01,
+       -6.71
+      ],
+      "y": 700,
+      "h": 320,
+      "lo": -5.13,
+      "endCol": "acc",
+      "note": "last 6 hours",
+      "dur": 2.4,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 540,
+      "y": 1050,
+      "dx": 700,
+      "h": 100,
+      "period": 0.18,
+      "r": 34
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 860,
+      "y": 760
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Why it snowballs"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "bg",
+      "mode": "rust"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d0",
+      "prop": "bull",
+      "x": 150,
+      "y": 900,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d1",
+      "prop": "bull",
+      "x": 345,
+      "y": 900,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "bull",
+      "x": 540,
+      "y": 900,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d3",
+      "prop": "bull",
+      "x": 735,
+      "y": 900,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d4",
+      "prop": "bull",
+      "x": 930,
+      "y": 900,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "d0",
+      "mood": "sweat"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "A liquidation is a forced sale.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1020,
+      "s": 0.5,
+      "mood": "sweat",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 560,
+      "y": 900,
+      "dx": 560,
+      "h": 110,
+      "period": 0.22,
+      "r": 40
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "tb",
+      "prop": "tollbooth",
+      "x": 860,
+      "y": 880,
+      "fee": "AUTO",
+      "lift": 0.8
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Forced selling pushes the price lower.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       0,
+       -0.6,
+       -1.4,
+       -1.1,
+       -2.6,
+       -3.4,
+       -5.2
+      ],
+      "y": 660,
+      "h": 300,
+      "endCol": "acc",
+      "dur": 1.6,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 540,
+      "y": 1030,
+      "dx": 700,
+      "h": 90,
+      "period": 0.2
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 840,
+      "y": 700
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Which can trip the next liquidation.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d0",
+      "prop": "bull",
+      "x": 150,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d1",
+      "prop": "bull",
+      "x": 345,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "bull",
+      "x": 540,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d3",
+      "prop": "bull",
+      "x": 735,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d4",
+      "prop": "bull",
+      "x": 930,
+      "y": 1010,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "d0",
+      "fall": 1,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "d1",
+      "fall": 1,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And the next. And the next.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "d2",
+      "fall": 1,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 720,
+      "y": 950
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "d3",
+      "fall": 1,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "set",
+      "id": "d4",
+      "fall": 1,
+      "mood": "shock",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That's why the last leg down came so fast.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       -3.93,
+       -4.05,
+       -5.01,
+       -6.71
+      ],
+      "y": 700,
+      "h": 340,
+      "endCol": "acc",
+      "note": "BTC, 01:00–04:10 UTC",
+      "dur": 1.2,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "shot",
+      "z": 1.9,
+      "x": 860,
+      "y": 760
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Leverage turns a dip into a chain reaction.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "The takeaway"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d0",
+      "prop": "bull",
+      "x": 150,
+      "y": 980,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d1",
+      "prop": "bull",
+      "x": 345,
+      "y": 980,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "bull",
+      "x": 540,
+      "y": 980,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d3",
+      "prop": "bull",
+      "x": 735,
+      "y": 980,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d4",
+      "prop": "bull",
+      "x": 930,
+      "y": 980,
+      "s": 0.34,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "set",
+      "id": "d0",
+      "fall": 1,
+      "mood": "shock"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "d1",
+      "fall": 1,
+      "mood": "shock"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "set",
+      "id": "d2",
+      "fall": 1,
+      "mood": "shock"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "set",
+      "id": "d3",
+      "fall": 1,
+      "mood": "shock"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "set",
+      "id": "d4",
+      "fall": 1,
+      "mood": "shock"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 900,
+      "y": 700,
+      "s": 0.42,
+      "mood": "happy",
+      "action": "cheer"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Every day"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 700,
+      "sfx": "ding"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "w",
+      "prop": "small",
+      "text": "new videos at 10:00 and 18:00 IST",
+      "y": 820,
+      "size": 42
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 300,
+      "y": 1050,
+      "s": 0.45,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 780,
+      "y": 1050,
+      "s": 0.45,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Data: Hyperliquid, CoinDesk, CoinGlass · 13 Nov 2026",
+      "y": 900,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}
