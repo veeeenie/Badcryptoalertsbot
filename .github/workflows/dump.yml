@@ -1,4 +1,4 @@
-name: A-share data (temporary)
+name: Metric swaps (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -11,11 +11,28 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - run: |
-          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124 Safari/537.36"
-          curl -sL -m 40 -A "$UA" "https://query1.finance.yahoo.com/v8/finance/chart/688256.SS?range=2y&interval=1d" -o y_688256.json; echo "yahoo $(wc -c < y_688256.json)"
-          curl -sL -m 40 -A "$UA" "https://query1.finance.yahoo.com/v8/finance/chart/CNY=X?range=3mo&interval=1d" -o y_cny.json; echo "cny $(wc -c < y_cny.json)"
-          curl -sL -m 40 -A "$UA" "https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.688256&fields1=f1,f2,f3&fields2=f51,f52,f53,f54,f55,f56,f57&klt=101&fqt=1&beg=20240101&end=20500101" -o em_688256.json; echo "eastmoney $(wc -c < em_688256.json)"
-          curl -sL -m 40 -A "$UA" "https://push2.eastmoney.com/api/qt/stock/get?secid=1.688256&fields=f43,f44,f45,f46,f47,f48,f57,f58,f60,f116,f162,f167,f168,f170" -o em_quote.json; echo "quote $(wc -c < em_quote.json)"
-          mkdir -p ashare && mv y_688256.json y_cny.json em_688256.json em_quote.json ashare/
+          (python3 - > probe.txt 2>&1 || true) <<'PY'
+          import json, urllib.request, time
+          A="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
+          B="https://robinhoodchain.blockscout.com/api/v2"
+          def get(u):
+              r=urllib.request.Request(u,headers={"User-Agent":"Mozilla/5.0","accept":"application/json"})
+              return json.load(urllib.request.urlopen(r,timeout=40))
+          try:
+              info=get(f"{B}/addresses/{A}"); print("addr", json.dumps({k:info.get(k) for k in ("coin_balance","has_token_transfers","is_contract")}))
+          except Exception as e: print("addr err",e)
+          out=[]; url=f"{B}/addresses/{A}/token-transfers"; params=""
+          for page in range(10):
+              d=get(url+params)
+              for t in d.get("items",[]):
+                  tok=t.get("token") or {}; tot=t.get("total") or {}
+                  dec=int(tot.get("decimals") or tok.get("decimals") or 18); v=int(tot.get("value") or 0)/10**dec
+                  out.append({"ts":t.get("timestamp"),"tx":t.get("transaction_hash"),"sym":tok.get("symbol"),"val":v,
+                              "from":(t.get("from") or {}).get("hash"),"to":(t.get("to") or {}).get("hash"),"rate":tok.get("exchange_rate"),"method":t.get("method"),"type":t.get("type")})
+              nxt=d.get("next_page_params")
+              if not nxt: break
+              params="?"+"&".join(f"{k}={v}" for k,v in nxt.items()); time.sleep(1)
+          print(json.dumps(out))
+          PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f ashare && git commit -qm "ashare1" && git push -q origin HEAD:debug-weekly
+          git add -f probe.txt && git commit -qm "metric1" && git push -q origin HEAD:debug-weekly
