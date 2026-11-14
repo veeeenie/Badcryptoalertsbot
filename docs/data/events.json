@@ -1,0 +1,224 @@
+{
+ "generated_at": "2026-11-14T09:38:31+00:00",
+ "positions": [
+  {
+   "title": "HYPE above 95.00",
+   "side": "YES",
+   "ends": "2026-11-30T21:00:00+00:00",
+   "resolves": "Hyperliquid HYPE perp price at 30 Nov 21:00 UTC (1-min candle)",
+   "underlying": {
+    "coin": "HYPE",
+    "price": 69.131,
+    "line": 95.0
+   },
+   "bid": 0.00726,
+   "ask": 0.3919,
+   "mid": 0.19958,
+   "live": true,
+   "size": 10.0,
+   "entry": 0.1,
+   "cost": 1.0,
+   "value": 2.0,
+   "pnl": 1.0,
+   "if_wins": 9.0
+  }
+ ],
+ "orders": [
+  {
+   "title": "ANT above 100.00",
+   "side": "NO",
+   "ends": "2026-11-30T21:00:00+00:00",
+   "resolves": "trade.xyz ANT perp price at 30 Nov 21:00 UTC (1-min candle)",
+   "underlying": {
+    "coin": "ANT",
+    "price": 101.86,
+    "line": 100.0
+   },
+   "bid": 0.05259999999999998,
+   "ask": 0.9774,
+   "mid": 0.515,
+   "live": true,
+   "action": "Buy",
+   "size": 20.0,
+   "price": 0.05,
+   "cost": 1.0,
+   "if_wins": 19.0,
+   "gap": 0.9274,
+   "placed": 1794643852882
+  },
+  {
+   "title": "ANT above 125.00",
+   "side": "NO",
+   "ends": "2026-11-30T21:00:00+00:00",
+   "resolves": "trade.xyz ANT perp price at 30 Nov 21:00 UTC (1-min candle)",
+   "underlying": {
+    "coin": "ANT",
+    "price": 101.86,
+    "line": 125.0
+   },
+   "bid": 0.4,
+   "ask": 0.98,
+   "mid": 0.69,
+   "live": true,
+   "action": "Buy",
+   "size": 5.0,
+   "price": 0.2,
+   "cost": 1.0,
+   "if_wins": 4.0,
+   "gap": 0.78,
+   "placed": 1794643928336
+  },
+  {
+   "title": "ANT above 125.00",
+   "side": "NO",
+   "ends": "2026-11-30T21:00:00+00:00",
+   "resolves": "trade.xyz ANT perp price at 30 Nov 21:00 UTC (1-min candle)",
+   "underlying": {
+    "coin": "ANT",
+    "price": 101.86,
+    "line": 125.0
+   },
+   "bid": 0.4,
+   "ask": 0.98,
+   "mid": 0.69,
+   "live": true,
+   "action": "Buy",
+   "size": 10.0,
+   "price": 0.1,
+   "cost": 1.0,
+   "if_wins": 9.0,
+   "gap": 0.88,
+   "placed": 1794643903824
+  },
+  {
+   "title": "ANT above 125.00",
+   "side": "NO",
+   "ends": "2026-11-30T21:00:00+00:00",
+   "resolves": "trade.xyz ANT perp price at 30 Nov 21:00 UTC (1-min candle)",
+   "underlying": {
+    "coin": "ANT",
+    "price": 101.86,
+    "line": 125.0
+   },
+   "bid": 0.4,
+   "ask": 0.98,
+   "mid": 0.69,
+   "live": true,
+   "action": "Buy",
+   "size": 20.0,
+   "price": 0.05,
+   "cost": 1.0,
+   "if_wins": 19.0,
+   "gap": 0.93,
+   "placed": 1794643910862
+  },
+  {
+   "title": "Anthropic worth $1.5T+ on IPO day (IPO by 31 Dec 2026)",
+   "side": "NO",
+   "ends": null,
+   "resolves": "closing price on its first trading day \u00d7 shares outstanding; NO if no IPO by 31 Dec 2026",
+   "underlying": null,
+   "bid": 0.26,
+   "ask": 0.71,
+   "mid": 0.485,
+   "live": true,
+   "action": "Buy",
+   "size": 10.0,
+   "price": 0.1,
+   "cost": 1.0,
+   "if_wins": 9.0,
+   "gap": 0.61,
+   "placed": 1794648441778
+  },
+  {
+   "title": "Anthropic worth $1.75T+ on IPO day (IPO by 31 Dec 2026)",
+   "side": "NO",
+   "ends": null,
+   "resolves": "closing price on its first trading day \u00d7 shares outstanding; NO if no IPO by 31 Dec 2026",
+   "underlying": null,
+   "bid": 0.0010000000000000009,
+   "ask": 0.99666,
+   "mid": 0.49883,
+   "live": true,
+   "action": "Buy",
+   "size": 1000.0,
+   "price": 0.001,
+   "cost": 1.0,
+   "if_wins": 999.0,
+   "gap": 0.9957,
+   "placed": 1794648766086
+  },
+  {
+   "title": "Anthropic worth $2.25T+ on IPO day (IPO by 31 Dec 2026)",
+   "side": "NO",
+   "ends": null,
+   "resolves": "closing price on its first trading day \u00d7 shares outstanding; NO if no IPO by 31 Dec 2026",
+   "underlying": null,
+   "bid": 0.51,
+   "ask": 0.99666,
+   "mid": 0.75333,
+   "live": true,
+   "action": "Buy",
+   "size": 6.0,
+   "price": 0.51,
+   "cost": 3.06,
+   "if_wins": 2.94,
+   "gap": 0.4867,
+   "placed": 1794644093265
+  },
+  {
+   "title": "Anthropic worth $2T+ on IPO day (IPO by 31 Dec 2026)",
+   "side": "NO",
+   "ends": null,
+   "resolves": "closing price on its first trading day \u00d7 shares outstanding; NO if no IPO by 31 Dec 2026",
+   "underlying": null,
+   "bid": 0.5,
+   "ask": 0.97695,
+   "mid": 0.738475,
+   "live": true,
+   "action": "Buy",
+   "size": 10.0,
+   "price": 0.1,
+   "cost": 1.0,
+   "if_wins": 9.0,
+   "gap": 0.877,
+   "placed": 1794648797971
+  }
+ ],
+ "settled": [
+  {
+   "title": "Market #33249",
+   "pnl": 0.4,
+   "time": "2026-11-13T05:17+00:00"
+  },
+  {
+   "title": "Market #32179",
+   "pnl": 0.25,
+   "time": "2026-11-12T06:00+00:00"
+  },
+  {
+   "title": "Market #32181",
+   "pnl": 1.6,
+   "time": "2026-11-12T06:00+00:00"
+  },
+  {
+   "title": "Market #31124",
+   "pnl": 0.08,
+   "time": "2026-11-11T06:00+00:00"
+  },
+  {
+   "title": "Market #23202",
+   "pnl": -2.0,
+   "time": "2026-11-03T06:00+00:00"
+  }
+ ],
+ "names": {
+  "23756": "HYPE above 95.00",
+  "7360": "Anthropic worth $2T+ on IPO day (IPO by 31 Dec 2026)",
+  "7364": "Anthropic worth $1.75T+ on IPO day (IPO by 31 Dec 2026)",
+  "7362": "Anthropic worth $1.5T+ on IPO day (IPO by 31 Dec 2026)",
+  "7363": "Anthropic worth $2.25T+ on IPO day (IPO by 31 Dec 2026)",
+  "23736": "ANT above 125.00",
+  "23750": "ANT above 100.00"
+ }
+}
