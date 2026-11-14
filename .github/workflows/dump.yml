@@ -1,4 +1,4 @@
-name: Gold position (temporary)
+name: ANT price 2 (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -13,20 +13,16 @@ jobs:
       - run: |
           (python3 - > probe.txt 2>&1 || true) <<'PY'
           import json, urllib.request, time
-          W="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
           def hl(b):
               r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
               return json.load(urllib.request.urlopen(r,timeout=30))
-          for dex in ("","xyz"):
-              s=hl({"type":"clearinghouseState","user":W,**({"dex":dex} if dex else {})})
-              print("== dex",dex or "main","acct",s["marginSummary"]["accountValue"])
-              for p in s["assetPositions"]:
-                  q=p["position"]; print("POS",q["coin"],q["szi"],q["entryPx"],"upnl",q["unrealizedPnl"],"liq",q.get("liquidationPx"),"lev",q["leverage"])
-              for o in hl({"type":"frontendOpenOrders","user":W,**({"dex":dex} if dex else {})}):
-                  print("ORD",o["coin"],o["side"],o["sz"],o["limitPx"],o.get("triggerPx"),o.get("orderType"),"ro",o.get("reduceOnly"),"posTpsl",o.get("isPositionTpsl"))
-          m=hl({"type":"allMids","dex":"xyz"}); print("GOLD mid", m.get("xyz:GOLD"))
-          sp=hl({"type":"spotClearinghouseState","user":W}); print("spot",[(b["coin"],b["total"]) for b in sp["balances"] if float(b["total"])>0.01])
+          meta,ctx=hl({"type":"metaAndAssetCtxs","dex":"xyz"})
+          for u,c in zip(meta["universe"],ctx):
+              if u["name"]=="xyz:ANT": print(json.dumps(c))
+          now=int(time.time()*1000)
+          cs=hl({"type":"candleSnapshot","req":{"coin":"xyz:ANT","interval":"1d","startTime":now-12*86400000,"endTime":now}})
+          print([(time.strftime('%m-%d',time.gmtime(x['t']/1000)),x['c']) for x in cs])
           print("utc", time.strftime('%Y-%m-%d %H:%M',time.gmtime()))
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f probe.txt && git commit -qm "gold1" && git push -q origin HEAD:debug-weekly
+          git add -f probe.txt && git commit -qm "ant2" && git push -q origin HEAD:debug-weekly
