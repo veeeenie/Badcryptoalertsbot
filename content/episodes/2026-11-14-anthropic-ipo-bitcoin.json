@@ -1,0 +1,2075 @@
+{
+ "slug": "2026-11-14-anthropic-ipo-bitcoin",
+ "date": "14 NOV",
+ "style": "editorial",
+ "format": "4:5",
+ "mood": "neutral",
+ "music": "generated",
+ "sentences": [
+  {
+   "text": "Bitcoin is heading for its sixth losing week in a row.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Right now"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d0",
+      "prop": "bull",
+      "x": 240,
+      "y": 960,
+      "s": 0.28,
+      "mood": "calm",
+      "tag": "Oct",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d1",
+      "prop": "bull",
+      "x": 360,
+      "y": 960,
+      "s": 0.28,
+      "mood": "calm",
+      "tag": "Oct",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "bull",
+      "x": 480,
+      "y": 960,
+      "s": 0.28,
+      "mood": "calm",
+      "tag": "Oct",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d3",
+      "prop": "bull",
+      "x": 600,
+      "y": 960,
+      "s": 0.28,
+      "mood": "calm",
+      "tag": "Nov",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d4",
+      "prop": "bull",
+      "x": 720,
+      "y": 960,
+      "s": 0.28,
+      "mood": "calm",
+      "tag": "Nov",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d5",
+      "prop": "bull",
+      "x": 840,
+      "y": 960,
+      "s": 0.28,
+      "mood": "calm",
+      "tag": "now",
+      "pop": true
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "d0",
+      "fall": 1,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "set",
+      "id": "d1",
+      "fall": 1,
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "set",
+      "id": "d2",
+      "fall": 1,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "set",
+      "id": "d3",
+      "fall": 1,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "d4",
+      "fall": 1,
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "d5",
+      "mood": "shock",
+      "sfx": "impact"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "shot",
+      "z": 2.2,
+      "x": 800,
+      "y": 920
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It's trading around $67,600,|sixty-seven-thousand-six-hundred near its lowest since August.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       0.0,
+       -1.79,
+       -2.3,
+       -2.13,
+       -1.32,
+       -1.94,
+       -1.99,
+       -1.26,
+       -1.04,
+       -1.6,
+       -1.71,
+       -1.97,
+       -1.89,
+       -1.79,
+       -1.58,
+       -1.52,
+       -2.55,
+       -2.63,
+       -2.92,
+       -2.4,
+       -2.64,
+       -2.73,
+       -3.53
+      ],
+      "y": 660,
+      "h": 300,
+      "endCol": "acc",
+      "note": "BTC perp on Hyperliquid · last 24h",
+      "dur": 1.8,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "sweat",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "shot",
+      "z": 1.5,
+      "x": 700,
+      "y": 680
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And some analysts blame a stock that isn't even trading yet.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "ANT",
+      "x": 540,
+      "y": 720,
+      "pop": true,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "n0",
+      "prop": "small",
+      "text": "Nasdaq · listing next week",
+      "y": 880,
+      "size": 40
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 240,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 840,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "remove",
+      "id": "n0"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 2.0,
+      "x": 260,
+      "y": 1000
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "drop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Anthropic is going public next week.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "The theory"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "np",
+      "prop": "nameplate",
+      "name": "ANT",
+      "sub": "Nasdaq ticker",
+      "y": 700,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 300,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "happy",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 780,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It wants to raise up to $64.4|sixty-four-point-four billion.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "pl",
+      "prop": "pile",
+      "y": 820,
+      "pop": false,
+      "sub": "825M shares at $70–78 · CoinDesk",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "shot",
+      "z": 1.35,
+      "x": 540,
+      "y": 800
+     }
+    ]
+   ]
+  },
+  {
+   "text": "At the top of the range, that's about $1.4|one-point-four trillion.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 200,
+      "y": 1100,
+      "s": 0.36,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 880,
+      "y": 1100,
+      "s": 0.36,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Bloomberg reports demand is about six times the shares on offer.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "ANT",
+      "x": 540,
+      "y": 620,
+      "pop": true,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "q0",
+      "prop": "bull",
+      "x": 150,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "q1",
+      "prop": "bull",
+      "x": 306,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "q2",
+      "prop": "bull",
+      "x": 462,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "q3",
+      "prop": "bull",
+      "x": 618,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "q4",
+      "prop": "bull",
+      "x": 774,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "q5",
+      "prop": "bull",
+      "x": 930,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "shot",
+      "z": 1.7,
+      "x": 540,
+      "y": 880
+     }
+    ]
+   ]
+  },
+  {
+   "text": "One bank CEO tied the latest dip to those IPO order books opening.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "np",
+      "prop": "nameplate",
+      "name": "Seamus Rocca",
+      "sub": "Xapo · source: crypto.news",
+      "y": 660,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "shot",
+      "z": 1.4,
+      "x": 540,
+      "y": 680
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 260,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "sad",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 600,
+      "y": 960,
+      "dx": 520,
+      "h": 120,
+      "period": 0.3,
+      "r": 32
+     }
+    ]
+   ]
+  },
+  {
+   "text": "To get IPO shares, you put in an order.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "How it works"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 280,
+      "y": 1050,
+      "s": 0.5,
+      "mood": "happy",
+      "action": "hold",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "ORDER",
+      "x": 720,
+      "y": 690,
+      "pop": true,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 720,
+      "y": 700
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And you need the cash ready.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "j",
+      "prop": "jar",
+      "x": 760,
+      "y": 1010,
+      "fill": 0.1,
+      "pop": true,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "j",
+      "fill": 0.85,
+      "sfx": "ticks"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Some investors raise it by selling what's easiest to sell.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1030,
+      "s": 0.5,
+      "mood": "sweat",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 540,
+      "y": 900,
+      "dx": 600,
+      "h": 140,
+      "period": 0.3,
+      "r": 36
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "j",
+      "prop": "jar",
+      "x": 850,
+      "y": 980,
+      "fill": 0.2,
+      "pop": true,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "j",
+      "fill": 0.8
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "shot",
+      "z": 1.7,
+      "x": 230,
+      "y": 930
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Bitcoin trades every hour of every day. So it's often first to go.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "x": 540,
+      "y": 700,
+      "h": 3,
+      "spin": 2,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "shot",
+      "z": 1.5,
+      "x": 540,
+      "y": 700
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ],
+    [
+     11,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     11,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "sad",
+      "action": "pay"
+     }
+    ],
+    [
+     11,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 620,
+      "y": 1000,
+      "dx": 520,
+      "h": 110,
+      "period": 0.25,
+      "r": 30
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Bitfinex analysts say crypto traders and likely IPO buyers are often the same people.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n0",
+      "prop": "small",
+      "text": "research note · 11 Nov",
+      "y": 560,
+      "size": 40
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "a",
+      "prop": "bull",
+      "x": 300,
+      "y": 900,
+      "s": 0.55,
+      "mood": "happy",
+      "tag": "BTC",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "b",
+      "prop": "bull",
+      "x": 780,
+      "y": 900,
+      "s": 0.55,
+      "mood": "happy",
+      "tag": "ANT",
+      "sfx": "pop"
+     }
+    ],
+    [
+     11,
+     {
+      "kind": "move",
+      "id": "a",
+      "x": 470,
+      "dur": 0.6
+     }
+    ],
+    [
+     11,
+     {
+      "kind": "move",
+      "id": "b",
+      "x": 610,
+      "dur": 0.6
+     }
+    ],
+    [
+     12,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 540,
+      "y": 860
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Before SpaceX listed in June, bitcoin fell about a fifth.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ar",
+      "prop": "arrow",
+      "x": 540,
+      "y": 760,
+      "dir": -1,
+      "sym": "₿",
+      "len": 340,
+      "col": "dark",
+      "note": "2026 · CoinDesk, Bloomingbit",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 200,
+      "y": 1110,
+      "s": 0.38,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 880,
+      "y": 1110,
+      "s": 0.38,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "This time, the ETFs aren't catching the fall.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Today's numbers"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "pc",
+      "prop": "parachute",
+      "x": 540,
+      "y": 700,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "x",
+      "prop": "x",
+      "x": 540,
+      "y": 640,
+      "r": 150,
+      "sfx": "impact_soft"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1070,
+      "s": 0.4,
+      "mood": "sad",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "US spot bitcoin ETFs now show $1.56|one-point-five-six billion in net outflows this year.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "hours",
+      "vals": [
+       1.01,
+       -1.56
+      ],
+      "hi": 1,
+      "y": 720,
+      "h": 340,
+      "pop": false,
+      "sfx": "pop",
+      "from": "29 Oct",
+      "to": "12 Nov"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "n0",
+      "prop": "small",
+      "text": "2026 flows, $B · SoSoValue",
+      "y": 500,
+      "size": 38
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Two weeks ago, they were still in the green.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 170,
+      "y": 1130,
+      "s": 0.3,
+      "mood": "sad",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And on Hyperliquid, you can already trade Anthropic.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "ANT",
+      "fee": "perp",
+      "x": 540,
+      "y": 700,
+      "pop": true,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "n0",
+      "prop": "small",
+      "text": "xyz:ANT · up to 10x · cash-settled",
+      "y": 880,
+      "size": 40
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 250,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 830,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The pre-IPO perp is around $101.|a-hundred-and-one-dollars",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "b1",
+      "prop": "bars",
+      "y": 640,
+      "pop": false,
+      "rows": [
+       [
+        "Offer ceiling",
+        77,
+        "mut"
+       ]
+      ],
+      "vals": [
+       "$78"
+      ],
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "b2",
+      "prop": "bars",
+      "y": 800,
+      "pop": false,
+      "rows": [
+       [
+        "xyz:ANT now",
+        100,
+        "acc"
+       ]
+      ],
+      "vals": [
+       ""
+      ],
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 200,
+      "y": 1110,
+      "s": 0.36,
+      "mood": "happy",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That's about 30%|thirty-percent above the top of the range.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 880,
+      "y": 1110,
+      "s": 0.36,
+      "mood": "sweat",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "n0",
+      "prop": "small",
+      "text": "Hyperliquid data · 14 Nov, 03:10 UTC",
+      "y": 940,
+      "size": 36
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "What it skips"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "bg",
+      "mode": "rust"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 420,
+      "y": 880,
+      "s": 0.5,
+      "mood": "calm",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 660,
+      "y": 880,
+      "s": 0.5,
+      "mood": "calm",
+      "pop": true
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "sweat"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "This is a theory, not proof.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stamp",
+      "text": "UNPROVEN",
+      "size": 100,
+      "x": 540,
+      "y": 720,
+      "sfx": "impact_soft"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 250,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The losing streak began in early October, weeks before the share price range came out.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "tl",
+      "prop": "timeline",
+      "items": [
+       [
+        "Oct",
+        "BTC"
+       ],
+       [
+        "Nov",
+        "ANT"
+       ]
+      ],
+      "y": 720,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1070,
+      "s": 0.4,
+      "mood": "sad",
+      "sfx": "pop"
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 750,
+      "y": 760
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That same week, the dollar hit its highest since April 2025.|twenty-twenty-five",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ar",
+      "prop": "arrow",
+      "x": 540,
+      "y": 700,
+      "dir": 1,
+      "sym": "$",
+      "len": 360,
+      "col": "dark",
+      "note": "DXY · Stocktwits",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 850,
+      "y": 1070,
+      "s": 0.4,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And the US 10-year|ten-year yield topped 5%.|five-percent",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "th",
+      "prop": "thermo",
+      "x": 540,
+      "y": 650,
+      "level": 0.4,
+      "note": "Treasuries · 13 Nov",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "th",
+      "level": 0.85,
+      "sfx": "ding"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 200,
+      "y": 1100,
+      "s": 0.38,
+      "mood": "sweat",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And with demand at six times supply, most IPO orders won't be filled.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "ANT",
+      "x": 540,
+      "y": 620,
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "q0",
+      "prop": "bull",
+      "x": 150,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "q1",
+      "prop": "bull",
+      "x": 306,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "q2",
+      "prop": "bull",
+      "x": 462,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "q3",
+      "prop": "bull",
+      "x": 618,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "q4",
+      "prop": "bull",
+      "x": 774,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "q5",
+      "prop": "bull",
+      "x": 930,
+      "y": 1010,
+      "s": 0.3,
+      "mood": "happy",
+      "pop": true
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "q0",
+      "mood": "sad"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "q1",
+      "mood": "sad"
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "set",
+      "id": "q2",
+      "mood": "sad"
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "set",
+      "id": "q4",
+      "mood": "sad"
+     }
+    ],
+    [
+     11,
+     {
+      "kind": "set",
+      "id": "q5",
+      "mood": "sad"
+     }
+    ],
+    [
+     11,
+     {
+      "kind": "set",
+      "id": "q3",
+      "action": "cheer",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That cash goes back to investors. Where it goes next is the open question.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1030,
+      "s": 0.5,
+      "mood": "happy",
+      "action": "hold",
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 560,
+      "y": 900,
+      "dx": 560,
+      "h": 140,
+      "period": 0.3,
+      "r": 36,
+      "dir": -1
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "j",
+      "prop": "jar",
+      "x": 860,
+      "y": 980,
+      "fill": 0.85,
+      "pop": true
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "set",
+      "id": "j",
+      "fill": 0.15
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 230,
+      "y": 930
+     }
+    ]
+   ]
+  },
+  {
+   "text": "An IPO can pull cash out of crypto for a while.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "The takeaway"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "IPO",
+      "x": 780,
+      "y": 760,
+      "pop": true,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1040,
+      "s": 0.48,
+      "mood": "sad",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 520,
+      "y": 900,
+      "dx": 480,
+      "h": 120,
+      "period": 0.3,
+      "r": 32
+     }
+    ]
+   ]
+  },
+  {
+   "text": "But on its own, it can't explain six red weeks.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d0",
+      "prop": "bull",
+      "x": 150,
+      "y": 1000,
+      "s": 0.3,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d1",
+      "prop": "bull",
+      "x": 306,
+      "y": 1000,
+      "s": 0.3,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "bull",
+      "x": 462,
+      "y": 1000,
+      "s": 0.3,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d3",
+      "prop": "bull",
+      "x": 618,
+      "y": 1000,
+      "s": 0.3,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d4",
+      "prop": "bull",
+      "x": 774,
+      "y": 1000,
+      "s": 0.3,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d5",
+      "prop": "bull",
+      "x": 930,
+      "y": 1000,
+      "s": 0.3,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "d0",
+      "fall": 1
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "set",
+      "id": "d1",
+      "fall": 1
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "set",
+      "id": "d2",
+      "fall": 1
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "d3",
+      "fall": 1
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "set",
+      "id": "d4",
+      "fall": 1
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "set",
+      "id": "d5",
+      "fall": 1,
+      "sfx": "ding"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 540,
+      "y": 680,
+      "s": 0.42,
+      "mood": "calm",
+      "action": "hold"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Every day"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 700,
+      "sfx": "ding"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "w",
+      "prop": "small",
+      "text": "new videos at 10:00 and 18:00 IST",
+      "y": 820,
+      "size": 42
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 300,
+      "y": 1050,
+      "s": 0.45,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 780,
+      "y": 1050,
+      "s": 0.45,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Data: Hyperliquid, CoinDesk, SoSoValue, crypto.news · 14 Nov 2026",
+      "y": 880,
+      "size": 30,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}
