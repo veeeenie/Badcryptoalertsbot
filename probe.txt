@@ -1,20 +1,24 @@
-addr err HTTP Error 403: Forbidden
-Traceback (most recent call last):
-  File "<stdin>", line 12, in <module>
-  File "<stdin>", line 6, in get
-  File "/usr/lib/python3.14/urllib/request.py", line 187, in urlopen
-    return opener.open(url, data, timeout)
-           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.14/urllib/request.py", line 493, in open
-    response = meth(req, response)
-  File "/usr/lib/python3.14/urllib/request.py", line 602, in http_response
-    response = self.parent.error(
-        'http', request, response, code, msg, hdrs)
-  File "/usr/lib/python3.14/urllib/request.py", line 531, in error
-    return self._call_chain(*args)
-           ~~~~~~~~~~~~~~~~^^^^^^^
-  File "/usr/lib/python3.14/urllib/request.py", line 464, in _call_chain
-    result = func(*args)
-  File "/usr/lib/python3.14/urllib/request.py", line 611, in http_error_default
-    raise HTTPError(req.full_url, code, msg, hdrs, fp)
-urllib.error.HTTPError: HTTP Error 403: Forbidden
+== dex main acct 36.551456
+POS JUP -59.0 0.25361 upnl -0.311107 liq 0.3210223245 lev {'type': 'isolated', 'value': 3, 'rawUsd': '19.887333'}
+ORD #237440 B 34.0 0.03 0.0 Limit ro False posTpsl False
+ORD #237441 B 3.0 0.48 0.0 Limit ro False posTpsl False
+ORD #237520 B 20.0 0.05 0.0 Limit ro False posTpsl False
+ORD #237330 B 10000.0 0.0001 0.0 Limit ro False posTpsl False
+ORD #51120 B 4.0 0.25 0.0 Limit ro False posTpsl False
+ORD #237571 B 100.0 0.01 0.0 Limit ro False posTpsl False
+ORD #237561 B 5.0 0.2 0.0 Limit ro False posTpsl False
+ORD #237501 B 100.0 0.01 0.0 Limit ro False posTpsl False
+ORD #237500 B 100.0 0.01 0.0 Limit ro False posTpsl False
+ORD ZEC B 0.04 1566.0 1450.0 Stop Market ro True posTpsl False
+ORD ZEC A 0.04 1350.0 0.0 Limit ro False posTpsl False
+ORD JUP B 147.0 0.33696 0.312 Stop Market ro True posTpsl False
+ORD JUP A 147.0 0.278 0.0 Limit ro False posTpsl False
+ORD JUP B 0.0 0.312 0.312 Stop Limit ro True posTpsl True
+== dex xyz acct 38.869438
+POS xyz:GOLD 0.0539 3936.53 upnl -3.38657 liq 3216.8981106357 lev {'type': 'isolated', 'value': 5, 'rawUsd': '-169.922992'}
+ORD xyz:GOLD A 0.037 3496.0 3800.0 Stop Market ro True posTpsl False
+ORD xyz:GOLD A 0.0104 3496.0 3800.0 Stop Market ro True posTpsl False
+ORD xyz:GOLD A 0.0065 3496.0 3800.0 Stop Market ro True posTpsl False
+GOLD mid 3873.95
+spot [('USDC', '97.03344372'), ('+237560', '10.0')]
+utc 2026-11-14 05:05
