@@ -44,6 +44,17 @@
    "name": "JUP daily close above 0.2878 (Oct breakdown level)",
    "meaning": "Reclaimed 0.2878: the short is in trouble; thin volume above, 0.33–0.39 can come fast. Stop 0.312.",
    "source": "trader via chat, 14 Nov 2026"
+  },
+  {
+   "id": "GOLD-mclose-below-3820",
+   "coin": "xyz:GOLD",
+   "type": "close",
+   "timeframe": "monthly",
+   "side": "below",
+   "price": 3820,
+   "name": "GOLD monthly close below 3,820 (monthly 25 EMA)",
+   "meaning": "The monthly 25 EMA failed (the 2011 path, not 2020). Your 3,800 stop should already be hit. Next buy zone: 3,250–3,360 (monthly 50 EMA, value area low, point of control).",
+   "source": "trader via chat, 14 Nov 2026"
   }
  ],
  "watch": []

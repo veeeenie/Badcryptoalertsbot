@@ -835,16 +835,30 @@ def line_value(al, ts_ms):
     return p1 + (p2 - p1) * (ts_ms - t1) / (t2 - t1)
 
 
+def monthly_from_daily(daily):
+    """Aggregate to calendar months (UTC). The last month may be partial (live bar)."""
+    months = []
+    for d in daily:
+        dt = datetime.fromtimestamp(d["t"] / 1000, tz=timezone.utc)
+        key = int(datetime(dt.year, dt.month, 1, tzinfo=timezone.utc).timestamp() * 1000)
+        if months and months[-1]["t"] == key:
+            m = months[-1]; m["h"] = max(m["h"], d["h"]); m["l"] = min(m["l"], d["l"]); m["c"] = d["c"]
+        else:
+            months.append({"t": key, "o": d["o"], "h": d["h"], "l": d["l"], "c": d["c"]})
+    return months
+
+
 def check_close_alert(al, sent):
     """Close-only alert (trader, 4 Nov 2026): Telegram once when a daily or weekly candle closes below
     (or above) the price, having closed on the other side the time before. No alert on a mere touch."""
+    tfn = al.get("timeframe", "daily")
     try:
-        d = daily_candles(al["coin"], days=30)
+        d = daily_candles(al["coin"], days=100 if tfn == "monthly" else 30)
     except Exception as e:
         print("close alert error", al["id"], e, file=sys.stderr)
         return None
-    weekly = al.get("timeframe") == "weekly"
-    bars = weekly_from_daily(d) if weekly else d
+    weekly = tfn == "weekly"
+    bars = monthly_from_daily(d) if tfn == "monthly" else weekly_from_daily(d) if weekly else d
     if len(bars) < 3:
         return None
     last, prev = bars[-2], bars[-3]          # last closed candle and the one before (the newest is still open)
@@ -854,7 +868,7 @@ def check_close_alert(al, sent):
     if not crossed or key in sent:
         return None
     sent[key] = time.time()
-    tf = "weekly" if weekly else "daily"
+    tf = tfn if tfn in ("weekly", "monthly") else "daily"
     return (f"🔔 <b>{al['coin']}</b> {tf} close {'BELOW' if below else 'ABOVE'} {fmt(lv)}: {al.get('name', '')}\n"
             f"Close {fmt(last['c'])} (previous {tf} close {fmt(prev['c'])}). {al.get('meaning', '')}").strip()
 
