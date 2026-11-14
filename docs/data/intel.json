@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T02:25:34Z",
+ "generated_at": "2026-11-14T14:18:10Z",
  "coins": {
   "AIXBT": {
    "side": "short",
@@ -163,46 +163,6 @@
     }
    ],
    "unlocks": []
-  },
-  "STABLE": {
-   "side": "short",
-   "label": "bearish",
-   "checked_at": "2026-11-07T02:25:43Z",
-   "about": "Stable is a Bitfinex/Tether-backed EVM Layer-1 built for stablecoin payments, using USDT0 as its gas asset. STABLE is the native token used for validator staking, governance and ecosystem incentives. The Hyperliquid STABLE perp launched Dec 8, 2025, alongside this chain's mainnet and token launch.",
-   "competitors": [
-    "Plasma (XPL)",
-    "Tron (TRX)",
-    "Arc (Circle)",
-    "Tempo (Stripe)"
-   ],
-   "about_checked_at": "2026-11-07T02:25:43Z",
-   "stance": "supports",
-   "summary": "About 888.9M STABLE (~4.9% of circulating supply, ~$23-24M) unlocks for the community/ecosystem allocation on Nov 8, right after a rally that analysts flagged as overextended. That supply leans with the short, though recipients may stake rather than sell.",
-   "news": [
-    {
-     "title": "Stable activates mainnet v1.9.0 with security hardening and reliability upgrades",
-     "url": "https://blog.stable.xyz/stable-mainnet-v190-upgrade-announcement",
-     "date": "Oct 31",
-     "new": true
-    },
-    {
-     "title": "RootData flags a ~$23M STABLE unlock due Nov 8",
-     "url": "https://www.chaincatcher.com/en/article/2300737",
-     "date": "Nov 1",
-     "new": true
-    }
-   ],
-   "unlocks": [
-    {
-     "date": "Nov 8",
-     "date_iso": "2026-11-08",
-     "amount": "888.9M STABLE",
-     "pct_supply": "4.94",
-     "note": "Community/ecosystem allocation (grants, liquidity, incentives); ~$23.8M, 3.3% of market cap; RootData gives 13:00 Beijing (05:00 UTC). % of circulating is from CMC AI.",
-     "source": "https://app.tokenomics.com/tokenomics/stable/unlocks",
-     "new": true
-    }
-   ]
   },
   "WLFI": {
    "side": "short",
@@ -741,7 +701,7 @@
   "BERA": {
    "side": "short",
    "label": "bearish",
-   "checked_at": "2026-11-13T15:40:59Z",
+   "checked_at": "2026-11-14T14:18:10Z",
    "about": "Berachain is an EVM-compatible Layer-1 using Proof-of-Liquidity, where validators direct rewards to liquidity providers. BERA is the gas and staking token, while BGT handles governance and reward emissions.",
    "competitors": [
     "Monad",
@@ -751,8 +711,15 @@
    ],
    "about_checked_at": "2026-11-05T14:40:28Z",
    "stance": "neutral",
-   "summary": "There is no new Berachain news this week. The next unlock (13.4M BERA on Dec 6) falls outside the window, so the short has no fresh catalyst beyond the chart.",
-   "news": [],
+   "summary": "The only fresh item is Binance restoring BERA withdrawals after its network outage, which is housekeeping rather than a catalyst. The next unlock (Dec 6) is outside the 14-day window, so the short rests on the chart.",
+   "news": [
+    {
+     "title": "Binance restores BERA withdrawals as it brings 87 networks back online",
+     "url": "https://en.bloomingbit.io/feed/news/124426",
+     "date": "Nov 13",
+     "new": true
+    }
+   ],
    "unlocks": []
   },
   "BANANA": {
