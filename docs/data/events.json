@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T09:38:31+00:00",
+ "generated_at": "2026-11-14T09:44:35+00:00",
  "positions": [
   {
    "title": "HYPE above 95.00",
@@ -8,7 +8,7 @@
    "resolves": "Hyperliquid HYPE perp price at 30 Nov 21:00 UTC (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 69.131,
+    "price": 69.1735,
     "line": 95.0
    },
    "bid": 0.00726,
@@ -31,10 +31,10 @@
    "resolves": "trade.xyz ANT perp price at 30 Nov 21:00 UTC (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.86,
+    "price": 101.97,
     "line": 100.0
    },
-   "bid": 0.05259999999999998,
+   "bid": 0.0526,
    "ask": 0.9774,
    "mid": 0.515,
    "live": true,
@@ -53,7 +53,7 @@
    "resolves": "trade.xyz ANT perp price at 30 Nov 21:00 UTC (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.86,
+    "price": 101.97,
     "line": 125.0
    },
    "bid": 0.4,
@@ -75,7 +75,7 @@
    "resolves": "trade.xyz ANT perp price at 30 Nov 21:00 UTC (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.86,
+    "price": 101.97,
     "line": 125.0
    },
    "bid": 0.4,
@@ -97,7 +97,7 @@
    "resolves": "trade.xyz ANT perp price at 30 Nov 21:00 UTC (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.86,
+    "price": 101.97,
     "line": 125.0
    },
    "bid": 0.4,
@@ -136,7 +136,7 @@
    "ends": null,
    "resolves": "closing price on its first trading day \u00d7 shares outstanding; NO if no IPO by 31 Dec 2026",
    "underlying": null,
-   "bid": 0.0010000000000000009,
+   "bid": 0.001,
    "ask": 0.99666,
    "mid": 0.49883,
    "live": true,
@@ -187,27 +187,27 @@
  ],
  "settled": [
   {
-   "title": "Market #33249",
+   "title": "market #33249",
    "pnl": 0.4,
    "time": "2026-11-13T05:17+00:00"
   },
   {
-   "title": "Market #32179",
+   "title": "market #32179",
    "pnl": 0.25,
    "time": "2026-11-12T06:00+00:00"
   },
   {
-   "title": "Market #32181",
+   "title": "market #32181",
    "pnl": 1.6,
    "time": "2026-11-12T06:00+00:00"
   },
   {
-   "title": "Market #31124",
+   "title": "market #31124",
    "pnl": 0.08,
    "time": "2026-11-11T06:00+00:00"
   },
   {
-   "title": "Market #23202",
+   "title": "market #23202",
    "pnl": -2.0,
    "time": "2026-11-03T06:00+00:00"
   }
