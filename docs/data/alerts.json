@@ -66,6 +66,15 @@
    "name": "HYPE weekly close below 62 (value area high, 2026 profile)",
    "meaning": "HYPE closed the week back inside the year's value area (VAH ~62, 50-week EMA ~60). Short setup: wait for a failed retest of ~62 from below, stop above ~65\u201368. Targets: ~51, then ~45\u201347 (100-week EMA), then 33\u201340 (POC ~33). Cancelled by a weekly close back above 62.",
    "source": "trader via chat, 14 Nov 2026"
+  },
+  {
+   "id": "HYPE-level-74",
+   "coin": "HYPE",
+   "type": "level",
+   "price": 74,
+   "name": "HYPE reaches 74 (retest of the broken range floor)",
+   "meaning": "Price is back in the 71\u201376 resistance zone: the Aug\u2013Nov value area low (~75.5) plus the 25-week EMA (~71.4). Short only on a rejection, e.g. a daily candle that wicks in and closes back below ~71. Stop: daily close above ~77. Targets ~62\u201360, then ~51. Two daily closes above 76 = failed breakdown; bias flips up toward the POC ~81.5.",
+   "source": "trader via chat, 14 Nov 2026"
   }
  ],
  "watch": []
