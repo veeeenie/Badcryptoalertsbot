@@ -1,4 +1,4 @@
-name: Event orders (temporary)
+name: Events test (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -10,33 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - run: pip install -q requests
       - run: |
-          (python3 - > probe.txt 2>&1 || true) <<'PY'
-          import json, urllib.request, time
-          W="0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE"
-          def hl(b):
-              r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
-              return json.load(urllib.request.urlopen(r,timeout=30))
-          meta=hl({"type":"outcomeMeta"}); om={o["outcome"]:o for o in meta["outcomes"]}
-          qd={}
-          for q in meta.get("questions",[]):
-              for oid in (q.get("namedOutcomes") or [])+([q["fallbackOutcome"]] if q.get("fallbackOutcome") is not None else []): qd[oid]=q
-          mids=hl({"type":"allMids"})
-          orders=[o for o in hl({"type":"frontendOpenOrders","user":W}) if o["coin"].startswith("#")]
-          bal=[b for b in hl({"type":"spotClearinghouseState","user":W})["balances"] if b["coin"].startswith("+") or b["coin"].startswith("#")]
-          fills=[f for f in hl({"type":"userFillsByTime","user":W,"startTime":int(time.time()*1000)-5*86400000,"aggregateByTime":True}) if f["coin"].startswith("#")]
-          ids=set()
-          for o in orders: ids.add(int(o["coin"][1:])//10)
-          for b in bal: ids.add(int(b["coin"][1:])//10)
-          for f in fills: ids.add(int(f["coin"][1:])//10)
-          out={"orders":orders,"bal":bal,"fills":fills,"outcomes":{},"mids":{}}
-          for i in ids:
-              o=om.get(i,{}); out["outcomes"][i]={"o":o,"q":qd.get(i)}
-              for s in (0,1): out["mids"][f"#{i*10+s}"]=mids.get(f"#{i*10+s}")
-              try:
-                  bk=hl({"type":"l2Book","coin":f"#{i*10}"})["levels"]; out["outcomes"][i]["book"]=[bk[0][:3],bk[1][:3]]
-              except Exception as e: out["outcomes"][i]["book"]=str(e)
-          print(json.dumps(out))
-          PY
+          mkdir -p docs/data; (python scanner/events.py > probe.txt 2>&1 || true); cat docs/data/events.json >> probe.txt || true
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f probe.txt && git commit -qm "events2" && git push -q origin HEAD:debug-weekly
+          git add -f probe.txt && git commit -qm "events4" && git push -q origin HEAD:debug-weekly

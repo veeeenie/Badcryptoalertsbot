@@ -7,6 +7,8 @@ the underlying ends above the threshold, from its current Hyperliquid price, the
 volatility over the last 7 days of hourly candles (a lognormal, no drift; rough, ignores fat tails,
 weekends and the averaging window some markets settle on).
 
+Only markets listed on trade.xyz's Events page alert (venue "txyz" plus Hyperliquid's own recurring daily
+markets); other apps' markets (Skew, Fox, Out) are kept in the file but hidden on the site.
 Telegram alert when a price market with 1.5 to 72 hours left can be bought at least MARGIN (10
 points) below the model price on either side (YES at the ask, or NO at 1 - the YES bid), with at
 least $10 available at that price (Hyperliquid's minimum order). Once per market and side.
@@ -91,10 +93,28 @@ def title_of(o, f, qdesc):
         u = f.get("perp", "?").replace("xyz:", "")
         th = f.get("threshold")
         return f"{u} touches {fmt(float(th))}" if th else f"{u} price touch"
+    if name == "template:priceBucket":
+        u, lo, hi = f.get("perp", "?").replace("xyz:", ""), f.get("lo"), f.get("hi")
+        if lo is None: return f"{u} below {fmt(hi)}"
+        if hi is None: return f"{u} above {fmt(lo)}"
+        return f"{u} between {fmt(lo)} and {fmt(hi)}"
+    if name == "template:companyIpoConfirmed":
+        d = f.get("dateTime", "")
+        return f"{f.get('company', '?')} IPO by {datetime.strptime(d[:8], '%Y%m%d').strftime('%-d %b %Y') if d else '?'}"
+    if name == "template:companyIpoFirstDayMarketCap":
+        b = float(f.get("marketCapThresholdB", 0)); d = f.get("listingDeadline", "")
+        cap = f"${b / 1000:g}T" if b >= 1000 else f"${b:g}B"
+        return f"{f.get('company', '?')} worth {cap}+ on IPO day (IPO by {datetime.strptime(d[:8], '%Y%m%d').strftime('%-d %b %Y') if d else '?'})"
     if "participantA" in f:
         return f"{f.get('shortNameA') or f['participantA']} beat {f.get('shortNameB') or f.get('participantB', '?')}" + (f" ({f['competition']})" if f.get("competition") else "")
+    if "participant" not in f and len(f) > 1:          # other templates: show the description's fields
+        return " · ".join(f"{k} {v}" for k, v in f.items())[:90]
     q = kv(qdesc) if qdesc else {}
     p = f.get("participant") or ("Other" if o.get("description") == "other" else o.get("description", "")[:60])
+    if f.get("participant") and q.get("competition") and not q.get("participantA"):
+        return f"{p} win the {q['competition'].strip()}"
+    if q.get("class") == "priceBucket":
+        return f"{q.get('underlying', '?')}: none of the ranges (fallback)"
     ctx = q.get("competition") or ""
     if q.get("participantA"):
         ctx = f"{q.get('participantA')} v {q.get('participantB')}" + (f", {ctx}" if ctx else "")
@@ -141,7 +161,18 @@ def main():
         if yes not in mids:
             continue            # settled or not trading
         f = kv(o.get("description"))
-        kind = "price" if o.get("name") == "template:binaryPrice" else "touch" if o.get("name") == "template:priceTouch" else "event"
+        q = kv(qdesc.get(oid)) if qdesc.get(oid) else {}
+        if q.get("class") == "priceBucket" and f.get("index") is not None:
+            th = [float(x) for x in q.get("priceThresholds", "").split(",") if x]
+            i = int(f["index"])
+            f = {"perp": q.get("underlying"), "time": q.get("expiry"), "lo": th[i - 1] if i > 0 else None, "hi": th[i] if i < len(th) else None}
+            o = dict(o, name="template:priceBucket")
+        elif q.get("class") == "priceBucket":
+            f = {"time": q.get("expiry")}
+        if f.get("class") == "priceBinary":        # Hyperliquid's own recurring daily markets (listed on trade.xyz)
+            f = {"perp": f.get("underlying"), "threshold": f.get("targetPrice"), "time": f.get("expiry")}
+            o = dict(o, name="template:binaryPrice")
+        kind = "price" if o.get("name") in ("template:binaryPrice", "template:priceBucket") else "touch" if o.get("name") == "template:priceTouch" else "event"
         exp = None
         for k in ("time", "scheduledStart", "resolutionDeadline"):
             if f.get(k):
@@ -162,7 +193,9 @@ def main():
         ask = float(asks[0]["px"]) if asks else None
         bid_usd = sum(float(l["sz"]) * (1 - float(l["px"])) for l in bids if bid - float(l["px"]) <= 0.01) if bids else 0   # buying NO
         ask_usd = sum(float(l["sz"]) * float(l["px"]) for l in asks if float(l["px"]) - ask <= 0.01) if asks else 0
-        r = {"id": oid, "kind": kind, "title": title_of(o, f, qdesc.get(oid)), "venue": o.get("venue"),
+        venue = o.get("venue")
+        r = {"id": oid, "kind": kind, "title": title_of(o, f, qdesc.get(oid)), "venue": venue,
+             "on_txyz": venue in (None, "txyz"),      # what the trade.xyz Events page shows (its own + Hyperliquid's recurring)
              "expiry": exp.isoformat() if exp else None, "hours_left": round(hours, 2) if hours is not None else None,
              "bid": bid, "ask": ask, "spread": round(ask - bid, 4) if bid is not None and ask is not None else None,
              "bid_usd": round(bid_usd, 2), "ask_usd": round(ask_usd, 2)}
@@ -172,9 +205,14 @@ def main():
             if u not in sig:
                 sig[u] = sigma_hourly(u, now_ms)
             s = sig[u]
-            th = float(f["threshold"])
+            sd = (s or 0) * math.sqrt(max(hours, 1 / 60))
+            up = lambda k: phi(math.log(spot / k) / sd)          # chance of ending above k
+            th = float(f["threshold"]) if f.get("threshold") else None
             if spot and s:
-                fair = phi(math.log(spot / th) / (s * math.sqrt(max(hours, 1 / 60))))
+                if o.get("name") == "template:priceBucket":
+                    fair = (up(f["lo"]) if f.get("lo") else 1.0) - (up(f["hi"]) if f.get("hi") else 0.0)
+                else:
+                    fair = up(th)
                 r.update({"underlying": u.replace("xyz:", ""), "spot": spot, "threshold": th, "sigma_h": round(s, 5), "fair": round(fair, 4),
                           "edge_yes": round(fair - ask, 4) if ask is not None else None,          # buy YES at the ask
                           "edge_no": round(bid - fair, 4) if bid is not None else None})          # buy NO at 1 - bid
@@ -184,7 +222,7 @@ def main():
     sent = {k: v for k, v in (prev.get("alerted") or {}).items() if now_ms - v < 4 * 86_400_000}
     msgs = []
     for r in rows:
-        if r.get("fair") is None or not (ALERT_HOURS[0] <= r["hours_left"] <= ALERT_HOURS[1]):
+        if r.get("fair") is None or not r["on_txyz"] or not (ALERT_HOURS[0] <= r["hours_left"] <= ALERT_HOURS[1]):
             continue
         for side, edge, usd, px in (("YES", r.get("edge_yes"), r["ask_usd"], r["ask"]), ("NO", r.get("edge_no"), r["bid_usd"], None if r["bid"] is None else 1 - r["bid"])):
             key = f"{r['id']}:{side}"
