@@ -3,17 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<script>try{const t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t;}catch(e){}</script>
 <title>Setup Desk</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400..700&display=swap" rel="stylesheet">
 <style>
-/* pastels for the portfolio */
-:root{--pz1:#f2efff;--pz2:#ecf7f1;--pz3:#fff3ea;--b1:#c7c9fb;--b2:#b9e8cf;--b3:#ffd2b0;--b4:#bfe0fa;--b5:#f7c6dd;--b6:#f6e3a3;--pzink:#2c2f45}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pz1:#22223a;--pz2:#1c2c26;--pz3:#2e241e;--pzink:#e6ebf0}}
-:root[data-theme="dark"]{--pz1:#22223a;--pz2:#1c2c26;--pz3:#2e241e;--pzink:#e6ebf0}
-:root{--bg:#f6f7f8;--panel:#fff;--soft:#f1f3f5;--ink:#17202a;--muted:#5f6b76;--line:#dfe3e7;--up:#147a52;--down:#b3372b;--accent:#2f5bd3;--amber:#a86200;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11161b;--panel:#182029;--soft:#1f2832;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;--accent:#8aa8ff;--amber:#f0b45a;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#11161b;--panel:#182029;--soft:#1f2832;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;--accent:#8aa8ff;--amber:#f0b45a;color-scheme:dark}
+/* Warm sand palette (14 Nov 2026): tiles, portfolio bars, then the base colours; dark mode follows the device unless the toggle picks one */
+:root{--pz1:#f1e8d8;--pz2:#e9eedb;--pz3:#f5e3d3;--pz4:#ece6da;--pz5:#f3ddd5;--pz6:#f4ead0;--b1:#d9c7a5;--b2:#bcc792;--b3:#e3b08f;--b4:#cbbda4;--b5:#dca595;--b6:#e3cd8e;--pzink:#2b2620}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pz1:#2b261f;--pz2:#262b1e;--pz3:#30251d;--pz4:#29251f;--pz5:#2f221e;--pz6:#2e2a1c;--b1:#8a7a5e;--b2:#76814f;--b3:#9a6b4f;--b4:#7f735f;--b5:#94605a;--b6:#9c8a4f;--pzink:#efe8dc}}
+:root[data-theme="dark"]{--pz1:#2b261f;--pz2:#262b1e;--pz3:#30251d;--pz4:#29251f;--pz5:#2f221e;--pz6:#2e2a1c;--b1:#8a7a5e;--b2:#76814f;--b3:#9a6b4f;--b4:#7f735f;--b5:#94605a;--b6:#9c8a4f;--pzink:#efe8dc}
+:root{--bg:#f6f1e8;--panel:#fffdf8;--soft:#f1e9dc;--ink:#2b2620;--muted:#7a6f62;--line:#e7ddcd;--up:#3f7a3a;--down:#b14a2c;--accent:#5f6f2a;--amber:#a5671b;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#181512;--panel:#221e19;--soft:#2b261f;--ink:#efe8dc;--muted:#a89c8c;--line:#352f27;--up:#8fca7c;--down:#f08a66;--accent:#b5c46a;--amber:#e0b25e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#181512;--panel:#221e19;--soft:#2b261f;--ink:#efe8dc;--muted:#a89c8c;--line:#352f27;--up:#8fca7c;--down:#f08a66;--accent:#b5c46a;--amber:#e0b25e;color-scheme:dark}
+.navin{position:relative;padding-right:44px!important}
+#themebtn{position:absolute;right:0;top:8px;width:34px;height:30px;padding:0;border-radius:99px;background:var(--panel);color:var(--ink);border:1px solid var(--line);font-size:15px;line-height:1;display:grid;place-items:center}
+#themebtn:hover{border-color:var(--accent);color:var(--accent)}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Google Sans Flex",-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",sans-serif;padding:0 24px}
@@ -157,9 +161,6 @@ details.more>summary{cursor:pointer;margin-top:10px}
 }
 #events .tl{text-align:left}
 /* infographic tiles */
-:root{--pz4:#eaf2fd;--pz5:#fdeef4;--pz6:#fbf5df}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pz4:#1b2634;--pz5:#2e1f29;--pz6:#2b2819}}
-:root[data-theme="dark"]{--pz4:#1b2634;--pz5:#2e1f29;--pz6:#2b2819}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr));gap:10px}
 @media (max-width:520px){.kpi .v{font-size:21px}}
 .kpi{border-radius:10px;padding:11px 14px;background:var(--pz1);min-width:0}
@@ -212,6 +213,7 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <a href="#events" data-sec="events">My events</a>
   <a href="#portfolio" data-sec="portfolio">Portfolio</a>
   <a href="#rules" data-sec="rules">Rule book</a>
+  <button type="button" id="themebtn" aria-label="Switch light or dark mode" title="Switch light / dark"></button>
 </div></nav>
 <main>
   <section id="market" class="mkt">
@@ -752,6 +754,12 @@ document.getElementById("wlform").addEventListener("submit",e=>{e.preventDefault
   issue(`/watch ${v.length>=30&&!v.includes(":")?v:v.toUpperCase().replace(/^([A-Z0-9]+):/,m=>m.toLowerCase())}`);
 });
 
+// ---- light / dark switch (top right); remembered on this device
+(()=>{const b=document.getElementById("themebtn"), root=document.documentElement;
+  const dark=()=>root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+  const paint=()=>{b.textContent=dark()?"☀":"☾";b.title=dark()?"Switch to light mode":"Switch to dark mode";};
+  b.addEventListener("click",()=>{const t=dark()?"light":"dark";root.dataset.theme=t;try{localStorage.setItem("theme",t);}catch(e){}paint();if(typeof drawPortfolioChart==="function")drawPortfolioChart();});
+  paint();})();
 // ---- top buttons: open the section, scroll to it, and glow for the section on screen
 document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("click",e=>{
   e.preventDefault(); const el=document.getElementById(a.dataset.sec); pinned=a.dataset.sec;
