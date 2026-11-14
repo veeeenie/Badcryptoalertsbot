@@ -156,6 +156,7 @@ details.more>summary{cursor:pointer;margin-top:10px}
   .body{padding:4px 10px 12px}
 }
 #events .tl{text-align:left}
+ol.rules{margin:4px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px}
 </style>
 </head>
 <body>
@@ -166,7 +167,7 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <a href="#alerts" data-sec="alerts">Alerts</a>
   <a href="#events" data-sec="events">My events</a>
   <a href="#portfolio" data-sec="portfolio">Portfolio</a>
-  <a href="rules.html" class="ext">Rule book</a>
+  <a href="#rules" data-sec="rules">Rule book</a>
 </div></nav>
 <main>
   <section id="market" class="mkt">
@@ -266,6 +267,23 @@ details.more>summary{cursor:pointer;margin-top:10px}
     <div class="box pv" id="pfvol"></div>
     <div class="box pc"><b>Total value, week on week</b><div id="pfchart" style="margin-top:8px"></div></div>
     <details class="pa"><summary>Airdrop activity</summary><div id="pfact"></div></details>
+  </div>
+  </details>
+
+  <details class="sec anchor" id="rules">
+  <summary><span class="st">Rule book</span><span class="muted">9 rules · 14 Nov 2026</span></summary>
+  <div class="secbody">
+  <ol class="rules">
+    <li>Map the coin's entire history.</li>
+    <li>Map the last year, last month and last week.</li>
+    <li>Mark the areas of interest.</li>
+    <li>Add the EMAs, volume profile and fibs.</li>
+    <li>Take whatever trade is presented.</li>
+    <li>Risk under 3% on each trade.</li>
+    <li>The stop goes in with the entry. It never moves wider.</li>
+    <li>No adding to an open trade.</li>
+    <li>Set a take-profit. It never moves toward the entry.</li>
+  </ol>
   </div>
   </details>
 </main>
@@ -633,7 +651,7 @@ document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("clic
   if(el.tagName==="DETAILS") el.open=true;
   el.scrollIntoView({behavior:"smooth",block:"start"}); history.replaceState(null,"","#"+a.dataset.sec); markActive();
 }));
-const secs=["charts","trades","alerts","portfolio"].map(id=>document.getElementById(id));
+const secs=["charts","trades","alerts","portfolio","rules"].map(id=>document.getElementById(id));
 let pinned=null;   // the section just tapped stays lit until you scroll yourself
 ["wheel","touchmove","keydown"].forEach(ev=>addEventListener(ev,()=>{pinned=null;},{passive:true}));
 function markActive(){
