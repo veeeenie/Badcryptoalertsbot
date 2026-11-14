@@ -155,6 +155,7 @@ details.more>summary{cursor:pointer;margin-top:10px}
   .orders th{white-space:normal;vertical-align:bottom}
   .body{padding:4px 10px 12px}
 }
+#events .tl{text-align:left}
 </style>
 </head>
 <body>
@@ -247,16 +248,15 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <div class="secbody">
   <h3>Positions</h3>
   <div class="box"><table class="stack">
-    <thead><tr><th>Market</th><th>Side</th><th>Size @ entry</th><th>Now (mid)</th><th>P&amp;L</th><th>If it wins</th></tr></thead>
-    <tbody id="evpos"><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
+    <thead><tr><th>Market</th><th class="tl">Criteria used</th><th class="tl">Settles</th><th>Side</th><th>Size @ entry</th><th>Now (mid)</th><th>P&amp;L</th><th>If it wins</th></tr></thead>
+    <tbody id="evpos"><tr><td colspan="8" class="muted">Loading…</td></tr></tbody>
   </table></div>
   <h3>Open orders</h3>
   <div class="box"><table class="stack">
-    <thead><tr><th>Market</th><th>Order</th><th>Cost</th><th>Best price now</th><th>If it fills and wins</th></tr></thead>
-    <tbody id="evord"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody>
+    <thead><tr><th>Market</th><th class="tl">Criteria used</th><th class="tl">Settles</th><th>Order</th><th>Cost</th><th>Best price now</th><th>If it fills and wins</th></tr></thead>
+    <tbody id="evord"><tr><td colspan="7" class="muted">Loading…</td></tr></tbody>
   </table></div>
   <p class="muted" id="evset"></p>
-  <p class="muted" id="evmeta"></p>
   </div>
   </details>
 
@@ -350,16 +350,15 @@ fetch("data/rates.json?t="+Date.now()).then(r=>r.json()).then(R=>{
 fetch("data/events.json?t="+Date.now()).then(r=>r.json()).then(E=>{
   const c=x=>x==null?"–":x.toFixed(x<0.01?4:x<0.1?3:2), d=x=>x==null?"–":(x<0?"−$":"$")+Math.abs(x).toFixed(2);
   const sd=s=>`<b class="${s==="YES"?"up":"down"}">${s}</b>`;
-  const mk=r=>{const u=r.underlying; return `${r.title}<div class="muted" style="font-size:12.5px">${u?`${u.coin} now ${f(u.price)} vs line ${f(u.line)} · `:""}settles on ${r.resolves}</div>`;};
+  const mk=r=>`${r.title}</td><td class="tl" data-label="Criteria">${r.criteria||"–"}${r.underlying?` <span class="muted">(now ${f(r.underlying.price)})</span>`:""}</td><td class="tl" data-label="Settles">${r.ends?ist(r.ends,true):""}${r.ends&&r.settles?"<br>":""}${r.settles||""}${!r.ends&&!r.settles?"–":""}`;
   document.getElementById("evpos").innerHTML=E.positions.length?E.positions.map(r=>`<tr><td>${mk(r)}</td><td data-label="Side">${sd(r.side)}</td><td data-label="Size">${r.size} @ ${c(r.entry)} <span class="muted">(${d(r.cost)})</span></td><td data-label="Now">${c(r.mid)} <span class="muted">bid ${c(r.bid)}</span></td><td data-label="P&L" class="${r.pnl>0?"up":r.pnl<0?"down":""}">${d(r.pnl)}</td><td data-label="If wins" class="up">+${d(r.if_wins)}</td></tr>`).join("")
-    :'<tr><td colspan="6" class="muted">No open positions.</td></tr>';
+    :'<tr><td colspan="8" class="muted">No open positions.</td></tr>';
   document.getElementById("evord").innerHTML=E.orders.length?E.orders.map(r=>`<tr><td>${mk(r)}</td><td data-label="Order">${r.action} ${sd(r.side)} ${r.size} @ ${c(r.price)}</td><td data-label="Cost">${d(r.cost)}</td><td data-label="Now">${r.action==="Buy"?"ask":"bid"} ${c(r.action==="Buy"?r.ask:r.bid)}${r.gap!=null&&r.gap>0?` <span class="muted">(${(r.gap*100).toFixed(r.gap<0.01?1:0)}¢ away)</span>`:""}</td><td data-label="If wins" class="up">${r.if_wins!=null?"+"+d(r.if_wins):"–"}</td></tr>`).join("")
-    :'<tr><td colspan="5" class="muted">No open orders.</td></tr>';
+    :'<tr><td colspan="7" class="muted">No open orders.</td></tr>';
   const tot=E.settled.reduce((a,s)=>a+s.pnl,0);
   document.getElementById("evset").innerHTML=E.settled.length?`<b>Closed, last 14 days:</b> ${E.settled.map(s=>`${s.title} <span class="${s.pnl>=0?"up":"down"}">${d(s.pnl)}</span>`).join(" · ")} · <b>total <span class="${tot>=0?"up":"down"}">${d(tot)}</span></b>`:"";
   const open=E.positions.reduce((a,r)=>a+(r.value||0),0), oc=E.orders.reduce((a,r)=>a+r.cost,0);
   document.getElementById("evhint").textContent=`${E.positions.length} position${E.positions.length===1?"":"s"} (${d(open)}) · ${E.orders.length} open order${E.orders.length===1?"":"s"} (${d(oc)})`;
-  document.getElementById("evmeta").textContent=`A NO buy fills when someone sells NO at your price (= buys YES at 1 − it). P&L uses the mid; the bid is what you'd get selling now. Updated ${ist(E.generated_at,true)}. Places no orders.`;
 }).catch(()=>{document.getElementById("evhint").textContent="not built yet: appears after the next hourly scan";});
 
 // ---- prediction markets (HIP-4): model vs market, and spreads

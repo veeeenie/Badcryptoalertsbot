@@ -21,19 +21,25 @@ OUT = os.path.join(ROOT, "docs", "data", "events.json")
 WALLET = os.getenv("FILLS_WALLET", "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE")
 
 
+SHARES_B = 13.087          # Anthropic shares outstanding after the IPO, billions (S-1/A No. 2, before over-allotment)
+
+
 def resolves(o, f):
-    """When and on what the market settles, in plain words."""
+    """(settlement time ISO or None, when it settles in words, criteria in words)."""
     name = o.get("name", "")
     if name == "template:binaryPrice" and f.get("time"):
         u = f.get("perp", "?")
         src = f"trade.xyz {u.replace('xyz:', '')} perp" if u.startswith("xyz:") else f"Hyperliquid {u} perp"
-        return when(f["time"]).isoformat(), f"{src} price at {when(f['time']).strftime('%-d %b %H:%M')} UTC (1-min candle)"
+        return when(f["time"]).isoformat(), "", f"YES if {src} is above {float(f['threshold']):g} (1-min candle)"
     if name == "template:companyIpoFirstDayMarketCap":
-        return None, "closing price on its first trading day × shares outstanding; NO if no IPO by " + \
-            datetime.strptime(f.get("listingDeadline", "")[:8], "%Y%m%d").strftime("%-d %b %Y")
+        b = float(f.get("marketCapThresholdB", 0))
+        dl = datetime.strptime(f.get("listingDeadline", "")[:8], "%Y%m%d").strftime("%-d %b %Y")
+        per = f" ≈ ${b / SHARES_B:,.1f}/share" if f.get("company") == "Anthropic" else ""
+        cap = f"${b / 1000:g}T" if b >= 1000 else f"${b:g}B"
+        return None, f"Close of first trading day (no IPO by {dl} = NO)", f"YES if day-1 close × shares outstanding ≥ {cap}{per}"
     if name == "template:companyIpoConfirmed":
-        return None, "IPO confirmed by the deadline"
-    return None, ""
+        return None, "Deadline", "YES if the IPO is confirmed by the deadline"
+    return None, "", ""
 
 
 def main():
@@ -64,14 +70,14 @@ def main():
         if o:
             f = kv(o.get("description"))
             names[str(oid)] = title_of(o, f, qd.get(oid))
-            exp, rule = resolves(o, f)
+            exp, when_txt, rule = resolves(o, f)
             under = None
             if o.get("name") == "template:binaryPrice":
                 u = f.get("perp", "")
                 px = (xmids if u.startswith("xyz:") else mids).get(u)
                 under = {"coin": u.replace("xyz:", ""), "price": float(px), "line": float(f["threshold"])} if px else None
         else:
-            exp, rule, under = None, "settled", None
+            exp, when_txt, rule, under = None, "settled", "", None
         if oid not in books and o:
             try:
                 lv = hl({"type": "l2Book", "coin": f"#{oid * 10}"})["levels"]
@@ -83,7 +89,7 @@ def main():
         mid = mids.get(f"#{code}")
         rd = lambda x: None if x is None else round(x, 5)
         return {"title": names.get(str(oid), f"Market #{oid}"), "side": "YES" if side == 0 else "NO", "ends": exp,
-                "resolves": rule, "underlying": under, "bid": rd(bid), "ask": rd(ask), "mid": float(mid) if mid else None, "live": bool(o)}
+                "settles": when_txt, "criteria": rule, "underlying": under, "bid": rd(bid), "ask": rd(ask), "mid": float(mid) if mid else None, "live": bool(o)}
 
     positions = []
     for b in bals:
