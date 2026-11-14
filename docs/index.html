@@ -116,11 +116,11 @@ details.idea>summary:hover{background:var(--soft)}
 .wrow.sub{padding-left:14px;font-size:13px;color:var(--muted)}
 #portfolio .pv{background:var(--pz1);border:0}
 #portfolio .pc{background:var(--pz2);border:0;padding:12px 14px}
-#portfolio details.pa{background:var(--pz3);border:0;border-radius:8px}
-#portfolio details.pa>summary{cursor:pointer;padding:10px 14px;font-weight:600;list-style:none}
-#portfolio details.pa>summary::-webkit-details-marker{display:none}
-#portfolio details.pa>summary::before{content:"›";display:inline-block;width:12px;color:var(--muted);transition:transform .15s}
-#portfolio details.pa[open]>summary::before{transform:rotate(90deg)}
+details.pa{background:var(--pz3);border:0;border-radius:8px}
+details.pa>summary{cursor:pointer;padding:10px 14px;font-weight:600;list-style:none}
+details.pa>summary::-webkit-details-marker{display:none}
+details.pa>summary::before{content:"›";display:inline-block;width:12px;color:var(--muted);transition:transform .15s}
+details.pa[open]>summary::before{transform:rotate(90deg)}
 #portfolio .pv th,#portfolio .pv td{border-color:color-mix(in srgb,var(--pzink) 10%,transparent)}
 #portfolio .arow{display:flex;justify-content:space-between;gap:12px;padding:6px 14px;border-top:1px solid color-mix(in srgb,var(--pzink) 8%,transparent);font-size:14px}
 #portfolio .arow .n{text-align:right;font-variant-numeric:tabular-nums}
@@ -156,7 +156,51 @@ details.more>summary{cursor:pointer;margin-top:10px}
   .body{padding:4px 10px 12px}
 }
 #events .tl{text-align:left}
-ol.rules{margin:4px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px}
+/* infographic tiles */
+:root{--pz4:#eaf2fd;--pz5:#fdeef4;--pz6:#fbf5df}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--pz4:#1b2634;--pz5:#2e1f29;--pz6:#2b2819}}
+:root[data-theme="dark"]{--pz4:#1b2634;--pz5:#2e1f29;--pz6:#2b2819}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr));gap:10px}
+@media (max-width:520px){.kpi .v{font-size:21px}}
+.kpi{border-radius:10px;padding:11px 14px;background:var(--pz1);min-width:0}
+.kpi .k{font-size:12px;color:var(--muted);font-weight:600}
+.kpi .v{font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.25;overflow-wrap:anywhere}
+.kpi .s{font-size:12.5px;color:var(--muted)}
+.c1{background:var(--pz1)!important}.c2{background:var(--pz2)!important}.c3{background:var(--pz3)!important}.c4{background:var(--pz4)!important}.c5{background:var(--pz5)!important}.c6{background:var(--pz6)!important}
+.panel{border-radius:10px;padding:12px 14px;background:var(--pz2);min-width:0}
+.panel>b:first-child{display:block;margin-bottom:6px}
+.poslist{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:10px}
+.pos{border-radius:10px;padding:12px 14px;background:var(--pz4);display:grid;gap:4px;min-width:0}
+.pos .hd{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.pos .big{font-size:20px;font-weight:700;margin-left:auto;font-variant-numeric:tabular-nums}
+.rng{position:relative;height:56px;margin:0 8px}
+.rng .ln{position:absolute;top:26px;height:5px;border-radius:5px}
+.rng .tk{position:absolute;top:21px;width:2px;height:15px;background:var(--ink);transform:translateX(-1px)}
+.rng .dot{position:absolute;top:22px;width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid var(--panel);transform:translateX(-6.5px)}
+.rng .lb{position:absolute;font-size:11.5px;white-space:nowrap;transform:translateX(-50%);font-variant-numeric:tabular-nums;line-height:1.1;text-align:center}
+.rng .lb.t{top:0}.rng .lb.b{top:39px}
+.rng .lb.l{transform:none}.rng .lb.r{transform:translateX(-100%)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12.5px}
+.chip{font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--panel)}
+.chip.bad{color:var(--down)}.chip.ok{color:var(--up)}
+.hbar{display:grid;grid-template-columns:70px 1fr 90px;gap:8px;align-items:center;font-size:13.5px;margin:6px 0}
+.hbar .tr{height:14px;background:color-mix(in srgb,var(--pzink) 8%,transparent);border-radius:99px;position:relative;overflow:hidden}
+.hbar .tr i{position:absolute;top:0;bottom:0;border-radius:99px}
+.hbar .n{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.stackbar{display:flex;height:12px;border-radius:99px;overflow:hidden;margin:2px 0 8px}
+.stackbar i{display:block;height:100%}
+.tabs button{display:grid;justify-items:start;padding:8px 16px;border-radius:12px;min-width:100px;text-align:left}
+.tabs button b{font-size:22px;line-height:1.1}
+.tabs button .k{font-size:12px;font-weight:600}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}
+.wc{border-radius:10px;padding:10px 14px;background:var(--pz6);display:grid;gap:2px;min-width:0}
+.agroups .meter{display:inline-block;width:70px;height:6px;border-radius:99px;background:var(--soft);position:relative;vertical-align:middle;overflow:hidden}
+.agroups .meter i{position:absolute;left:0;top:0;bottom:0;background:var(--amber);border-radius:99px}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px}
+.rgroup{border-radius:12px;padding:12px 14px;display:grid;gap:8px;align-content:start}
+.rgroup h4{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.rule{display:flex;gap:10px;align-items:baseline;font-size:15px}
+.rule b.n{flex:0 0 26px;height:26px;border-radius:50%;background:var(--panel);display:grid;place-items:center;font-size:13px}
 </style>
 </head>
 <body>
@@ -172,18 +216,22 @@ ol.rules{margin:4px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px}
 <main>
   <section id="market" class="mkt">
   <div class="mkthead"><b>Market</b> <span class="muted" id="mktverdict">Loading…</span></div>
-  <div id="mktrows"></div>
+  <div class="kpis" id="mktkpis" style="padding:12px"></div>
+  <details class="pa" style="margin:0 12px 12px"><summary>Levels and notes</summary><div id="mktrows"></div></details>
   </section>
 
   <section id="rates" class="rates" hidden>
   <div class="mkthead"><b>Rates</b> <span class="muted" id="ratesnote"></span></div>
+  <div class="kpis" id="ratekpis" style="padding:12px"></div>
+  <details class="pa" style="margin:0 12px 12px"><summary>Full table and sources</summary>
   <table><thead><tr><th></th><th>US</th><th>India</th></tr></thead><tbody id="ratesrows"></tbody></table>
-  <div class="note muted" id="ratesfoot"></div>
+  <div class="note muted" id="ratesfoot"></div></details>
   </section>
 
   <section id="charts" class="anchor">
   <h2>Charts</h2>
   <div id="ctabs" class="tabs"></div>
+  <div id="cbar" class="stackbar"></div>
   <div id="cbanner"></div>
   <div id="crows"></div>
   </section>
@@ -191,30 +239,29 @@ ol.rules{margin:4px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px}
   <details class="sec anchor" id="trades">
   <summary><span class="st">Trades</span><span class="muted"><span id="jhint">open positions, live</span> · <span id="chint"></span></span></summary>
   <div class="secbody">
-  <h3>Open</h3>
-  <p class="muted">Live from Hyperliquid, refreshed every minute · <a href="#" id="lrefresh">refresh now</a></p>
-  <p class="muted" id="lmeta">Loading…</p>
-  <div class="box"><table class="stack">
-    <thead><tr><th>Position</th><th>Size</th><th>Entry</th><th>Price</th><th>P&amp;L</th><th>R</th><th>Stop</th><th>Take-profit</th><th>Liquidation</th></tr></thead>
-    <tbody id="lrows"><tr><td colspan="9" class="muted">Loading…</td></tr></tbody>
-  </table></div>
-  
-  <h3>Closed</h3>
-  <p class="muted" id="meta">Loading…</p>
-  <div class="box"><table class="stack">
+  <div class="kpis" id="tkpis"></div>
+  <h3>Open <span class="muted">live · <a href="#" id="lrefresh">refresh</a></span></h3>
+  <div class="poslist" id="lrows"><div class="muted">Loading…</div></div>
+  <p class="muted" id="lmeta"></p>
+  <div class="panel c1"><b>R per closed trade <span class="muted">(oldest → newest; line = running total)</span></b><div id="rchart"></div></div>
+  <div class="panel c3"><b>Shorts vs longs</b><div id="sidebars"></div></div>
+  <details class="pa"><summary>All closed trades</summary>
+  <p class="muted" id="meta" style="padding:0 14px">Loading…</p>
+  <div class="box" style="margin:0 10px 10px"><table class="stack">
     <thead><tr><th>Trade</th><th>Opened</th><th>Entry</th><th>Stop</th><th>Take-profit</th><th>Exit</th><th>Net $</th><th>R</th></tr></thead>
     <tbody id="rows"><tr><td colspan="8" class="muted">Loading…</td></tr></tbody>
-  </table></div>
-  
+  </table></div></details>
   </div>
   </details>
 
   <details class="sec anchor" id="alerts">
   <summary><span class="st">Alerts</span><span class="muted"><span id="alhint"></span> · watchlist <span id="wlhint"></span></span></summary>
   <div class="secbody">
+  <div class="kpis" id="akpis"></div>
   <h3>Price alerts</h3>
   <div class="box agroups" id="arows"><div class="muted" style="padding:10px 14px">Loading…</div></div>
-  <form id="aform" class="box" style="padding:12px 14px;display:grid;gap:10px">
+  <details class="pa"><summary>Add an alert</summary>
+  <form id="aform" style="padding:4px 14px 14px;display:grid;gap:10px">
     <div class="formrow">
       <label>Type <select id="atype"><option value="level">Price level</option><option value="trendline">Trendline (two points)</option></select></label>
       <label>Coin <input id="acoin" required placeholder="DOT" size="8" autocapitalize="characters"></label>
@@ -226,19 +273,17 @@ ol.rules{margin:4px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px}
       <label style="flex:1 1 220px">Note <input id="anote" placeholder="e.g. rejection cluster" style="width:100%"></label>
     </div>
     <div><button type="submit">Add alert</button> <span class="muted" id="ahint"></span></div>
-  </form>
+  </form></details>
   
   <h3 id="watch">Watchlist</h3>
-  <div class="box"><table class="stack">
-    <thead><tr><th>Ticker</th><th>Price</th><th>24h</th><th>24h volume</th><th>Market</th><th>Nearest alert</th><th></th></tr></thead>
-    <tbody id="wlrows"><tr><td colspan="7" class="muted">Loading…</td></tr></tbody>
-  </table></div>
-  <form id="wlform" class="box" style="padding:12px 14px;display:grid;gap:10px">
+  <div class="wgrid" id="wlrows"><div class="muted">Loading…</div></div>
+  <details class="pa"><summary>Add to the watchlist</summary>
+  <form id="wlform" style="padding:4px 14px 14px;display:grid;gap:10px">
     <div class="formrow">
       <label style="flex:1 1 260px">Hyperliquid coin or token contract address <input id="wlcoin" required placeholder="CHIP, xyz:JIO, or 6GmAFSY…" style="width:100%"></label>
     </div>
     <div><button type="submit">Add to watchlist</button> <span class="muted" id="wlfhint"></span></div>
-  </form>
+  </form></details>
   
   </div>
   </details>
@@ -246,16 +291,17 @@ ol.rules{margin:4px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px}
   <details class="sec anchor" id="events">
   <summary><span class="st">My event bets</span><span class="muted" id="evhint">loading…</span></summary>
   <div class="secbody">
+  <div class="kpis" id="evkpis"></div>
   <h3>Positions</h3>
   <div class="box"><table class="stack">
     <thead><tr><th>Market</th><th class="tl">Criteria used</th><th class="tl">Settles</th><th>Side</th><th>Size @ entry</th><th>Now (mid)</th><th>P&amp;L</th><th>If it wins</th></tr></thead>
     <tbody id="evpos"><tr><td colspan="8" class="muted">Loading…</td></tr></tbody>
   </table></div>
-  <h3>Open orders</h3>
-  <div class="box"><table class="stack">
+  <details class="pa"><summary>Open orders <span class="muted" id="evordn"></span></summary>
+  <div class="box" style="margin:0 10px 10px"><table class="stack">
     <thead><tr><th>Market</th><th class="tl">Criteria used</th><th class="tl">Settles</th><th>Order</th><th>Cost</th><th>Best price now</th><th>If it fills and wins</th></tr></thead>
     <tbody id="evord"><tr><td colspan="7" class="muted">Loading…</td></tr></tbody>
-  </table></div>
+  </table></div></details>
   <p class="muted" id="evset"></p>
   </div>
   </details>
@@ -264,7 +310,7 @@ ol.rules{margin:4px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px}
   <details class="sec anchor" id="portfolio">
   <summary><span class="st">Portfolio</span><span class="muted" id="pfhint">loading…</span></summary>
   <div class="secbody">
-    <div class="box pv" id="pfvol"></div>
+    <div class="kpis" id="pfvol"></div>
     <div class="box pc"><b>Total value, week on week</b><div id="pfchart" style="margin-top:8px"></div></div>
     <details class="pa"><summary>Airdrop activity</summary><div id="pfact"></div></details>
   </div>
@@ -273,17 +319,20 @@ ol.rules{margin:4px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px}
   <details class="sec anchor" id="rules">
   <summary><span class="st">Rule book</span><span class="muted">9 rules · 14 Nov 2026</span></summary>
   <div class="secbody">
-  <ol class="rules">
-    <li>Map the coin's entire history.</li>
-    <li>Map the last year, last month and last week.</li>
-    <li>Mark the areas of interest.</li>
-    <li>Add the EMAs, volume profile and fibs.</li>
-    <li>Take whatever trade is presented.</li>
-    <li>Risk under 3% on each trade.</li>
-    <li>The stop goes in with the entry. It never moves wider.</li>
-    <li>No adding to an open trade.</li>
-    <li>Set a take-profit. It never moves toward the entry.</li>
-  </ol>
+  <div class="rgrid">
+    <div class="rgroup c4"><h4>Find the trade</h4>
+      <div class="rule"><b class="n">1</b><span>Map the coin's entire history.</span></div>
+      <div class="rule"><b class="n">2</b><span>Map the last year, month and week.</span></div>
+      <div class="rule"><b class="n">3</b><span>Mark the areas of interest.</span></div>
+      <div class="rule"><b class="n">4</b><span>Add EMAs, volume profile and fibs.</span></div>
+      <div class="rule"><b class="n">5</b><span>Take whatever trade is presented.</span></div></div>
+    <div class="rgroup c6"><h4>Size it</h4>
+      <div class="rule"><b class="n">6</b><span>Risk under 3% on each trade.</span></div></div>
+    <div class="rgroup c5"><h4>Manage it</h4>
+      <div class="rule"><b class="n">7</b><span>Stop goes in with the entry. Never wider.</span></div>
+      <div class="rule"><b class="n">8</b><span>No adding to an open trade.</span></div>
+      <div class="rule"><b class="n">9</b><span>Set a take-profit. Never toward the entry.</span></div></div>
+  </div>
   </div>
   </details>
 </main>
@@ -322,6 +371,9 @@ fetch("data/market.json?t="+Date.now()).then(r=>r.json()).then(m=>{
         <div><b>Weekly resistances:</b> ${(r.resistance||[]).map(x=>(r.unit==="mcap"?"$"+x.price.toFixed(0)+"B":f(x.price))+` <span class="muted">(+${pct(x.price,r.value).toFixed(1)}%)</span>`).join(" · ")||"none"}</div>
         ${r.unit==="mcap"?`<div class="muted">Market caps from CoinMarketCap${r.id==="ALTS"?`, minus ${m.btc_dominance&&m.btc_dominance.stables_usd?"$"+(m.btc_dominance.stables_usd/1e9).toFixed(0)+"B of":""} stablecoins (DefiLlama)`:""}; one value a day, so levels are from daily closes.</div>`:""}</div></div>
     </details>`).join("");
+  const tint=r=>{const l=r.label==="mixed"?r.lean:r.label;return l==="bullish"?"c2":l==="bearish"?"c5":"c6";};
+  document.getElementById("mktkpis").innerHTML=m.rows.filter(r=>!r.error).map(r=>`<div class="kpi ${tint(r)}"><div class="k">${r.id} · ${r.name}</div>
+    <div class="v">${mval(r)}</div><div class="s"><b class="${(r.chg7d||0)>=0?"up":"down"}">7d ${(r.chg7d||0)>=0?"+":""}${r.chg7d}%</b> · <b class="${labCls(r)}" style="text-transform:capitalize">${labTxt(r)}</b></div></div>`).join("");
   if(SCR) drawCharts(document.querySelector("#ctabs button.on")?.dataset.tab||"bullish");
 }).catch(()=>{document.getElementById("mktverdict").textContent="Market data not built yet: it appears after the next hourly scan.";});
 
@@ -341,6 +393,12 @@ fetch("data/rates.json?t="+Date.now()).then(r=>r.json()).then(R=>{
   document.getElementById("ratesnote").textContent=rr?`US real yield ${rr.value.toFixed(2)}% · this year ${rr.ytd_lo}–${rr.ytd_hi}% · Telegram alert below ${(+a.low).toFixed(2)}% or above ${(+a.high).toFixed(2)}%`:"";
   document.getElementById("ratesfoot").innerHTML=`Real yield = what a 10-year government bond pays above inflation. Higher is a headwind for gold (gold pays nothing), lower a tailwind. US: market yield on inflation-protected bonds (TIPS). India has no traded inflation-linked bond, so its figure is the 10-year yield minus the latest CPI. ▲▼ = change on a week ago (a rise in yields is shown red).
     Sources: NY Fed, BLS, US Treasury, RBI, CNBC (India 10-year), MOSPI (India CPI, updated after each monthly release).${R.errors&&R.errors.length?` Not refreshed this time: ${R.errors.map(e=>e.split(":")[0]).join(", ")}.`:""} Updated ${ist(R.generated_at,true)}.`;
+  const two=(k,a,b,cl)=>`<div class="kpi ${cl}"><div class="k">${k}</div><div class="v" style="font-size:19px">${a}</div><div class="s">${b}</div></div>`;
+  document.getElementById("ratekpis").innerHTML=
+    two("US real yield (10y)",rr?p(rr.value):"–",rr?`this year ${rr.ytd_lo}–${rr.ytd_hi}% · gold headwind when high`:"","c4")+
+    two("Policy rate",`US ${u.policy?u.policy.hi.toFixed(2)+"%":"–"}`,`India ${n.repo!=null?n.repo.toFixed(2)+"%":"–"}`,"c1")+
+    two("Inflation",`US ${u.cpi?u.cpi.value+"%":"–"}`,`India ${n.cpi?n.cpi.value+"%":"–"}`,"c3")+
+    two("10-year bond",`US ${u.y10?p(u.y10.value):"–"}`,`India ${n.y10?p(n.y10.value):"–"}`,"c2");
   document.getElementById("rates").hidden=false;
 }).catch(()=>{});
 
@@ -356,6 +414,13 @@ fetch("data/events.json?t="+Date.now()).then(r=>r.json()).then(E=>{
   const tot=E.settled.reduce((a,s)=>a+s.pnl,0);
   document.getElementById("evset").innerHTML=E.settled.length?`<b>Closed, last 14 days:</b> ${E.settled.map(s=>`${s.title} <span class="${s.pnl>=0?"up":"down"}">${d(s.pnl)}</span>`).join(" · ")} · <b>total <span class="${tot>=0?"up":"down"}">${d(tot)}</span></b>`:"";
   const open=E.positions.reduce((a,r)=>a+(r.value||0),0), oc=E.orders.reduce((a,r)=>a+r.cost,0);
+  const pnlOpen=E.positions.reduce((a,r)=>a+(r.pnl||0),0), win=E.positions.reduce((a,r)=>a+(r.if_wins||0),0);
+  document.getElementById("evordn").textContent=`(${E.orders.length} · ${d(oc)})`;
+  document.getElementById("evkpis").innerHTML=
+    `<div class="kpi c4"><div class="k">Open positions</div><div class="v">${E.positions.length}</div><div class="s">${d(open)} at stake</div></div>`+
+    `<div class="kpi ${pnlOpen>=0?"c2":"c5"}"><div class="k">Open P&amp;L</div><div class="v ${pnlOpen>=0?"up":"down"}">${d(pnlOpen)}</div><div class="s">+${d(win)} if they all win</div></div>`+
+    `<div class="kpi c6"><div class="k">Open orders</div><div class="v">${E.orders.length}</div><div class="s">${d(oc)} if all fill</div></div>`+
+    `<div class="kpi ${tot>=0?"c2":"c5"}"><div class="k">Closed, 14 days</div><div class="v ${tot>=0?"up":"down"}">${d(tot)}</div><div class="s">${E.settled.length} settled</div></div>`;
   document.getElementById("evhint").textContent=`${E.positions.length} position${E.positions.length===1?"":"s"} (${d(open)}) · ${E.orders.length} open order${E.orders.length===1?"":"s"} (${d(oc)})`;
 }).catch(()=>{document.getElementById("evhint").textContent="not built yet: appears after the next hourly scan";});
 
@@ -487,7 +552,10 @@ async function liveCharts(){   // live price and "in position / orders in" on th
 Promise.all([fetch("data/screener.json?t="+Date.now()).then(r=>r.json()),fetch("data/intel.json?t="+Date.now()).then(r=>r.json()).catch(()=>({coins:{}}))]).then(([s,i])=>{
   SCR=s; INTEL=i;
   const n=k=>s.coins.filter(r=>r.label===k).length;
-  document.getElementById("ctabs").innerHTML=["bullish","bearish","mixed"].map(k=>`<button type="button" data-tab="${k}">${k[0].toUpperCase()+k.slice(1)} <span class="muted">${n(k)}</span></button>`).join("");
+  const tc={bullish:"var(--up)",bearish:"var(--down)",mixed:"var(--muted)"};
+  document.getElementById("ctabs").innerHTML=["bullish","bearish","mixed"].map(k=>`<button type="button" data-tab="${k}"><span class="k" style="color:${tc[k]}">${k[0].toUpperCase()+k.slice(1)}</span><b>${n(k)}</b></button>`).join("");
+  const tot=s.coins.length||1;
+  document.getElementById("cbar").innerHTML=["bullish","mixed","bearish"].map(k=>`<i style="width:${100*n(k)/tot}%;background:${tc[k]};opacity:${k==="mixed"?.35:.8}" title="${k} ${n(k)}"></i>`).join("");
   document.querySelectorAll("#ctabs button").forEach(b=>b.addEventListener("click",()=>drawCharts(b.dataset.tab)));
   drawCharts("bullish"); setInterval(liveCharts,60000);
 }).catch(()=>{document.getElementById("crows").innerHTML='<p class="muted">Charts not built yet: they appear after the next hourly scan.</p>';});
@@ -500,6 +568,30 @@ fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   document.getElementById("chint").innerHTML=`${s.trades} closed · ${s.wins} wins · net <b class="${nt>=0?"up":"down"}">${sg(nt)}</b>${bk?` <span class="muted">(incl. ${sg(bk)} booked on open trades)</span>`:""}`;
   document.getElementById("meta").innerHTML=`Perps: ${sm(s)}. Spot trades aren't included. Updated ${ist(j.generated_at,true)}.`;
   window.JOURNAL=j; document.dispatchEvent(new Event("journal-ready"));
+  const CT=j.trades.filter(t=>t.closed&&t.kind!=="prediction"&&!t.coin.startsWith("#")&&t.r!=null).sort((a,b)=>a.closed_at<b.closed_at?-1:1);
+  const kp=(k,v,sub,cl,vc)=>`<div class="kpi ${cl}"><div class="k">${k}</div><div class="v ${vc||""}">${v}</div><div class="s">${sub}</div></div>`;
+  const totR=CT.reduce((a,t)=>a+t.r,0);
+  document.getElementById("tkpis").innerHTML=
+    kp("Closed trades",s.trades,`${s.open||0} open now`,"c4")+
+    kp("Win rate",s.trades?Math.round(100*s.wins/s.trades)+"%":"–",`${s.wins} wins`,"c1")+
+    kp("Net",sg(nt),`fees ${usd(s.fees_usd||0)}`,nt>=0?"c2":"c5",nt>=0?"up":"down")+
+    kp("Total R",(totR>=0?"+":"")+totR.toFixed(2)+"R",`avg ${(CT.length?totR/CT.length:0).toFixed(2)}R a trade`,totR>=0?"c2":"c5",totR>=0?"up":"down");
+  // R per trade + running total
+  (()=>{const W=innerWidth<600?380:760,H=innerWidth<600?200:190,pl=30,pr=8,pt=12,pb=20, n=CT.length; if(!n) return;
+    let cum=0; const cs=CT.map(t=>cum+=t.r); const mx=Math.max(1,...CT.map(t=>t.r),...cs), mn=Math.min(-1,...CT.map(t=>t.r),...cs);
+    const y=v=>pt+(mx-v)/(mx-mn)*(H-pt-pb), step=(W-pl-pr)/n, bw=Math.max(3,step*0.62);
+    let g=`<svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="R per closed trade">`;
+    [mx,0,mn].forEach(v=>{g+=`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="currentColor" opacity="${v===0?.35:.1}"/><text x="${pl-5}" y="${y(v)+4}" text-anchor="end" font-size="11" fill="currentColor" opacity=".6">${v>0?"+":""}${(+v).toFixed(v%1?1:0)}R</text>`;});
+    CT.forEach((t,i)=>{const x=pl+step*i+(step-bw)/2, y0=y(0), y1=y(t.r);
+      g+=`<rect x="${x}" y="${Math.min(y0,y1)}" width="${bw}" height="${Math.max(1,Math.abs(y1-y0))}" rx="2" fill="${t.r>=0?"var(--up)":"var(--down)"}" opacity=".75"><title>${t.coin.replace(/^xyz:/,"")} ${t.side} · ${ist(t.closed_at)} · ${t.r>0?"+":""}${t.r}R (${t.net>=0?"+":"−"}$${Math.abs(t.net).toFixed(2)})</title></rect>`;});
+    g+=`<polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="${cs.map((c,i)=>`${pl+step*i+step/2},${y(c)}`).join(" ")}"/>`;
+    g+=`<text x="${pl}" y="${H-4}" font-size="11" fill="currentColor" opacity=".6">${ist(CT[0].closed_at).slice(0,6)}</text><text x="${W-pr}" y="${H-4}" text-anchor="end" font-size="11" fill="currentColor" opacity=".6">${ist(CT[n-1].closed_at).slice(0,6)} · running total ${cs[n-1]>=0?"+":""}${cs[n-1].toFixed(2)}R</text>`;
+    document.getElementById("rchart").innerHTML=g+"</svg>";})();
+  (()=>{const sides=["short","long"].map(sd=>{const L=CT.filter(t=>t.side===sd);return {sd,n:L.length,w:L.filter(t=>t.net>0).length,r:L.reduce((a,t)=>a+t.r,0),usd:L.reduce((a,t)=>a+t.net,0)};});
+    const m=Math.max(1,...sides.map(x=>Math.abs(x.r)));
+    document.getElementById("sidebars").innerHTML=sides.map(x=>`<div class="hbar"><span><b style="text-transform:capitalize">${x.sd}s</b><br><span class="muted">${x.n} · ${x.w} wins</span></span>
+      <span class="tr"><i style="${x.r>=0?"left:50%":"right:50%"};width:${50*Math.abs(x.r)/m}%;background:${x.r>=0?"var(--up)":"var(--down)"}"></i><i style="left:50%;width:1px;background:currentColor;opacity:.3;border-radius:0"></i></span>
+      <span class="n ${x.r>=0?"up":"down"}">${x.r>=0?"+":""}${x.r.toFixed(2)}R<br><span class="muted" style="font-weight:500">${x.usd>=0?"+":"−"}$${Math.abs(x.usd).toFixed(2)}</span></span></div>`).join("");})();
   document.getElementById("rows").innerHTML=[...j.trades].filter(t=>t.closed&&t.kind!=="prediction"&&!t.coin.startsWith("#")).reverse().map(t=>{
     const c=t.net>0?"up":t.net<0?"down":"";
     const moved=t.stop!=null&&t.stop_last!=null&&Math.abs(t.stop_last/t.stop-1)>0.0005;
@@ -511,6 +603,19 @@ fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
 
 // ---- live open positions, read straight from Hyperliquid's public API (no keys)
 const sgn=x=>(x>=0?"+":"−")+"$"+Math.abs(x).toFixed(2);
+// stop ... entry ... take-profit on one line; loss side on the left, profit side on the right
+function rangeBar({long,stop,entry,px,tp}){
+  const pts=[stop,entry,px,tp].filter(x=>x!=null&&x>0); if(pts.length<2) return "";
+  let lo=Math.min(...pts),hi=Math.max(...pts); if(hi===lo){hi*=1.01;lo*=0.99;}
+  const P=v=>{let t=(v-lo)/(hi-lo); if(!long) t=1-t; return 2+t*96;};
+  const seg=(a,b,col)=>a==null||b==null?"":`<i class="ln" style="left:${Math.min(P(a),P(b))}%;width:${Math.abs(P(a)-P(b))}%;background:${col}"></i>`;
+  const end=x=>x<12?"l":x>88?"r":"";
+  const lab=(v,name,pos,cls)=>v==null?"":`<span class="lb ${pos} ${end(P(v))}" style="left:${P(v)}%"><span class="muted">${name}</span> <b class="${cls||""}">${f(v)}</b></span>`;
+  return `<div class="rng">${seg(stop,entry,"var(--down)")}${seg(entry,tp,"var(--up)")}${!tp&&px!=null?seg(entry,px,"color-mix(in srgb,var(--muted) 45%,transparent)"):""}
+    ${stop?`<i class="tk" style="left:${P(stop)}%;background:var(--down)"></i>`:""}<i class="tk" style="left:${P(entry)}%"></i>${tp?`<i class="tk" style="left:${P(tp)}%;background:var(--up)"></i>`:""}
+    ${px!=null?`<i class="dot" style="left:${P(px)}%"></i>`:""}
+    ${lab(stop,"stop","b","down")}${lab(tp,"TP","b","up")}${lab(entry,"entry",px!=null&&Math.abs(P(px)-P(entry))<14?"b":"t")}${px!=null?lab(px,"now","t"):""}</div>`;
+}
 async function live(){
   const j=window.JOURNAL; if(!j) return;
   const wallets=mainWallet(j);
@@ -538,32 +643,33 @@ async function live(){
         wPnl+=pnl;
         const c=pnl>0?"up":pnl<0?"down":"";
         const name=q.coin.includes(":")?`${q.coin.split(":")[1]} <span class="muted">(${q.coin.split(":")[0]==="xyz"?"trade.xyz stocks":q.coin.split(":")[0]})</span>`:q.coin;
-        rows.push(`<tr><td><b>${name}</b> ${long?"long":"short"} <span class="muted">${q.leverage.value}× ${q.leverage.type}</span></td>
-          <td data-label="Size">${fs(size)} <span class="muted">(${usd(size*px)})</span></td><td data-label="Entry">${f(entry)}</td><td data-label="Price">${f(px)}</td>
-          <td data-label="P&amp;L" class="${c}"><b>${sgn(pnl)}</b></td><td data-label="R" class="${c}">${r==null?"–":(r>=0?"+":"−")+Math.abs(r).toFixed(2)}</td>
-          <td data-label="Stop">${stop?f(stop)+` <span class="muted">${pct(stop,px).toFixed(1)}% · ${(long?stop>=entry:stop<=entry)?"locks in "+usd(Math.abs(risk)):(risk<0.5&&jt?"near breakeven":"risk "+usd(risk))}</span>`:'<span class="warn">none</span>'}</td>
-          <td data-label="Take-profit">${tp?f(tp)+` <span class="muted">${pct(tp,px).toFixed(1)}%</span>`:'<span class="warn">none</span>'}</td>
-          <td data-label="Liquidation">${q.liquidationPx?f(+q.liquidationPx):"–"}</td></tr>`);
+        const tpUsd=tps.reduce((a,o)=>a+(+o.sz||0)*(+o.triggerPx||+o.limitPx),0), smallTp=tps.some(o=>(+o.sz||0)*(+o.triggerPx||+o.limitPx)<10&&+o.sz>0);
+        rows.push(`<div class="pos"><div class="hd"><span class="coin">${name}</span><span class="pill ${long?"up":"down"}">${long?"long":"short"}</span>
+          <span class="muted">${q.leverage.value}× · ${usd(size*px)}</span><span class="big ${c}">${sgn(pnl)}</span><b class="${c}">${r==null?"":(r>=0?"+":"−")+Math.abs(r).toFixed(2)+"R"}</b></div>
+          ${rangeBar({long,stop,entry,px,tp})}
+          <div class="chips">${stop?"":'<span class="chip bad">no stop</span>'}${tp?"":'<span class="chip bad">no take-profit</span>'}${smallTp?'<span class="chip bad">take-profit order under $10</span>':""}
+            <span class="muted">${[stop?((long?stop>=entry:stop<=entry)?"stop locks in "+usd(Math.abs(risk)):"at risk "+usd(risk)):"",q.liquidationPx?`liquidation ${f(+q.liquidationPx)}`:""].filter(Boolean).join(" · ")}</span></div></div>`);
       });
       // entry orders waiting to fill (not stops or take-profits)
       oo.filter(o=>!o.reduceOnly&&!o.coin.startsWith("#")).forEach(o=>{
         const nm=o.coin.includes(":")?o.coin.split(":")[1]:o.coin;
         const st=oo.find(x=>x.coin===o.coin&&x.reduceOnly&&/Stop/.test(x.orderType||""));
-        rows.push(`<tr><td><b>${nm}</b> ${o.side==="B"?"buy":"sell"} order <span class="muted">waiting to fill</span></td>
-          <td data-label="Size">${fs(+o.sz)} <span class="muted">(${usd(+o.sz*+o.limitPx)})</span></td><td data-label="Entry">${f(+o.limitPx)}</td><td data-label="Price">${mids[o.coin]?f(+mids[o.coin]):"–"}</td>
-          <td data-label="P&amp;L">–</td><td data-label="R">–</td><td data-label="Stop">${st?f(+st.triggerPx):'<span class="warn">none</span>'}</td><td data-label="Take-profit">–</td><td data-label="Liquidation">–</td></tr>`);
+        const mp=mids[o.coin]?+mids[o.coin]:null;
+        rows.push(`<div class="pos c6"><div class="hd"><span class="coin">${nm}</span><span class="pill ${o.side==="B"?"up":"down"}">${o.side==="B"?"buy":"sell"} order</span><span class="muted">waiting · ${usd(+o.sz*+o.limitPx)}</span></div>
+          <div class="chips"><span>at <b>${f(+o.limitPx)}</b></span>${mp?`<span class="muted">price ${f(mp)} (${pct(+o.limitPx,mp).toFixed(1)}% away)</span>`:""}${st?`<span class="muted">stop ${f(+st.triggerPx)}</span>`:'<span class="chip bad">no stop</span>'}</div></div>`);
       });
       const usdc=(sp.balances||[]).find(b=>b.coin==="USDC"), tot=usdc?+usdc.total:0, hold=usdc?+usdc.hold:0;
       totPnl+=wPnl;
       metas.push(`USDC ${usd(tot)}, ${usd(hold)} in use, <b>${usd(Math.max(0,tot-hold))} free</b>, open P&L ${sgn(wPnl)}`);
     });
-    document.getElementById("lrows").innerHTML=rows.join("")||'<tr><td colspan="9" class="muted">No open positions.</td></tr>';
+    document.getElementById("lrows").innerHTML=rows.join("")||'<div class="muted">No open positions.</div>';
     document.getElementById("jhint").innerHTML=`${rows.length} open · P&L <b class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</b>`;
     document.getElementById("lmeta").innerHTML=metas.join(" · ")+`. Total open P&L <b class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</b>. Checked ${ist(new Date().toISOString(),true)}.`;
   }catch(e){
     const open=(j.trades||[]).filter(t=>!t.closed&&t.kind!=="prediction"&&!t.coin.startsWith("#"));
     document.getElementById("lmeta").textContent=`Couldn't reach Hyperliquid just now (${e.message}); showing open trades from the hourly journal instead, without live P&L.`;
-    document.getElementById("lrows").innerHTML=open.map(t=>`<tr><td><b>${t.coin}</b> ${t.side}</td><td data-label="Size">${fs(t.size)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Price">–</td><td data-label="P&amp;L">–</td><td data-label="R">–</td><td data-label="Stop">${f(t.stop)}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Liquidation">–</td></tr>`).join("")||'<tr><td colspan="9" class="muted">No open trades.</td></tr>';
+    document.getElementById("lrows").innerHTML=open.map(t=>`<div class="pos"><div class="hd"><span class="coin">${t.coin.replace(/^xyz:/,"")}</span><span class="pill ${t.side==="long"?"up":"down"}">${t.side}</span><span class="muted">${fs(t.size)} · no live price</span></div>
+      ${rangeBar({long:t.side==="long",stop:t.stop_last||t.stop,entry:t.avg_entry,px:null,tp:t.tp})}${t.tp?"":'<div class="chips"><span class="chip bad">no take-profit</span></div>'}</div>`).join("")||'<div class="muted">No open trades.</div>';
   }
 }
 document.addEventListener("journal-ready",()=>{live();setInterval(live,60000);});
@@ -575,6 +681,9 @@ const lineNow=a=>{if(a.type!=="trendline")return a.price;const t1=Date.parse(a.p
 Promise.all([fetch("data/alerts.json?t="+Date.now()).then(r=>r.json()),HL({type:"allMids"}).catch(()=>({}))]).then(([cfg,mids])=>{
   const al=cfg.alerts||[];
   document.getElementById("alhint").textContent=`${al.length} active`;
+  const near=al.map(a=>({a,px:mids[a.coin]?+mids[a.coin]:null})).filter(x=>x.px).map(x=>({...x,d:pct(lineNow(x.a),x.px)})).sort((p,q)=>p.d-q.d)[0];
+  document.getElementById("akpis").innerHTML=`<div class="kpi c6"><div class="k">Active alerts</div><div class="v">${al.length}</div><div class="s">on ${new Set(al.map(a=>a.coin)).size} coins</div></div>`+
+    (near?`<div class="kpi c4"><div class="k">Closest to firing</div><div class="v">${near.a.coin.replace(/^xyz:/,"")}</div><div class="s">${f(lineNow(near.a))} · ${near.d.toFixed(1)}% away</div></div>`:"");
   // one row per coin; the arrow opens that coin's alerts, nearest to price first
   const by={}; al.forEach(a=>(by[a.coin]=by[a.coin]||[]).push(a));
   const dist=(lv,px)=>px?(lv>px?"+":"−")+pct(lv,px).toFixed(1)+"%":"–";
@@ -583,7 +692,7 @@ Promise.all([fetch("data/alerts.json?t="+Date.now()).then(r=>r.json()),HL({type:
     const px=mids[coin]?+mids[coin]:null, rows=by[coin].map(a=>({a,lv:lineNow(a)})).sort((x,y)=>px?Math.abs(x.lv-px)-Math.abs(y.lv-px):x.lv-y.lv);
     const above=px?rows.filter(r=>r.lv>px).length:0, below=px?rows.length-above:0;
     return `<details class="agrp"><summary><b>${coin}</b><span class="muted">${rows.length} alert${rows.length>1?"s":""}${px?` · price ${f(px)} · ${above} above, ${below} below`:""}</span>
-        <span class="muted">nearest ${f(rows[0].lv)} (${dist(rows[0].lv,px)})</span></summary>
+        <span class="muted">nearest ${f(rows[0].lv)} (${dist(rows[0].lv,px)})</span>${px?`<span class="meter" title="how close the nearest alert is (full = at price)"><i style="width:${Math.max(4,100-5*pct(rows[0].lv,px))}%"></i></span>`:""}</summary>
       ${rows.map(({a,lv})=>`<div class="arow2"><span><b>${f(lv)}</b> <span class="muted">${kind(a)}${a.name&&a.name!==coin+" "+a.price?` · ${a.name}`:""}</span></span><span class="n">${dist(lv,px)}</span><button class="link" data-remove="${a.id}">remove</button></div>`).join("")}
     </details>`;}).join("")||'<div class="muted" style="padding:10px 14px">No alerts set.</div>';
   document.querySelectorAll("[data-remove]").forEach(b=>b.addEventListener("click",()=>issue(`/remove ${b.dataset.remove}`)));
@@ -629,14 +738,12 @@ async function watchRows(){
   document.getElementById("wlrows").innerHTML=rows.map(({w,px,ch,vol,mkt,url})=>{
     const near=px?al.filter(a=>a.coin===(w.coin||w.symbol)).map(a=>({a,lv:lineNow(a)})).sort((x,y)=>Math.abs(x.lv-px)-Math.abs(y.lv-px))[0]:null;
     const name=w.source==="hyperliquid"?w.coin:w.symbol;
-    return `<tr><td><b>${url?`<a href="${url}" target="_blank" rel="noopener">${name}</a>`:name}</b></td>
-      <td data-label="Price">${px?"$"+f(px):'<span class="muted">not available</span>'}</td><td data-label="24h">${chg(ch)}</td>
-      <td data-label="24h volume">${big$(vol)}</td><td data-label="Market" class="muted" style="font-size:13px">${mkt||""}</td>
-      <td data-label="Nearest alert">${near?`${f(near.lv)} <span class="muted">(${near.lv>px?"+":"−"}${pct(near.lv,px).toFixed(1)}%)</span>`:'<span class="muted">none</span>'}</td>
-      <td><button class="link" data-unwatch="${w.symbol}">remove</button></td></tr>`;}).join("")||'<tr><td colspan="7" class="muted">Nothing on the watchlist.</td></tr>';
+    return `<div class="wc"><div style="display:flex;justify-content:space-between;gap:8px"><b>${url?`<a href="${url}" target="_blank" rel="noopener">${name}</a>`:name}</b><button class="link" data-unwatch="${w.symbol}">remove</button></div>
+      <div style="font-size:20px;font-weight:700">${px?"$"+f(px):'<span class="muted">n/a</span>'} <span style="font-size:14px">${chg(ch)}</span></div>
+      <div class="muted">vol ${big$(vol)} · alert ${near?`${f(near.lv)} (${near.lv>px?"+":"−"}${pct(near.lv,px).toFixed(1)}%)`:"none"}</div></div>`;}).join("")||'<div class="muted">Nothing on the watchlist.</div>';
   document.querySelectorAll("[data-unwatch]").forEach(b=>b.addEventListener("click",()=>issue(`/unwatch ${b.dataset.unwatch}`)));
 }
-const wl=()=>watchRows().catch(()=>{document.getElementById("wlrows").innerHTML='<tr><td colspan="7" class="muted">Watchlist not available.</td></tr>';});
+const wl=()=>watchRows().catch(()=>{document.getElementById("wlrows").innerHTML='<div class="muted">Watchlist not available.</div>';});
 wl(); setInterval(wl,60000);
 document.getElementById("wlform").addEventListener("submit",e=>{e.preventDefault();
   const v=document.getElementById("wlcoin").value.trim(), hint=document.getElementById("wlfhint");
@@ -651,7 +758,7 @@ document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("clic
   if(el.tagName==="DETAILS") el.open=true;
   el.scrollIntoView({behavior:"smooth",block:"start"}); history.replaceState(null,"","#"+a.dataset.sec); markActive();
 }));
-const secs=["charts","trades","alerts","portfolio","rules"].map(id=>document.getElementById(id));
+const secs=["charts","trades","alerts","events","portfolio","rules"].map(id=>document.getElementById(id));
 let pinned=null;   // the section just tapped stays lit until you scroll yourself
 ["wheel","touchmove","keydown"].forEach(ev=>addEventListener(ev,()=>{pinned=null;},{passive:true}));
 function markActive(){
@@ -683,10 +790,9 @@ async function portfolioLive(){
     const usdc=(sp.balances||[]).find(b=>b.coin==="USDC")||{total:0}, value=+usdc.total-Math.max(0,borrowed);
     const day=(fees.dailyUserVlm||[]), mk=day.reduce((a,d)=>a+(+d.userAdd),0), tk=day.reduce((a,d)=>a+(+d.userCross),0), disc=+fees.activeReferralDiscount||0;
     const v=k=>+(pf[k]||{}).vlm||0;
-    document.getElementById("pfvol").innerHTML=`<table class="stack"><thead><tr><th>Trading volume</th><th>24 hours</th><th>7 days</th><th>30 days</th><th>All time</th><th>Maker share, 14 days</th><th>Fee rates</th></tr></thead><tbody>
-      <tr><td><b>Volume</b></td><td data-label="24 hours">${big(v("day"))}</td><td data-label="7 days">${big(v("week"))}</td><td data-label="30 days">${big(v("month"))}</td><td data-label="All time"><b>${big(v("allTime"))}</b></td>
-      <td data-label="Maker share, 14 days">${mk+tk>0?Math.round(100*mk/(mk+tk))+"%":"–"} <span class="muted">(${big(mk+tk)})</span></td>
-      <td data-label="Fee rates">${(+fees.userCrossRate*(1-disc)*100).toFixed(3)}% taker · ${(+fees.userAddRate*(1-disc)*100).toFixed(3)}% maker</td></tr></tbody></table>`;
+    const kv=(k,val,sub,cl)=>`<div class="kpi ${cl}"><div class="k">${k}</div><div class="v">${val}</div><div class="s">${sub}</div></div>`;
+    document.getElementById("pfvol").innerHTML=kv("Value now",usd(value),"USDC on the account","c4")+kv("Volume, 7 days",big(v("week")),`24h ${big(v("day"))} · 30d ${big(v("month"))}`,"c1")+
+      kv("Volume, all time",big(v("allTime")),"","c3")+kv("Maker share",mk+tk>0?Math.round(100*mk/(mk+tk))+"%":"–",`14 days · fees ${(+fees.userAddRate*(1-disc)*100).toFixed(3)}% maker / ${(+fees.userCrossRate*(1-disc)*100).toFixed(3)}% taker`,"c2");
     document.getElementById("pfhint").innerHTML=`<b>${usd(value)}</b>`;
     window.PF_NOW={total:value};
   }catch(e){
