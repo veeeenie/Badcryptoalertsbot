@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-14T16:11:05+00:00",
+ "generated_at": "2026-11-14T17:11:07+00:00",
  "positions": [
   {
    "title": "HYPE above 95.00",
@@ -9,7 +9,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 66.9885,
+    "price": 65.1275,
     "line": 95.0
    },
    "bid": 0.00726,
@@ -33,19 +33,19 @@
    "criteria": "YES if trade.xyz ANT perp is above 100 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.545,
+    "price": 101.295,
     "line": 100.0
    },
    "bid": 0.0526,
-   "ask": 0.9774,
-   "mid": 0.515,
+   "ask": 0.97479,
+   "mid": 0.513695,
    "live": true,
    "action": "Buy",
    "size": 20.0,
    "price": 0.05,
    "cost": 1.0,
    "if_wins": 19.0,
-   "gap": 0.9274,
+   "gap": 0.9248,
    "placed": 1794643852882
   },
   {
@@ -56,7 +56,7 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.545,
+    "price": 101.295,
     "line": 125.0
    },
    "bid": 0.42,
@@ -79,7 +79,7 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.545,
+    "price": 101.295,
     "line": 125.0
    },
    "bid": 0.42,
@@ -102,7 +102,7 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.545,
+    "price": 101.295,
     "line": 125.0
    },
    "bid": 0.42,
@@ -201,7 +201,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 66.9885,
+    "price": 65.1275,
     "line": 95.0
    },
    "bid": 0.00726,
