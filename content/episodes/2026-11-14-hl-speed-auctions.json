@@ -1,0 +1,1754 @@
+{
+ "slug": "2026-11-14-hl-speed-auctions",
+ "date": "14 NOV",
+ "style": "editorial",
+ "format": "4:5",
+ "mood": "neutral",
+ "music": "generated",
+ "sentences": [
+  {
+   "text": "One trading firm keeps buying the fastest seat on Hyperliquid.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "This week"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 540,
+      "y": 720,
+      "s": 0.8,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "b1",
+      "prop": "bull",
+      "x": 320,
+      "y": 1040,
+      "s": 0.34,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "b2",
+      "prop": "bull",
+      "x": 760,
+      "y": 1040,
+      "s": 0.34,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "shot",
+      "z": 1.4,
+      "x": 540,
+      "y": 840
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "set",
+      "id": "b1",
+      "mood": "shock",
+      "sfx": "impact_soft"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "set",
+      "id": "b2",
+      "mood": "shock"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Bloomberg says wallets linked to Wintermute won about 76%|seventy-six-percent of the top data auctions last month.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "dn",
+      "prop": "donut",
+      "pct": 76,
+      "y": 740,
+      "pop": false,
+      "sub": "per Loris Tools",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 860,
+      "y": 1060,
+      "s": 0.42,
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "shot",
+      "z": 1.7,
+      "x": 540,
+      "y": 740
+     }
+    ],
+    [
+     12,
+     {
+      "kind": "shot"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "With one catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 200,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "sweat",
+      "sfx": "pop"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 2.2,
+      "x": 200,
+      "y": 960
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "drop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Before an order is processed, the network sends out its data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "What's for sale"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ch",
+      "prop": "chain",
+      "n": 4,
+      "y": 640,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 200,
+      "y": 1050,
+      "s": 0.42,
+      "mood": "happy",
+      "action": "pay",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 560,
+      "y": 900,
+      "dx": 560,
+      "h": 120,
+      "period": 0.3,
+      "r": 30
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 860,
+      "y": 1000,
+      "s": 0.5,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The first to see it gets a head start of a few milliseconds.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 760,
+      "y": 900
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "remove",
+      "id": "ch"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "x": 540,
+      "y": 660,
+      "h": 3,
+      "spin": 0.4,
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "shot"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That's enough for a market maker to change its quotes.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 300,
+      "y": 1000,
+      "s": 0.6,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "t1",
+      "prop": "ticket",
+      "title": "QUOTE",
+      "x": 740,
+      "y": 760,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "set",
+      "id": "t1",
+      "rot": 0.12,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 740,
+      "y": 760
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Or to hedge on another exchange.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 270,
+      "y": 980,
+      "s": 0.5,
+      "pop": false
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "ar",
+      "prop": "arrow",
+      "x": 560,
+      "y": 760,
+      "dir": 1,
+      "sym": "$",
+      "len": 300,
+      "col": "dark",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 880,
+      "y": 1050,
+      "s": 0.42,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "shot",
+      "z": 1.3,
+      "x": 560,
+      "y": 840
+     }
+    ]
+   ]
+  },
+  {
+   "text": "So Hyperliquid auctions the order in which data arrives.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "How it works"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "tm",
+      "prop": "timeline",
+      "items": [
+       [
+        "3",
+        "slot"
+       ],
+       [
+        "2",
+        "slot"
+       ],
+       [
+        "1",
+        "slot"
+       ]
+      ],
+      "y": 700,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 760,
+      "y": 990,
+      "s": 0.42,
+      "sfx": "pop"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 300,
+      "y": 1040,
+      "s": 0.4,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Three auctions run every three minutes.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ck",
+      "prop": "clock",
+      "x": 540,
+      "y": 720,
+      "h": 12,
+      "spin": 1.0,
+      "sub": "Hyperliquid docs",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "t1",
+      "prop": "ticket",
+      "title": "#1",
+      "x": 200,
+      "y": 1040,
+      "rot": -0.1,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "t2",
+      "prop": "ticket",
+      "title": "#2",
+      "x": 540,
+      "y": 1080,
+      "rot": 0.04,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "t3",
+      "prop": "ticket",
+      "title": "#3",
+      "x": 880,
+      "y": 1040,
+      "rot": 0.1,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Each one is a Dutch auction.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "g",
+      "prop": "gauge",
+      "v": 900,
+      "y": 720,
+      "r": 230,
+      "sub": "HYPE per slot",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 860,
+      "y": 1040,
+      "s": 0.42,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 200,
+      "y": 1060,
+      "s": 0.4,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The price starts high and drops until someone buys.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 540,
+      "y": 720
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "set",
+      "id": "g",
+      "v": 600,
+      "sfx": "ticks"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "set",
+      "id": "g",
+      "v": 300,
+      "sfx": "ticks"
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "ag",
+      "action": "pay"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "sad",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The top slot sees the data first.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "br",
+      "prop": "bars",
+      "y": 620,
+      "pop": false,
+      "rows": [
+       [
+        "#1",
+        95,
+        "acc"
+       ],
+       [
+        "#2",
+        65,
+        "mut"
+       ],
+       [
+        "#3",
+        35,
+        "mut"
+       ]
+      ],
+      "vals": [
+       "",
+       "",
+       ""
+      ],
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Each slot is roughly 20|twenty milliseconds faster than the next.",
+   "beats": [
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 230,
+      "y": 1010,
+      "s": 0.4,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "per level · empirical, per protocol docs",
+      "y": 1150,
+      "size": 36
+     }
+    ],
+    [
+     7,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 850,
+      "y": 1040,
+      "s": 0.38,
+      "mood": "sweat",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Winners pay in HYPE.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 230,
+      "y": 1000,
+      "s": 0.5,
+      "pop": false
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 560,
+      "y": 900,
+      "dx": 600,
+      "h": 130,
+      "period": 0.25,
+      "r": 36
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "st",
+      "prop": "stack",
+      "n": 5,
+      "r": 80,
+      "x": 850,
+      "y": 1040,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And that HYPE is burned. It's gone for good.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 850,
+      "y": 980
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "set",
+      "id": "st",
+      "n": 0,
+      "sfx": "impact_soft"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "x",
+      "prop": "x",
+      "x": 850,
+      "y": 960,
+      "r": 110,
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "shot"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Through November 10,|tenth about 266,000|two-hundred-sixty-six-thousand HYPE was burned this way.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "By the numbers"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "pl",
+      "prop": "pile",
+      "y": 820,
+      "pop": false,
+      "sub": "priority fees · ETHNews",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 200,
+      "y": 1080,
+      "s": 0.36,
+      "mood": "shock",
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "shot",
+      "z": 1.4,
+      "x": 540,
+      "y": 860
+     }
+    ]
+   ]
+  },
+  {
+   "text": "At today's price, that's roughly $18|eighteen million.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 880,
+      "y": 1080,
+      "s": 0.36,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And three wallets made up nearly all the spending on fast data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "dn",
+      "prop": "donut",
+      "pct": 99,
+      "y": 650,
+      "pop": false,
+      "sub": "since launch · onchain",
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "shot",
+      "z": 1.5,
+      "x": 540,
+      "y": 650
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "a1",
+      "prop": "agent",
+      "x": 200,
+      "y": 1050,
+      "s": 0.3,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "a2",
+      "prop": "agent",
+      "x": 540,
+      "y": 1070,
+      "s": 0.3,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "a3",
+      "prop": "agent",
+      "x": 880,
+      "y": 1050,
+      "s": 0.3,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "shot"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Meanwhile, Hyperliquid ended September with $16.8|sixteen-point-eight billion in open bets.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ar",
+      "prop": "arrow",
+      "x": 540,
+      "y": 700,
+      "dir": 1,
+      "sym": "$",
+      "len": 380,
+      "col": "dark",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Q3 report via The Block",
+      "y": 1150,
+      "size": 36
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 220,
+      "y": 1060,
+      "s": 0.4,
+      "mood": "happy",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "That's more than Bybit, Kraken or OKX.|O-K-X.",
+   "beats": [
+    [
+     1,
+     {
+      "kind": "set",
+      "id": "bu",
+      "action": "cheer",
+      "sfx": "ding"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 860,
+      "y": 1060,
+      "s": 0.4,
+      "mood": "sad",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "And HYPE trades around $68.70,|sixty-eight-seventy down about 6%|six-percent in a day.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "p",
+      "prop": "path",
+      "vals": [
+       0.0,
+       0.96,
+       0.47,
+       0.36,
+       -0.93,
+       -0.9,
+       -0.26,
+       -0.46,
+       -0.81,
+       -2.31,
+       -2.06,
+       -1.9,
+       -2.32,
+       -3.24,
+       -3.91,
+       -6.72,
+       -5.81,
+       -6.12,
+       -4.8,
+       -4.77,
+       -5.54,
+       -5.29,
+       -5.37,
+       -4.91,
+       -5.04,
+       -5.34,
+       -6.06
+      ],
+      "y": 660,
+      "h": 300,
+      "endCol": "acc",
+      "note": "perp · 13–14 Nov, UTC",
+      "dur": 2.0,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 230,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "sad",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "shot",
+      "z": 1.6,
+      "x": 740,
+      "y": 700
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 850,
+      "y": 1060,
+      "s": 0.42,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Now the catch.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Who gets there first"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "bg",
+      "mode": "rust"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 540,
+      "y": 820,
+      "s": 0.6,
+      "pop": true
+     }
+    ],
+    [
+     1,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 330,
+      "y": 960,
+      "s": 0.32,
+      "mood": "sweat",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Anyone can bid. But few can afford to win, again and again.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d0",
+      "prop": "bull",
+      "x": 150,
+      "y": 1060,
+      "s": 0.32,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d1",
+      "prop": "bull",
+      "x": 345,
+      "y": 1060,
+      "s": 0.32,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d2",
+      "prop": "bull",
+      "x": 540,
+      "y": 1060,
+      "s": 0.32,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d3",
+      "prop": "bull",
+      "x": 735,
+      "y": 1060,
+      "s": 0.32,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "d4",
+      "prop": "bull",
+      "x": 930,
+      "y": 1060,
+      "s": 0.32,
+      "mood": "calm",
+      "tag": "",
+      "pop": true
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 540,
+      "y": 700,
+      "s": 0.55,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "tk",
+      "prop": "ticket",
+      "title": "#1",
+      "x": 800,
+      "y": 640,
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "d1",
+      "mood": "sad"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "d3",
+      "mood": "sad"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "shot",
+      "z": 1.5,
+      "x": 680,
+      "y": 700
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "shot"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Wintermute hasn't confirmed the 76%|seventy-six-percent figure.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "dn",
+      "prop": "donut",
+      "pct": 76,
+      "y": 720,
+      "pop": false,
+      "sub": "per Loris Tools",
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 880,
+      "y": 990,
+      "s": 0.4,
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Its CEO says Wall Street sells speed too, just in private.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "tb",
+      "prop": "tollbooth",
+      "x": 760,
+      "y": 900,
+      "fee": "?",
+      "lift": 2.0,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 260,
+      "y": 1000,
+      "s": 0.45,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "shot",
+      "z": 1.7,
+      "x": 760,
+      "y": 820
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "shot"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Critics, like the founder of DRW, ask if it's really any fairer.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "g",
+      "prop": "gauge",
+      "v": 50,
+      "y": 700,
+      "r": 220,
+      "pop": false,
+      "sub": "X post · 31 Oct",
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 220,
+      "y": 1060,
+      "s": 0.4,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 860,
+      "y": 1060,
+      "s": 0.4,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ],
+    [
+     8,
+     {
+      "kind": "set",
+      "id": "g",
+      "v": 30
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "set",
+      "id": "g",
+      "v": 55
+     }
+    ]
+   ]
+  },
+  {
+   "text": "If you trade by hand, you're not in this race.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 250,
+      "y": 1040,
+      "s": 0.5,
+      "mood": "calm",
+      "tag": "manual",
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 820,
+      "y": 980,
+      "s": 0.55,
+      "sfx": "pop"
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "shot",
+      "z": 2.0,
+      "x": 250,
+      "y": 960
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "sweat"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "The quotes you hit may come from firms that saw the flow first.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "shot"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "cf",
+      "prop": "coinflow",
+      "x": 540,
+      "y": 900,
+      "dx": 520,
+      "h": 130,
+      "period": 0.3,
+      "r": 32,
+      "sfx": "pop"
+     }
+    ],
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "sad"
+     }
+    ],
+    [
+     10,
+     {
+      "kind": "shot",
+      "z": 1.8,
+      "x": 820,
+      "y": 920
+     }
+    ]
+   ]
+  },
+  {
+   "text": "So on Hyperliquid, speed isn't hidden.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "The takeaway"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "ch",
+      "prop": "chain",
+      "n": 4,
+      "y": 680,
+      "hi": 3,
+      "pop": false,
+      "sfx": "pop"
+     }
+    ],
+    [
+     3,
+     {
+      "kind": "add",
+      "id": "ag",
+      "prop": "agent",
+      "x": 230,
+      "y": 1040,
+      "s": 0.42,
+      "sfx": "pop"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 850,
+      "y": 1070,
+      "s": 0.42,
+      "mood": "calm",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "It's sold in the open, paid in HYPE, and recorded on chain.",
+   "beats": [
+    [
+     9,
+     {
+      "kind": "set",
+      "id": "bu",
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "ding"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Follow for daily Hyperliquid, trade.xyz,|trade-x-y-z Metric and Flop data.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "clear",
+      "sfx": "whoosh"
+     }
+    ],
+    [
+     0,
+     {
+      "kind": "chapter",
+      "text": "Every day"
+     }
+    ],
+    [
+     2,
+     {
+      "kind": "add",
+      "id": "h",
+      "prop": "big",
+      "text": "@conxixent",
+      "size": 130,
+      "color": "acc",
+      "y": 700,
+      "sfx": "ding"
+     }
+    ],
+    [
+     4,
+     {
+      "kind": "add",
+      "id": "w",
+      "prop": "small",
+      "text": "new videos at 10:00 and 18:00 IST",
+      "y": 820,
+      "size": 42
+     }
+    ],
+    [
+     5,
+     {
+      "kind": "add",
+      "id": "bu",
+      "prop": "bull",
+      "x": 300,
+      "y": 1050,
+      "s": 0.45,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ],
+    [
+     6,
+     {
+      "kind": "add",
+      "id": "be",
+      "prop": "bear",
+      "x": 780,
+      "y": 1050,
+      "s": 0.45,
+      "mood": "happy",
+      "action": "cheer",
+      "sfx": "pop"
+     }
+    ]
+   ]
+  },
+  {
+   "text": "Not financial advice.",
+   "beats": [
+    [
+     0,
+     {
+      "kind": "add",
+      "id": "n",
+      "prop": "small",
+      "text": "Data: Bloomberg, Loris Tools, ETHNews, The Block · 14 Nov 2026",
+      "y": 900,
+      "size": 28,
+      "pop": false
+     }
+    ]
+   ]
+  }
+ ]
+}
