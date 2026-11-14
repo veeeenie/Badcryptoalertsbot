@@ -170,6 +170,28 @@
    "name": "CAMBRICON 132.1 (¥880: Long B entry 2)",
    "meaning_touch": "Long B entry 2: both entries filled if both alerts fired. Stop 122.3 (¥815) for the whole position.",
    "source": "trader via chat, 12 Nov 2026"
+  },
+  {
+   "id": "JUP-wclose-0.236",
+   "coin": "JUP",
+   "type": "close",
+   "timeframe": "weekly",
+   "side": "below",
+   "price": 0.236,
+   "name": "JUP weekly close below 0.236 (2026 value area high)",
+   "meaning": "Back inside the 2026 value area: the move above value failed. Short confirmed; targets the point of control ~0.193, then the value area low ~0.151.",
+   "source": "trader via chat, 14 Nov 2026"
+  },
+  {
+   "id": "JUP-wclose-0.2878",
+   "coin": "JUP",
+   "type": "close",
+   "timeframe": "weekly",
+   "side": "above",
+   "price": 0.2878,
+   "name": "JUP weekly close above 0.2878 (Oct breakdown level)",
+   "meaning": "Buyers reclaimed 0.2878: the short is invalidated. Thin volume above means 0.33–0.39 can come fast; stop 0.312.",
+   "source": "trader via chat, 14 Nov 2026"
   }
  ],
  "watch": [
