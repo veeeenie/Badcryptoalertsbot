@@ -16,10 +16,10 @@
 :root[data-theme="dark"]{--bg:#11161b;--panel:#182029;--soft:#1f2832;--ink:#e6ebf0;--muted:#94a1ad;--line:#28323c;--up:#4cc39a;--down:#ef7a6e;--accent:#8aa8ff;--amber:#f0b45a;color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Google Sans Flex",-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",sans-serif;padding:0 16px}
-main{max-width:1040px;margin:0 auto;padding:18px 0 48px;display:grid;gap:14px;min-width:0}
-nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -16px;padding:0 16px}
-.navin{max-width:1040px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 0}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Google Sans Flex",-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",sans-serif;padding:0 24px}
+main{max-width:none;margin:0 auto;padding:18px 0 48px;display:grid;gap:14px;min-width:0}
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -24px;padding:0 24px}
+.navin{max-width:none;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:8px 0}
 .brand{font-weight:700;margin-right:auto;font-size:16px}
 nav a{text-decoration:none;font-size:13.5px;font-weight:600;padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:var(--panel);transition:box-shadow .2s,border-color .2s,color .2s}
 nav a.active{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent),0 0 14px color-mix(in srgb,var(--accent) 35%,transparent)}
@@ -165,7 +165,6 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <a href="#trades" data-sec="trades">Trades</a>
   <a href="#alerts" data-sec="alerts">Alerts</a>
   <a href="#events" data-sec="events">My events</a>
-  <a href="#predict" data-sec="predict">Predictions</a>
   <a href="#portfolio" data-sec="portfolio">Portfolio</a>
   <a href="rules.html" class="ext">Rule book</a>
 </div></nav>
@@ -260,25 +259,6 @@ details.more>summary{cursor:pointer;margin-top:10px}
   </div>
   </details>
 
-  <details class="sec anchor" id="predict">
-  <summary><span class="st">Prediction markets</span><span class="muted" id="pmhint">loading…</span></summary>
-  <div class="secbody">
-  <p class="muted" style="margin-top:0">Hyperliquid outcome markets (HIP-4), read-only, refreshed hourly. YES and NO share one book: buying NO at q = selling YES at 1 − q. Every order must be at least $10.</p>
-  <h3>Price markets: model vs market</h3>
-  <p class="muted">Model = chance the underlying ends above the line, from its Hyperliquid price, hours left and last 7 days' volatility. Rough: it ignores fat tails, weekends and averaging windows. Telegram alert when either side is ≥ <span id="pmmargin">10</span> points cheaper than the model, 1.5–72h left, ≥ $10 available.</p>
-  <div class="box"><table class="stack">
-    <thead><tr><th>Market</th><th>Ends</th><th>YES bid / ask</th><th>Model</th><th>Cheapest side vs model</th><th>$ at that price</th></tr></thead>
-    <tbody id="pmprice"><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
-  </table></div>
-  <h3>Room to quote both sides</h3>
-  <p class="muted">Real two-sided markets with the widest spreads. Buying YES at the bid and NO at 1 − the ask (both resting) costs less than $1 for a pair that pays exactly $1, if both fill. The risk: only one side fills, usually because the price just moved.</p>
-  <div class="box"><table class="stack">
-    <thead><tr><th>Market</th><th>Ends</th><th>YES bid / ask</th><th>Spread</th><th>Pair cost if both fill at the touch</th></tr></thead>
-    <tbody id="pmwide"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody>
-  </table></div>
-  <p class="muted" id="pmmeta"></p>
-  </div>
-  </details>
 
   <details class="sec anchor" id="portfolio">
   <summary><span class="st">Portfolio</span><span class="muted" id="pfhint">loading…</span></summary>
@@ -360,29 +340,6 @@ fetch("data/events.json?t="+Date.now()).then(r=>r.json()).then(E=>{
   const open=E.positions.reduce((a,r)=>a+(r.value||0),0), oc=E.orders.reduce((a,r)=>a+r.cost,0);
   document.getElementById("evhint").textContent=`${E.positions.length} position${E.positions.length===1?"":"s"} (${d(open)}) · ${E.orders.length} open order${E.orders.length===1?"":"s"} (${d(oc)})`;
 }).catch(()=>{document.getElementById("evhint").textContent="not built yet: appears after the next hourly scan";});
-
-// ---- prediction markets (HIP-4): model vs market, and spreads
-fetch("data/predict.json?t="+Date.now()).then(r=>r.json()).then(P=>{
-  const M=P.margin||0.1, pc=x=>x==null?"–":x.toFixed(2);
-  const ends=r=>{ if(!r.expiry) return "–"; const h=r.hours_left; return `${ist(r.expiry,true).replace(/-20\d\d/,"")} <span class="muted">(${h<1?Math.round(h*60)+"m":h<48?h.toFixed(1)+"h":Math.round(h/24)+"d"})</span>`; };
-  const hidden=P.markets.filter(r=>r.on_txyz===false).length; P.markets=P.markets.filter(r=>r.on_txyz!==false);
-  const real=r=>r.bid!=null&&r.ask!=null&&r.bid>=0.02&&r.ask<=0.98&&r.spread<0.5;
-  const all=P.markets.filter(r=>r.fair!=null&&r.hours_left>=0.5&&r.hours_left<=24*7), pr=all.filter(real).sort((a,b)=>a.hours_left-b.hours_left), empty=all.length-pr.length;
-  let flagged=0;
-  document.getElementById("pmprice").innerHTML=pr.length?pr.map(r=>{
-    const y=r.edge_yes, n=r.edge_no, best=(y??-9)>=(n??-9)?["YES",y,r.ask_usd]:["NO",n,r.bid_usd];
-    const ok=real(r), hit=ok&&best[1]!=null&&best[1]>=M&&best[2]>=10&&r.hours_left>=1.5&&r.hours_left<=72; if(hit) flagged++;
-    const cell=!ok?'<span class="muted">no real quotes</span>':best[1]==null?"–":`<span class="${best[1]>=M?"up":best[1]>0?"":"muted"}">${best[1]>=M?"<b>":""}Buy ${best[0]} ${best[1]>=0?"+":"−"}${Math.abs(best[1]*100).toFixed(0)} pts${best[1]>=M?"</b>":""}</span>`;
-    return `<tr><td>${r.title}</td><td data-label="Ends">${ends(r)}</td><td data-label="YES">${pc(r.bid)} / ${pc(r.ask)}</td><td data-label="Model">${(r.fair*100).toFixed(0)}%</td><td data-label="Best">${cell}</td><td data-label="$">${ok?"$"+Math.round(best[0]==="YES"?r.ask_usd:r.bid_usd).toLocaleString():"–"}</td></tr>`;}).join("")
-    :'<tr><td colspan="6" class="muted">No price market with real quotes in the next 7 days.</td></tr>';
-  if(empty) document.getElementById("pmprice").insertAdjacentHTML("beforeend",`<tr><td colspan="6" class="muted">+ ${empty} more with no real quotes (only 0.01 / 0.99 placeholders): nothing to trade against yet.</td></tr>`);
-  const wide=P.markets.filter(r=>real(r)&&r.spread>=0.03&&(r.bid+r.ask)/2>=0.1&&(r.bid+r.ask)/2<=0.9&&(r.hours_left==null||r.hours_left>=1)).sort((a,b)=>b.spread-a.spread).slice(0,10);
-  document.getElementById("pmwide").innerHTML=wide.length?wide.map(r=>`<tr><td>${r.title}</td><td data-label="Ends">${ends(r)}</td><td data-label="YES">${pc(r.bid)} / ${pc(r.ask)}</td><td data-label="Spread">${(r.spread*100).toFixed(0)}¢</td><td data-label="Pair">$${(r.bid+1-r.ask).toFixed(2)} → pays $1.00 <span class="up">(+${((1/(r.bid+1-r.ask)-1)*100).toFixed(0)}%)</span></td></tr>`).join("")
-    :'<tr><td colspan="5" class="muted">No real two-sided market with a spread of 3¢ or more right now.</td></tr>';
-  document.getElementById("pmmargin").textContent=Math.round(M*100);
-  document.getElementById("pmhint").textContent=`${P.markets.length} on trade.xyz · ${pr.length} price markets with real quotes · ${flagged} ≥ ${Math.round(M*100)} pts off the model`;
-  document.getElementById("pmmeta").textContent=`Only markets listed on trade.xyz Events (its own + Hyperliquid's daily ones). ${hidden} more on other Hyperliquid apps (Skew, Fox, Out) are hidden. Updated ${ist(P.generated_at,true)}. Places no orders.`;
-}).catch(()=>{document.getElementById("pmhint").textContent="not built yet: appears after the next hourly scan";});
 
 // ---- charts screener: every Hyperliquid perp, bullish / bearish / mixed on daily, weekly, monthly
 const TFN={d:"D",w:"W",m:"M"}, ARW={bull:['▲','up'],bear:['▼','down'],mixed:['•','muted'],"n/a":['–','muted']};
@@ -523,10 +480,9 @@ fetch("data/journal.json?t="+Date.now()).then(r=>r.json()).then(j=>{
   // net = closed trades + profit already booked by partial exits on open trades
   const bk=s.booked_open_usd||0, nt=s.net_usd+bk, sg=x=>`${x>=0?"+":"−"}$${Math.abs(x).toFixed(2)}`;
   document.getElementById("chint").innerHTML=`${s.trades} closed · ${s.wins} wins · net <b class="${nt>=0?"up":"down"}">${sg(nt)}</b>${bk?` <span class="muted">(incl. ${sg(bk)} booked on open trades)</span>`:""}`;
-  const pb=s.predictions||{bets:0};
-  document.getElementById("meta").innerHTML=`Perps: ${sm(s)}.${pb.bets?` Prediction-market bets (not counted above): ${pb.bets}, ${pb.won} won, net ${pb.net_usd>=0?"+":"−"}$${Math.abs(pb.net_usd).toFixed(2)}.`:""} Spot trades aren't included. Updated ${ist(j.generated_at,true)}.`;
+  document.getElementById("meta").innerHTML=`Perps: ${sm(s)}. Spot trades aren't included. Updated ${ist(j.generated_at,true)}.`;
   window.JOURNAL=j; document.dispatchEvent(new Event("journal-ready"));
-  document.getElementById("rows").innerHTML=[...j.trades].filter(t=>t.closed&&t.kind!=="prediction").reverse().map(t=>{
+  document.getElementById("rows").innerHTML=[...j.trades].filter(t=>t.closed&&t.kind!=="prediction"&&!t.coin.startsWith("#")).reverse().map(t=>{
     const c=t.net>0?"up":t.net<0?"down":"";
     const moved=t.stop!=null&&t.stop_last!=null&&Math.abs(t.stop_last/t.stop-1)>0.0005;
     const stopTxt=t.stop==null?'<span class="warn">none</span>':moved?`${f(t.stop)} → ${f(t.stop_last)} <span class="muted">(moved)</span>`:f(t.stop);
@@ -572,7 +528,7 @@ async function live(){
           <td data-label="Liquidation">${q.liquidationPx?f(+q.liquidationPx):"–"}</td></tr>`);
       });
       // entry orders waiting to fill (not stops or take-profits)
-      oo.filter(o=>!o.reduceOnly).forEach(o=>{
+      oo.filter(o=>!o.reduceOnly&&!o.coin.startsWith("#")).forEach(o=>{
         const nm=o.coin.includes(":")?o.coin.split(":")[1]:o.coin;
         const st=oo.find(x=>x.coin===o.coin&&x.reduceOnly&&/Stop/.test(x.orderType||""));
         rows.push(`<tr><td><b>${nm}</b> ${o.side==="B"?"buy":"sell"} order <span class="muted">waiting to fill</span></td>
@@ -587,7 +543,7 @@ async function live(){
     document.getElementById("jhint").innerHTML=`${rows.length} open · P&L <b class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</b>`;
     document.getElementById("lmeta").innerHTML=metas.join(" · ")+`. Total open P&L <b class="${totPnl>=0?"up":"down"}">${sgn(totPnl)}</b>. Checked ${ist(new Date().toISOString(),true)}.`;
   }catch(e){
-    const open=(j.trades||[]).filter(t=>!t.closed);
+    const open=(j.trades||[]).filter(t=>!t.closed&&t.kind!=="prediction"&&!t.coin.startsWith("#"));
     document.getElementById("lmeta").textContent=`Couldn't reach Hyperliquid just now (${e.message}); showing open trades from the hourly journal instead, without live P&L.`;
     document.getElementById("lrows").innerHTML=open.map(t=>`<tr><td><b>${t.coin}</b> ${t.side}</td><td data-label="Size">${fs(t.size)}</td><td data-label="Entry">${f(t.avg_entry)}</td><td data-label="Price">–</td><td data-label="P&amp;L">–</td><td data-label="R">–</td><td data-label="Stop">${f(t.stop)}</td><td data-label="Take-profit">${f(t.tp)}</td><td data-label="Liquidation">–</td></tr>`).join("")||'<tr><td colspan="9" class="muted">No open trades.</td></tr>';
   }
