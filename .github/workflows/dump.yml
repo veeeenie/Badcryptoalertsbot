@@ -1,4 +1,4 @@
-name: ANT price 2 (temporary)
+name: SPCX pre-IPO (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -12,17 +12,16 @@ jobs:
       - uses: actions/checkout@v5
       - run: |
           (python3 - > probe.txt 2>&1 || true) <<'PY'
-          import json, urllib.request, time
+          import json, urllib.request, time, calendar
           def hl(b):
               r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
               return json.load(urllib.request.urlopen(r,timeout=30))
-          meta,ctx=hl({"type":"metaAndAssetCtxs","dex":"xyz"})
-          for u,c in zip(meta["universe"],ctx):
-              if u["name"]=="xyz:ANT": print(json.dumps(c))
+          ts=lambda s: calendar.timegm(time.strptime(s,"%Y-%m-%d"))*1000
           now=int(time.time()*1000)
-          cs=hl({"type":"candleSnapshot","req":{"coin":"xyz:ANT","interval":"1d","startTime":now-12*86400000,"endTime":now}})
-          print([(time.strftime('%m-%d',time.gmtime(x['t']/1000)),x['c']) for x in cs])
-          print("utc", time.strftime('%Y-%m-%d %H:%M',time.gmtime()))
+          for coin in ("xyz:SPCX","xyz:XYZ100"):
+              cs=hl({"type":"candleSnapshot","req":{"coin":coin,"interval":"1d","startTime":ts("2026-04-01"),"endTime":now}})
+              print(coin,len(cs))
+              print([(time.strftime('%m-%d',time.gmtime(x['t']/1000)),x['o'],x['h'],x['l'],x['c'],round(float(x['v'])*float(x['c']))) for x in cs])
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f probe.txt && git commit -qm "ant2" && git push -q origin HEAD:debug-weekly
+          git add -f probe.txt && git commit -qm "spcx1" && git push -q origin HEAD:debug-weekly
