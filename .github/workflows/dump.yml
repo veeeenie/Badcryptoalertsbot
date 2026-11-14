@@ -1,4 +1,4 @@
-name: SPCX pre-IPO (temporary)
+name: Cambricon funding (temporary)
 on:
   push:
     branches: [debug-weekly]
@@ -12,16 +12,20 @@ jobs:
       - uses: actions/checkout@v5
       - run: |
           (python3 - > probe.txt 2>&1 || true) <<'PY'
-          import json, urllib.request, time, calendar
+          import json, urllib.request, time
           def hl(b):
               r=urllib.request.Request("https://api.hyperliquid.xyz/info",data=json.dumps(b).encode(),headers={"Content-Type":"application/json"})
               return json.load(urllib.request.urlopen(r,timeout=30))
-          ts=lambda s: calendar.timegm(time.strptime(s,"%Y-%m-%d"))*1000
+          meta,ctx=hl({"type":"metaAndAssetCtxs","dex":"xyz"})
+          for u,c in zip(meta["universe"],ctx):
+              if u["name"]=="xyz:CAMBRICON": print(json.dumps(c), u.get("maxLeverage"))
           now=int(time.time()*1000)
-          for coin in ("xyz:SPCX","xyz:XYZ100"):
-              cs=hl({"type":"candleSnapshot","req":{"coin":coin,"interval":"1d","startTime":ts("2026-04-01"),"endTime":now}})
-              print(coin,len(cs))
-              print([(time.strftime('%m-%d',time.gmtime(x['t']/1000)),x['o'],x['h'],x['l'],x['c'],round(float(x['v'])*float(x['c']))) for x in cs])
+          fh=hl({"type":"fundingHistory","coin":"xyz:CAMBRICON","startTime":now-3*86400000})
+          print([(time.strftime('%d %H:%M',time.gmtime(x['time']/1000)),x['fundingRate'],x['premium']) for x in fh])
+          cs=hl({"type":"candleSnapshot","req":{"coin":"xyz:CAMBRICON","interval":"1h","startTime":now-30*3600000,"endTime":now}})
+          print([(time.strftime('%d %H',time.gmtime(x['t']/1000)),x['c']) for x in cs])
+          b=hl({"type":"l2Book","coin":"xyz:CAMBRICON"})["levels"]; print("bids",b[0][:4]); print("asks",b[1][:4])
+          print("utc", time.strftime('%Y-%m-%d %H:%M',time.gmtime()))
           PY
           git config user.name "setup-scanner"; git config user.email "actions@users.noreply.github.com"
-          git add -f probe.txt && git commit -qm "spcx1" && git push -q origin HEAD:debug-weekly
+          git add -f probe.txt && git commit -qm "camb3" && git push -q origin HEAD:debug-weekly
