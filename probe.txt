@@ -1,24 +1,3 @@
-== dex main acct 36.551456
-POS JUP -59.0 0.25361 upnl -0.311107 liq 0.3210223245 lev {'type': 'isolated', 'value': 3, 'rawUsd': '19.887333'}
-ORD #237440 B 34.0 0.03 0.0 Limit ro False posTpsl False
-ORD #237441 B 3.0 0.48 0.0 Limit ro False posTpsl False
-ORD #237520 B 20.0 0.05 0.0 Limit ro False posTpsl False
-ORD #237330 B 10000.0 0.0001 0.0 Limit ro False posTpsl False
-ORD #51120 B 4.0 0.25 0.0 Limit ro False posTpsl False
-ORD #237571 B 100.0 0.01 0.0 Limit ro False posTpsl False
-ORD #237561 B 5.0 0.2 0.0 Limit ro False posTpsl False
-ORD #237501 B 100.0 0.01 0.0 Limit ro False posTpsl False
-ORD #237500 B 100.0 0.01 0.0 Limit ro False posTpsl False
-ORD ZEC B 0.04 1566.0 1450.0 Stop Market ro True posTpsl False
-ORD ZEC A 0.04 1350.0 0.0 Limit ro False posTpsl False
-ORD JUP B 147.0 0.33696 0.312 Stop Market ro True posTpsl False
-ORD JUP A 147.0 0.278 0.0 Limit ro False posTpsl False
-ORD JUP B 0.0 0.312 0.312 Stop Limit ro True posTpsl True
-== dex xyz acct 38.869438
-POS xyz:GOLD 0.0539 3936.53 upnl -3.38657 liq 3216.8981106357 lev {'type': 'isolated', 'value': 5, 'rawUsd': '-169.922992'}
-ORD xyz:GOLD A 0.037 3496.0 3800.0 Stop Market ro True posTpsl False
-ORD xyz:GOLD A 0.0104 3496.0 3800.0 Stop Market ro True posTpsl False
-ORD xyz:GOLD A 0.0065 3496.0 3800.0 Stop Market ro True posTpsl False
-GOLD mid 3873.95
-spot [('USDC', '97.03344372'), ('+237560', '10.0')]
-utc 2026-11-14 05:05
+{"funding": "0.0000000625", "openInterest": "1083398.3", "prevDayPx": "103.04", "dayNtlVlm": "25251066.9916999899", "premium": "0.0000148119", "oraclePx": "101.27", "markPx": "101.27", "midPx": "101.26", "impactPxs": ["101.2232", "101.3198"], "dayBaseVlm": "247543.6199999999"}
+[('11-02', '106.49'), ('11-03', '112.18'), ('11-04', '117.41'), ('11-05', '107.86'), ('11-06', '94.29'), ('11-07', '97.82'), ('11-08', '98.032'), ('11-09', '102.36'), ('11-10', '100.24'), ('11-11', '103.93'), ('11-12', '104.39'), ('11-13', '102.14'), ('11-14', '101.27')]
+utc 2026-11-14 08:01
