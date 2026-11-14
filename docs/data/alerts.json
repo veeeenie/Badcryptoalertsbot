@@ -42,7 +42,7 @@
    "side": "above",
    "price": 0.2878,
    "name": "JUP daily close above 0.2878 (Oct breakdown level)",
-   "meaning": "Reclaimed 0.2878: the short is in trouble; thin volume above, 0.33–0.39 can come fast. Stop 0.312.",
+   "meaning": "Reclaimed 0.2878: the short is in trouble; thin volume above, 0.33\u20130.39 can come fast. Stop 0.312.",
    "source": "trader via chat, 14 Nov 2026"
   },
   {
@@ -53,7 +53,18 @@
    "side": "below",
    "price": 3820,
    "name": "GOLD monthly close below 3,820 (monthly 25 EMA)",
-   "meaning": "The monthly 25 EMA failed (the 2011 path, not 2020). Your 3,800 stop should already be hit. Next buy zone: 3,250–3,360 (monthly 50 EMA, value area low, point of control).",
+   "meaning": "The monthly 25 EMA failed (the 2011 path, not 2020). Your 3,800 stop should already be hit. Next buy zone: 3,250\u20133,360 (monthly 50 EMA, value area low, point of control).",
+   "source": "trader via chat, 14 Nov 2026"
+  },
+  {
+   "id": "HYPE-wclose-below-62",
+   "coin": "HYPE",
+   "type": "close",
+   "timeframe": "weekly",
+   "side": "below",
+   "price": 62,
+   "name": "HYPE weekly close below 62 (value area high, 2026 profile)",
+   "meaning": "HYPE closed the week back inside the year's value area (VAH ~62, 50-week EMA ~60). Short setup: wait for a failed retest of ~62 from below, stop above ~65\u201368. Targets: ~51, then ~45\u201347 (100-week EMA), then 33\u201340 (POC ~33). Cancelled by a weekly close back above 62.",
    "source": "trader via chat, 14 Nov 2026"
   }
  ],
