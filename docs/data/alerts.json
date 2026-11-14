@@ -75,6 +75,26 @@
    "name": "HYPE reaches 74 (retest of the broken range floor)",
    "meaning": "Price is back in the 71\u201376 resistance zone: the Aug\u2013Nov value area low (~75.5) plus the 25-week EMA (~71.4). Short only on a rejection, e.g. a daily candle that wicks in and closes back below ~71. Stop: daily close above ~77. Targets ~62\u201360, then ~51. Two daily closes above 76 = failed breakdown; bias flips up toward the POC ~81.5.",
    "source": "trader via chat, 14 Nov 2026"
+  },
+  {
+   "id": "VVV-level-21",
+   "coin": "VVV",
+   "type": "level",
+   "price": 21,
+   "name": "VVV reaches 21 (retest of the broken triangle floor)",
+   "meaning": "Back at 21\u201321.5: June highs + triangle floor + Sep\u2013Nov value area low. Short only on a rejection (wick in, daily close back below ~20.5). Stop: daily close above ~22.5. Targets 17.8, then 15.7, then 12\u201310.",
+   "source": "trader via chat, 14 Nov 2026"
+  },
+  {
+   "id": "VVV-dclose-below-17.8",
+   "coin": "VVV",
+   "type": "close",
+   "timeframe": "daily",
+   "side": "below",
+   "price": 17.8,
+   "name": "VVV daily close below 17.8 (daily 200 EMA)",
+   "meaning": "The daily 200 EMA gave way inside the thin zone below 21. Alternative short trigger if there was no bounce to 21. Next: 15.7 (start of the September breakout), then 12\u201310 (July base).",
+   "source": "trader via chat, 14 Nov 2026"
   }
  ],
  "watch": []
