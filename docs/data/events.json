@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T00:11:41+00:00",
+ "generated_at": "2026-11-15T01:11:45+00:00",
  "positions": [
   {
    "title": "HYPE above 95.00",
@@ -9,18 +9,18 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 64.6045,
+    "price": 63.512,
     "line": 95.0
    },
    "bid": 0.00333,
-   "ask": 0.19958,
-   "mid": 0.101455,
+   "ask": 0.12,
+   "mid": 0.061665,
    "live": true,
    "size": 10.0,
    "entry": 0.1,
    "cost": 1.0,
-   "value": 1.01,
-   "pnl": 0.01,
+   "value": 0.62,
+   "pnl": -0.38,
    "if_wins": 9.0
   }
  ],
@@ -33,7 +33,7 @@
    "criteria": "YES if trade.xyz ANT perp is above 100 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 102.265,
+    "price": 101.605,
     "line": 100.0
    },
    "bid": 0.0526,
@@ -56,12 +56,12 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 102.265,
+    "price": 101.605,
     "line": 125.0
    },
-   "bid": 0.42,
+   "bid": 0.4,
    "ask": 0.98,
-   "mid": 0.7,
+   "mid": 0.69,
    "live": true,
    "action": "Buy",
    "size": 5.0,
@@ -79,12 +79,12 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 102.265,
+    "price": 101.605,
     "line": 125.0
    },
-   "bid": 0.42,
+   "bid": 0.4,
    "ask": 0.98,
-   "mid": 0.7,
+   "mid": 0.69,
    "live": true,
    "action": "Buy",
    "size": 10.0,
@@ -102,12 +102,12 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 102.265,
+    "price": 101.605,
     "line": 125.0
    },
-   "bid": 0.42,
+   "bid": 0.4,
    "ask": 0.98,
-   "mid": 0.7,
+   "mid": 0.69,
    "live": true,
    "action": "Buy",
    "size": 20.0,
@@ -124,16 +124,16 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $1.5T \u2248 $114.6/share",
    "underlying": null,
-   "bid": 0.26,
-   "ask": 0.71,
-   "mid": 0.485,
+   "bid": 0.55088,
+   "ask": 0.67721,
+   "mid": 0.614045,
    "live": true,
    "action": "Buy",
    "size": 10.0,
    "price": 0.1,
    "cost": 1.0,
    "if_wins": 9.0,
-   "gap": 0.61,
+   "gap": 0.5772,
    "placed": 1794648441778
   },
   {
@@ -143,16 +143,16 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $1.75T \u2248 $133.7/share",
    "underlying": null,
-   "bid": 0.00333,
-   "ask": 0.99666,
-   "mid": 0.499995,
+   "bid": 0.7596,
+   "ask": 0.89104,
+   "mid": 0.82532,
    "live": true,
    "action": "Buy",
    "size": 1000.0,
    "price": 0.001,
    "cost": 1.0,
    "if_wins": 999.0,
-   "gap": 0.9957,
+   "gap": 0.89,
    "placed": 1794648766086
   },
   {
@@ -162,16 +162,16 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $2.25T \u2248 $171.9/share",
    "underlying": null,
-   "bid": 0.51,
-   "ask": 0.99666,
-   "mid": 0.75333,
+   "bid": 0.87306,
+   "ask": 0.98591,
+   "mid": 0.929485,
    "live": true,
    "action": "Buy",
    "size": 6.0,
    "price": 0.51,
    "cost": 3.06,
    "if_wins": 2.94,
-   "gap": 0.4867,
+   "gap": 0.4759,
    "placed": 1794644093265
   },
   {
@@ -181,9 +181,9 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $2T \u2248 $152.8/share",
    "underlying": null,
-   "bid": 0.5,
+   "bid": 0.65018,
    "ask": 0.97695,
-   "mid": 0.738475,
+   "mid": 0.813565,
    "live": true,
    "action": "Buy",
    "size": 10.0,
@@ -201,20 +201,20 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 64.6045,
+    "price": 63.512,
     "line": 95.0
    },
    "bid": 0.00333,
-   "ask": 0.19958,
-   "mid": 0.101455,
+   "ask": 0.12,
+   "mid": 0.061665,
    "live": true,
    "action": "Sell",
    "size": 10.0,
-   "price": 0.19958,
-   "cost": 2.0,
+   "price": 0.12,
+   "cost": 1.2,
    "if_wins": null,
-   "gap": 0.1963,
-   "placed": 1794692817056
+   "gap": 0.1167,
+   "placed": 1794702675017
   }
  ],
  "settled": [
