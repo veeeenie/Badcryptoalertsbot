@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-17T12:11:02+00:00",
+ "generated_at": "2026-11-17T13:10:53+00:00",
  "positions": [
   {
    "title": "HYPE above 95.00",
@@ -9,7 +9,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 69.3245,
+    "price": 69.6095,
     "line": 95.0
    },
    "bid": 0.00333,
@@ -33,7 +33,7 @@
    "criteria": "YES if trade.xyz ANT perp is above 100 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 96.8205,
+    "price": 97.012,
     "line": 100.0
    },
    "bid": 0.0526,
@@ -56,7 +56,7 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 96.8205,
+    "price": 97.012,
     "line": 125.0
    },
    "bid": 0.4,
@@ -79,7 +79,7 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 96.8205,
+    "price": 97.012,
     "line": 125.0
    },
    "bid": 0.4,
@@ -102,7 +102,7 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 96.8205,
+    "price": 97.012,
     "line": 125.0
    },
    "bid": 0.4,
@@ -143,9 +143,9 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $1.75T \u2248 $133.7/share",
    "underlying": null,
-   "bid": 0.86803,
-   "ask": 0.93803,
-   "mid": 0.90303,
+   "bid": 0.86799,
+   "ask": 0.93799,
+   "mid": 0.90299,
    "live": true,
    "action": "Buy",
    "size": 1000.0,
@@ -162,9 +162,9 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $2.25T \u2248 $171.9/share",
    "underlying": null,
-   "bid": 0.94312,
+   "bid": 0.93925,
    "ask": 0.99666,
-   "mid": 0.96989,
+   "mid": 0.967955,
    "live": true,
    "action": "Buy",
    "size": 6.0,
@@ -181,9 +181,9 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $2T \u2248 $152.8/share",
    "underlying": null,
-   "bid": 0.91832,
+   "bid": 0.91622,
    "ask": 0.97695,
-   "mid": 0.947635,
+   "mid": 0.946585,
    "live": true,
    "action": "Buy",
    "size": 10.0,
@@ -201,7 +201,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 69.3245,
+    "price": 69.6095,
     "line": 95.0
    },
    "bid": 0.00333,
