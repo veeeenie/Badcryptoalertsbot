@@ -104,6 +104,15 @@
    "name": "VVV reaches 18.3 (short tranche 1; May\u2013Aug value area high)",
    "meaning": "Retest from below of the May\u2013Aug range's value area high (~18.3), just above the daily 200 EMA (~17.8). Plan: short 0.55 VVV at 18.3 and 0.55 at 19.0, 1x, stop 21.6 (~$3.25 total risk). Targets: 15.7 (take half), ~14.3 (May\u2013Aug POC), ~12.4 (VAL)\u201312.",
    "source": "trader via chat, 15 Nov 2026"
+  },
+  {
+   "id": "JUP-level-0.267",
+   "coin": "JUP",
+   "type": "level",
+   "price": 0.267,
+   "name": "JUP reaches 0.267",
+   "meaning": "Short setup: short at ~0.267, stop 0.28, target 0.24.",
+   "source": "trader via chat, 17 Nov 2026"
   }
  ],
  "watch": []
