@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-15T02:16:28+00:00",
+ "generated_at": "2026-11-17T02:25:20+00:00",
  "positions": [
   {
    "title": "HYPE above 95.00",
@@ -9,7 +9,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 64.893,
+    "price": 68.7115,
     "line": 95.0
    },
    "bid": 0.00333,
@@ -33,19 +33,19 @@
    "criteria": "YES if trade.xyz ANT perp is above 100 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.345,
+    "price": 97.2055,
     "line": 100.0
    },
    "bid": 0.0526,
-   "ask": 0.97,
-   "mid": 0.5113,
+   "ask": 0.9674,
+   "mid": 0.51,
    "live": true,
    "action": "Buy",
    "size": 20.0,
    "price": 0.05,
    "cost": 1.0,
    "if_wins": 19.0,
-   "gap": 0.92,
+   "gap": 0.9174,
    "placed": 1794643852882
   },
   {
@@ -56,19 +56,19 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.345,
+    "price": 97.2055,
     "line": 125.0
    },
    "bid": 0.4,
-   "ask": 0.97,
-   "mid": 0.685,
+   "ask": 0.98,
+   "mid": 0.69,
    "live": true,
    "action": "Buy",
    "size": 5.0,
    "price": 0.2,
    "cost": 1.0,
    "if_wins": 4.0,
-   "gap": 0.77,
+   "gap": 0.78,
    "placed": 1794643928336
   },
   {
@@ -79,19 +79,19 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.345,
+    "price": 97.2055,
     "line": 125.0
    },
    "bid": 0.4,
-   "ask": 0.97,
-   "mid": 0.685,
+   "ask": 0.98,
+   "mid": 0.69,
    "live": true,
    "action": "Buy",
    "size": 10.0,
    "price": 0.1,
    "cost": 1.0,
    "if_wins": 9.0,
-   "gap": 0.87,
+   "gap": 0.88,
    "placed": 1794643903824
   },
   {
@@ -102,19 +102,19 @@
    "criteria": "YES if trade.xyz ANT perp is above 125 (1-min candle)",
    "underlying": {
     "coin": "ANT",
-    "price": 101.345,
+    "price": 97.2055,
     "line": 125.0
    },
    "bid": 0.4,
-   "ask": 0.97,
-   "mid": 0.685,
+   "ask": 0.98,
+   "mid": 0.69,
    "live": true,
    "action": "Buy",
    "size": 20.0,
    "price": 0.05,
    "cost": 1.0,
    "if_wins": 19.0,
-   "gap": 0.92,
+   "gap": 0.93,
    "placed": 1794643910862
   },
   {
@@ -124,16 +124,16 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $1.5T \u2248 $114.6/share",
    "underlying": null,
-   "bid": 0.26,
-   "ask": 0.6721,
-   "mid": 0.46605,
+   "bid": 0.24,
+   "ask": 0.71,
+   "mid": 0.475,
    "live": true,
    "action": "Buy",
    "size": 10.0,
    "price": 0.1,
    "cost": 1.0,
    "if_wins": 9.0,
-   "gap": 0.5721,
+   "gap": 0.61,
    "placed": 1794648441778
   },
   {
@@ -143,16 +143,16 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $1.75T \u2248 $133.7/share",
    "underlying": null,
-   "bid": 0.00333,
-   "ask": 0.89895,
-   "mid": 0.45114,
+   "bid": 0.86723,
+   "ask": 0.9395,
+   "mid": 0.903365,
    "live": true,
    "action": "Buy",
    "size": 1000.0,
    "price": 0.001,
    "cost": 1.0,
    "if_wins": 999.0,
-   "gap": 0.898,
+   "gap": 0.9385,
    "placed": 1794648766086
   },
   {
@@ -162,9 +162,9 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $2.25T \u2248 $171.9/share",
    "underlying": null,
-   "bid": 0.87283,
+   "bid": 0.94046,
    "ask": 0.99666,
-   "mid": 0.934745,
+   "mid": 0.96856,
    "live": true,
    "action": "Buy",
    "size": 6.0,
@@ -181,9 +181,9 @@
    "settles": "Close of first trading day (no IPO by 31 Dec 2026 = NO)",
    "criteria": "YES if day-1 close \u00d7 shares outstanding \u2265 $2T \u2248 $152.8/share",
    "underlying": null,
-   "bid": 0.5,
+   "bid": 0.92429,
    "ask": 0.97695,
-   "mid": 0.738475,
+   "mid": 0.95062,
    "live": true,
    "action": "Buy",
    "size": 10.0,
@@ -201,7 +201,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 64.893,
+    "price": 68.7115,
     "line": 95.0
    },
    "bid": 0.00333,
@@ -240,7 +240,7 @@
   },
   {
    "title": "market #23202",
-   "pnl": -2.0,
+   "pnl": 0.0,
    "time": "2026-11-03T06:00+00:00"
   }
  ],
