@@ -1,0 +1,132 @@
+{
+ "_note": "Chart levels shown in the Levels section (instead of TradingView drawings). profiles: fixed-range volume profiles (from/to dates, UTC; no 'to' = up to now). lines kind: entry | stop | target | alert | level.",
+ "coins": [
+  {
+   "coin": "VVV",
+   "profiles": [
+    {
+     "label": "May–Aug range",
+     "from": "2026-05-12",
+     "to": "2026-09-07"
+    },
+    {
+     "label": "Since ATH (21 Sep)",
+     "from": "2026-09-21"
+    }
+   ],
+   "lines": [
+    {
+     "price": 22.6,
+     "label": "Short entry",
+     "kind": "entry"
+    },
+    {
+     "price": 23.5,
+     "label": "Stop",
+     "kind": "stop"
+    },
+    {
+     "price": 17.0,
+     "label": "Take-profit",
+     "kind": "target"
+    },
+    {
+     "price": 21,
+     "label": "Alert: touch",
+     "kind": "alert"
+    },
+    {
+     "price": 17.8,
+     "label": "Alert: daily close below",
+     "kind": "alert"
+    }
+   ]
+  },
+  {
+   "coin": "HYPE",
+   "profiles": [
+    {
+     "label": "Since Jan low (21 Jan)",
+     "from": "2026-01-21"
+    },
+    {
+     "label": "Since Aug low (2 Aug)",
+     "from": "2026-08-02"
+    }
+   ],
+   "lines": [
+    {
+     "price": 74,
+     "label": "Alert: retest zone (short on rejection)",
+     "kind": "alert"
+    },
+    {
+     "price": 62,
+     "label": "Alert: weekly close below",
+     "kind": "alert"
+    }
+   ]
+  },
+  {
+   "coin": "JUP",
+   "profiles": [
+    {
+     "label": "Since Oct high (8 Oct)",
+     "from": "2026-10-08"
+    },
+    {
+     "label": "Since Aug low (18 Aug)",
+     "from": "2026-08-18"
+    }
+   ],
+   "lines": [
+    {
+     "price": 0.267,
+     "label": "Short entry (alert)",
+     "kind": "entry"
+    },
+    {
+     "price": 0.28,
+     "label": "Stop",
+     "kind": "stop"
+    },
+    {
+     "price": 0.24,
+     "label": "Target",
+     "kind": "target"
+    },
+    {
+     "price": 0.2878,
+     "label": "Alert: daily close",
+     "kind": "alert"
+    },
+    {
+     "price": 0.236,
+     "label": "Alert: daily close",
+     "kind": "alert"
+    }
+   ]
+  },
+  {
+   "coin": "xyz:GOLD",
+   "name": "GOLD",
+   "profiles": [
+    {
+     "label": "Since Aug high (25 Aug)",
+     "from": "2026-08-25"
+    },
+    {
+     "label": "Since Jan ATH (29 Jan)",
+     "from": "2026-01-29"
+    }
+   ],
+   "lines": [
+    {
+     "price": 3820,
+     "label": "Alert: monthly close below",
+     "kind": "alert"
+    }
+   ]
+  }
+ ]
+}
