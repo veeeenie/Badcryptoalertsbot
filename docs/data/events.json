@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-18T19:27:06+00:00",
+ "generated_at": "2026-11-18T20:10:57+00:00",
  "positions": [
   {
    "title": "class priceBinary \u00b7 underlying BTC \u00b7 expiry 20261119-0600 \u00b7 targetPrice 64667 \u00b7 period 1d",
@@ -8,15 +8,15 @@
    "settles": "",
    "criteria": "",
    "underlying": null,
-   "bid": 0.0268,
-   "ask": 0.035,
-   "mid": 0.0309,
+   "bid": 0.02195,
+   "ask": 0.022,
+   "mid": 0.021975,
    "live": true,
    "size": 5.0,
    "entry": 0.25,
    "cost": 1.25,
-   "value": 0.15,
-   "pnl": -1.1,
+   "value": 0.11,
+   "pnl": -1.14,
    "if_wins": 3.75
   },
   {
@@ -27,7 +27,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 67.4245,
+    "price": 66.8295,
     "line": 95.0
    },
    "bid": 0.00333,
@@ -51,7 +51,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 67.4245,
+    "price": 66.8295,
     "line": 95.0
    },
    "bid": 0.00333,
@@ -73,16 +73,16 @@
    "settles": "",
    "criteria": "",
    "underlying": null,
-   "bid": 0.965,
-   "ask": 0.9732,
-   "mid": 0.9691,
+   "bid": 0.978,
+   "ask": 0.97805,
+   "mid": 0.978025,
    "live": true,
    "action": "Buy",
    "size": 5.0,
    "price": 0.65,
    "cost": 3.25,
    "if_wins": 1.75,
-   "gap": 0.3232,
+   "gap": 0.328,
    "placed": 1795005693108
   }
  ],
