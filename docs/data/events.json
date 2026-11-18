@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-18T22:11:00+00:00",
+ "generated_at": "2026-11-18T23:11:33+00:00",
  "positions": [
   {
    "title": "class priceBinary \u00b7 underlying BTC \u00b7 expiry 20261119-0600 \u00b7 targetPrice 64667 \u00b7 period 1d",
@@ -8,64 +8,19 @@
    "settles": "",
    "criteria": "",
    "underlying": null,
-   "bid": 0.005,
-   "ask": 0.00705,
-   "mid": 0.006025,
+   "bid": 0.0182,
+   "ask": 0.0199,
+   "mid": 0.01905,
    "live": true,
    "size": 5.0,
    "entry": 0.25,
    "cost": 1.25,
-   "value": 0.03,
-   "pnl": -1.22,
+   "value": 0.1,
+   "pnl": -1.15,
    "if_wins": 3.75
-  },
-  {
-   "title": "HYPE above 95.00",
-   "side": "YES",
-   "ends": "2026-11-30T21:00:00+00:00",
-   "settles": "",
-   "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
-   "underlying": {
-    "coin": "HYPE",
-    "price": 66.0055,
-    "line": 95.0
-   },
-   "bid": 0.00333,
-   "ask": 0.03175,
-   "mid": 0.01754,
-   "live": true,
-   "size": 10.0,
-   "entry": 0.1,
-   "cost": 1.0,
-   "value": 0.18,
-   "pnl": -0.82,
-   "if_wins": 9.0
   }
  ],
  "orders": [
-  {
-   "title": "HYPE above 95.00",
-   "side": "YES",
-   "ends": "2026-11-30T21:00:00+00:00",
-   "settles": "",
-   "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
-   "underlying": {
-    "coin": "HYPE",
-    "price": 66.0055,
-    "line": 95.0
-   },
-   "bid": 0.00333,
-   "ask": 0.03175,
-   "mid": 0.01754,
-   "live": true,
-   "action": "Sell",
-   "size": 10.0,
-   "price": 0.03175,
-   "cost": 0.32,
-   "if_wins": null,
-   "gap": 0.0284,
-   "placed": 1795005514758
-  },
   {
    "title": "class priceBinary \u00b7 underlying BTC \u00b7 expiry 20261119-0600 \u00b7 targetPrice 64667 \u00b7 period 1d",
    "side": "NO",
@@ -73,16 +28,16 @@
    "settles": "",
    "criteria": "",
    "underlying": null,
-   "bid": 0.99295,
-   "ask": 0.995,
-   "mid": 0.993975,
+   "bid": 0.9801,
+   "ask": 0.9818,
+   "mid": 0.98095,
    "live": true,
    "action": "Buy",
    "size": 5.0,
    "price": 0.65,
    "cost": 3.25,
    "if_wins": 1.75,
-   "gap": 0.345,
+   "gap": 0.3318,
    "placed": 1795005693108
   }
  ],
