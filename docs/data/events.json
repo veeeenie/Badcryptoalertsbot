@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-18T12:10:54+00:00",
+ "generated_at": "2026-11-18T12:24:44+00:00",
  "positions": [
   {
    "title": "HYPE above 95.00",
@@ -9,7 +9,7 @@
    "criteria": "YES if Hyperliquid HYPE perp is above 95 (1-min candle)",
    "underlying": {
     "coin": "HYPE",
-    "price": 68.5625,
+    "price": 69.2335,
     "line": 95.0
    },
    "bid": 0.00333,
