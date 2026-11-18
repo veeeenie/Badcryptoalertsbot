@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-18T12:24:44+00:00",
+ "generated_at": "2026-11-18T12:36:24+00:00",
  "tokens": [
   {
    "key": "solana:hnhpjpjgbg2kwnimtnw8cvbhvk1hfog3rc3kjnyc23td",
@@ -14,6 +14,10 @@
     [
      "2026-11-18T12:24+00:00",
      0.1587
+    ],
+    [
+     "2026-11-18T12:36+00:00",
+     0.1584
     ]
    ],
    "levels": {},
@@ -21,14 +25,14 @@
    "quote": "USDC",
    "dex": "raydium",
    "url": "https://dexscreener.com/solana/hnhpjpjgbg2kwnimtnw8cvbhvk1hfog3rc3kjnyc23td",
-   "price": 0.1587,
-   "ch1h": -0.14,
-   "ch6h": -7.88,
-   "ch24h": -2.78,
-   "vol24": 1056845.34,
-   "liq": 3029658.19,
-   "mcap": 141454337.0,
-   "fdv": 317548866.0,
+   "price": 0.1584,
+   "ch1h": -0.38,
+   "ch6h": -7.36,
+   "ch24h": -3.38,
+   "vol24": 1062842.36,
+   "liq": 3026266.22,
+   "mcap": 141207076.0,
+   "fdv": 316993794.0,
    "ch7d": null,
    "alerts": []
   }
