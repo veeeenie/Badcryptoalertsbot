@@ -443,7 +443,7 @@ fetch("data/rates.json?t="+Date.now()).then(r=>r.json()).then(R=>{
 fetch("data/levels.json?t="+Date.now()).then(r=>r.json()).then(L=>{
   const C=L.coins||[]; if(!C.length){document.getElementById("lvhint").textContent="no coins yet";return;}
   const fp=(p,ref)=>{if(p==null)return"–";const a=Math.abs(ref||p);return a>=1000?p.toFixed(1):a>=10?p.toFixed(2):a>=1?p.toFixed(3):p.toPrecision(4);};
-  const kc={entry:"var(--amber)",stop:"var(--down)",target:"var(--up)",alert:"var(--muted)",level:"var(--ink)"};
+  const kc={entry:"var(--amber)",stop:"var(--down)",target:"var(--up)",alert:"var(--muted)",level:"var(--ink)",position:"var(--accent)"};
   let cur=0; try{cur=Math.max(0,C.findIndex(c=>c.coin===localStorage.getItem("lvcoin")));}catch(e){}
   const tabs=document.getElementById("lvtabs");
   function draw(i){
@@ -498,7 +498,7 @@ fetch("data/levels.json?t="+Date.now()).then(r=>r.json()).then(L=>{
   addEventListener("resize",()=>{const nw=document.getElementById("lvchart").clientWidth<600;if(nw!==wasNarrow){wasNarrow=nw;draw(cur);}});
   document.getElementById("levels").addEventListener("toggle",()=>draw(cur));
   document.getElementById("lvhint").textContent=C.map(c=>c.name).join(" · ");
-  document.getElementById("lvmeta").textContent=`Daily candles and volume from Hyperliquid. Profiles: 70% value area from 1-hour candles (4-hour for ranges older than ~200 days), so levels can differ slightly from TradingView. Updated ${ist(L.generated_at,true)}.`;
+  document.getElementById("lvmeta").textContent=`Daily candles and volume from Hyperliquid. Entry, stop and take-profit lines are your open Hyperliquid orders, read each hour. Profiles: 70% value area from 1-hour candles (4-hour for ranges older than ~200 days), so levels can differ slightly from TradingView. Updated ${ist(L.generated_at,true)}.`;
 }).catch(()=>{document.getElementById("lvhint").textContent="appears after the next hourly scan";});
 
 // ---- DEX watchlist (coins not on Hyperliquid, from DexScreener)

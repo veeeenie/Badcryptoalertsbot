@@ -1,5 +1,5 @@
 {
- "_note": "Chart levels shown in the Levels section (instead of TradingView drawings). profiles: fixed-range volume profiles (from/to dates, UTC; no 'to' = up to now). lines kind: entry | stop | target | alert | level.",
+ "_note": "Chart levels shown in the Levels section (instead of TradingView drawings). profiles: fixed-range volume profiles (from/to dates, UTC; no 'to' = up to now). lines here are alert levels and notes only (kind: alert | level); your open Hyperliquid orders and positions are added automatically every hour.",
  "coins": [
   {
    "coin": "VVV",
@@ -15,21 +15,6 @@
     }
    ],
    "lines": [
-    {
-     "price": 22.6,
-     "label": "Short entry",
-     "kind": "entry"
-    },
-    {
-     "price": 23.5,
-     "label": "Stop",
-     "kind": "stop"
-    },
-    {
-     "price": 17.0,
-     "label": "Take-profit",
-     "kind": "target"
-    },
     {
      "price": 21,
      "label": "Alert: touch",
@@ -82,18 +67,8 @@
    "lines": [
     {
      "price": 0.267,
-     "label": "Short entry (alert)",
-     "kind": "entry"
-    },
-    {
-     "price": 0.28,
-     "label": "Stop",
-     "kind": "stop"
-    },
-    {
-     "price": 0.24,
-     "label": "Target",
-     "kind": "target"
+     "label": "Alert: touch (short plan 0.267 → 0.24, stop 0.28)",
+     "kind": "alert"
     },
     {
      "price": 0.2878,

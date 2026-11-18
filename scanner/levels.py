@@ -13,7 +13,9 @@ For each coin this writes to docs/data/levels.json:
     candle's volume spread evenly across its high-low range;
   - daily EMAs 25/50/100/200 and the weekly EMA 25/50, now and as series for the chart;
   - the last 180 daily candles for the chart.
-Run hourly. Reads public market data only.
+Live trade lines: the trader's open Hyperliquid orders and open position for each coin are read every run
+and drawn as lines (entries, stop, take-profit, position entry), so they always match what is live.
+levels_list.json keeps only alert levels and anything else that isn't an order. Run hourly; places no orders.
 """
 import json
 import os
@@ -27,6 +29,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LIST = os.path.join(ROOT, "docs", "data", "levels_list.json")
 OUT = os.path.join(ROOT, "docs", "data", "levels.json")
 API = "https://api.hyperliquid.xyz/info"
+WALLET = os.getenv("FILLS_WALLET", "0xaBA792B28CA16629b3CFF232F30E9dC0868e5EaE")
 DAY = 86_400_000
 WINDOW = 180          # daily candles shown on the chart
 
@@ -100,6 +103,44 @@ def sig(x):
     return None if x is None else float(f"{x:.5g}")
 
 
+def live_lines(coin, orders, positions):
+    """Lines from the trader's open orders and position on this coin (read-only)."""
+    out = []
+    pos = positions.get(coin)
+    if pos:
+        side = "Short" if float(pos["szi"]) < 0 else "Long"
+        out.append({"price": float(pos["entryPx"]), "label": f"{side} {abs(float(pos['szi'])):g} @ entry", "kind": "position"})
+    for o in orders:
+        if o["coin"] != coin:
+            continue
+        sz = float(o["sz"])
+        typ = o.get("orderType", "")
+        if o.get("isTrigger") or "Stop" in typ or "Take Profit" in typ:
+            px = float(o.get("triggerPx") or o["limitPx"])
+            kind = "target" if "Take Profit" in typ else "stop"
+            label = ("Take-profit" if kind == "target" else "Stop") + (f" {sz:g}" if sz else "")
+        else:
+            px = float(o["limitPx"])
+            if o.get("reduceOnly"):
+                kind, label = "target", f"Take-profit {sz:g}"
+            else:
+                kind, label = "entry", f"{'Sell' if o['side'] == 'A' else 'Buy'} {sz:g}"
+        out.append({"price": px, "label": label, "kind": kind, "live": True})
+    # merge identical prices (e.g. two tranches' stops at the same level)
+    merged = {}
+    for l in out:
+        k = (round(l["price"], 8), l["kind"])
+        if k in merged and l.get("live"):
+            a, b = merged[k]["label"].split(" "), l["label"].split(" ")
+            try:
+                merged[k]["label"] = " ".join(a[:-1] + [f"{float(a[-1]) + float(b[-1]):g}"])
+            except ValueError:
+                pass
+        else:
+            merged[k] = dict(l)
+    return list(merged.values())
+
+
 def main():
     try:
         with open(LIST) as f:
@@ -108,6 +149,20 @@ def main():
         coins = []
     now = int(time.time() * 1000)
     out = []
+    try:
+        orders = hl({"type": "frontendOpenOrders", "user": WALLET}) or []
+        orders += hl({"type": "frontendOpenOrders", "user": WALLET, "dex": "xyz"}) or []
+        positions = {}
+        for dex in ("", "xyz"):
+            body = {"type": "clearinghouseState", "user": WALLET}
+            if dex:
+                body["dex"] = dex
+            for ap in (hl(body) or {}).get("assetPositions", []):
+                positions[ap["position"]["coin"]] = ap["position"]
+        live_ok = True
+    except Exception as ex:
+        print(f"levels: could not read orders: {ex}", file=sys.stderr)
+        orders, positions, live_ok = [], {}, False
     for cfg in coins:
         coin = cfg["coin"]
         try:
@@ -144,7 +199,8 @@ def main():
                 "series": {"t": [c["t"] for c in win],
                            "ohlc": [[sig(float(c["o"])), sig(float(c["h"])), sig(float(c["l"])), sig(float(c["c"]))] for c in win],
                            **{f"d{n}": [sig(x) for x in e[n][n0:]] for n in (25, 50, 200)}},
-                "profiles": profs, "lines": cfg.get("lines", []), "note": cfg.get("note", ""),
+                "profiles": profs, "lines": cfg.get("lines", []) + live_lines(coin, orders, positions),
+                "live_ok": live_ok, "note": cfg.get("note", ""),
             })
         except Exception as ex:
             print(f"levels: {coin} failed: {ex}", file=sys.stderr)
