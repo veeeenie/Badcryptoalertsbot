@@ -473,14 +473,14 @@ fetch("data/levels.json?t="+Date.now()).then(r=>r.json()).then(L=>{
       const rows=p.hist.length, rh=(p.hi-p.lo)/rows;
       p.hist.forEach((h,r)=>{const v0=p.lo+r*rh,v1=v0+rh;if(v1<lo||v0>hi)return;const top=y(Math.min(v1,hi)),bot=y(Math.max(v0,lo));g+=`<rect x="${a}" y="${top}" width="${h*Math.min(w*0.35,170)}" height="${Math.max(0.5,bot-top-0.5)}" fill="var(--accent)" opacity=".28"/>`;});
       g+=`<line x1="${a}" x2="${a+w}" y1="${y(p.poc)}" y2="${y(p.poc)}" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 4"/>`;
-      g+=`<text x="${a+4}" y="${y(p.vah)-4}" style="fill:var(--accent)">${p.label}</text>`;
+      g+=`<text x="${Math.max(a,padL)+4}" y="${Math.max(fs+2,y(p.vah)-4)}" style="fill:var(--accent)">${p.label}</text>`;
     });
     // candles
     S.ohlc.forEach((o,k)=>{const up=o[3]>=o[0],col=up?"var(--up)":"var(--down)";g+=`<line x1="${x(k)}" x2="${x(k)}" y1="${y(o[1])}" y2="${y(o[2])}" stroke="${col}"/><rect x="${x(k)-cw*0.35}" y="${y(Math.max(o[0],o[3]))}" width="${cw*0.7}" height="${Math.max(1,Math.abs(y(o[0])-y(o[3])))}" fill="${col}"/>`;});
     // EMAs
     [["d25","var(--amber)"],["d50","var(--accent)"],["d200","var(--muted)"]].forEach(([k,col])=>{const pts=S[k].map((v,j)=>v==null||v<lo||v>hi?null:`${x(j).toFixed(1)},${y(v).toFixed(1)}`).filter(Boolean).join(" ");if(pts)g+=`<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.6"/>`;});
     // the trader's lines
-    lines.forEach(l=>{const col=kc[l.kind]||kc.level;g+=`<line x1="${padL}" x2="${W-padR}" y1="${y(l.price)}" y2="${y(l.price)}" stroke="${col}" stroke-width="1.3" ${l.kind==="alert"?'stroke-dasharray="2 4"':""}/><text x="${W-padR+6}" y="${y(l.price)+4}" style="fill:${col};font-weight:600">${fp(l.price,px)} ${narrow?"":l.label.replace(/^Alert: /,"⏰ ").slice(0,16)}</text>`;});
+    lines.forEach(l=>{const col=kc[l.kind]||kc.level;let ly=y(l.price)+4;const d=ly-(y(px)+4);if(Math.abs(d)<fs*1.6)ly=y(px)+4+(d<0?-1:1)*fs*1.6;g+=`<line x1="${padL}" x2="${W-padR}" y1="${y(l.price)}" y2="${y(l.price)}" stroke="${col}" stroke-width="1.3" ${l.kind==="alert"?'stroke-dasharray="2 4"':""}/><text x="${W-padR+6}" y="${ly}" style="fill:${col};font-weight:600">${fp(l.price,px)} ${narrow?"":l.label.replace(/^Alert: /,"⏰ ").slice(0,16)}</text>`;});
     // price now
     g+=`<line x1="${padL}" x2="${W-padR}" y1="${y(px)}" y2="${y(px)}" stroke="var(--ink)" stroke-dasharray="1 3"/><rect x="${W-padR+2}" y="${y(px)-fs*0.85}" width="${fs*6}" height="${fs*1.6}" rx="4" fill="var(--ink)"/><text x="${W-padR+6}" y="${y(px)+4}" style="fill:var(--bg);font-weight:700">${fp(px,px)}</text>`;
     document.getElementById("lvchart").innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${c.name} daily chart with levels" style="font-size:${fs}px">${g}</svg>`;
