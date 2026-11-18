@@ -1,0 +1,12 @@
+{
+ "_note": "DEX watchlist: coins not on Hyperliquid, priced from DexScreener. pair = the pool address from the dexscreener.com URL. alerts = price levels; a Telegram message on each crossing.",
+ "tokens": [
+  {
+   "symbol": "CARDS",
+   "chain": "solana",
+   "pair": "HnhpJPJgBG2KwniMTNW8cVBHvk1hFog3RC3kjnyc23tD",
+   "added": "2026-11-18",
+   "alerts": []
+  }
+ ]
+}

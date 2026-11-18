@@ -211,6 +211,7 @@ details.more>summary{cursor:pointer;margin-top:10px}
   <a href="#trades" data-sec="trades">Trades</a>
   <a href="#alerts" data-sec="alerts">Alerts</a>
   <a href="#events" data-sec="events">My events</a>
+  <a href="#dexwatch" data-sec="dexwatch">Watchlist</a>
   <a href="#portfolio" data-sec="portfolio">Portfolio</a>
   <a href="#rules" data-sec="rules">Rule book</a>
   <button type="button" id="themebtn" aria-label="Switch light or dark mode" title="Switch light / dark"></button>
@@ -309,6 +310,17 @@ details.more>summary{cursor:pointer;margin-top:10px}
   </details>
 
 
+  <details class="sec anchor" id="dexwatch">
+  <summary><span class="st">Watchlist (DEX coins)</span><span class="muted" id="dwhint">loading…</span></summary>
+  <div class="secbody">
+  <div class="box"><table class="stack">
+    <thead><tr><th>Coin</th><th>Price</th><th>1h</th><th>24h</th><th>7d</th><th>24h volume</th><th>Liquidity</th><th>Market cap</th><th class="tl">Alerts</th></tr></thead>
+    <tbody id="dwrows"><tr><td colspan="9" class="muted">Loading…</td></tr></tbody>
+  </table></div>
+  <p class="muted" id="dwmeta"></p>
+  </div>
+  </details>
+
   <details class="sec anchor" id="portfolio">
   <summary><span class="st">Portfolio</span><span class="muted" id="pfhint">loading…</span></summary>
   <div class="secbody">
@@ -403,6 +415,18 @@ fetch("data/rates.json?t="+Date.now()).then(r=>r.json()).then(R=>{
     two("10-year bond",`US ${u.y10?p(u.y10.value):"–"}`,`India ${n.y10?p(n.y10.value):"–"}`,"c2");
   document.getElementById("rates").hidden=false;
 }).catch(()=>{});
+
+// ---- DEX watchlist (coins not on Hyperliquid, from DexScreener)
+fetch("data/dexwatch.json?t="+Date.now()).then(r=>r.json()).then(X=>{
+  const px=p=>p==null?"–":"$"+(p>=1?p.toFixed(2):p.toPrecision(4));
+  const pc=x=>x==null?"<span class=\"muted\">–</span>":`<span class="${x>0?"up":x<0?"down":""}">${x>0?"+":""}${x.toFixed(1)}%</span>`;
+  const big=x=>x==null?"–":x>=1e9?"$"+(x/1e9).toFixed(2)+"B":x>=1e6?"$"+(x/1e6).toFixed(1)+"M":x>=1e3?"$"+(x/1e3).toFixed(0)+"K":"$"+x.toFixed(0);
+  const T=X.tokens||[];
+  document.getElementById("dwrows").innerHTML=T.length?T.map(t=>`<tr><td><a href="${t.url||"#"}" target="_blank" rel="noopener"><b>${t.symbol}</b></a> <span class="muted">${t.name||""} · ${t.dex||""} ${t.chain}</span></td><td data-label="Price">${px(t.price)}</td><td data-label="1h">${pc(t.ch1h)}</td><td data-label="24h">${pc(t.ch24h)}</td><td data-label="7d">${pc(t.ch7d)}</td><td data-label="Volume">${big(t.vol24)}</td><td data-label="Liquidity">${big(t.liq)}</td><td data-label="Mcap">${big(t.mcap)} <span class="muted">FDV ${big(t.fdv)}</span></td><td class="tl" data-label="Alerts">${(t.alerts||[]).length?t.alerts.map(a=>px(a.price)).join(", "):"<span class=\"muted\">none</span>"}</td></tr>`).join("")
+    :'<tr><td colspan="9" class="muted">No coins yet.</td></tr>';
+  document.getElementById("dwhint").textContent=T.length+" coin"+(T.length===1?"":"s");
+  document.getElementById("dwmeta").textContent=`Prices from DexScreener (the coin's main pool). 7d change starts once a week of hourly prices is recorded. Updated ${ist(X.generated_at,true)}.`;
+}).catch(()=>{document.getElementById("dwhint").textContent="appears after the next hourly scan";});
 
 // ---- my event bets (HIP-4 positions and orders)
 fetch("data/events.json?t="+Date.now()).then(r=>r.json()).then(E=>{
@@ -766,7 +790,7 @@ document.querySelectorAll("nav a[data-sec]").forEach(a=>a.addEventListener("clic
   if(el.tagName==="DETAILS") el.open=true;
   el.scrollIntoView({behavior:"smooth",block:"start"}); history.replaceState(null,"","#"+a.dataset.sec); markActive();
 }));
-const secs=["charts","trades","alerts","events","portfolio","rules"].map(id=>document.getElementById(id));
+const secs=["charts","trades","alerts","events","dexwatch","portfolio","rules"].map(id=>document.getElementById(id));
 let pinned=null;   // the section just tapped stays lit until you scroll yourself
 ["wheel","touchmove","keydown"].forEach(ev=>addEventListener(ev,()=>{pinned=null;},{passive:true}));
 function markActive(){
