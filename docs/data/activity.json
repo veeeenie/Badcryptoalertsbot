@@ -1,12 +1,12 @@
 {
- "generated_at": "2026-11-19T04:08:17+00:00",
+ "generated_at": "2026-11-19T05:08:18+00:00",
  "note": "Activity only, no score. No trade.xyz or Hyperliquid airdrop criteria have been announced; $5M lifetime volume is the bar trade.xyz's ended waitlist used.",
  "wallets": {
   "\u20265EaE": {
-   "lifetime_volume": 257116.04,
+   "lifetime_volume": 257190.84,
    "ref_volume": 5000000,
    "ref_progress_pct": 5.1,
-   "fills_seen": 747,
+   "fills_seen": 748,
    "first_fill": "2025-09-02",
    "last_fill": "2026-11-19",
    "days_active": 148,
@@ -20,16 +20,16 @@
     "cash": 1
    },
    "volume_by_market": {
-    "crypto": 225248.76,
+    "crypto": 225323.57,
     "xyz": 28005.03,
     "km": 1856.89,
     "spot": 1015.33,
     "cash": 942.76
    },
-   "maker_share_pct": 29.1,
-   "fees_paid": 193.37,
+   "maker_share_pct": 29.2,
+   "fees_paid": 193.38,
    "builder_fees_paid": 98.63,
-   "volume_in_fills": 257068.77
+   "volume_in_fills": 257143.58
   },
   "\u20263991": {
    "lifetime_volume": 148715.79,
