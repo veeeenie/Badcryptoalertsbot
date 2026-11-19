@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T00:11:30+00:00",
+ "generated_at": "2026-11-19T01:31:55+00:00",
  "positions": [
   {
    "title": "class priceBinary \u00b7 underlying BTC \u00b7 expiry 20261119-0600 \u00b7 targetPrice 64667 \u00b7 period 1d",
@@ -8,15 +8,15 @@
    "settles": "",
    "criteria": "",
    "underlying": null,
-   "bid": 0.01,
-   "ask": 0.01389,
-   "mid": 0.011945,
+   "bid": 0.00333,
+   "ask": 0.0082,
+   "mid": 0.007,
    "live": true,
    "size": 5.0,
    "entry": 0.25,
    "cost": 1.25,
-   "value": 0.06,
-   "pnl": -1.19,
+   "value": 0.04,
+   "pnl": -1.22,
    "if_wins": 3.75
   }
  ],
@@ -28,16 +28,16 @@
    "settles": "",
    "criteria": "",
    "underlying": null,
-   "bid": 0.98611,
-   "ask": 0.99,
-   "mid": 0.988055,
+   "bid": 0.9918,
+   "ask": 0.99667,
+   "mid": 0.993,
    "live": true,
    "action": "Buy",
    "size": 5.0,
    "price": 0.65,
    "cost": 3.25,
    "if_wins": 1.75,
-   "gap": 0.34,
+   "gap": 0.3467,
    "placed": 1795005693108
   }
  ],
