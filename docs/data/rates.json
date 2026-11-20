@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-19T23:10:55+00:00",
+ "generated_at": "2026-11-20T00:10:44+00:00",
  "us": {
   "policy": {
    "lo": 3.75,
@@ -59,7 +59,6 @@
  },
  "us_cpi_checked": "2026-11-10T07:28:05+00:00",
  "errors": [
-  "fed funds: JSONDecodeError",
   "US CPI: ValueError"
  ]
 }
