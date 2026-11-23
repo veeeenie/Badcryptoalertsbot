@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-23T07:10:51+00:00",
+ "generated_at": "2026-11-23T08:12:08+00:00",
  "tokens": [
   {
    "key": "solana:hnhpjpjgbg2kwnimtnw8cvbhvk1hfog3rc3kjnyc23td",
@@ -410,6 +410,10 @@
     [
      "2026-11-23T07:10+00:00",
      0.1611
+    ],
+    [
+     "2026-11-23T08:12+00:00",
+     0.1611
     ]
    ],
    "levels": {},
@@ -418,13 +422,13 @@
    "dex": "raydium",
    "url": "https://dexscreener.com/solana/hnhpjpjgbg2kwnimtnw8cvbhvk1hfog3rc3kjnyc23td",
    "price": 0.1611,
-   "ch1h": 0.39,
-   "ch6h": 0.35,
-   "ch24h": 5.93,
-   "vol24": 926657.69,
-   "liq": 3367902.81,
-   "mcap": 143574513.0,
-   "fdv": 322308438.0,
+   "ch1h": null,
+   "ch6h": 0.37,
+   "ch24h": 5.9,
+   "vol24": 926043.48,
+   "liq": 3079542.61,
+   "mcap": 143571440.0,
+   "fdv": 322301539.0,
    "ch7d": null,
    "alerts": []
   }
