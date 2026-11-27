@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-27T21:11:02+00:00",
+ "generated_at": "2026-11-27T22:11:42+00:00",
  "tokens": [
   {
    "key": "solana:hnhpjpjgbg2kwnimtnw8cvbhvk1hfog3rc3kjnyc23td",
@@ -7,10 +7,6 @@
    "chain": "solana",
    "pair": "HnhpJPJgBG2KwniMTNW8cVBHvk1hFog3RC3kjnyc23tD",
    "hist": [
-    [
-     "2026-11-19T22:10+00:00",
-     0.1633
-    ],
     [
      "2026-11-19T23:10+00:00",
      0.1649
@@ -598,6 +594,10 @@
     [
      "2026-11-27T21:11+00:00",
      0.1671
+    ],
+    [
+     "2026-11-27T22:11+00:00",
+     0.1661
     ]
    ],
    "levels": {},
@@ -605,15 +605,15 @@
    "quote": "USDC",
    "dex": "raydium",
    "url": "https://dexscreener.com/solana/hnhpjpjgbg2kwnimtnw8cvbhvk1hfog3rc3kjnyc23td",
-   "price": 0.1671,
-   "ch1h": 0.05,
-   "ch6h": -0.17,
-   "ch24h": -2.1,
-   "vol24": 379857.9,
-   "liq": 3374011.86,
-   "mcap": 148863201.0,
-   "fdv": 334343166.0,
-   "ch7d": 19.27,
+   "price": 0.1661,
+   "ch1h": -0.62,
+   "ch6h": -0.46,
+   "ch24h": -2.88,
+   "vol24": 403598.33,
+   "liq": 3361905.32,
+   "mcap": 147941451.0,
+   "fdv": 332272938.0,
+   "ch7d": 14.08,
    "alerts": []
   }
  ]
