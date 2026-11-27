@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-27T05:12:18+00:00",
+ "generated_at": "2026-11-27T09:04:39+00:00",
  "positions": [],
  "orders": [],
  "settled": [
@@ -7,11 +7,6 @@
    "title": "class priceBinary \u00b7 underlying BTC \u00b7 expiry 20261119-0600 \u00b7 targetPrice 64667 \u00b7 period 1d",
    "pnl": -1.25,
    "time": "2026-11-19T06:00+00:00"
-  },
-  {
-   "title": "market #33249",
-   "pnl": 2.55,
-   "time": "2026-11-13T05:17+00:00"
   }
  ],
  "names": {
